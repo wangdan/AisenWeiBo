@@ -1,11 +1,11 @@
 # Aisen微博
 
-**注意** 工程依赖[AisenBase](https://github.com/wangdan/com.m)
+**注意** 工程依赖[AisenForAndroid](https://github.com/wangdan/com.m)
 
 [![Get it on Google Play](http://www.android.com/images/brand/get_it_on_play_logo_small.png)](http://play.google.com/store/apps/details?id=org.aisen.weibo.sina)
 
 ## 说明
-Aisen微博是新浪微博的第三方客户端，遵循Android Design，Holo主题风格，设计从界面简约清爽操作简单易用出发，力争为Android用户提供更好以及特别的微博体验。同时使用AisenBase框架开发，基于Aisen微博这个范例可以学习使用AisenBase快速搭建Android项目工程快速开发。
+Aisen微博是新浪微博的第三方客户端，遵循Android Design，Holo主题风格，设计从界面简约清爽操作简单易用出发，力争为Android用户提供更好以及特别的微博体验。基于AisenForAndroid框架开发，基于Aisen微博这个范例可以学习使用AisenBase快速搭建Android项目工程快速开发。
 
 ## 基本功能
  
@@ -16,6 +16,9 @@ Aisen微博是新浪微博的第三方客户端，遵循Android Design，Holo主
  * 聚合评论阅读
  * 用户、微博搜索
  * 发布内容可设置延迟
+ * 多语言支持
+  * 中文简体
+  * 中文繁体
  * 草稿箱
   * 离线编辑
   * 定时发布
