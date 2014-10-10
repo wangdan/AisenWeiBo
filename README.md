@@ -1,6 +1,6 @@
 # Aisen微博
 
-**注意** 工程依赖[AisenForAndroid](https://github.com/wangdan/com.m)
+**注意** 工程依赖[AisenForAndroid](https://github.com/wangdan/AisenForAndroid)
 
 [![Get it on Google Play](http://www.android.com/images/brand/get_it_on_play_logo_small.png)](http://play.google.com/store/apps/details?id=org.aisen.weibo.sina)
 
