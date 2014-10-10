@@ -23,6 +23,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.m.common.context.GlobalContext;
 import com.m.support.Inject.ViewInject;
 import com.m.support.adapter.ABaseAdapter.AbstractItemView;
 import com.m.ui.fragment.ABaseFragment;
@@ -167,21 +168,22 @@ public class CommentItemView extends AbstractItemView<StatusComment> implements 
 			TimelineCommentsActivity.launch(fragment, status);
 		}
 		else if (v.getId() == R.id.btnMenus) {
+			final String[] commentMenuArr = GlobalContext.getInstance().getResources().getStringArray(R.array.cmt_menus);
 			final StatusComment comment = (StatusComment) v.getTag();
 			if (mStatus != null)
 				comment.setStatus(mStatus);
 			
 			// 复制
 			List<String> menuList = new ArrayList<String>();
-			menuList.add(AisenUtil.commentMenuArr[0]);
+			menuList.add(commentMenuArr[0]);
 			// 转发
 //			if (fragment instanceof TimelineCommentsFragment)
 			if (comment.getStatus() != null &&
 					(comment.getUser() != null && !comment.getUser().getIdstr().equals(AppContext.getUser().getIdstr())))
-				menuList.add(AisenUtil.commentMenuArr[1]);
+				menuList.add(commentMenuArr[1]);
 			// 删除
 			if (comment.getUser() != null && AppContext.getUser().getIdstr().equals(comment.getUser().getIdstr()))
-				menuList.add(AisenUtil.commentMenuArr[2]);
+				menuList.add(commentMenuArr[2]);
 			
 			final String[] menus = new String[menuList.size()];
 			for (int i = 0; i < menuList.size(); i++)

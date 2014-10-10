@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import com.m.common.context.GlobalContext;
 import com.m.support.Inject.ViewInject;
 import com.m.ui.activity.AViewpagerActivity;
 import com.m.ui.fragment.ABaseFragment;
@@ -166,20 +167,21 @@ public class TimelineCommentsActivity extends AViewpagerActivity implements OnCl
 			}
 			// 溢出菜单
 			else if (v.getId() == R.id.btnOverflow) {
+				final String[] timelineMenuArr = GlobalContext.getInstance().getResources().getStringArray(R.array.timeline_menus);
 				List<String> menuList = new ArrayList<String>();
 				// 原微博
 				if (mStatusContent.getRetweeted_status() != null && mStatusContent.getRetweeted_status().getUser() != null) {
-					menuList.add(AisenUtil.timelineMenuArr[0]);
+					menuList.add(timelineMenuArr[0]);
 				}
 				// 围观
-				menuList.add(AisenUtil.timelineMenuArr[8]);
+				menuList.add(timelineMenuArr[8]);
 				// 复制
-				menuList.add(AisenUtil.timelineMenuArr[1]);
+				menuList.add(timelineMenuArr[1]);
 				// 取消收藏
-				menuList.add(AisenUtil.timelineMenuArr[5]);
+				menuList.add(timelineMenuArr[5]);
 				// 删除
 				if (mStatusContent.getUser() != null && AppContext.getUser().getIdstr().equals(mStatusContent.getUser().getIdstr()))
-					menuList.add(AisenUtil.timelineMenuArr[6]);
+					menuList.add(timelineMenuArr[6]);
 				
 				final String[] menuArr = new String[menuList.size()];
 				for (int i = 0; i < menuList.size(); i++)

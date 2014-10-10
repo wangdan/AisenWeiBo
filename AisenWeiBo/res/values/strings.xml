@@ -531,7 +531,7 @@
 	<string-array name="pLanguage">
 	    <item>跟随系统语言</item>
 	    <item>简体中文</item>
-	    <item>繁体中文</item>
+	    <item>繁體中文</item>
 	</string-array>
 	
 	<string-array name="pRefreshViewType">

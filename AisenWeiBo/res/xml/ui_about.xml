@@ -8,7 +8,7 @@
  	
  	<Preference android:key="pHelp" android:title="@string/settings_help" />
  	
- 	<Preference android:key="pGithub" android:title="Github" android:summary="github.com/wangdan/aisen" />
+ 	<Preference android:key="pGithub" android:title="Github" android:summary="github.com/wangdan/AisenWeiBo" />
  	
  	<Preference android:key="pOpensource" android:title="@string/settings_opensource" android:summary="Licensed under the Apache License, Version 3.0" />
  	

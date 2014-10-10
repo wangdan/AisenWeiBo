@@ -58,13 +58,18 @@ public abstract class ATimelineFragment extends ARefreshProxyFragment<StatusCont
 	}
 	
 	@Override
+	public void onCreate(Bundle savedInstanceSate) {
+		mGroupBean = savedInstanceSate == null ? (TimelineGroupBean) getArguments().getSerializable("bean") 
+				   : (TimelineGroupBean) savedInstanceSate.getSerializable("bean");
+		
+		super.onCreate(savedInstanceSate);
+	}
+	
+	@Override
 	protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
 		super.layoutInit(inflater, savedInstanceSate);
 		
 		loggedIn = AppContext.getUser();
-
-		mGroupBean = savedInstanceSate == null ? (TimelineGroupBean) getArguments().getSerializable("bean") : (TimelineGroupBean) savedInstanceSate
-				.getSerializable("bean");
 
 		getRefreshView().setOnItemClickListener(this);
 

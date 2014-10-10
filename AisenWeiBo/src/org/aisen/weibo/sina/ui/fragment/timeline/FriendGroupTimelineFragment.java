@@ -33,8 +33,9 @@ public class FriendGroupTimelineFragment extends ATimelineFragment {
 	
 	// 2014-8-30 解决因为状态保存而导致的耗时阻塞
 	@Override
-	public void onSaveInstanceState(Bundle outState) {
-//		super.onSaveInstanceState(outState);
+	protected void saveRefreshListState(Bundle outState) {
+//		super.saveRefreshListState(outState);
+		cleatTaskCount("TimelineTask");
 	}
 	
 	@Override

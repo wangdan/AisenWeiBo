@@ -115,7 +115,7 @@ public class OtherSettingsFragment extends PreferenceFragment
 			AboutWebFragment.launchOpensource(getActivity());
 		}
 		else if ("pGithub".equals(preference.getKey())) {
-			AisenUtil.launchBrowser(getActivity(), "https://github.com/wangdan/aisen");
+			AisenUtil.launchBrowser(getActivity(), "https://github.com/wangdan/AisenWeiBo");
 		}
 		return true;
 	}

@@ -322,8 +322,9 @@ public class AisenUtil {
 		cmb.setText(text.trim()); 
 	}
 	
-	public static final String[] commentMenuArr = GlobalContext.getInstance().getResources().getStringArray(R.array.cmt_menus);
 	public static void commentMenuSelected(final ABaseFragment fragment, String selectedItem, final StatusComment comment) {
+		final String[] commentMenuArr = GlobalContext.getInstance().getResources().getStringArray(R.array.cmt_menus);
+		
 		try {
 			int position = 0;
 			for (int i = 0; i < commentMenuArr.length; i++) {
@@ -480,8 +481,9 @@ public class AisenUtil {
 	}
 	
 //	public static final String[] timelineMenuArr = new String[]{ "原微博", "复制", "转发", "评论", "收藏", "取消收藏", "删除", "屏蔽", "围观" };
-	public static final String[] timelineMenuArr = GlobalContext.getInstance().getResources().getStringArray(R.array.timeline_menus);
 	public static void timelineMenuSelected(final ABaseFragment fragment, String selectedItem, final StatusContent status) {
+		final String[] timelineMenuArr = GlobalContext.getInstance().getResources().getStringArray(R.array.timeline_menus);
+		
 		try {
 			int position = 0;
 			for (int i = 0; i < timelineMenuArr.length; i++) {

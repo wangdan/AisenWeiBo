@@ -252,21 +252,22 @@ public class TimelineItemView extends AbstractItemView<StatusContent>
 		}
 		// 溢出菜单
 		else if (v.getId() == R.id.btnMenus) {
+			final String[] timelineMenuArr = GlobalContext.getInstance().getResources().getStringArray(R.array.timeline_menus);
 			final StatusContent status = (StatusContent) v.getTag();
 			
 			List<String> menuList = new ArrayList<String>();
 			if (status.getRetweeted_status() != null && status.getRetweeted_status().getUser() != null)
-				menuList.add(AisenUtil.timelineMenuArr[0]);
-			menuList.add(AisenUtil.timelineMenuArr[1]);
+				menuList.add(timelineMenuArr[0]);
+			menuList.add(timelineMenuArr[1]);
 			if (status.getVisible() == null || "0".equals(status.getVisible().getType())) 
-				menuList.add(AisenUtil.timelineMenuArr[2]);
-			menuList.add(AisenUtil.timelineMenuArr[3]);
-			menuList.add(AisenUtil.timelineMenuArr[4]);
-			menuList.add(AisenUtil.timelineMenuArr[5]);
+				menuList.add(timelineMenuArr[2]);
+			menuList.add(timelineMenuArr[3]);
+			menuList.add(timelineMenuArr[4]);
+			menuList.add(timelineMenuArr[5]);
 			if (status.getUser() != null && status.getUser().getIdstr().equals(AppContext.getUser().getIdstr()))
-				menuList.add(AisenUtil.timelineMenuArr[6]);
+				menuList.add(timelineMenuArr[6]);
 			if (fragment instanceof MentionTimelineFragment)
-				menuList.add(AisenUtil.timelineMenuArr[7]);
+				menuList.add(timelineMenuArr[7]);
 			
 			final String[] menus = new String[menuList.size()];
 			for (int i = 0; i < menuList.size(); i++)
