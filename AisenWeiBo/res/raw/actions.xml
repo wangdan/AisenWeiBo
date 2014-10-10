@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<app-settings>
+
+	<setting type="app_key">
+		<des>APP应用授权key</des>
+		<value>2362431378</value>
+	</setting>
+
+	<setting type="app_secret">
+		<des>APP应用授权secret</des>
+		<value>582ce3cdcdeb8a3b45087073d0dbcadf</value>
+	</setting>
+
+	<setting type="callback_url">
+		<des>授权回调地址</des>
+		<value>http://boyqiang520.s8.csome.cn/oauth2/</value>
+	</setting>
+
+	<setting type="base_url">
+		<des>新浪微博服务地址</des>
+		<value>https://api.weibo.com/2/</value>
+	</setting>
+
+	<setting type="access_token">
+		<des>获取Token的地址</des>
+		<value>access_token</value>
+		<extras>
+			<extra type="base_url">
+				<des>获取Token的地址</des>
+				<value>https://api.weibo.com/oauth2/</value>
+			</extra>
+		</extras>
+	</setting>
+	
+	<setting type="token_info">
+		<des>查询用户access_token的授权相关信息，包括授权时间，过期时间和scope权限</des>
+		<value>get_token_info</value>
+		<extras>
+			<extra type="base_url">
+				<des>获取Token的地址</des>
+				<value>https://api.weibo.com/oauth2/</value>
+			</extra>
+		</extras>
+	</setting>
+
+	<setting type="usershow">
+		<des>按用户ID或昵称返回用户资料以及用户的最新发布的一条微博消息</des>
+		<value>users/show.json</value>
+	</setting>
+
+	<setting type="statusesPublicTimeLine">
+		<des>返回最新的200条公共微博，返回结果非完全实时</des>
+		<value>statuses/public_timeline.json</value>
+	</setting>
+
+	<setting type="statusesHomeTimeLine">
+		<des>获取当前登录用户及其所关注用户的最新微博</des>
+		<value>statuses/home_timeline.json</value>
+		<extras>
+			<extra type="cache_enable">
+				<value>true</value>
+			</extra>
+			<extra type="cache_utility">
+				<value>org.aisen.weibo.sina.support.cache.TimelineCacheUtility</value>
+			</extra>
+		</extras>
+	</setting>
+
+	<setting type="statusesFriendsTimeLine">
+		<des>获取当前登录用户及其所关注用户的最新微博消息</des>
+		<value>statuses/friends_timeline.json</value>
+		<extras>
+			<extra type="cache_enable">
+				<value>true</value>
+			</extra>
+			<extra type="cache_utility">
+				<value>org.aisen.weibo.sina.support.cache.TimelineCacheUtility</value>
+			</extra>
+		</extras>
+	</setting>
+
+	<setting type="statusesUserTimeLine">
+		<des>返回用户最新发表的微博消息列表</des>
+		<value>statuses/user_timeline.json</value>
+		<extras>
+			<extra type="cache_enable">
+				<value>true</value>
+			</extra>
+			<extra type="cache_utility">
+				<value>org.aisen.weibo.sina.support.cache.TimelineCacheUtility</value>
+			</extra>
+		</extras>
+	</setting>
+
+	<setting type="statusesBilateralTimeLine">
+		<des>获取双向关注用户的最新微博</des>
+		<value>statuses/bilateral_timeline.json</value>
+		<extras>
+			<extra type="cache_enable">
+				<value>true</value>
+			</extra>
+			<extra type="cache_utility">
+				<value>org.aisen.weibo.sina.support.cache.TimelineCacheUtility</value>
+			</extra>
+		</extras>
+	</setting>
+
+	<setting type="statusRepostTimeline">
+		<des>获取某条原创微博的最新转发微博</des>
+		<value>statuses/repost_timeline.json</value>
+	</setting>
+
+	<setting type="statusesToMe">
+		<des>获取当前登录用户关注的人发给其的定向微博</des>
+		<value>statuses/to_me.json</value>
+		<extras>
+			<extra type="cache_enable">
+				<value>true</value>
+			</extra>
+			<extra type="cache_utility">
+				<value>org.aisen.weibo.sina.support.cache.TimelineCacheUtility</value>
+			</extra>
+		</extras>
+	</setting>
+
+	<setting type="statusesMentions">
+		<des>获取最新的提到登录用户的微博列表，即@我的微博</des>
+		<value>statuses/mentions.json</value>
+		<extras>
+			<extra type="cache_enable">
+				<value>true</value>
+			</extra>
+			<extra type="cache_utility">
+				<value>org.aisen.weibo.sina.support.cache.TimelineCacheUtility</value>
+			</extra>
+		</extras>
+	</setting>
+
+	<setting type="statusesReport">
+		<des>转发一条微博消息</des>
+		<value>statuses/repost.json</value>
+	</setting>
+
+	<setting type="friendshipGroups">
+		<des>获取好友的分组信息</des>
+		<value>friendships/groups.json</value>
+	</setting>
+
+	<setting type="friendshipGroupsTimeline">
+		<des>获取当前登录用户某一好友分组的微博列表</des>
+		<value>friendships/groups/timeline.json</value>
+		<extras>
+			<extra type="cache_enable">
+				<value>true</value>
+			</extra>
+			<extra type="cache_utility">
+				<value>org.aisen.weibo.sina.support.cache.TimelineCacheUtility</value>
+			</extra>
+		</extras>
+	</setting>
+
+	<setting type="commentsShow">
+		<des>根据微博ID返回某条微博的评论列表</des>
+		<value>comments/show.json</value>
+	</setting>
+
+	<setting type="commentCreate">
+		<des>对一条微博信息进行评论。请求必须用POST方式提交</des>
+		<value>comments/create.json</value>
+	</setting>
+
+	<setting type="commentsDestory">
+		<des>删除一条评论</des>
+		<value>comments/destroy.json</value>
+	</setting>
+
+	<setting type="favorites">
+		<des>获取当前登录用户的收藏列表</des>
+		<value>favorites.json</value>
+		<extras>
+			<extra type="cache_enable">
+				<value>true</value>
+			</extra>
+			<extra type="cache_utility">
+				<value>org.aisen.weibo.sina.support.cache.FavoritesCacheUtility</value>
+			</extra>
+		</extras>
+	</setting>
+
+	<setting type="favoritesCreate">
+		<des>添加一条微博到收藏里</des>
+		<value>favorites/create.json</value>
+	</setting>
+
+	<setting type="favoritesDestory">
+		<des>取消收藏一条微博</des>
+		<value>favorites/destroy.json</value>
+	</setting>
+
+	<setting type="statusDestroy">
+		<des>删除一条微博</des>
+		<value>statuses/destroy.json</value>
+	</setting>
+
+	<setting type="searchTopics">
+		<des>搜索某一话题下的微博</des>
+		<value>search/topics.json</value>
+	</setting>
+
+	<setting type="friendshipsShow">
+		<des>获取两个用户之间的详细关注关系情况</des>
+		<value>friendships/show.json</value>
+	</setting>
+
+	<setting type="friendshipsDestroy">
+		<des>取消关注一个用户</des>
+		<value>friendships/destroy.json</value>
+	</setting>
+
+	<setting type="friendshipsCreate">
+		<des>关注一个用户</des>
+		<value>friendships/create.json</value>
+	</setting>
+
+	<setting type="friendshipsRemarkUpdate">
+		<des>更新当前登录用户所关注的某个好友的备注信息</des>
+		<value>friendships/remark/update.json</value>
+	</setting>
+
+	<setting type="friendshipsFriends">
+		<des>获取用户的关注列表</des>
+		<value>friendships/friends.json</value>
+		<extras>
+			<extra type="page_count">
+				<value>50</value>
+			</extra>
+			<extra type="cache_enable">
+				<value>true</value>
+			</extra>
+			<extra type="cache_utility">
+			    <value>org.aisen.weibo.sina.support.db.FriendDB</value>
+			</extra>
+		</extras>
+	</setting>
+
+	<setting type="friendshipsFollowers">
+		<des>获取用户的粉丝列表</des>
+		<value>friendships/followers.json</value>
+		<extras>
+			<extra type="page_count">
+				<value>50</value>
+			</extra>
+			<extra type="cache_enable">
+				<value>true</value>
+			</extra>
+			<extra type="cache_utility">
+			    <value>org.aisen.weibo.sina.support.db.FollowersDB</value>
+			</extra>
+		</extras>
+	</setting>
+
+	<setting type="friendshipsIncommon">
+		<des>获取用户的互粉列表</des>
+		<value>friendships/friends/in_common.json</value>
+	</setting>
+
+	<setting type="friendshipsBilateral">
+		<des>获取用户的彼此关注列表</des>
+		<value>friendships/friends/bilateral.json</value>
+		<extras>
+			<extra type="page_count">
+				<value>50</value>
+			</extra>
+			<extra type="cache_enable">
+				<value>true</value>
+			</extra>
+			<extra type="cache_utility">
+			    <value>org.aisen.weibo.sina.support.db.BilateralDB</value>
+			</extra>
+		</extras>
+	</setting>
+
+	<setting type="friendshipsFollowersDestory">
+		<des>移除当前登录用户的粉丝</des>
+		<value>friendships/followers/destroy.json</value>
+	</setting>
+
+	<setting type="commentsByMe">
+		<des>获取当前登录用户所发出的评论列表</des>
+		<value>comments/by_me.json</value>
+		<extras>
+			<extra type="cache_enable">
+				<value>true</value>
+			</extra>
+			<extra type="cache_utility">
+				<value>org.aisen.weibo.sina.support.cache.CommentCache_v2Utility</value>
+			</extra>
+		</extras>
+	</setting>
+
+	<setting type="commentsToMe">
+		<des>获取当前登录用户所接收到的评论列表</des>
+		<value>comments/to_me.json</value>
+		<extras>
+			<extra type="cache_enable">
+				<value>true</value>
+			</extra>
+			<extra type="cache_utility">
+				<value>org.aisen.weibo.sina.support.cache.CommentCache_v2Utility</value>
+			</extra>
+		</extras>
+	</setting>
+
+	<setting type="commentsMentions">
+		<des>获取最新的提到当前登录用户的评论，即@我的评论</des>
+		<value>comments/mentions.json</value>
+		<extras>
+			<extra type="cache_enable">
+				<value>true</value>
+			</extra>
+			<extra type="cache_utility">
+				<value>org.aisen.weibo.sina.support.cache.CommentCache_v2Utility</value>
+			</extra>
+		</extras>
+	</setting>
+
+	<setting type="statusesUpdate">
+		<des>发布一条微博信息。也可以同时转发某条微博。请求必须用POST方式提交</des>
+		<value>statuses/update.json</value>
+	</setting>
+
+	<setting type="statusesUpload">
+		<des>发表带图片的微博。必须用POST方式提交pic参数，且Content-Type必须设置为multipart/form-data。图片大小小于5M</des>
+		<value>statuses/upload.json</value>
+	</setting>
+	
+	<setting type="statusesUploadUrlText">
+		<des>指定一个图片URL地址抓取后上传并同时发布一条新微博</des>
+		<value>statuses/upload_url_text.json</value>
+	</setting>
+
+	<setting type="statusesReport">
+		<des>转发一条微博消息。请求必须用POST方式提交</des>
+		<value>statuses/repost.json</value>
+	</setting>
+
+	<setting type="commentsReply">
+		<des>回复一条评论</des>
+		<value>comments/reply.json</value>
+	</setting>
+
+	<setting type="searchSuggestionsAtUsers">
+		<des>at用户时的联想建议</des>
+		<value>search/suggestions/at_users.json</value>
+	</setting>
+
+	<setting type="remindUnread">
+		<des>获取当前用户Web主站未读消息数</des>
+		<value>remind/unread_count.json</value>
+		<extras>
+			<extra type="base_url">
+				<value>https://rm.api.weibo.com/2/</value>
+			</extra>
+		</extras>
+	</setting>
+
+	<setting type="remindSetCount">
+		<des>对当前登录用户某一种消息未读数清零</des>
+		<value>remind/set_count.json</value>
+		<extras>
+			<extra type="base_url">
+				<value>https://rm.api.weibo.com/2/</value>
+			</extra>
+		</extras>
+	</setting>
+	
+	<setting type="friendshipGroupsListed">
+		<des>批量获取某些用户在当前登录用户指定好友分组中的收录信息</des>
+		<value>friendships/groups/listed.json</value>
+	</setting>
+	
+	<setting type="friendshipsGroupsCreate">
+		<des>创建好友分组</des>
+		<value>friendships/groups/create.json</value>
+	</setting>
+	
+	<setting type="friendshipGroupsDestory">
+		<des>删除好友分组</des>
+		<value>friendships/groups/destroy.json</value>
+	</setting>
+	
+	<setting type="friendshipsGroupdMembersAdd">
+		<des>添加关注用户到好友分组</des>
+		<value>friendships/groups/members/add.json</value>
+	</setting>
+	
+	<setting type="friendshipsGroupdMembersDestory">
+		<des>删除好友分组内的关注用户</des>
+		<value>friendships/groups/members/destroy.json</value>
+	</setting>
+	
+	<setting type="friendshipGroupsUpdate">
+		<des>更新好友分组</des>
+		<value>friendships/groups/update.json</value>
+	</setting>
+	
+	<setting type="friendshipGroupsMembers">
+		<des>获取某一好友分组下的成员列表</des>
+		<value>friendships/groups/members.json</value>
+	</setting>
+	
+	<setting type="friendshipGroupsOrder">
+		<des>调整当前登录用户的好友分组顺序</des>
+		<value>friendships/groups/order.json</value>
+	</setting>
+	
+	<setting type="locationMobileGetLocation">
+		<des>根据移动基站WIFI等数据获取当前位置信息</des>
+		<value>location/mobile/get_location.json</value>
+	</setting>
+	
+	<setting type="searchSuggestionsUsers">
+		<des>搜索用户时的联想搜索建议</des>
+		<value>search/suggestions/users.json</value>
+	</setting>
+	
+	<setting type="statusFilterCreate">
+		<des>屏蔽某条微博</des>
+		<value>statuses/filter/create.json</value>
+	</setting>
+	
+	<setting type="statusMentionsShield">
+		<des>屏蔽某个@到我的微博以及后续由对其转发引起的@提及</des>
+		<value>statuses/mentions/shield.json</value>
+	</setting>
+	
+</app-settings>

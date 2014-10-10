@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent" android:background="#ff313740" android:padding="4dip"
+  >
+
+    <LinearLayout android:id="@+id/layExpane" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:background="@drawable/profile_photo_highlight" android:clickable="true"
+        android:padding="@dimen/vertical_gap">
+        
+        <ImageView android:id="@+id/imgPhoto" android:layout_width="@dimen/photo_profile" android:layout_height="@dimen/photo_profile" android:layout_marginRight="@dimen/horizontal_margin"/>
+        
+        <LinearLayout android:layout_width="0dip" android:layout_weight="1" android:layout_height="match_parent"
+            android:orientation="vertical" android:paddingTop="4dip">
+            
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal"
+                android:gravity="center_vertical" android:layout_marginTop="8dip">
+	            <org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtName" android:layout_width="wrap_content" android:layout_height="wrap_content"
+	                android:singleLine="true" android:textColor="@color/white" android:textSize="20sp"
+	                android:layout_marginRight="@dimen/horizontal_gap"/>
+	            
+	            <ImageView android:id="@+id/imgVerified" android:layout_width="20dip" android:layout_height="20dip" android:visibility="gone" />
+	            
+	            <ImageView android:id="@+id/imgGender" android:layout_width="20dip" android:layout_height="20dip" android:src="@drawable/list_female"
+	                android:layout_marginLeft="@dimen/horizontal_gap" />
+	            
+            </LinearLayout>
+            
+                <org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtLocation" android:layout_width="wrap_content" android:layout_height="wrap_content"
+	                android:text="深圳" android:textColor="#ffd8d8d9" android:textSize="15sp" android:singleLine="true"
+	                android:gravity="center" android:layout_marginTop="12dip" android:layout_marginBottom="8dip"
+	                android:paddingRight="@dimen/horizontal_margin" android:clickable="false"/>
+            
+        </LinearLayout>
+        
+        <ImageView android:id="@+id/imgArrow" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        
+    </LinearLayout>
+    
+    <org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtRemark" android:layout_width="match_parent" android:layout_height="30dip"
+	                android:text="备注：没有添加" android:textColor="#ffd8d8d9" android:textSize="15sp" android:singleLine="true"
+	                android:gravity="center_vertical" android:background="@drawable/bg_btn_comments"
+	                android:paddingLeft="@dimen/horizontal_gap" android:paddingRight="@dimen/horizontal_gap" android:clickable="true"
+	                android:drawableRight="@drawable/triangle" android:drawablePadding="8dip" />
+    
+    <org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtGroups" android:layout_width="match_parent" android:layout_height="30dip"
+	                android:text="分组：默认" android:textColor="#ffd8d8d9" android:textSize="15sp" android:singleLine="true"
+	                android:gravity="center_vertical" android:background="@drawable/bg_btn_comments" android:layout_marginTop="4dip"
+	                android:paddingLeft="@dimen/horizontal_gap" android:paddingRight="@dimen/horizontal_gap" android:clickable="true"
+	                android:drawableRight="@drawable/triangle" android:drawablePadding="8dip" android:visibility="gone" />
+    
+	<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtDesc" android:layout_width="match_parent" android:layout_height="wrap_content"
+	    android:lineSpacingExtra="@dimen/txt_gap" android:text="14sp" android:textColor="#ffbebfc0" android:ellipsize="marquee"
+	    android:textSize="15sp"
+	    android:layout_marginTop="@dimen/vertical_gap" android:layout_marginBottom="@dimen/vertical_gap"
+        android:layout_marginLeft="@dimen/horizontal_gap" android:layout_marginRight="@dimen/horizontal_gap"/>
+	
+	<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtVerifiedReason" android:layout_width="match_parent" android:layout_height="wrap_content"
+	    android:lineSpacingExtra="@dimen/txt_gap" android:text="14sp" android:textColor="#ffbebfc0" android:ellipsize="marquee"
+	    android:textSize="15sp"
+	    android:layout_marginBottom="@dimen/vertical_gap" android:layout_marginTop="@dimen/vertical_gap"
+        android:layout_marginLeft="@dimen/horizontal_gap" android:layout_marginRight="@dimen/horizontal_gap"/>
+    
+    <LinearLayout android:layout_width="match_parent" android:layout_height="60dip" android:orientation="horizontal"
+        android:layout_marginLeft="@dimen/horizontal_gap" android:layout_marginRight="@dimen/horizontal_gap"
+        android:layout_marginBottom="@dimen/vertical_gap">
+        <LinearLayout android:id="@+id/btnStatusCounter" android:layout_width="0dip" android:layout_height="match_parent"
+            android:orientation="vertical" android:gravity="center_vertical" android:layout_weight="1"
+            android:background="@drawable/profile_counter" android:paddingLeft="@dimen/horizontal_gap"
+            android:clickable="true">
+            
+            <org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtStatusCount" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:textColor="@color/profile_counter" android:textSize="28sp" android:layout_marginTop="-7dip"
+                android:singleLine="true" android:duplicateParentState="true"/>
+            
+            <org.aisen.weibo.sina.ui.widget.TraditionalTextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/profile_profile_status" 
+                android:textColor="@color/profile_counter" android:textSize="12sp" android:layout_marginTop="-2dip"
+                android:duplicateParentState="true"/>
+            
+        </LinearLayout>
+        
+        <View android:layout_width="@dimen/horizontal_gap" android:layout_height="match_parent"/>
+        
+        <LinearLayout android:id="@+id/btnFriendCounter" android:layout_width="0dip" android:layout_height="match_parent"
+            android:orientation="vertical" android:gravity="center_vertical" android:layout_weight="1"
+            android:background="@drawable/profile_counter" android:paddingLeft="@dimen/horizontal_gap" android:clickable="true">
+            
+            <org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtFriendCount" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:textColor="@color/profile_counter" android:textSize="28sp" android:layout_marginTop="-7dip"
+                android:singleLine="true" android:duplicateParentState="true"/>
+            
+            <org.aisen.weibo.sina.ui.widget.TraditionalTextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/friends" 
+                android:textColor="@color/profile_counter" android:textSize="12sp" android:layout_marginTop="-2dip"
+                android:duplicateParentState="true"/>
+            
+        </LinearLayout>
+        
+        <View android:layout_width="@dimen/horizontal_gap" android:layout_height="match_parent"/>
+        
+        <LinearLayout android:id="@+id/btnFollowerCounter" android:layout_width="0dip" android:layout_height="match_parent"
+            android:orientation="vertical" android:gravity="center_vertical" android:layout_weight="1"
+            android:background="@drawable/profile_counter" android:paddingLeft="@dimen/horizontal_gap" android:clickable="true">
+            
+            <org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtFollowerCount" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:textColor="@color/profile_counter" android:textSize="28sp" android:layout_marginTop="-7dip"
+                android:singleLine="true" android:duplicateParentState="true"/>
+            
+            <org.aisen.weibo.sina.ui.widget.TraditionalTextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/followers" 
+                android:textColor="@color/profile_counter" android:textSize="12sp" android:layout_marginTop="-2dip"
+                android:duplicateParentState="true"/>
+            
+        </LinearLayout>
+        
+    </LinearLayout>
+    
+</LinearLayout>

@@ -1,0 +1,37 @@
+<resources>
+
+    <dimen name="horizontal_margin">16dip</dimen>
+    <dimen name="vertical_margin">16dip</dimen>
+    <dimen name="horizontal_gap">10dip</dimen>
+    <dimen name="vertical_gap">10dip</dimen>
+    
+    <!-- picture预览 -->
+    <dimen name="normal_gif_webview_margin_left">40dp</dimen>
+    <dimen name="normal_gif_webview_margin_right">40dp</dimen>
+
+    <!-- ChanneContent弹出菜单item高度 -->
+    <dimen name="channelist_menu_width">170dip</dimen>
+    <dimen name="channelist_menu_text">15sp</dimen>
+    <dimen name="channelist_menu_item_height">45dip</dimen>
+    
+    <dimen name="emotion_size">25dip</dimen>
+    
+    <dimen name="menu_icon">40.0dip</dimen>
+    <!-- 名称 -->
+    <dimen name="txt_name_size">16sp</dimen>
+    <!-- 描述 -->
+    <dimen name="txt_desc_size">14sp</dimen>
+    <!-- TimelinePicsGap -->
+    <dimen name="gap_pics">2sp</dimen>
+    <!-- textview的文字垂直gap -->
+    <dimen name="txt_gap">4sp</dimen>
+    <!-- 菜单的头像尺寸 -->
+    <dimen name="photo_menu">40dip</dimen>
+    <!-- 用户资料的头像尺寸 -->
+    <dimen name="photo_profile">90dip</dimen>
+    
+    <dimen name="txt_small">14sp</dimen>
+    <dimen name="txt_mid">16sp</dimen>
+    <dimen name="txt_large">18sp</dimen>
+    <dimen name="txt_huge">20sp</dimen>
+</resources>

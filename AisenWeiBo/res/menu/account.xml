@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+	
+    <item android:id="@+id/add" android:title="@string/account_add" android:showAsAction="always"
+        android:icon="@drawable/ic_action_add_person"/>
+    
+</menu>

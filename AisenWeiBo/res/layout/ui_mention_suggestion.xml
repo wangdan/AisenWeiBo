@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:layout_width="match_parent"
+	android:layout_height="match_parent" android:background="@color/white">
+	<LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+	    <fr.castorflex.android.smoothprogressbar.SmoothProgressBar android:id="@+id/progress" android:layout_width="match_parent" android:layout_height="10dip" />
+		<ListView android:id="@id/listView" android:layout_width="fill_parent" android:layout_height="fill_parent" android:cacheColorHint="#00000000"
+			android:fadingEdge="none" android:fastScrollEnabled="false" android:footerDividersEnabled="false" android:headerDividersEnabled="false"
+			android:smoothScrollbar="true" />
+		<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtNone" android:layout_width="match_parent" android:layout_height="0dip" android:layout_weight="1"
+		    android:textSize="16sp" android:gravity="center_horizontal" android:paddingTop="@dimen/vertical_margin"
+		    android:text="@string/empty_mention_suggestion" android:visibility="gone" android:textColor="#ffa3a3a3"
+		    android:layout_marginTop="35dip" />
+	</LinearLayout>
+</RelativeLayout>

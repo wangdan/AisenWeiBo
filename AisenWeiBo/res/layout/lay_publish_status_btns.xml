@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="horizontal"
+  android:layout_width="match_parent" android:gravity="center_vertical"
+  android:layout_height="match_parent" android:paddingLeft="@dimen/vertical_margin" android:paddingRight="@dimen/vertical_margin">
+
+    	<LinearLayout android:id="@+id/btnLocation" android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="center"
+    	    android:background="@drawable/bg_btn_comments" android:clickable="true" android:layout_marginRight="@dimen/horizontal_gap">
+    		<ImageView android:layout_width="40dip" android:layout_height="40dip" android:src="@drawable/new_location_gray" android:padding="4dip"/>
+    	</LinearLayout>
+    	
+    	<LinearLayout android:id="@+id/btnCamera" android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="center"
+    	    android:background="@drawable/bg_btn_comments" android:clickable="true" android:layout_marginRight="@dimen/horizontal_gap">
+    		<ImageView android:layout_width="40dip" android:layout_height="40dip" android:src="@drawable/new_camera_gray" android:padding="4dip"/>
+    	</LinearLayout>
+    	
+    	<LinearLayout android:id="@+id/btnEmotion" android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="center"
+    	    android:background="@drawable/bg_btn_comments" android:clickable="true" android:layout_marginRight="@dimen/horizontal_gap">
+    		<ImageView android:layout_width="40dip" android:layout_height="40dip" android:src="@drawable/new_emotion_gray" android:padding="4dip"/>
+    	</LinearLayout>
+    	
+    	<LinearLayout android:id="@+id/btnMention" android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="center"
+    	    android:background="@drawable/bg_btn_comments" android:clickable="true" android:layout_marginRight="@dimen/horizontal_gap">
+    		<ImageView android:layout_width="40dip" android:layout_height="40dip" android:src="@drawable/new_friend_gray" android:padding="4dip"/>
+    	</LinearLayout>
+    	
+    	<LinearLayout android:id="@+id/btnTrends" android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="center"
+    	    android:background="@drawable/bg_btn_comments" android:clickable="true">
+    		<ImageView android:layout_width="40dip" android:layout_height="40dip" android:src="@drawable/new_attend_gray" android:padding="4dip"/>
+    	</LinearLayout>
+		
+		<View android:layout_width="0dip" android:layout_weight="1" android:layout_height="wrap_content"/>
+		
+		<LinearLayout android:id="@+id/btnOverflow" android:layout_width="50dip" android:layout_height="40dip"
+		    android:background="@drawable/bg_btn_comments" android:clickable="true" android:gravity="center">
+			<ImageView android:layout_width="40dip" android:layout_height="40dip" android:src="@drawable/ic_action_overflow" android:padding="4dip"/>
+		</LinearLayout>    
+    
+</LinearLayout>

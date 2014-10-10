@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android">
+	<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:textSize="17.0dip" android:textColor="#47ffffff" android:gravity="center_vertical" android:layout_gravity="top|left|center"
+		android:orientation="horizontal" android:id="@+id/txtSearch" android:background="@drawable/textfield_left_search" android:layout_width="fill_parent"
+		android:layout_height="40.0dip" android:layout_marginTop="12.0dip" android:layout_marginBottom="6.0dip" android:text="@string/draw_search" android:drawableLeft="@drawable/ic_left_qsearch"
+		android:drawablePadding="8.0dip" android:paddingLeft="13.0dip" />
+</FrameLayout>

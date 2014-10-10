@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="horizontal"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent" android:gravity="center">
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="100dip" android:orientation="horizontal"
+        android:gravity="center">
+        <org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtDate" android:layout_width="100dip" android:layout_height="50dip"
+	        android:text="@string/msg_today" android:background="@drawable/selector_timing_txt" android:gravity="center"
+	        android:textSize="18sp" />
+	    
+	    <org.aisen.weibo.sina.ui.widget.TraditionalTextView android:layout_width="wrap_content" android:layout_height="50dip" android:text="-"
+	        android:layout_marginLeft="@dimen/horizontal_gap" android:layout_marginRight="@dimen/horizontal_gap"
+	        android:textSize="18sp" android:gravity="center"/>
+	    
+	    <org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtTime" android:layout_width="100dip" android:layout_height="50dip"
+	        android:text="15:30" android:textSize="18sp" android:background="@drawable/selector_timing_txt"
+	        android:gravity="center" />
+    </LinearLayout>
+    
+</LinearLayout>

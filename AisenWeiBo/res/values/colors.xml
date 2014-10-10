@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 界面背景 -->
+    <color name="bg_ui">#E8E8E0</color>
+    <color name="bg_content">#FFffffff</color>
+    <!-- ActionBar的字体颜色 -->
+    <color name="ac_title">#ffffffff</color>
+    <color name="ac_subtitle">#80ffffff</color>
+    <!-- 透明背景色 -->
+    <color name="bg_gray">#88000000</color>
+    <color name="link_color">#1d7abc</color>
+</resources>

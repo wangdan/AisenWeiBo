@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector android:exitFadeDuration="300"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true" android:drawable="@drawable/profile_photo_highlight_down" />
+</selector>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/add" android:icon="@drawable/ic_action_add_group" android:showAsAction="always"
+        android:title="@string/group_add"/>
+
+    <item android:id="@+id/sort" android:icon="@drawable/ic_action_sort_by_size" android:showAsAction="always"
+        android:title="@string/group_sort"/>
+    
+    <item android:id="@+id/submit" android:icon="@drawable/ic_action_accept" android:showAsAction="always"
+        android:title="@string/group_submit"/>
+    
+</menu>

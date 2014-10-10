@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:layout_width="match_parent"
+	android:layout_height="match_parent" >
+
+	<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"
+	    android:paddingLeft="@dimen/horizontal_margin" android:paddingRight="@dimen/horizontal_margin"
+		android:paddingTop="@dimen/vertical_gap" android:paddingBottom="@dimen/vertical_gap" android:id="@+id/container"
+		android:background="@drawable/item_offline_channe_selector">
+		<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+		    <org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtType" android:layout_width="0dip" android:layout_height="wrap_content" 
+				style="@style/hintText" android:layout_marginBottom="@dimen/vertical_gap" android:layout_weight="1"/>
+		    
+		    <org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtTiming" android:layout_width="wrap_content" android:layout_height="wrap_content" 
+				style="@style/hintText" android:layout_marginBottom="@dimen/vertical_gap"/>
+		</LinearLayout>
+		
+		<org.aisen.weibo.sina.ui.widget.AisenTextView android:id="@+id/txtContent" android:layout_width="wrap_content" android:layout_height="wrap_content" 
+			android:maxLines="3" android:ellipsize="end" android:lineSpacingExtra="4dip"/>
+		
+		<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtError" android:layout_width="wrap_content" android:layout_height="wrap_content" android:visibility="gone"
+			android:textColor="@color/red" android:layout_marginTop="@dimen/vertical_gap" style="@style/hintText"
+			android:drawableLeft="@drawable/ic_msg_error" android:drawablePadding="4dip"/>
+	</LinearLayout>
+	
+</LinearLayout>

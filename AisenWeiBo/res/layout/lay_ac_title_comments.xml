@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="horizontal"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent" android:gravity="center" android:paddingLeft="@dimen/horizontal_margin"
+  android:paddingRight="@dimen/horizontal_margin"
+  android:clickable="true">
+    <!-- android:background="@*android:drawable/item_background_holo_dark" -->
+    <org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtComment" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="@string/timelinecmt_cmt" style="@style/tabCommentsText" android:textColor="@color/ac_title_light"/>
+    
+    <View android:layout_width="1dip" android:layout_height="15dip" android:background="@*android:drawable/ab_bottom_solid_light_holo"
+        android:layout_marginLeft="@dimen/horizontal_gap" android:layout_marginRight="@dimen/horizontal_gap"/>
+    
+    <org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtRepost" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="@string/timelinecmt_repost" style="@style/tabCommentsText" android:textColor="@color/ac_title_light" />
+    
+</LinearLayout>

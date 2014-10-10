@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/category_read">
+        <ListPreference android:key="pTextSize" android:entries="@array/txtSize" android:entryValues="@array/prefValues"
+			android:dialogTitle="@string/settings_text_size" android:title="@string/settings_text_size" android:defaultValue="1" />
+        
+        <ListPreference android:key="pLanguage" android:entries="@array/pLanguage" android:entryValues="@array/prefValues"
+			android:dialogTitle="@string/settings_language" android:title="@string/settings_language" android:defaultValue="0" />
+	    
+        <ListPreference android:key="pPicLargeMode" android:entries="@array/picLargeMode" android:entryValues="@array/prefValues"
+			android:dialogTitle="@string/settings_dt_pic_style" android:title="@string/settings_pic_style" android:defaultValue="0" />
+        
+        <!-- <ListPreference android:key="pListViewAnim" android:entries="@array/pListViewAnim" android:entryValues="@array/prefValues"
+			android:dialogTitle="设置列表动画" android:title="列表动画" android:defaultValue="0" /> -->
+        
+	    <CheckBoxPreference android:key="pShowRemark" android:title="@string/settings_remark" android:defaultValue="true"/>
+	    
+	 	<!-- <CheckBoxPreference android:key="pFastScrollBar" android:title="列表快速滚动条" android:defaultValue="true"/> -->
+	 	
+	 	<CheckBoxPreference android:key="pShowDefGroup" android:title="@string/settings_def_group" android:defaultValue="true"
+	 	    android:summary="@string/settings_def_group_summary" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="@string/category_operation">
+		<CheckBoxPreference android:key="pAutoRefresh" android:title="@string/settings_list_auto_update" android:defaultValue="true" />
+	 	
+	 	<ListPreference android:key="pRefreshViewType" android:entries="@array/pRefreshViewType" android:entryValues="@array/prefValues"
+			android:dialogTitle="@string/settings_dt_list_widget" android:title="@string/settings_list_widget" android:defaultValue="0" />
+
+	 	<CheckBoxPreference android:key="pDoubleClickToRefresh" android:title="@string/settings_doubleclick_update" android:defaultValue="true"
+	 	    android:summary="" />        
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="@string/category_feedback">
+        <CheckBoxPreference android:key="pRefreshSound" android:title="@string/settings_sound" android:defaultValue="false"
+ 	    	android:summary="@string/settings_sound_summary" />
+        
+        <CheckBoxPreference android:key="pSendVibrate" android:title="@string/settings_vibrate" android:defaultValue="true"
+ 	    	android:summary="@string/settings_vibrate_summary" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="@string/category_other">
+		<Preference android:key="pPicSavePath" android:title="@string/settings_pic_path" android:summary="/sdcard/" />
+ 	
+ 		<Preference android:key="pClearRecentMention" android:title="@string/settings_mention_history" />        
+    </PreferenceCategory>
+	 	
+</PreferenceScreen>

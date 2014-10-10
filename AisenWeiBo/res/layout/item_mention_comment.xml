@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="horizontal" android:layout_width="match_parent"
+	android:layout_height="match_parent" android:paddingLeft="@dimen/horizontal_margin" android:paddingRight="@dimen/horizontal_margin" android:paddingTop="@dimen/vertical_gap"
+	android:paddingBottom="@dimen/vertical_gap">
+
+	<ImageView android:id="@+id/imgPhoto" android:layout_width="50dip" android:layout_height="50dip" android:scaleType="centerCrop" android:layout_marginRight="@dimen/horizontal_gap" />
+
+	<LinearLayout android:layout_width="0dip" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical">
+		<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtName" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" android:ellipsize="end"
+			style="@style/userName" android:textStyle="normal" android:text="名字" />
+
+		<LinearLayout android:id="@+id/layRe" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"
+		    android:paddingTop="@dimen/vertical_gap">
+		    <org.aisen.weibo.sina.ui.widget.TraditionalTextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="回复"
+		        style="@style/userName" android:layout_marginBottom="@dimen/vertical_gap" android:visibility="gone" />
+		    
+		    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+			    <ImageView android:id="@+id/imgRePhoto" android:layout_width="42dip" android:layout_height="42dip"
+			        android:layout_marginBottom="@dimen/horizontal_gap" android:layout_marginRight="@dimen/horizontal_gap"/>
+			    
+			    <org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtReContent" android:layout_width="wrap_content" android:layout_height="wrap_content"
+			        style="@style/userName" android:singleLine="false" android:maxLines="3"/>
+		    </LinearLayout>
+		    
+		</LinearLayout>
+		
+		<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtContent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/vertical_gap"
+			android:layout_marginBottom="@dimen/vertical_gap" style="@style/userName" android:text="我是评论正文" android:singleLine="false" />
+
+		<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtDesc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" android:ellipsize="end"
+			style="@style/hintText" android:text="昨天 来自Aisen微博" />
+	</LinearLayout>
+
+	<ImageView android:id="@+id/btnMenus" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/ic_card_menu" />
+
+</LinearLayout>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="match_parent" android:id="@+id/root"
+  android:layout_height="match_parent" android:background="#99000000">
+
+    <ImageView android:layout_width="300dip" android:layout_height="300dip" android:layout_centerHorizontal="true"
+        android:layout_marginTop="-120dip" android:src="@drawable/cling" android:id="@+id/img"/>
+    
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"
+        android:layout_below="@id/img" android:paddingLeft="16dip" android:paddingRight="16dip">
+        <org.aisen.weibo.sina.ui.widget.TraditionalTextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="22sp"
+            android:lineSpacingExtra="16dip"
+            android:textColor="@color/white" android:text="@string/msg_guide_main"/>
+    </LinearLayout>
+    
+</RelativeLayout>

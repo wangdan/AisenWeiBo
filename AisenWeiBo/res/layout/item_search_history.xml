@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+   
+    <LinearLayout android:id="@+id/layItem" android:layout_width="match_parent" android:layout_height="60dip" android:orientation="horizontal"
+        android:gravity="center_vertical">
+        <ImageView android:layout_width="28dip" android:layout_height="31dip" android:layout_marginLeft="@dimen/horizontal_margin"
+            android:src="@drawable/ic_explore_history_normal" android:paddingBottom="3dip"/>
+        
+    	<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtQuery" android:layout_width="0dip" android:layout_height="wrap_content"
+		    android:layout_marginRight="8dip" android:textSize="16sp" style="@style/userName"
+		    android:layout_marginLeft="@dimen/horizontal_margin" android:gravity="center_vertical" android:layout_weight="1"
+		    android:text="搜索记录"/>
+    	
+    	<LinearLayout android:id="@+id/btnRemove" android:layout_width="100dip" android:layout_height="match_parent"
+			android:background="?android:attr/listChoiceBackgroundIndicator" android:paddingRight="@dimen/horizontal_margin"
+			android:gravity="center" android:visibility="gone" >
+    		<ImageView android:layout_width="25dip" android:layout_height="28dip" android:src="@drawable/abs__ic_clear_search_api_holo_light"
+    		    android:paddingBottom="5dip"/>
+    	</LinearLayout>
+    </LinearLayout>
+    
+    <org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/btnClearHistory" android:layout_width="match_parent" android:layout_height="60dip"
+        android:gravity="center" style="@style/userName"/>
+    
+</LinearLayout>

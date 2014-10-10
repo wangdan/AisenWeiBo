@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/delete" android:title="@string/delete" android:showAsAction="always"
+        android:icon="@drawable/ic_action_discard" />
+    
+    <item android:id="@+id/reSend" android:title="@string/draft_send" android:showAsAction="always"
+        android:icon="@drawable/ic_action_send_now_light" />
+    
+    <item android:id="@+id/clear" android:title="@string/clear" android:showAsAction="always"/>
+    
+</menu>

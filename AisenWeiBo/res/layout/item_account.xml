@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="horizontal" android:layout_width="match_parent"
+	android:layout_height="wrap_content">
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"
+        android:id="@+id/container" android:background="@drawable/item_offline_channe_selector"
+        android:paddingLeft="@dimen/horizontal_margin">
+	    
+        <LinearLayout android:layout_width="match_parent" android:layout_height="78dip" android:orientation="horizontal">
+            <RelativeLayout android:layout_width="60dip" android:layout_height="60dip" android:layout_marginTop="@dimen/vertical_gap"
+		        android:layout_marginBottom="@dimen/vertical_gap">
+				<ImageView android:id="@+id/imgPhoto" android:layout_width="match_parent" android:layout_height="match_parent" android:src="@drawable/ic_launcher" android:scaleType="centerCrop" />
+		        <View android:id="@+id/viewCover" android:layout_width="match_parent" android:layout_height="match_parent" android:background="#99000000"/>
+		    </RelativeLayout>
+		
+			<LinearLayout android:layout_width="0dip" android:layout_weight="1" android:layout_height="75dip" android:orientation="vertical" android:layout_marginLeft="@dimen/horizontal_margin"
+				android:paddingRight="@dimen/horizontal_gap" android:paddingTop="@dimen/vertical_gap">
+				<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtName" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" android:ellipsize="end"
+					android:text="名字" android:layout_marginBottom="@dimen/vertical_gap" android:textSize="@dimen/txt_name_size" android:textStyle="bold" />
+		
+				<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtDesc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" android:ellipsize="end"
+					android:text="我是一段很长的描述" android:textSize="@dimen/txt_desc_size" />
+			</LinearLayout>
+        </LinearLayout>
+        
+        <org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtTokenInfo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/red"
+            android:layout_marginBottom="6dip" />
+        
+    </LinearLayout>
+
+</LinearLayout>

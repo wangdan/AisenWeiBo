@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference android:key="pClearCache" android:title="@string/settings_clear_cache" />
+    
+    <ListPreference android:key="pUploadSetting" android:entries="@array/txtUpload" android:entryValues="@array/prefValues"
+		android:dialogTitle="@string/settings_dt_pic_upload" android:title="@string/settings_dt_pic_upload" android:defaultValue="0" />
+
+    
+    <CheckBoxPreference android:key="pLargePhoto" android:title="@string/settings_photo" android:defaultValue="true"/>
+ 
+    <ListPreference android:key="pPicMode" android:entries="@array/picMode" android:entryValues="@array/prefValues"
+		android:dialogTitle="@string/settings_pic_mode" android:title="@string/settings_pic_mode" android:defaultValue="2" />
+    
+    <ListPreference android:key="pTimelineCount" android:entries="@array/timelineCount" android:entryValues="@array/prefValues"
+		android:dialogTitle="@string/settings_dt_status_count" android:title="@string/settings_dt_status_count" android:defaultValue="3" />
+    
+    <ListPreference android:key="pCommentCount" android:entries="@array/commentCount" android:entryValues="@array/prefValues"
+		android:dialogTitle="@string/settings_dt_cmt_count" android:title="@string/settings_dt_cmt_count" android:defaultValue="3" />
+    
+</PreferenceScreen>

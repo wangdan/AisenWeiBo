@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+	<android.support.v4.view.ViewPager android:id="@+id/viewPager" android:layout_width="fill_parent" android:layout_height="0dip"
+		android:layout_weight="1" />
+    
+    <View android:layout_width="match_parent" android:layout_height="1.5dip" android:background="@drawable/divider_panel" />
+
+	<LinearLayout android:layout_width="match_parent" android:layout_height="50dip" android:orientation="horizontal" android:gravity="center_vertical"
+		android:paddingLeft="@dimen/vertical_margin" android:paddingRight="@dimen/vertical_margin">
+		<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:layout_width="50dip" android:layout_height="40dip" android:text="@string/timelinecmt_cmt" android:textSize="16sp" android:textColor="@drawable/post_counters"
+			android:background="@drawable/bg_btn_comments" android:clickable="true" android:gravity="center" 
+			android:id="@+id/btnComment"/>
+
+		<View android:layout_width="1dip" android:layout_height="23dip" android:layout_marginLeft="@dimen/vertical_gap" android:layout_marginRight="@dimen/vertical_gap"
+			android:background="#38000000" android:id="@+id/dividerRepost" />
+
+		<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:layout_width="50dip" android:layout_height="40dip" android:text="@string/timelinecmt_repost" android:textSize="16sp" android:textColor="@drawable/post_counters"
+			android:background="@drawable/bg_btn_comments" android:clickable="true" android:gravity="center" 
+			android:id="@+id/btnRepost"/>
+
+		<View android:layout_width="1dip" android:layout_height="23dip" android:layout_marginLeft="@dimen/vertical_gap" android:layout_marginRight="@dimen/vertical_gap"
+			android:background="#38000000" />
+
+		<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:layout_width="50dip" android:layout_height="40dip" android:text="@string/timelinecmt_fav" android:textSize="16sp" android:textColor="@drawable/post_counters"
+			android:background="@drawable/bg_btn_comments" android:clickable="true" android:gravity="center" 
+			android:id="@+id/btnFavor"/>
+		
+		<View android:layout_width="0dip" android:layout_weight="1" android:layout_height="wrap_content"/>
+		
+		<LinearLayout android:id="@+id/btnOverflow" android:layout_width="50dip" android:layout_height="40dip"
+		    android:background="@drawable/bg_btn_comments" android:clickable="true" android:gravity="center">
+			<ImageView android:layout_width="27dip" android:layout_height="27dip"
+			    android:src="@drawable/ic_card_menu_down" />
+		</LinearLayout>
+		
+	</LinearLayout>
+    
+</LinearLayout>

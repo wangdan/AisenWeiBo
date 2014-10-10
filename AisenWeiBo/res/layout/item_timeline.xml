@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:layout_width="match_parent"
+	android:layout_height="match_parent" android:paddingLeft="@dimen/horizontal_margin" android:paddingRight="@dimen/horizontal_margin" android:paddingTop="@dimen/vertical_gap"
+	android:paddingBottom="@dimen/vertical_gap">
+
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+		<ImageView android:id="@+id/imgPhoto" android:layout_width="50dip" android:layout_height="50dip" android:layout_marginRight="12dip" />
+
+		<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:paddingRight="30dip"
+		    android:paddingLeft="62dip">
+		    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+				<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtName" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/userName" android:text="名字"
+					android:layout_marginBottom="4dip" android:textStyle="bold" />
+
+				<ImageView android:id="@+id/imgVerified" android:layout_width="18dip" android:layout_height="18dip" android:visibility="gone"
+				    android:layout_marginLeft="4dip" android:layout_marginRight="@dimen/horizontal_gap"/>
+		    </LinearLayout>
+		    
+			<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtDesc" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/hintText" android:text="描述" />
+		</LinearLayout>
+		
+		<ImageView android:id="@+id/btnMenus" android:layout_width="40dip" android:layout_height="40dip" android:src="@drawable/ic_card_menu"
+		    android:paddingBottom="16dip" android:paddingLeft="16dip" android:layout_alignParentRight="true" />
+		
+		<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtComment" android:layout_width="wrap_content" android:layout_height="wrap_content" android:drawableLeft="@drawable/timeline_comment_dark"
+			android:text="100" android:layout_marginRight="-10dip" style="@style/hintCounter" android:drawablePadding="4dip" android:layout_marginTop="0dip"
+			android:layout_toLeftOf="@id/btnMenus" android:layout_marginLeft="8dip"/>
+		
+		<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtRepost" android:layout_width="wrap_content" android:layout_height="wrap_content" android:drawableLeft="@drawable/timeline_repost_dark"
+			android:text="100" style="@style/hintCounter" android:drawablePadding="4dip" android:layout_marginTop="0dip"
+			android:layout_toLeftOf="@id/txtComment"/>
+    </RelativeLayout>
+
+	<org.aisen.weibo.sina.ui.widget.AisenTextView android:id="@+id/txtContent" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@drawable/main_text"
+		android:textSize="16sp" android:layout_marginTop="20dip" android:layout_marginBottom="20dip" android:lineSpacingExtra="4dip" />
+
+	<LinearLayout android:id="@+id/layRe" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"
+	    >
+		<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+			<ImageView android:id="@+id/imgRePhoto" android:layout_width="42dip" android:layout_height="42dip" android:layout_marginRight="12dip" />
+
+			<LinearLayout android:layout_width="0dip" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical">
+				<LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
+					<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtReName" android:layout_width="wrap_content" android:layout_height="wrap_content" android:drawableLeft="@drawable/ic_retweet"
+						android:drawablePadding="4dip" style="@style/userName" android:layout_marginBottom="4dip" android:textSize="14sp" />
+				    
+				    <ImageView android:id="@+id/imgReVerified" android:layout_width="17dip" android:layout_height="17dip" android:visibility="gone"
+					    android:layout_marginLeft="4dip" android:layout_marginRight="@dimen/horizontal_gap"/>
+				</LinearLayout>
+				<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtReDesc" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/hintText" android:textSize="12sp" />
+			</LinearLayout>
+
+			<!-- <TextView android:id="@+id/txtReRepost" android:layout_width="wrap_content" android:layout_height="wrap_content" android:drawableLeft="@drawable/timeline_repost_dark" 
+				android:text="100" style="@style/hintCounter" android:layout_marginRight="8dip" android:layout_marginTop="2dip" android:drawablePadding="4dip" /> <TextView android:id="@+id/txtReComment" 
+				android:layout_width="wrap_content" android:layout_height="wrap_content" android:drawableLeft="@drawable/timeline_comment_dark" android:text="100" android:layout_marginRight="8dip" 
+				style="@style/hintCounter" android:drawablePadding="4dip" android:layout_marginTop="2dip" /> -->
+		</LinearLayout>
+
+		<org.aisen.weibo.sina.ui.widget.AisenTextView android:id="@+id/txtReContent" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@drawable/main_text"
+			android:textSize="16sp" android:layout_marginTop="10dip" android:layout_marginBottom="10dip" android:lineSpacingExtra="4dip" />
+
+	</LinearLayout>
+
+	<org.aisen.weibo.sina.ui.widget.TimelinePicsView android:id="@+id/layPicturs" android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+		<ImageView android:id="@+id/img01" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/timelinePicture" />
+		<ImageView android:id="@+id/img02" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/timelinePicture" />
+		<ImageView android:id="@+id/img03" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/timelinePicture" />
+		<ImageView android:id="@+id/img04" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/timelinePicture" />
+		<ImageView android:id="@+id/img05" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/timelinePicture" />
+		<ImageView android:id="@+id/img06" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/timelinePicture" />
+		<ImageView android:id="@+id/img07" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/timelinePicture" />
+		<ImageView android:id="@+id/img08" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/timelinePicture" />
+		<ImageView android:id="@+id/img09" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/timelinePicture" />
+	</org.aisen.weibo.sina.ui.widget.TimelinePicsView>
+
+	<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtVisiable" android:layout_width="match_parent" android:layout_height="wrap_content"
+	    style="@style/hintText" android:visibility="gone"/>
+		
+	<!-- <View android:layout_width="match_parent" android:layout_height="1dip" android:background="#ffe5e5e5" /> -->
+
+</LinearLayout>

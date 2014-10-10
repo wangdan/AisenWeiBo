@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/category_def">
+	    <Preference android:key="pBasic" android:title="@string/settings_basic" />
+	    
+	    <Preference android:key="pNotification" android:title="@string/settings_notify" />
+	    
+	 	<Preference android:key="pFlow" android:title="@string/settings_flow" />
+	       
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="@string/category_advanced">
+        
+        <Preference android:key="pAccount" android:title="@string/settings_manage_account" />
+        
+        <CheckBoxPreference android:key="pSendDelay" android:title="@string/settings_publish_delay" android:defaultValue="false"
+            android:summary="@string/settings_publish_delay_summary" />
+        
+        <CheckBoxPreference android:key="pRotatePic" android:title="@string/settings_pic_rotate" android:defaultValue="false"
+            android:summary="@string/settings_pic_rotate_summary" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="@string/category_other">
+	 	<Preference android:key="pShareAisen" android:title="@string/settings_share_aisen" />
+	 	
+	 	<Preference android:key="pGrade" android:title="@string/settings_grade" />
+	 	
+	 	<Preference android:key="pVersion" android:title="@string/settings_version_update" />
+        
+        <Preference android:key="pAbout" android:title="@string/settings_about" />
+    </PreferenceCategory>
+    
+</PreferenceScreen>

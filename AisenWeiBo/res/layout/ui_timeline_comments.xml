@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent"
+	android:orientation="vertical" android:background="@color/bg_content">
+	<!-- 解决刷新不显示ActionBarLoading的BUG -->
+	<RelativeLayout android:layout_width="0dip" android:layout_height="0dip">
+	    <include android:id="@id/layoutLoading" layout="@layout/lay_loading" android:layout_width="fill_parent" android:layout_height="fill_parent" android:visibility="visible" />
+	</RelativeLayout>
+	<LinearLayout android:id="@+id/layList" android:layout_width="match_parent" android:layout_height="0dip" android:layout_weight="1" android:orientation="vertical">
+		<ListView android:id="@id/listView" android:layout_width="fill_parent" android:layout_height="match_parent" android:cacheColorHint="#00000000"
+			android:fadingEdge="none" android:fastScrollEnabled="false" android:footerDividersEnabled="false" android:headerDividersEnabled="true" android:smoothScrollbar="true" />
+
+		<com.handmark.pulltorefresh.library.PullToRefreshListView android:id="@id/refreshListView"
+			android:layout_width="match_parent" android:layout_height="fill_parent" android:cacheColorHint="#00000000" android:fadingEdge="none" android:fastScrollEnabled="false"
+			android:footerDividersEnabled="false" android:headerDividersEnabled="true" android:smoothScrollbar="true" android:divider="@color/bg_ui" android:dividerHeight="0.5dip" />
+		
+		<android.support.v4.widget.SwipeRefreshLayout android:id="@+id/swipeRefreshLayout" android:layout_width="match_parent"
+			android:layout_height="match_parent">
+			<ListView android:id="@+id/listView_2" android:layout_width="fill_parent" android:layout_height="match_parent" android:cacheColorHint="#00000000"
+				android:fadingEdge="none" android:fastScrollEnabled="false" android:footerDividersEnabled="false" android:headerDividersEnabled="true" android:smoothScrollbar="true" />
+		</android.support.v4.widget.SwipeRefreshLayout>
+	</LinearLayout>
+	<View android:layout_width="match_parent" android:layout_height="1.5dip" android:background="@drawable/divider_panel" android:visibility="gone"/>
+
+	<LinearLayout android:layout_width="match_parent" android:layout_height="50dip" android:orientation="horizontal" android:gravity="center_vertical"
+		android:paddingLeft="@dimen/vertical_margin" android:paddingRight="@dimen/vertical_margin" android:visibility="gone">
+		<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:layout_width="50dip" android:layout_height="40dip" android:text="@string/timelinecmt_cmt" android:textSize="16sp" android:textColor="@drawable/post_counters"
+			android:background="@drawable/bg_btn_comments" android:clickable="true" android:gravity="center" 
+			android:id="@+id/btnComment"/>
+
+		<View android:layout_width="1dip" android:layout_height="23dip" android:layout_marginLeft="@dimen/vertical_gap" android:layout_marginRight="@dimen/vertical_gap"
+			android:background="#38000000" />
+
+		<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:layout_width="50dip" android:layout_height="40dip" android:text="@string/timelinecmt_repost" android:textSize="16sp" android:textColor="@drawable/post_counters"
+			android:background="@drawable/bg_btn_comments" android:clickable="true" android:gravity="center" 
+			android:id="@+id/btnRepost"/>
+
+		<View android:layout_width="1dip" android:layout_height="23dip" android:layout_marginLeft="@dimen/vertical_gap" android:layout_marginRight="@dimen/vertical_gap"
+			android:background="#38000000" />
+
+		<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:layout_width="50dip" android:layout_height="40dip" android:text="@string/timelinecmt_fav" android:textSize="16sp" android:textColor="@drawable/post_counters"
+			android:background="@drawable/bg_btn_comments" android:clickable="true" android:gravity="center" 
+			android:id="@+id/btnFavor"/>
+		
+		<View android:layout_width="0dip" android:layout_weight="1" android:layout_height="wrap_content"/>
+		
+		<LinearLayout android:id="@+id/btnOverflow" android:layout_width="50dip" android:layout_height="40dip"
+		    android:background="@drawable/bg_btn_comments" android:clickable="true" android:gravity="center">
+			<ImageView android:layout_width="40dip" android:layout_height="40dip" android:src="@drawable/ic_action_overflow" android:padding="4dip"/>
+		</LinearLayout>
+		
+	</LinearLayout>
+</LinearLayout>

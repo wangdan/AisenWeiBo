@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<app-settings>
+
+	<setting-array type="meizt_base_url" index="2">
+		<des>服务地址</des>
+		<setting>
+			<value>http://192.168.1.103:8080/yitong/rest/</value>
+		</setting>
+		<setting>
+			<value>http://172.16.0.131:8080/yitong/rest/</value>
+		</setting>
+		<setting>
+			<value>http://yitongwang.duapp.com/rest/</value>
+		</setting>
+	</setting-array>
+
+	<setting type="getApkInfo">
+		<des>获取最新版本新</des>
+		<value>apkInfo_v3/queryNew</value>
+	</setting>
+
+	<setting type="getSettings">
+		<des>获取配置信息</des>
+		<value>apkInfo_v3/querySettings</value>
+	</setting>
+
+</app-settings>

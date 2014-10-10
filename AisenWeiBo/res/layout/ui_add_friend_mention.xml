@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent">
+	<RelativeLayout android:id="@id/layoutContent" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical"
+		android:background="@color/bg_content">
+		<ListView android:id="@id/listView" android:layout_width="fill_parent" android:layout_height="fill_parent" android:cacheColorHint="#00000000"
+			android:fadingEdge="none" android:fastScrollEnabled="false" android:footerDividersEnabled="false" android:headerDividersEnabled="false" android:smoothScrollbar="true" />
+		<com.handmark.pulltorefresh.library.PullToRefreshListView android:id="@id/refreshListView"
+			android:layout_width="match_parent" android:layout_height="fill_parent" android:cacheColorHint="#00000000" android:fadingEdge="none" android:fastScrollEnabled="false"
+			android:footerDividersEnabled="true" android:headerDividersEnabled="false" android:smoothScrollbar="true" android:divider="@color/bg_ui" android:dividerHeight="0.5dip" />
+		<android.support.v4.widget.SwipeRefreshLayout android:id="@+id/swipeRefreshLayout" android:layout_width="match_parent"
+			android:layout_height="match_parent">
+			<ListView android:id="@+id/listView_2" android:layout_width="fill_parent" android:layout_height="fill_parent" android:cacheColorHint="#00000000"
+				android:fadingEdge="none" android:fastScrollEnabled="false" android:footerDividersEnabled="false" android:headerDividersEnabled="false" android:smoothScrollbar="true" />
+		</android.support.v4.widget.SwipeRefreshLayout>
+	</RelativeLayout>
+	<include android:id="@+id/layoutLoading1" layout="@layout/lay_loading" android:layout_width="fill_parent" android:layout_height="fill_parent" android:visibility="gone" />
+	<include android:id="@id/layoutLoadFailed" layout="@layout/lay_failed" android:layout_width="match_parent" android:layout_height="match_parent"
+		android:visibility="gone" />
+	<include android:id="@id/layoutEmpty" layout="@layout/lay_empty" android:layout_width="match_parent" android:layout_height="match_parent" android:visibility="gone" />
+	<FrameLayout android:id="@+id/laySearchSuggest" android:layout_width="match_parent" android:layout_height="match_parent" android:visibility="gone" />
+</RelativeLayout>

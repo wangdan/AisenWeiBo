@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+	<style name="BaseTheme" parent="android:Theme.Holo.Light">
+        <item name="android:progressBarStyle">@style/ProgressBar</item>
+        <item name="android:fadingEdgeLength">0.0dip</item>
+        <item name="android:actionBarStyle">@style/ActionBarStyle</item>
+        <item name="android:actionDropDownStyle">@style/ActionBarSpinner</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:actionBarDivider">@null</item>
+        <!-- <item name="ptrHeaderStyle">@style/Widget.VK.PtrHeader</item> -->
+	    <item name="android:windowNoTitle">false</item>
+	    <item name="link_color">@color/link_color</item>
+		<item name="android:actionMenuTextColor">@color/white</item>
+	    
+	    <!-- <item name="android:spinnerDropDownItemStyle">@android:style/Widget.Holo.Light.DropDownItem.Spinner</item> -->
+        <item name="android:actionOverflowButtonStyle">@*android:style/Widget.Holo.ActionButton.Overflow</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_ab_back_holo_dark_am</item>
+    </style>
+    <style name="BaseTheme.Notitle" parent="android:Theme.Holo.Light">
+	    <item name="android:windowNoTitle">true</item>
+    </style>
+    
+    <style name="BaseTheme.DarkActionBar" parent="android:Theme.Holo.Light.DarkActionBar">
+        <item name="android:progressBarStyle">@style/ProgressBar</item>
+        <item name="android:fadingEdgeLength">0.0dip</item>
+        <item name="android:actionBarStyle">@style/ActionBarStyle</item>
+        <item name="android:actionDropDownStyle">@style/ActionBarSpinner</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:actionBarDivider">@null</item>
+        <!-- <item name="ptrHeaderStyle">@style/Widget.VK.PtrHeader</item> -->
+	    <item name="android:windowNoTitle">false</item>
+	    <item name="link_color">@color/link_color</item>
+    </style>
+
+    <style name="LightTheme" parent="BaseTheme">
+    </style>
+    
+    <style name="PicsDark" parent="android:Theme.Holo.Light.DarkActionBar">
+        
+    </style>
+    
+    <style name="GuideTheme" parent="@android:style/Theme.Translucent">
+        <item name="android:windowNoTitle">true</item>
+    </style>
+    
+    <style name="PictureTheme" parent="BaseTheme">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
+		<item name="android:actionBarStyle">@style/PictureActionBar</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+    
+    <style name="PictureActionBar" parent="android:Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/bg_gray</item>
+        <item name="android:backgroundSplit">@color/bg_gray</item>
+    </style>
+    
+    <style name="ChanneMenuDialog" parent="android:Theme.Holo.Light.Dialog">
+        <item name="android:listPreferredItemHeightSmall">@dimen/channelist_menu_item_height</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:textSize">@dimen/channelist_menu_text</item>
+    </style>
+    
+    <style name="ChanneMenuDialog.Floating">
+        <item name="android:windowNoTitle">true</item>
+<!--         <item name="android:windowIsFloating">true</item> -->
+    </style>
+    
+</resources>

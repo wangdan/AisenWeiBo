@@ -1,0 +1,51 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+	<style name="ActionBarStyle" parent="@*android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+		<!-- <item name="android:icon">@drawable/ic_ab_app</item> -->
+		<item name="android:icon">@drawable/title_icon</item>
+		<item name="android:progressBarStyle">@style/ActionBarProgress</item>
+		<item name="android:background">@drawable/bg_actionbar</item>
+		<item name="android:titleTextStyle">@style/ActionBarTitleStyle</item>
+		<item name="android:subtitleTextStyle">@style/ActionBarSubtitleStyle</item>
+	</style>
+	<style name="ActionBarSubtitleStyle" parent="@*android:style/TextAppearance.Holo.Widget.ActionBar.Subtitle.Inverse">
+		<item name="android:textColor">@color/ac_subtitle</item>
+	</style>
+	<style name="ActionBarTitleStyle" parent="@*android:style/TextAppearance.Holo.Widget.ActionBar.Title.Inverse">
+		<item name="android:textColor">@color/ac_title</item>
+	</style>
+	<style name="ActionBarProgress" parent="@*android:style/Widget.ProgressBar.Horizontal">
+		<item name="android:maxHeight">16.0dip</item>
+		<item name="android:progressDrawable">@drawable/ab_progress</item>
+		<item name="android:minHeight">16.0dip</item>
+	</style>
+	<style name="ActionBarSpinner" parent="@*android:style/Widget.Holo.Spinner">
+		<item name="android:background">@drawable/spinner_ab_holo_dark</item>
+	</style>
+	<style name="ProgressBar" parent="@*android:style/Widget.ProgressBar">
+		<item name="android:indeterminateDrawable">@drawable/progress_dark</item>
+	</style>
+
+	<style name="userName">
+		<item name="android:textColor">@drawable/main_text</item>
+		<item name="android:textSize">16sp</item>
+		<item name="android:lineSpacingExtra">4dip</item>
+		<item name="android:singleLine">true</item>
+		<item name="android:ellipsize">end</item>
+	</style>
+	<style name="hintText">
+		<item name="android:textColor">@drawable/hint</item>
+		<item name="android:textSize">14sp</item>
+		<item name="android:singleLine">true</item>
+		<item name="android:ellipsize">end</item>
+	</style>
+	<style name="hintCounter">
+	    <item name="android:textSize">10sp</item>
+	    <item name="android:textColor">@drawable/post_counters</item>
+	</style>
+	<style name="timelinePicture">
+	    <item name="android:scaleType">centerCrop</item>
+	</style>
+	<style name="tabCommentsText" parent="@*android:style/TextAppearance.Holo.Widget.ActionBar.Title.Inverse">
+	    
+	</style>
+</resources>

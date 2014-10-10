@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<app-settings>
+
+	<setting-array type="root_path" index="0">
+		<des>应用程序相对sdcard的相对路径目录，所有的文件都存储在这个文件夹中</des>
+		<setting>
+			<value>aisenweibo</value>
+		</setting>
+	</setting-array>
+
+	<setting-array type="com_m_common_json" index="0">
+		<des>业务数据sdcard缓存路径，相对root_path路径</des>
+		<setting>
+			<value>app_data</value>
+		</setting>
+	</setting-array>
+
+	<setting-array type="com_m_common_image" index="0">
+		<des>图片数据sdcard缓存路径，相对root_path路径</des>
+		<setting>
+			<value>app_image</value>
+		</setting>
+	</setting-array>
+	
+	<setting-array type="draft" index="0">
+		<des>草稿图片，相对root_path路径</des>
+		<setting>
+			<value>draft</value>
+		</setting>
+	</setting-array>
+	
+	<setting type="double_click_refresh">
+		<des>双击操作栏自动刷新程序</des>
+		<value>true</value>
+	</setting>
+
+	<setting type="saveImage">
+		<des>我收藏的图片</des>
+		<value>myPics</value>
+	</setting>
+	
+	<setting type="crashlogenable">
+		<des>错误日志记录</des>
+		<value>true</value>
+	</setting>
+	
+	<setting type="crashlog">
+		<des>错误日志目录</des>
+		<value>crashlog</value>
+	</setting>
+
+	<setting type="crashToRestart">
+		<des>崩溃重启</des>
+		<value>false</value>
+	</setting>
+
+	<setting-array type="app_type" index="1">
+		<setting>
+			<des>PAD版本</des>
+			<value>1</value>
+		</setting>
+		<setting>
+			<des>MOBILE版本</des>
+			<value>2</value>
+		</setting>
+	</setting-array>
+
+	<setting-array type="cache_utility" index="2">
+		<des>缓存模式设置</des>
+		<setting>
+			<des>DB数据缓存</des>
+			<value>com.m.support.cache.DBCacheUtility</value>
+		</setting>
+		<setting>
+			<des>文件数据缓存</des>
+			<value>com.sysweal.marketing.support.cache.FileCacheUtility_2</value>
+		</setting>
+	</setting-array>
+
+	<setting type="memory_cache_validity">
+		<des>内存缓存数据有效期，等于0为不保持内存数据，单位(s)</des>
+		<value>0</value>
+	</setting>
+	
+	<setting type="http">
+	    <value>com.m.support.network.http.DefHttpUtility</value>
+	</setting>
+
+	<setting type="cache_validtime">
+		<des>缓存数据的有效期，max_date为永久有效，单位(s)</des>
+		<value>max_date</value>
+	</setting>
+
+	<setting type="debug">
+		<des>APP是否是DEBUG模式</des>
+		<value>true</value>
+	</setting>
+
+	<setting type="cache_enable">
+		<des>缓存开关，在这里设置无效，需要在action.xml中覆盖这个设置</des>
+		<value>true</value>
+	</setting>
+
+	<setting type="page_count">
+		<des>分页大小</des>
+		<value>50</value>
+	</setting>
+
+	<setting-array type="app_channel" index="1">
+		<des>应用渠道</des>
+		<setting>
+			<value>test</value>
+		</setting>
+		<setting>
+			<value>googleplay</value>
+		</setting>
+		<setting>
+			<value>yingyongbao</value>
+		</setting>
+		<setting>
+			<value>anzhuoshichang</value>
+		</setting>
+		<setting>
+			<value>baidu</value>
+		</setting>
+	</setting-array>
+	
+	<setting type="bd_debug">
+		<des>百度移动统计debug</des>
+		<value>false</value>
+	</setting>
+	
+	<setting type="image_suffix">
+		<des>图片缓存的后缀</des>
+		<value>auto</value>
+	</setting>
+	
+	<setting type="recommend_text">
+		<des>推荐文本</des>
+		<value>Aisen是一个符合Android Design设计规范，界面清爽简洁，操作丝滑流畅的新浪微博第三方Android客户端；亲爱的，我来了，你来这里下载吧 http://aisenyuedu.duapp.com/?page_id=18</value>
+	</setting>
+	
+	<setting type="recommend_image">
+		<des>推荐图片</des>
+		<value>http://ww3.sinaimg.cn/bmiddle/694ebe21gw1eit3ohrrdij20c80f4my7.jpg</value>
+	</setting>
+	
+	<setting type="about_url">
+		<des>关于</des>
+		<value>http://aisenyuedu.duapp.com/?page_id=18</value>
+	</setting>
+	
+	<setting type="help_url">
+		<des>帮助</des>
+		<value>http://aisenyuedu.duapp.com/?p=31</value>
+	</setting>
+	
+</app-settings>

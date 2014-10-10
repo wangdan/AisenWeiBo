@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent">
+	<RelativeLayout android:id="@id/layoutContent" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical"
+		android:background="@color/bg_content">
+		<ListView android:id="@id/listView" android:layout_width="fill_parent" android:layout_height="fill_parent" android:cacheColorHint="#00000000"
+			android:fadingEdge="none" android:fastScrollEnabled="false" android:footerDividersEnabled="false" android:headerDividersEnabled="false" android:smoothScrollbar="true"
+			/>
+	</RelativeLayout>
+	<include android:id="@+id/layoutLoading1" layout="@layout/lay_loading" android:layout_width="fill_parent" android:layout_height="fill_parent" android:visibility="gone" />
+	<include android:id="@id/layoutLoadFailed" layout="@layout/lay_failed" android:layout_width="match_parent" android:layout_height="match_parent"
+		android:visibility="gone" />
+	<include android:id="@id/layoutEmpty" layout="@layout/lay_search_empty" android:layout_width="match_parent" android:layout_height="match_parent"
+		android:visibility="gone" />
+	<fr.castorflex.android.smoothprogressbar.SmoothProgressBar android:id="@+id/progress" android:layout_width="match_parent" android:layout_height="10dip"
+	    android:visibility="gone" />
+</RelativeLayout>

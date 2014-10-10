@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent" >
+	
+    <LinearLayout android:id="@+id/container" android:layout_width="match_parent" android:layout_height="60dip" android:orientation="horizontal"
+        android:gravity="center_vertical" android:paddingLeft="@dimen/horizontal_margin" android:paddingRight="@dimen/horizontal_margin"
+        android:background="@drawable/item_offline_channe_selector">
+        
+        <org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtName" android:layout_width="0dip" android:layout_weight="1" android:layout_height="wrap_content"
+		    android:layout_marginRight="@dimen/horizontal_margin" android:textSize="16sp" style="@style/userName"
+		    android:gravity="center_vertical" android:text="分组名称"
+		    android:paddingTop="2dip"/>
+        
+        <ImageView android:id="@+id/drag_handle" android:layout_width="45dip" android:layout_height="45dip"
+            android:src="@drawable/subscription_move_hook"
+            android:padding="8dip" android:visibility="gone"/>
+    </LinearLayout>
+    
+</LinearLayout>

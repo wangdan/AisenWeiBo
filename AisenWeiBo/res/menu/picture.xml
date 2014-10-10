@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/savePicture" android:title="@string/save_pic"
+        android:icon="@drawable/ic_action_download" android:showAsAction="always"/>
+
+    <item android:id="@+id/share" android:title="@string/share" android:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_share" android:actionProviderClass="android.widget.ShareActionProvider"/>
+    
+</menu>

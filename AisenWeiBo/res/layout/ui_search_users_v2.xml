@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent"
+	android:orientation="vertical" android:background="@color/white">
+	<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:paddingTop="4dip">
+		<SearchView android:id="@+id/searchView" android:layout_width="match_parent" android:layout_height="wrap_content" />
+	</LinearLayout>
+	<RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:background="@color/bg_content">
+		<RelativeLayout android:id="@+id/layList" android:layout_width="match_parent" android:layout_height="match_parent">
+			<ListView android:id="@id/listView" android:layout_width="fill_parent" android:layout_height="fill_parent" android:cacheColorHint="#00000000"
+				android:fadingEdge="none" android:fastScrollEnabled="false" android:footerDividersEnabled="false" android:headerDividersEnabled="false" android:smoothScrollbar="true" />
+			<!-- <com.handmark.pulltorefresh.library.PullToRefreshListView android:id="@id/refreshListView"
+				android:layout_width="match_parent" android:layout_height="fill_parent" android:cacheColorHint="#00000000" android:fadingEdge="none" android:fastScrollEnabled="false"
+				android:footerDividersEnabled="true" android:headerDividersEnabled="false" android:smoothScrollbar="true" android:divider="@color/bg_ui" android:dividerHeight="0.5dip" /> -->
+		</RelativeLayout>
+		<include android:id="@+id/layEmpty" layout="@layout/lay_search_empty" android:layout_width="match_parent" android:layout_height="match_parent"
+			android:visibility="gone" />
+		<RelativeLayout android:id="@+id/layUserHistory" android:layout_width="match_parent" android:layout_height="match_parent" />
+		<fr.castorflex.android.smoothprogressbar.SmoothProgressBar android:id="@+id/progress" android:layout_width="match_parent"
+			android:layout_height="10dip" android:visibility="gone" />
+	</RelativeLayout>
+</LinearLayout>
