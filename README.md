@@ -4,8 +4,6 @@
 
 [![Get it on Google Play](http://www.android.com/images/brand/get_it_on_play_logo_small.png)](http://play.google.com/store/apps/details?id=org.aisen.weibo.sina) [![Get it on 应用宝](http://ww1.sinaimg.cn/large/94389574gw1el706ontuxj203u019q2r.jpg)](http://android.myapp.com/myapp/detail.htm?apkName=org.aisen.weibo.sina) [![Get it on 安卓市场](http://ww3.sinaimg.cn/mw690/94389574gw1el706s6zhjj202p019wea.jpg)](http://apk.hiapk.com/appinfo/org.aisen.weibo.sina)
 
-测试版下载(版本最新，未发布上线)
- [![Get it on 百度云](http://ww3.sinaimg.cn/thumbnail/94389574gw1el70ihshbuj203q019q2q.jpg)](http://yun.baidu.com)
 
 ## 说明
 Aisen微博是新浪微博的第三方客户端，遵循Android Design，Holo主题风格，设计从界面简约清爽操作简单易用出发，力争为Android用户提供更好以及特别的微博体验。基于[AisenForAndroid](https://github.com/wangdan/AisenForAndroid)(Aisen)框架开发，Aisen框架是一个android快速开发框架，包含ORM、IOC、BitmapLoader等开发组件，四层结构：UI层、业务接口层、持久层、数据通讯层。
