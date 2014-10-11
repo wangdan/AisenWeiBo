@@ -2,7 +2,7 @@
 
 **注意** 工程依赖[AisenForAndroid](https://github.com/wangdan/AisenForAndroid)
 
-[![Get it on Google Play](http://www.android.com/images/brand/get_it_on_play_logo_small.png)](http://play.google.com/store/apps/details?id=org.aisen.weibo.sina) [![Get it on 应用宝](http://ww1.sinaimg.cn/large/94389574gw1el706ontuxj203u019q2r.jpg)](http://android.myapp.com/myapp/detail.htm?apkName=org.aisen.weibo.sina) [![Get it on 安卓市场](http://ww3.sinaimg.cn/mw690/94389574gw1el706s6zhjj202p019wea.jpg)](http://apk.hiapk.com/appinfo/org.aisen.weibo.sina)
+[![Get it on Google Play](http://www.android.com/images/brand/get_it_on_play_logo_small.png)](http://play.google.com/store/apps/details?id=org.aisen.weibo.sina) [![Get it on 应用宝](http://ww1.sinaimg.cn/large/94389574gw1el706ontuxj203u019q2r.jpg)](http://android.myapp.com/myapp/detail.htm?apkName=org.aisen.weibo.sina) 
 
 
 ## 说明
