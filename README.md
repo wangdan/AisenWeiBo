@@ -51,10 +51,16 @@ Aisen微博是新浪微博的第三方客户端，遵循Android Design，Holo主
  
  ![github](http://ww1.sinaimg.cn/bmiddle/94389574gw1el6g2t8hepg20ae0ghqvc.gif)
 
-## 文档
-请在actions.xml文件中替换成你的appKey
+## 须知
+ * 私信、多图上传、点赞功能没有权限
+ * 用户粉丝、关注只能获取30%的数据
+ * 用户搜索限制：v用户、粉丝500以上的达人、粉丝600以上的普通用户
+ * 用户微博列表只能是当前授权登录用户
 
-	<setting type="app_key">
+## 配置
+ * 导入[AisenForAndroid](https://github.com/wangdan/AisenForAndroid)，Aisen已包含所有依赖项目；
+ * 配置action.xml，设置你的appkey等相关参数
+ 	<setting type="app_key">
 		<des>APP应用授权key</des>
 		<value></value>
 	</setting>
@@ -68,12 +74,6 @@ Aisen微博是新浪微博的第三方客户端，遵循Android Design，Holo主
 		<des>授权回调地址</des>
 		<value></value>
 	</setting>
-
-## 须知
- * 私信、多图上传、点赞功能没有权限
- * 用户粉丝、关注只能获取30%的数据
- * 用户搜索限制：v用户、粉丝500以上的达人、粉丝600以上的普通用户
- * 用户微博列表只能是当前授权登录用户
 
 ## License
 
