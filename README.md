@@ -60,7 +60,9 @@ Aisen微博是新浪微博的第三方客户端，遵循Android Design，Holo主
 ## 配置
  * 导入[AisenForAndroid](https://github.com/wangdan/AisenForAndroid)，Aisen已包含所有依赖项目；
  * 配置action.xml，设置你的appkey等相关参数
- 	<setting type="app_key">
+ 	
+		
+	<setting type="app_key">
 		<des>APP应用授权key</des>
 		<value></value>
 	</setting>
