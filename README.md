@@ -29,6 +29,11 @@ Aisen微博是新浪微博的第三方客户端，遵循Android Design，Holo主
   * 支持GIF浏览，上传
   * 分组编辑功能，支持排序
 
+## 应用截图
+
+ * 账号管理
+ ![github](http://ww4.sinaimg.cn/mw1024/94389574gw1el6hpgvc4vg20ae0gz7wi.gif "github")  
+
 ## 文档
 请在actions.xml文件中替换成你的appKey
 
