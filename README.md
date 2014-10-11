@@ -32,7 +32,8 @@ Aisen微博是新浪微博的第三方客户端，遵循Android Design，Holo主
 ## 应用截图
 
  * 账号管理
- ![github](http://ww4.sinaimg.cn/mw1024/94389574gw1el6hpgvc4vg20ae0gz7wi.gif "github")  
+ 
+ ![github](http://ww4.sinaimg.cn/mw1024/94389574gw1el6hpgvc4vg20ae0gz7wi.gif)  
 
 ## 文档
 请在actions.xml文件中替换成你的appKey
