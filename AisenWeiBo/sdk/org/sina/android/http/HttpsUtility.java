@@ -12,7 +12,6 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.net.UnknownHostException;
 import java.security.KeyStore;
-import java.util.Locale;
 
 import org.aisen.weibo.sina.support.utils.AppSettings;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -59,7 +58,6 @@ import com.m.support.bizlogic.ABaseBizlogic;
 import com.m.support.network.HttpConfig;
 import com.m.support.network.HttpUtility;
 import com.m.support.task.TaskException;
-import com.spreada.utils.chinese.ZHConverter;
 
 public class HttpsUtility implements HttpUtility {
 

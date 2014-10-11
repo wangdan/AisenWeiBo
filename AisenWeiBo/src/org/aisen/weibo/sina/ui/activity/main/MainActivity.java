@@ -130,6 +130,7 @@ public class MainActivity extends WeiboBaseActivity implements MenuCallback {
 			String action = getIntent() != null ? getIntent().getAction() : null;
 			String type = null;
 			
+			// 处理点击Notification时，设置显示菜单
 			if (ACTION_LOGIN.equals(action)) {
 				type = "1";
 			}
@@ -282,10 +283,10 @@ public class MainActivity extends WeiboBaseActivity implements MenuCallback {
             break;
 		// 设置
 		case 5:
-			SettingsFragment.launch(this);
-			
 			// 点击设置关闭抽屉
 			closeDrawer();
+			
+			SettingsFragment.launch(this);
 			return true;
 		default:
 			return true;
@@ -333,10 +334,12 @@ public class MainActivity extends WeiboBaseActivity implements MenuCallback {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.findItem(R.id.publish).setVisible(true);
+		menu.findItem(R.id.help).setVisible(false);
+		menu.findItem(R.id.about).setVisible(true);
+		
 		if (lastSelectedMenu != null && "1".equals(lastSelectedMenu.getType())) {
 			
 		}
-		
 		// 微博首页时，一直显示发布新微博
 		if (lastSelectedMenu != null && "1".equals(lastSelectedMenu.getType()) && !isDrawerOpened()) {
 			menu.findItem(R.id.publish).setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_ALWAYS);
@@ -360,6 +363,8 @@ public class MainActivity extends WeiboBaseActivity implements MenuCallback {
 			PublishActivity.publishStatus(this, null);
 		else if (item.getItemId() == R.id.help)
 			AboutWebFragment.launchHelp(this);
+		else if (item.getItemId() == R.id.about)
+			AboutWebFragment.launchAbout(this);
 		else if (item.getItemId() == R.id.feedback)
 			PublishActivity.publishFeedback(this);
 		

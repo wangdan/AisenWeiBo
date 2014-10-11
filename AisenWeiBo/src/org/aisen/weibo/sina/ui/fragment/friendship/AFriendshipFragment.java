@@ -36,6 +36,12 @@ import com.m.support.task.WorkTask;
 import com.m.ui.fragment.ABaseFragment;
 import com.m.ui.fragment.ATabTitlePagerFragment;
 
+/**
+ * 朋友圈基类
+ * 
+ * @author wangdan
+ * 
+ */
 public abstract class AFriendshipFragment extends ARefreshProxyFragment<WeiBoUser, Friendship>
 												implements OnItemClickListener {
 
@@ -176,7 +182,7 @@ public abstract class AFriendshipFragment extends ARefreshProxyFragment<WeiBoUse
 			
 			if (AFriendshipFragment.this instanceof FollowersFragment && 
 					AppContext.getUnreadCount() != null && AppContext.getUnreadCount().getFollower() > 0) {
-				Logger.w(String.format("加载历史数据，已过期，刷新列表, group = %s", getLastReadKey() + ""));
+				Logger.w(String.format("有新的粉丝，刷新列表, group = %s", getLastReadKey() + ""));
 				
 				requestDataDelay(1000);
 				

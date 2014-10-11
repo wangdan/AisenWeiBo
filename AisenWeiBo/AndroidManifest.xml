@@ -36,7 +36,7 @@
 		<!-- 您从百度网站获取的APP KEY -->
 		<meta-data android:name="BaiduMobAd_STAT_ID" android:value="3124a3bb28" /> <!-- abcd1234 -->
 		<!-- 渠道商编号 -->
-		<meta-data android:name="BaiduMobAd_CHANNEL" android:value="googleplay" />
+		<meta-data android:name="BaiduMobAd_CHANNEL" android:value="test" />
 		<!-- 是否开启错误日志统计，默认为false -->
 		<meta-data android:name="BaiduMobAd_EXCEPTION_LOG" android:value="true" />
 		<!-- 日志发送策略，可选值：APP_START、ONCE_A_DAY、SET_TIME_INTERVAL，默认为APP_START -->

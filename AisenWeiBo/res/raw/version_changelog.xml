@@ -9,7 +9,7 @@
         in your View component in layout file -->
 
 	<changelogversion versionName="3.1.7" changeDate="2014-10">
-	    <changelogtext>代码正式开源</changelogtext>
+	    <changelogtext>代码正式开源.</changelogtext>
 	    <changelogtext>微博、用户搜索界面默认不再弹出输入法.</changelogtext>
 	    <changelogtext>修复多账号授权导致崩溃的BUG.</changelogtext>
 	    <changelogtext>修复获取提及微博时没有更新未读消息的BUG.</changelogtext>

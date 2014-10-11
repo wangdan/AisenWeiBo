@@ -412,7 +412,7 @@ public class BizFragment extends ABaseFragment {
 	public void destoryFollower(final WeiBoUser user, final OnDestoryFollowerCallback callback) {
 		new AlertDialog.Builder(getActivity())
 							.setTitle(R.string.title_destory_friend)
-							.setMessage(R.string.biz_destory_friend)
+							.setMessage(R.string.biz_destory_follower)
 							.setNegativeButton(R.string.cancel, null)
 							.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
 								
@@ -429,7 +429,7 @@ public class BizFragment extends ABaseFragment {
 										protected void onPrepare() {
 											super.onPrepare();
 											
-											ViewUtils.createNormalProgressDialog(getActivity(), getString(R.string.biz_destory_follower)).show();
+											ViewUtils.createNormalProgressDialog(getActivity(), getString(R.string.biz_destory_follower_loading)).show();
 										};
 										
 										@Override

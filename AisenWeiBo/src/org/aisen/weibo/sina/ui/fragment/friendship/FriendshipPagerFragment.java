@@ -46,6 +46,7 @@ public class FriendshipPagerFragment extends ATabTitlePagerFragment<TimelineGrou
 		
 		Bundle args = new Bundle();
 		args.putSerializable("user", AppContext.getUser());
+		// 如果有新粉丝，默认选择粉丝页面
 		args.putInt("index", AppContext.getUnreadCount().getFollower() > 0 ? 1 : 0);;
 		fragment.setArguments(args);
 		

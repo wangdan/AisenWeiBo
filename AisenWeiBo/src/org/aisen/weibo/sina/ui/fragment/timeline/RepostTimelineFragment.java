@@ -85,10 +85,10 @@ public class RepostTimelineFragment extends ATimelineFragment {
 		
 		TimelineItemView timelineItem = (TimelineItemView) headerView.getTag();
 		if (timelineItem != null)
+			timelineItem.bindingData(headerView, mStatusContent);
 //			timelineItem.bindingData(headerView, mStatusContent.getRetweeted_status() != null ? 
 //														mStatusContent.getRetweeted_status() :
 //														mStatusContent);
-			timelineItem.bindingData(headerView, mStatusContent);
 	}
 	
 	@Override

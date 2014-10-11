@@ -99,7 +99,7 @@
 	<string name="biz_remark_update">更新好友備註</string>
 	<string name="biz_remark_loading">正在更新備註信息</string>
 	<string name="title_destory_friend">移除粉絲</string>
-	<string name="biz_destory_friend">Ta是你的粉絲，將解除Ta對你的關注</string>
+	<string name="biz_destory_follower">Ta是你的粉絲，將解除Ta對你的關注</string>
 	<string name="biz_delete_cmt_loading">正在刪除評論</string>
 	<string name="biz_delete_status_loading">正在刪除微博</string>
 	<string name="biz_add_fav">正在添加收藏</string>
@@ -107,7 +107,7 @@
 	<string name="biz_remove_fav">正在取消收藏</string>
 	<string name="biz_fav_removed">已取消收藏</string>
 	<string name="biz_fav_remove_faild">取消收藏失敗</string>
-	<string name="biz_destory_follower">正在解除Ta對你的關注</string>
+	<string name="biz_destory_follower_loading">正在解除Ta對你的關注</string>
 	
 	<!-- 賬號授權 -->
 	<string name="title_login">用戶授權</string>

@@ -106,7 +106,7 @@
 		<value>50</value>
 	</setting>
 
-	<setting-array type="app_channel" index="1">
+	<setting-array type="app_channel" index="0">
 		<des>应用渠道</des>
 		<setting>
 			<value>test</value>
