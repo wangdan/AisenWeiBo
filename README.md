@@ -5,7 +5,7 @@
 [![Get it on Google Play](http://www.android.com/images/brand/get_it_on_play_logo_small.png)](http://play.google.com/store/apps/details?id=org.aisen.weibo.sina)
 
 ## 说明
-Aisen微博是新浪微博的第三方客户端，遵循Android Design，Holo主题风格，设计从界面简约清爽操作简单易用出发，力争为Android用户提供更好以及特别的微博体验。基于AisenForAndroid框架开发，基于Aisen微博这个范例可以学习使用AisenBase快速搭建Android项目工程快速开发。
+Aisen微博是新浪微博的第三方客户端，遵循Android Design，Holo主题风格，设计从界面简约清爽操作简单易用出发，力争为Android用户提供更好以及特别的微博体验。基于[AisenForAndroid](https://github.com/wangdan/AisenForAndroid)(Aisen)框架开发，Aisen框架是一个android快速开发框架，包含ORM、IOC、BitmapLoader等开发组件，四层结构：UI层、业务接口层、持久层、数据通讯层。
 
 ## 基本功能
  
