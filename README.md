@@ -35,6 +35,22 @@ Aisen微博是新浪微博的第三方客户端，遵循Android Design，Holo主
  
  ![github](http://ww4.sinaimg.cn/mw1024/94389574gw1el6hpgvc4vg20ae0gz7wi.gif)  
 
+ * [Aisen](https://github.com/wangdan/AisenForAndroid)支持三种主流刷新控件
+ 
+ ![github](http://ww4.sinaimg.cn/bmiddle/94389574gw1el668azuwag20b20ghqkh.gif)  
+
+ * 分组左右切屏阅读，可以编辑、排序
+ 
+ ![github](http://ww1.sinaimg.cn/bmiddle/94389574gw1el6f6mj8hgg20ae0ghqv7.gif)
+
+ * 内容离线编辑，可以保存到草稿箱，可以设置定时发布
+ 
+ ![github](http://ww4.sinaimg.cn/bmiddle/94389574gw1el6gpodcwwg20ae0gzqmj.gif)
+
+ * 图片高清阅读，支持自动排版、9宫格模式
+ 
+ ![github](http://ww1.sinaimg.cn/bmiddle/94389574gw1el6g2t8hepg20ae0ghqvc.gif)
+
 ## 文档
 请在actions.xml文件中替换成你的appKey
 
