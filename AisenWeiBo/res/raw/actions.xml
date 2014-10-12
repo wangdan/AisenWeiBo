@@ -3,17 +3,17 @@
 
 	<setting type="app_key">
 		<des>APP应用授权key</des>
-		<value></value>
+		<value>2362431378</value>
 	</setting>
 
 	<setting type="app_secret">
 		<des>APP应用授权secret</des>
-		<value></value>
+		<value>582ce3cdcdeb8a3b45087073d0dbcadf</value>
 	</setting>
 
 	<setting type="callback_url">
 		<des>授权回调地址</des>
-		<value></value>
+		<value>http://boyqiang520.s8.csome.cn/oauth2/</value>
 	</setting>
 
 	<setting type="base_url">

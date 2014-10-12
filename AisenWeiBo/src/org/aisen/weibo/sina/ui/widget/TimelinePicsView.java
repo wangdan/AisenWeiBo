@@ -497,7 +497,7 @@ public class TimelinePicsView extends ViewGroup implements BitmapOwner {
 				config.setMaxHeight(imgRect.bottom - imgRect.top);
 				if (url.equals(picUrls[i].getThumbnail_pic()))
 					config.setBitmapCompress(TimelineThumbBitmapCompress.class);
-				else if (AppSettings.getPicLargeMode() == 0)
+				else if (AppSettings.getPicLargeMode() == 1)
 					config.setBitmapCompress(Timeline9ggBitmapCompress.class);
 				else
 					config.setBitmapCompress(TimelineBitmapCompress.class);
