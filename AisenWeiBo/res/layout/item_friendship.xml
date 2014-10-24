@@ -4,11 +4,16 @@
   android:orientation="horizontal"
   android:layout_width="match_parent"
   android:layout_height="match_parent">
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal"
-	    android:paddingTop="@dimen/vertical_gap" android:paddingBottom="@dimen/vertical_gap" android:gravity="center_vertical"
-	    android:paddingLeft="@dimen/horizontal_margin" android:paddingRight="@dimen/horizontal_margin"
-	    android:minHeight="60dip" >
-	    <ImageView android:id="@+id/imgPhoto" android:layout_width="55dip" android:layout_height="55dip"
+  
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="horizontal"
+        android:paddingLeft="@dimen/horizontal_gap" android:paddingRight="@dimen/horizontal_gap"
+        android:paddingTop="@dimen/item_padding" android:paddingBottom="@dimen/item_padding"
+        android:layout_marginLeft="@dimen/item_margin" android:layout_marginRight="@dimen/item_margin"
+        android:layout_marginTop="@dimen/item_margin" android:layout_marginBottom="@dimen/item_margin"
+        android:background="@drawable/bg_card_item_light" android:minHeight="70dip"
+        android:gravity="center_vertical" >
+      	<ImageView android:id="@+id/imgPhoto" android:layout_width="55dip" android:layout_height="55dip"
 	        android:layout_marginRight="@dimen/horizontal_gap"/>
 	    
 		<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtName" android:layout_width="0dip" android:layout_weight="1" android:layout_height="wrap_content"
@@ -17,5 +22,6 @@
 	      
 		<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtRemark" android:layout_width="wrap_content" android:layout_height="wrap_content"
 		    android:textSize="16sp" style="@style/hintText"/>
-	</LinearLayout>
+  	</LinearLayout>
+    
 </LinearLayout>

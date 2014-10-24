@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
 import com.m.common.params.Params;
@@ -40,7 +41,7 @@ import com.m.ui.fragment.ABaseFragment;
  *
  */
 public class TimelineCommentsFragment extends ARefreshProxyFragment<StatusComment, StatusComments>
-											implements OnItemClickListener {
+											implements OnItemClickListener, OnItemLongClickListener {
 
 	public static void launch(ABaseFragment from, StatusContent status) {
 		TimelineCommentsActivity.launch(from, status);
@@ -66,6 +67,11 @@ public class TimelineCommentsFragment extends ARefreshProxyFragment<StatusCommen
 	}
 	
 	@Override
+	protected RefreshListType configListType() {
+		return RefreshListType.actionbarPulltorefresh;
+	}
+	
+	@Override
 	protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceState) {
 		super.layoutInit(inflater, savedInstanceState);
 		
@@ -84,6 +90,7 @@ public class TimelineCommentsFragment extends ARefreshProxyFragment<StatusCommen
 		timelineItem.bindingData(headerView, mStatusContent);
 		
 		listView.setOnItemClickListener(this);
+		listView.setOnItemLongClickListener(this);
 		
 		if (savedInstanceState == null) {
 			listView.setSelectionFromTop(listView.getFooterViewsCount(), 0);
@@ -105,7 +112,14 @@ public class TimelineCommentsFragment extends ARefreshProxyFragment<StatusCommen
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		ListView listView = (ListView) getRefreshView();
 		position -= listView.getHeaderViewsCount();
-		BizFragment.getBizFragment(this).replyComment(mStatusContent, getAdapter().getDatas().get(position));
+		if (position >= 0)
+			BizFragment.getBizFragment(this).replyComment(mStatusContent, getAdapter().getDatas().get(position));
+	}
+	
+	@Override
+	public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+		view.findViewById(R.id.btnMenus).performClick();
+		return true;
 	}
 	
 	@Override

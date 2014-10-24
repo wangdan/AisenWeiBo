@@ -60,6 +60,9 @@
 			<extra type="cache_enable">
 				<value>true</value>
 			</extra>
+			<extra type="memory_cache_utility">
+				<value>org.aisen.weibo.sina.support.cache.TimelineMemoryCacheUtility</value>
+			</extra>
 			<extra type="cache_utility">
 				<value>org.aisen.weibo.sina.support.cache.TimelineCacheUtility</value>
 			</extra>
@@ -72,6 +75,9 @@
 		<extras>
 			<extra type="cache_enable">
 				<value>true</value>
+			</extra>
+			<extra type="memory_cache_utility">
+				<value>org.aisen.weibo.sina.support.cache.TimelineMemoryCacheUtility</value>
 			</extra>
 			<extra type="cache_utility">
 				<value>org.aisen.weibo.sina.support.cache.TimelineCacheUtility</value>
@@ -86,6 +92,9 @@
 			<extra type="cache_enable">
 				<value>true</value>
 			</extra>
+			<extra type="memory_cache_utility">
+				<value>org.aisen.weibo.sina.support.cache.TimelineMemoryCacheUtility</value>
+			</extra>
 			<extra type="cache_utility">
 				<value>org.aisen.weibo.sina.support.cache.TimelineCacheUtility</value>
 			</extra>
@@ -98,6 +107,9 @@
 		<extras>
 			<extra type="cache_enable">
 				<value>true</value>
+			</extra>
+			<extra type="memory_cache_utility">
+				<value>org.aisen.weibo.sina.support.cache.TimelineMemoryCacheUtility</value>
 			</extra>
 			<extra type="cache_utility">
 				<value>org.aisen.weibo.sina.support.cache.TimelineCacheUtility</value>
@@ -117,6 +129,9 @@
 			<extra type="cache_enable">
 				<value>true</value>
 			</extra>
+			<extra type="memory_cache_utility">
+				<value>org.aisen.weibo.sina.support.cache.TimelineMemoryCacheUtility</value>
+			</extra>
 			<extra type="cache_utility">
 				<value>org.aisen.weibo.sina.support.cache.TimelineCacheUtility</value>
 			</extra>
@@ -129,6 +144,9 @@
 		<extras>
 			<extra type="cache_enable">
 				<value>true</value>
+			</extra>
+			<extra type="memory_cache_utility">
+				<value>org.aisen.weibo.sina.support.cache.TimelineMemoryCacheUtility</value>
 			</extra>
 			<extra type="cache_utility">
 				<value>org.aisen.weibo.sina.support.cache.TimelineCacheUtility</value>
@@ -152,6 +170,9 @@
 		<extras>
 			<extra type="cache_enable">
 				<value>true</value>
+			</extra>
+			<extra type="memory_cache_utility">
+				<value>org.aisen.weibo.sina.support.cache.TimelineMemoryCacheUtility</value>
 			</extra>
 			<extra type="cache_utility">
 				<value>org.aisen.weibo.sina.support.cache.TimelineCacheUtility</value>

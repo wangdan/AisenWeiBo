@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import org.aisen.weibo.sina.R;
+import org.aisen.weibo.sina.support.utils.AisenUtil;
 import org.aisen.weibo.sina.support.utils.AppContext;
 import org.aisen.weibo.sina.support.utils.BaiduAnalyzeUtils;
 import org.aisen.weibo.sina.ui.fragment.search.SearchHistoryFragment.OnSearchItemClicked;
@@ -58,6 +59,8 @@ public class SearchTopicsFragment extends ATimelineFragment
 	View layEmpty;
 	@ViewInject(id = R.id.layList)
 	View layList;
+	@ViewInject(id = R.id.layEdit)
+	View layEdit;
 	
 	private SearchTopicsTask mTask;
 	
@@ -71,6 +74,11 @@ public class SearchTopicsFragment extends ATimelineFragment
 	}
 	
 	@Override
+	protected RefreshListType configListType() {
+		return RefreshListType.actionbarPulltorefresh;
+	}
+	
+	@Override
 	protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
 		super.layoutInit(inflater, savedInstanceSate);
 		
@@ -79,6 +87,8 @@ public class SearchTopicsFragment extends ATimelineFragment
 		mSmoothProgressBar.setIndeterminate(true);
 		
 		((TextView) layEmpty.findViewById(R.id.txtHint)).setText(R.string.empty_search_topics);
+		
+		AisenUtil.setAlpha(layEdit);
 		
 		searchView.onActionViewExpanded();
 		searchView.setQueryHint(getString(R.string.hint_topics));
@@ -112,6 +122,10 @@ public class SearchTopicsFragment extends ATimelineFragment
 			mSearchHistoryFragment = (SearchHistoryFragment) getActivity().getFragmentManager().findFragmentByTag("SearchTopicsHistoryFragment");
 		}
 		mSearchHistoryFragment.setOnseaItemClicked(this);
+		
+		layHistory.setVisibility(View.VISIBLE);
+		layList.setVisibility(View.GONE);
+		AisenUtil.setAlpha(layHistory);
 	}
 	
 	@Override

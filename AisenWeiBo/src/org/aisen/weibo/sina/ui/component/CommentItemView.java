@@ -159,6 +159,8 @@ public class CommentItemView extends AbstractItemView<StatusComment> implements 
 		
 		btnMenus.setTag(data);
 		btnMenus.setOnClickListener(this);
+		
+		AisenUtil.setAlpha(convertView);
 	}
 	
 	@Override

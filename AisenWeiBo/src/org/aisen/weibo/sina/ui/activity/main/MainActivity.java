@@ -8,12 +8,13 @@ import org.aisen.weibo.sina.support.iclass.IAcNavigation;
 import org.aisen.weibo.sina.support.utils.AppContext;
 import org.aisen.weibo.sina.ui.activity.common.WeiboBaseActivity;
 import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
+import org.aisen.weibo.sina.ui.activity.search.SearchActivity;
 import org.aisen.weibo.sina.ui.fragment.comment.CommentPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.draft.DraftFragment;
 import org.aisen.weibo.sina.ui.fragment.friendship.FriendshipPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.mention.Mention_v2Fragment;
-import org.aisen.weibo.sina.ui.fragment.menu.MenuFragment;
-import org.aisen.weibo.sina.ui.fragment.menu.MenuFragment.MenuCallback;
+import org.aisen.weibo.sina.ui.fragment.menu.MenuFragment_v2;
+import org.aisen.weibo.sina.ui.fragment.menu.MenuFragment_v2.MenuCallback;
 import org.aisen.weibo.sina.ui.fragment.profile.UserProfileFragment;
 import org.aisen.weibo.sina.ui.fragment.settings.AboutWebFragment;
 import org.aisen.weibo.sina.ui.fragment.settings.SettingsFragment;
@@ -34,6 +35,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.alibaba.fastjson.JSON;
 import com.m.common.context.GlobalContext;
@@ -61,8 +63,13 @@ public class MainActivity extends WeiboBaseActivity implements MenuCallback {
 	private ActionBarDrawerToggle mDrawerToggle;
 	private MenuBean lastSelectedMenu;
 	
+	private MenuFragment_v2 menuFragment;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		org.aisen.weibo.sina.ui.fragment.base.ActivityHelper activityHelper = (org.aisen.weibo.sina.ui.fragment.base.ActivityHelper) getActivityHelper();
+		activityHelper.blur = true;
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.ui_main);
 		
@@ -95,6 +102,9 @@ public class MainActivity extends WeiboBaseActivity implements MenuCallback {
 				invalidateOptionsMenu();
 				
 				getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+				
+				// 将菜单置顶
+				((ListView) menuFragment.getRefreshView()).setSelectionFromTop(0, 0);
 			}
 			
 			@Override
@@ -111,6 +121,7 @@ public class MainActivity extends WeiboBaseActivity implements MenuCallback {
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 		
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setIcon(R.drawable.ic_logo);
 		getActionBar().setDisplayShowHomeEnabled(true);
 		
 		lastSelectedMenu = savedInstanceState == null ? null : (MenuBean) savedInstanceState.getSerializable("menu");
@@ -154,12 +165,12 @@ public class MainActivity extends WeiboBaseActivity implements MenuCallback {
 				type = "6";
 			}
 			
-			MenuFragment menuFragment = MenuFragment.newInstance(type);
+			menuFragment = MenuFragment_v2.newInstance(type);
 			menuFragment.setMenuCallback(this);
 			getFragmentManager().beginTransaction().add(R.id.menu_frame, menuFragment, "MenuFragment").commit();
 			
 		} else {
-			MenuFragment menuFragment = (MenuFragment) getFragmentManager().findFragmentByTag("MenuFragment");
+			menuFragment = (MenuFragment_v2) getFragmentManager().findFragmentByTag("MenuFragment");
 			menuFragment.setMenuCallback(this);
 			
 			// 2014-8-30 解决因为状态保存而导致的耗时阻塞
@@ -187,27 +198,37 @@ public class MainActivity extends WeiboBaseActivity implements MenuCallback {
 			
 			lastSelectedMenu = null;
 			
+			MenuBean menuBean = null;
 			if (ACTION_LOGIN.equals(action)) {
-				onMenuSelected(getMenu(1), true);
+				menuBean = getMenu(1);
 			}
 			else if ("showFollowers".equals(action)) {
-				onMenuSelected(getMenu(4), true);
+				menuBean = getMenu(4);
 			}
 			else if ("showComments".equals(action)) {
-				onMenuSelected(getMenu(3), true);
+				menuBean = getMenu(3);
 			}
 			else if ("showMentionStatus".equals(action)) {
 				ActivityHelper.getInstance().putShareData("showMensitonType", "showMentionStatus");
 				
-				onMenuSelected(getMenu(2), true);
+				menuBean = getMenu(2);
 			}
 			else if ("showMentionCmt".equals(action)) {
 				ActivityHelper.getInstance().putShareData("showMensitonType", "showMentionCmt");
 				
-				onMenuSelected(getMenu(2), true);
+				menuBean = getMenu(2);
 			}
 			else if ("showDraft".equals(action)) {
-				onMenuSelected(getMenu(6), true);
+				menuBean = getMenu(6);
+			}
+			
+			if (menuBean != null) {
+				onMenuSelected(menuBean, true);
+				
+				MenuFragment_v2 menuFragment = (MenuFragment_v2) getFragmentManager().findFragmentByTag("MenuFragment");
+				menuFragment.setItemTextColor(menuBean);
+				if ("1".equals(menuBean.getType()))
+					menuFragment.setAccountItem();
 			}
 			
 			if (isDrawerOpened())
@@ -216,14 +237,7 @@ public class MainActivity extends WeiboBaseActivity implements MenuCallback {
 	}
 	
 	private MenuBean getMenu(int type) {
-		MenuFragment menuFragment = (MenuFragment) getFragmentManager().findFragmentByTag("MenuFragment");
-		
-		for (MenuBean menu : menuFragment.getAdapter().getDatas()) {
-			if (Integer.parseInt(menu.getType()) == type)
-				return menu;
-		}
-		
-		return null;
+		return MenuFragment_v2.newMenu(String.valueOf(type));
 	}
 	
 	@Override
@@ -283,10 +297,15 @@ public class MainActivity extends WeiboBaseActivity implements MenuCallback {
             break;
 		// 设置
 		case 5:
-			// 点击设置关闭抽屉
 			closeDrawer();
 			
 			SettingsFragment.launch(this);
+			return true;
+		// 搜索
+		case 8:
+			closeDrawer();
+			
+			SearchActivity.launch(this);
 			return true;
 		default:
 			return true;

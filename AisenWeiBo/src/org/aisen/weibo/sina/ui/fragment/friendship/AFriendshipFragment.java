@@ -55,6 +55,11 @@ public abstract class AFriendshipFragment extends ARefreshProxyFragment<WeiBoUse
 	}
 	
 	@Override
+	protected RefreshListType configListType() {
+		return RefreshListType.androidPulltorefresh;
+	}
+	
+	@Override
 	protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
 		super.layoutInit(inflater, savedInstanceSate);
 
@@ -135,6 +140,8 @@ public abstract class AFriendshipFragment extends ARefreshProxyFragment<WeiBoUse
 			else {
 				txtRemark.setVisibility(View.GONE);
 			}
+			
+			AisenUtil.setAlpha(convertView);
 		}
 		
 	}

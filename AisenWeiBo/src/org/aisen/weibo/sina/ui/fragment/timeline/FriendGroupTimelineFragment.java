@@ -31,6 +31,11 @@ public class FriendGroupTimelineFragment extends ATimelineFragment {
 		return fragment;
 	}
 	
+	@Override
+	protected RefreshListType configListType() {
+		return RefreshListType.androidPulltorefresh;
+	}
+	
 	// 2014-8-30 解决因为状态保存而导致的耗时阻塞
 	@Override
 	protected void saveRefreshListState(Bundle outState) {

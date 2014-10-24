@@ -52,6 +52,11 @@ public class FavoritesFragment extends ATimelineFragment {
     }
     
     @Override
+	protected RefreshListType configListType() {
+		return RefreshListType.androidPulltorefresh;
+	}
+    
+    @Override
     protected void config(RefreshConfig config) {
     	super.config(config);
     	

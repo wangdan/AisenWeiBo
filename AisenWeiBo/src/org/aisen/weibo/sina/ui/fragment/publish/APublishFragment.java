@@ -31,6 +31,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -78,6 +79,8 @@ public abstract class APublishFragment extends ABaseFragment
 	
 	public static final int MAX_STATUS_LENGTH = 140;
 	
+	@ViewInject(id = R.id.layBtns)
+	View layBtns;
 	@ViewInject(id = R.id.btnLocation, click = "loadGPSLocation")
 	View btnLocation;
 	@ViewInject(id = R.id.btnCamera, click = "getPicture")
@@ -170,7 +173,29 @@ public abstract class APublishFragment extends ABaseFragment
         transitioner.setAnimator(LayoutTransition.DISAPPEARING, animOut);
         layRoot.setLayoutTransition(transitioner);
 		
+        if (!AisenUtil.isTranslucent())
+        	layBtns.setBackgroundColor(Color.parseColor(AppSettings.getThemeColor()));
+        
 		refreshUI();
+	}
+	
+	/**
+	 * 2014-10-23 根据不同主题显示不同颜色
+	 */
+	protected void resetEditColor() {
+		if (AisenUtil.isTranslucent() && !configWhite()) {
+        	editContent.setTextColor(getResources().getColor(R.color.white));
+        	editContent.setHintTextColor(getResources().getColor(R.color.edit_hint_wallpaper));
+        }
+        else {
+        	editContent.setTextColor(getResources().getColor(R.color.black));
+        	editContent.setHintTextColor(getResources().getColor(R.color.edit_hint));
+        }
+	}
+	
+	// 如果有照片了，也显示黑色文字
+	protected boolean configWhite() {
+		return getPublishBean().getExtras() != null && getPublishBean().getExtras().containsKey("images");
 	}
 	
 	@Override
@@ -184,6 +209,8 @@ public abstract class APublishFragment extends ABaseFragment
 	 * 刷新视图
 	 */
 	void refreshUI() {
+		resetEditColor();
+		
 		if (getPublishBean() == null)
 			return;
 		
@@ -394,7 +421,7 @@ public abstract class APublishFragment extends ABaseFragment
 									}
 									else {
 										getPublishBean().getExtras().remove("images");
-										
+
 										refreshUI();
 									}
 								}

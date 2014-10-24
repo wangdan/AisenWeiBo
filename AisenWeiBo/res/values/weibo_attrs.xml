@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="Wallpaper">
+        <attr name="blur" format="boolean" />
+    </declare-styleable>
+    
+    <!-- 文本颜色 -->
+    <attr name="text_color" format="reference|color" />
+   	<!-- 搜索文本颜色 -->
+   	<attr name="search_text_color" format="reference|color" />
+    <!-- 文本提示颜色 -->
+    <attr name="text_hint_color" format="reference|color" />
+    <!-- 表情背景 -->
+    <attr name="bg_emotion" format="reference|color" />
+    
+</resources>

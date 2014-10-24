@@ -156,7 +156,11 @@ public class WeiBoUser implements Serializable {
 	 * 认证原因
 	 */
 	private String verified_reason;
-
+	
+	private String cover_image;
+	
+	private String cover_image_phone;
+	
 	public String getToken() {
 		return token;
 	}
@@ -411,6 +415,22 @@ public class WeiBoUser implements Serializable {
 
 	public void setVerified_type(Integer verified_type) {
 		this.verified_type = verified_type;
+	}
+
+	public String getCover_image() {
+		return cover_image;
+	}
+
+	public void setCover_image(String cover_image) {
+		this.cover_image = cover_image;
+	}
+
+	public String getCover_image_phone() {
+		return cover_image_phone;
+	}
+
+	public void setCover_image_phone(String cover_image_phone) {
+		this.cover_image_phone = cover_image_phone;
 	}
 
 }

@@ -57,6 +57,11 @@ public class PicsActivity extends BaseActivity implements OnPageChangeListener {
 	}
 	
 	@Override
+	protected int configTheme() {
+		return R.style.BaseTheme_Dark_Translucent;
+	}
+	
+	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		

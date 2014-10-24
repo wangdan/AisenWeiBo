@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent"
-	android:orientation="vertical" android:background="@color/bg_content">
+	android:orientation="vertical" >
 	<!-- 解决刷新不显示ActionBarLoading的BUG -->
 	<RelativeLayout android:layout_width="0dip" android:layout_height="0dip">
 	    <include android:id="@id/layoutLoading" layout="@layout/lay_loading" android:layout_width="fill_parent" android:layout_height="fill_parent" android:visibility="visible" />
 	</RelativeLayout>
 	<LinearLayout android:id="@+id/layList" android:layout_width="match_parent" android:layout_height="0dip" android:layout_weight="1" android:orientation="vertical">
 		<ListView android:id="@id/listView" android:layout_width="fill_parent" android:layout_height="match_parent" android:cacheColorHint="#00000000"
-			android:fadingEdge="none" android:fastScrollEnabled="false" android:footerDividersEnabled="false" android:headerDividersEnabled="true" android:smoothScrollbar="true" />
+			android:fadingEdge="none" android:fastScrollEnabled="false" android:footerDividersEnabled="false" android:headerDividersEnabled="true" android:smoothScrollbar="true"
+			android:divider="@null" android:dividerHeight="0dip" />
 
 		<com.handmark.pulltorefresh.library.PullToRefreshListView android:id="@id/refreshListView"
 			android:layout_width="match_parent" android:layout_height="fill_parent" android:cacheColorHint="#00000000" android:fadingEdge="none" android:fastScrollEnabled="false"
@@ -45,7 +46,7 @@
 		
 		<LinearLayout android:id="@+id/btnOverflow" android:layout_width="50dip" android:layout_height="40dip"
 		    android:background="@drawable/bg_btn_comments" android:clickable="true" android:gravity="center">
-			<ImageView android:layout_width="40dip" android:layout_height="40dip" android:src="@drawable/ic_action_overflow" android:padding="4dip"/>
+			<ImageView android:layout_width="40dip" android:layout_height="40dip" android:src="@drawable/ic_overflow" android:padding="4dip"/>
 		</LinearLayout>
 		
 	</LinearLayout>

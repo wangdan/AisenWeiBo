@@ -28,7 +28,7 @@ public class TimelineCacheUtility implements ICacheUtility {
 
 	static final String TAG = ABaseBizlogic.TAG;
 	
-	private String getCacheKey(Setting action, Params params) {
+	public static String getCacheKey(Setting action, Params params) {
 		String key = null;
 		
 		// 提及的微博
@@ -131,6 +131,9 @@ public class TimelineCacheUtility implements ICacheUtility {
 			Logger.w(TAG, String.format("排除已删除数据耗时%sms", String.valueOf(System.currentTimeMillis() - time)));
 			Logger.d(TAG, String.format("返回微博数据%d条, expired = %s", statusContents.getStatuses().size(), String.valueOf(statusContents.expired())));
 			
+			// 写入内存
+			new TimelineMemoryCacheUtility().addCacheData(action, params, statusContents);
+			
 			return new Cache((T) statusContents, false);
 		} catch (Exception e) {
 		}
@@ -153,9 +156,11 @@ public class TimelineCacheUtility implements ICacheUtility {
 		}
 				
 		try {
-			File cacheFile = getCacheFile(action, params);
-
 			StatusContents statusContents = (StatusContents) responseObj;
+			if (statusContents.getStatuses().size() == 0)
+				return;
+			
+			File cacheFile = getCacheFile(action, params);
 			
 			List<StatusContent> newList = new ArrayList<StatusContent>();
 			
@@ -179,6 +184,9 @@ public class TimelineCacheUtility implements ICacheUtility {
 			}
 			
 			statusContents.setStatuses(newList);
+			
+			// 写入内存
+			new TimelineMemoryCacheUtility().addCacheData(action, params, statusContents);
 			
 			long time = System.currentTimeMillis();
 			FileUtility.writeObject(cacheFile, statusContents);

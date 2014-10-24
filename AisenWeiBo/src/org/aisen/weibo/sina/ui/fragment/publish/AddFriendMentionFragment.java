@@ -70,6 +70,11 @@ public class AddFriendMentionFragment extends ARefreshProxyFragment<WeiBoUser, F
 	}
 	
 	@Override
+	protected RefreshListType configListType() {
+		return RefreshListType.actionbarPulltorefresh;
+	}
+	
+	@Override
 	protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
 		super.layoutInit(inflater, savedInstanceSate);
 		
@@ -123,6 +128,8 @@ public class AddFriendMentionFragment extends ARefreshProxyFragment<WeiBoUser, F
 		TextView txtRemark;
 		@ViewInject(id = R.id.txtDivider)
 		TextView txtDivider;
+		@ViewInject(id = R.id.layDivider)
+		View layDivider;
 		
 		@Override
 		public int inflateViewId() {
@@ -142,15 +149,17 @@ public class AddFriendMentionFragment extends ARefreshProxyFragment<WeiBoUser, F
 				txtRemark.setText("");
 			
 			if (recentSize > 0) {
-				txtDivider.setVisibility(getPosition() == 0 || getPosition() == recentSize ? View.VISIBLE : View.GONE);
+				layDivider.setVisibility(getPosition() == 0 || getPosition() == recentSize ? View.VISIBLE : View.GONE);
 				if (getPosition() == 0)
 					txtDivider.setText(R.string.publish_recent);
 				else if (getPosition() == recentSize)
 					txtDivider.setText(R.string.publish_all);
 			}
 			else {
-				txtDivider.setVisibility(View.GONE);
+				layDivider.setVisibility(View.GONE);
 			}
+			
+			AisenUtil.setAlpha(convertView);
 		}
 		
 	}
@@ -253,6 +262,7 @@ public class AddFriendMentionFragment extends ARefreshProxyFragment<WeiBoUser, F
 	public boolean onMenuItemActionCollapse(MenuItem item) {
 		layContent.setVisibility(View.VISIBLE);
 		laySearchSuggest.setVisibility(View.GONE);
+		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		return true;
 	}

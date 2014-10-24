@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.aisen.weibo.sina.ui.widget.WallpaperViewGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aisen="http://schemas.android.com/apk/res-auto"
+	android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent"
+	android:id="@+id/wallpaper" aisen:blur="true" >
+
+</org.aisen.weibo.sina.ui.widget.WallpaperViewGroup>

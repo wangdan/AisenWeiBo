@@ -25,4 +25,13 @@ public class ImageConfigUtils {
 		return config;
 	}
 	
+	public static ImageConfig getPhotoCoverConfig() {
+		ImageConfig config = new ImageConfig();
+		
+		config.setLoadingBitmapRes(R.drawable.bg_banner_dialog);
+		config.setLoadfaildBitmapRes(R.drawable.bg_banner_dialog);
+		
+		return config;
+	}
+	
 }

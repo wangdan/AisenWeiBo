@@ -7,8 +7,6 @@ import org.aisen.weibo.sina.support.utils.BaiduAnalyzeUtils;
 import org.aisen.weibo.sina.ui.activity.common.FragmentContainerActivity;
 import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
 
-import com.m.common.context.GlobalContext;
-
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -16,10 +14,11 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.PreferenceManager;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
+
+import com.m.common.context.GlobalContext;
 
 /**
  * 其他
@@ -27,7 +26,7 @@ import android.preference.PreferenceFragment;
  * @author wangdan
  *
  */
-public class OtherSettingsFragment extends PreferenceFragment 
+public class OtherSettingsFragment extends BasePreferenceFragment 
 										implements OnPreferenceClickListener , OnPreferenceChangeListener {
 
 	public static void launch(Activity form) {
@@ -52,6 +51,7 @@ public class OtherSettingsFragment extends PreferenceFragment
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
 		
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActivity().getActionBar().setDisplayShowHomeEnabled(false);
 		getActivity().getActionBar().setTitle(R.string.title_about);
 		
 		pFeedback = (Preference) findPreference("pFeedback");

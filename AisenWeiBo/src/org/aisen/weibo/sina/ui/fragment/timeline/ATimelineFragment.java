@@ -30,6 +30,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
 import com.m.common.utils.Logger;
@@ -46,7 +47,8 @@ import com.m.ui.fragment.ATabTitlePagerFragment;
  * @author wangdan
  * 
  */
-public abstract class ATimelineFragment extends ARefreshProxyFragment<StatusContent, StatusContents> implements OnItemClickListener {
+public abstract class ATimelineFragment extends ARefreshProxyFragment<StatusContent, StatusContents> 
+											implements OnItemClickListener, OnItemLongClickListener {
 
 	private TimelineGroupBean mGroupBean;
 
@@ -54,7 +56,7 @@ public abstract class ATimelineFragment extends ARefreshProxyFragment<StatusCont
 	
 	@Override
 	protected int inflateContentView() {
-		return R.layout.ui_timeline;
+		return R.layout.ui_timeline_v2;
 	}
 	
 	@Override
@@ -72,6 +74,7 @@ public abstract class ATimelineFragment extends ARefreshProxyFragment<StatusCont
 		loggedIn = AppContext.getUser();
 
 		getRefreshView().setOnItemClickListener(this);
+		getRefreshView().setOnItemLongClickListener(this);
 
 		setHasOptionsMenu(true);
 	}
@@ -101,6 +104,12 @@ public abstract class ATimelineFragment extends ARefreshProxyFragment<StatusCont
 
 			TimelineCommentsFragment.launch(this, status);
 		}
+	}
+	
+	@Override
+	public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+		view.findViewById(R.id.btnMenus).performClick();
+		return true;
 	}
 
 	@Override

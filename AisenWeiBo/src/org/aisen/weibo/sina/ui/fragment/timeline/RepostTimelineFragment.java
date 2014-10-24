@@ -47,6 +47,11 @@ public class RepostTimelineFragment extends ATimelineFragment {
 		return R.layout.ui_repost_timeline;
 	}
 	
+	@Override
+	protected RefreshListType configListType() {
+		return RefreshListType.actionbarPulltorefresh;
+	}
+	
 	public int refreshLayoutInfo() {
 		return R.id.layContent;
 	}

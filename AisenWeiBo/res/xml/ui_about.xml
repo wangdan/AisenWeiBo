@@ -19,6 +19,8 @@
  	    
  	    <CheckBoxPreference android:key="pScreenRotate" android:title="@string/settings_about_screen_rotate" android:defaultValue="false" />
  	    
+ 	    <CheckBoxPreference android:key="pNetworkDelay" android:title="@string/settings_network_delay" android:defaultValue="false" />
+ 	    
  	    <CheckBoxPreference android:key="pDisableCache" android:title="@string/settings_cache_disable" android:defaultValue="false"
  	        android:summary="@string/settings_cache_disable_summary" />
  	    

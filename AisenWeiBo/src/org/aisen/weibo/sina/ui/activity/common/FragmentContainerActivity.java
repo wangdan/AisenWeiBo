@@ -21,6 +21,8 @@ import com.m.ui.utils.FragmentArgs;
  */
 public class FragmentContainerActivity extends WeiboBaseActivity {
 
+	private int overrideTheme = -1;
+	
 	/**
 	 * 启动一个界面
 	 * 
@@ -75,10 +77,8 @@ public class FragmentContainerActivity extends WeiboBaseActivity {
 				}
 				try {
 					Method method = clazz.getMethod("setTheme");
-					if(method != null) {
-						int themeRes = Integer.parseInt(method.invoke(fragment).toString());
-						setTheme(themeRes);
-					}
+					if(method != null) 
+						overrideTheme = Integer.parseInt(method.invoke(fragment).toString());
 				} catch (Exception e) {
 //					e.printStackTrace();
 				}
@@ -97,6 +97,17 @@ public class FragmentContainerActivity extends WeiboBaseActivity {
 		if(fragment != null) {
 			getFragmentManager().beginTransaction().add(R.id.fragmentContainer, fragment, className).commit();
 		}
+		
+		if (getActionBar() != null)
+			getActionBar().setDisplayShowHomeEnabled(false);
+	}
+	
+	@Override
+	protected int configTheme() {
+		if (overrideTheme > 0)
+			return overrideTheme;
+		
+		return super.configTheme();
 	}
 	
 }

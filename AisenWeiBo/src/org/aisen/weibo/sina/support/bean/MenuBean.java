@@ -13,6 +13,17 @@ public class MenuBean implements Serializable {
 	private int menuTitleRes; // 菜单的标题
 	
 	private String type;
+	
+	public MenuBean() {
+		
+	}
+	
+	public MenuBean(int iconRes, int menuRes, int titleRes, String type) {
+		this.iconRes = iconRes;
+		this.menuTitleRes = menuRes;
+		this.titleRes = titleRes;
+		this.type = type;
+	}
 
 	public int getIconRes() {
 		return iconRes;

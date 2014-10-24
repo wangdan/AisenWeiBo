@@ -7,13 +7,13 @@ import org.aisen.weibo.sina.support.bean.TimelineGroupBean;
 import org.aisen.weibo.sina.support.utils.AisenUtil;
 import org.aisen.weibo.sina.support.utils.AppContext;
 import org.aisen.weibo.sina.support.utils.BaiduAnalyzeUtils;
+import org.aisen.weibo.sina.ui.component.AMainTabsFragment;
 import org.sina.android.bean.WeiBoUser;
 
 import android.os.Bundle;
 
 import com.m.common.utils.ActivityHelper;
 import com.m.ui.fragment.ABaseFragment;
-import com.m.ui.fragment.ATabTitlePagerFragment;
 
 /**
  * 我收到、发出的评论Pager
@@ -21,7 +21,7 @@ import com.m.ui.fragment.ATabTitlePagerFragment;
  * @author wangdan
  *
  */
-public class CommentPagerFragment extends ATabTitlePagerFragment<TimelineGroupBean> {
+public class CommentPagerFragment extends AMainTabsFragment<TimelineGroupBean> {
 
 	public static ABaseFragment newInstance() {
 		return new CommentPagerFragment();

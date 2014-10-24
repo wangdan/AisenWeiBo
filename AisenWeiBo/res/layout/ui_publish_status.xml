@@ -39,7 +39,7 @@
 		<include layout="@layout/lay_publish_status_btns" android:layout_width="match_parent" android:layout_height="50dip"/>
     </LinearLayout>
     
-    <RelativeLayout android:id="@+id/layEmotion" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="#ff313740" android:visibility="gone">
+    <RelativeLayout android:id="@+id/layEmotion" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="?attr/bg_emotion" android:visibility="gone">
     </RelativeLayout>
     
 </LinearLayout>

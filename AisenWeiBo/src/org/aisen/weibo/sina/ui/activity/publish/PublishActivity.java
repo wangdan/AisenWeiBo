@@ -267,6 +267,8 @@ public class PublishActivity extends BaseActivity {
 			if (fragment != null)
 				getFragmentManager().beginTransaction().add(R.id.fragmentContainer, fragment, "PublishFragment").commit();
 		}
+		
+		getActionBar().setDisplayShowHomeEnabled(false);
 	}
 	
 	@Override
@@ -318,6 +320,18 @@ public class PublishActivity extends BaseActivity {
     		getFragmentManager().beginTransaction()
 				.add(R.id.fragmentContainer, PublishStatusFragment.newInstance(bean), "PublishFragment").commit();
 		}
+	}
+	
+	@Override
+	protected int configTheme() {
+		if (AppSettings.isLaunchWallpaper()) {
+			return R.style.BaseTheme_Wallpaper;
+		}
+		else if (AppSettings.isTranslucentModes()) {
+			return R.style.BaseTheme;
+		}
+		
+		return super.configTheme();
 	}
 
 }

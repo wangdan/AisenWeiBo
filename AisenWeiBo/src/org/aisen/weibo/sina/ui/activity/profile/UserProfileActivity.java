@@ -81,6 +81,8 @@ public class UserProfileActivity extends WeiboBaseActivity {
 		if (searchFailed) {
 			reload(null);
 		}
+		
+		getActionBar().setDisplayShowHomeEnabled(false);
 	}
 	
 	@Override

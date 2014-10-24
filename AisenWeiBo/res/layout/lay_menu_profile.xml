@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="horizontal" android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+    <ImageView android:id="@+id/imgCover" android:layout_width="match_parent" android:layout_height="80dip"
+        android:src="@drawable/bg_banner_dialog" android:scaleType="centerCrop" />
+    
+    <LinearLayout android:layout_width="match_parent" android:layout_height="80dip" android:orientation="horizontal"
+        android:gravity="center_vertical" >
+	    <ImageView android:id="@+id/imgPhoto" android:layout_width="48dip" android:layout_height="48dip"
+	        android:layout_marginLeft="20dip" android:src="@drawable/ic_launcher" android:layout_marginRight="12dip" />
+	    
+	    <TextView android:id="@+id/txtName" android:layout_width="0dip" android:layout_height="wrap_content"
+	        android:singleLine="true" android:layout_weight="1" android:textColor="@color/white"
+	        android:textStyle="bold" android:layout_marginRight="12dip" android:textSize="17.0sp" />
+	    
+	    <ImageView android:id="@+id/btnAccounts" android:layout_width="48dip" android:layout_height="48dip"
+	        android:layout_marginRight="12dip" android:src="@drawable/ic_down" android:padding="4dip"
+	        android:background="@drawable/selector_user_switch" />
+    </LinearLayout>
+    
+</FrameLayout>

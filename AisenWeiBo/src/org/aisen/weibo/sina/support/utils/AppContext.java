@@ -1,11 +1,16 @@
 package org.aisen.weibo.sina.support.utils;
 
 import org.aisen.weibo.sina.base.MyApplication;
+import org.aisen.weibo.sina.support.bean.WallpaperBean;
+import org.aisen.weibo.sina.support.db.SinaDB;
 import org.aisen.weibo.sina.sys.service.UnreadService;
 import org.sina.android.bean.Groups;
 import org.sina.android.bean.Token;
 import org.sina.android.bean.UnreadCount;
 import org.sina.android.bean.WeiBoUser;
+
+import com.m.support.sqlite.property.Extra;
+import com.m.support.sqlite.util.FieldUtils;
 
 /**
  * 应用上下文
@@ -22,6 +27,8 @@ public class AppContext {
 	private static Token mToken;
 
 	private static UnreadCount unreadCount;
+	
+	private static WallpaperBean wallpaper;
 	
 	public static boolean isLogedin() {
 		return mUser != null && mToken != null;
@@ -86,6 +93,22 @@ public class AppContext {
 	
 	public static UnreadCount getUnreadCount() {
 		return AppContext.unreadCount;
+	}
+	
+	public static void setWallpaper(WallpaperBean wallpaper) {
+		AppContext.wallpaper = wallpaper;
+		if (wallpaper != null) {
+			SinaDB.getSqlite().insert(new Extra(null, "wallpaper_setting"), AppContext.getWallpaper());
+		}
+		else {
+			String whereClause = String.format(" %s = ? ", FieldUtils.KEY);
+			String[] whereArgs = new String[]{ "wallpaper_setting" };
+			SinaDB.getSqlite().delete(WallpaperBean.class, whereClause, whereArgs);
+		}
+	}
+	
+	public static WallpaperBean getWallpaper() {
+		return AppContext.wallpaper;
 	}
 	
 }

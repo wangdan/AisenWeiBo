@@ -12,5 +12,5 @@
 	<include android:id="@id/layoutEmpty" layout="@layout/lay_search_empty" android:layout_width="match_parent" android:layout_height="match_parent"
 		android:visibility="gone" />
 	<fr.castorflex.android.smoothprogressbar.SmoothProgressBar android:id="@+id/progress" android:layout_width="match_parent" android:layout_height="10dip"
-	    android:visibility="gone" />
+	    android:visibility="gone" style="@style/GNowProgressBar" android:indeterminate="true" />
 </RelativeLayout>

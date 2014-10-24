@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.support.bean.SearchHisotyBean;
 import org.aisen.weibo.sina.support.db.SinaDB;
+import org.aisen.weibo.sina.support.utils.AisenUtil;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -22,6 +23,7 @@ import com.m.support.adapter.ABaseAdapter.AbstractItemView;
 import com.m.support.sqlite.util.FieldUtils;
 import com.m.support.task.TaskException;
 import com.m.support.task.WorkTask;
+import com.m.ui.activity.BaseActivity;
 import com.m.ui.fragment.AListFragment;
 
 /**
@@ -88,6 +90,13 @@ public class SearchHistoryFragment extends AListFragment<SearchHisotyBean, Array
 		mType = Type.valueOf(type);
 		
 		getRefreshView().setOnItemClickListener(this);
+		
+		BaseActivity baseActivity = (BaseActivity) getActivity();
+		org.aisen.weibo.sina.ui.fragment.base.ActivityHelper activityHelper = (org.aisen.weibo.sina.ui.fragment.base.ActivityHelper) baseActivity.getActivityHelper();
+		getRefreshView().setPadding(getRefreshView().getPaddingLeft(), 
+										getRefreshView().getPaddingTop(), 
+										getRefreshView().getPaddingRight(), 
+										activityHelper.wallpaper.systemBarConfig.getPixelInsetBottom());
 	}
 	
 	@Override
@@ -183,6 +192,8 @@ public class SearchHistoryFragment extends AListFragment<SearchHisotyBean, Array
 				
 				txtQuery.setText(data.getQuery());
 			}
+			
+			AisenUtil.setAlpha(convertView);
 		}
 		
 	}

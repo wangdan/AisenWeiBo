@@ -47,6 +47,11 @@ public class TopicsFragment extends ATimelineFragment {
 	}
 	
 	@Override
+	protected RefreshListType configListType() {
+		return RefreshListType.actionbarPulltorefresh;
+	}
+	
+	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		

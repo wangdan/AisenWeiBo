@@ -230,6 +230,13 @@ public class HttpsUtility implements HttpUtility {
 
 	@SuppressWarnings("deprecation")
 	private <T> T executeClient(HttpUriRequest request, Class<T> responseCls) throws TaskException {
+		if (AppSettings.isNetworkDelay()) {
+			try {
+				Thread.sleep(10 * 1000);
+			} catch (Exception e) {
+			}
+		}
+		
 		try {
 			HttpResponse httpResponse = getHttpsClient().execute(request);
 

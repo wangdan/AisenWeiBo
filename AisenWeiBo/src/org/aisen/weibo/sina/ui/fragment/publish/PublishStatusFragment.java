@@ -94,6 +94,15 @@ public class PublishStatusFragment extends APublishFragment {
 				btnCamera.setVisibility(View.GONE);
 		}
 		
+		if (AisenUtil.isTranslucent())
+        	txtGroupHint.setTextColor(getResources().getColor(R.color.edit_hint_wallpaper));
+        else
+        	txtGroupHint.setTextColor(getResources().getColor(R.color.edit_hint));
+		if (AisenUtil.isTranslucent())
+        	txtTiming.setTextColor(getResources().getColor(R.color.edit_hint_wallpaper));
+        else
+        	txtTiming.setTextColor(getResources().getColor(R.color.edit_hint));
+		
 		// 2014-09-15 解决当文字超过限制后，因为定时设置，清除掉了错误提示，这里再次刷新一下界面
 		refreshUI();
 	}

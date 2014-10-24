@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.preference.PreferenceFragment;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
@@ -26,7 +25,7 @@ import com.m.support.task.WorkTask;
 import com.m.ui.activity.BaseActivity;
 import com.m.ui.utils.ViewUtils;
 
-public class VersionSettingsFragment extends PreferenceFragment
+public class VersionSettingsFragment extends BasePreferenceFragment
 										implements OnPreferenceClickListener{
 
 	private Preference pVersion;// 检查版本

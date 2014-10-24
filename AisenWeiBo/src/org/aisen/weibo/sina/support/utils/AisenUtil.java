@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.aisen.weibo.sina.R;
+import org.aisen.weibo.sina.support.bean.WallpaperBean;
 import org.aisen.weibo.sina.ui.activity.comment.TimelineCommentsActivity;
 import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
@@ -32,6 +33,7 @@ import android.app.AlertDialog;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -260,8 +262,10 @@ public class AisenUtil {
 			return new DecimalFormat("#" + res.getString(R.string.msg_ten_thousand)).format(count * 1.0f / 10000);
 	}
 	
-	public static void showMenuDialog(ABaseFragment fragment, View targetView, 
+	public static void showMenuDialog(ABaseFragment fragment, final View targetView, 
 			String[] menuArr, DialogInterface.OnClickListener onItemClickListener) {
+		targetView.setSelected(true);
+		
 		final AlertDialog dialog = new AlertDialog.Builder(fragment.getActivity(), R.style.ChanneMenuDialog)
 												.setItems(menuArr, onItemClickListener).create();
 		// 4.0没有这个方法
@@ -309,6 +313,13 @@ public class AisenUtil {
 
 		}
 		
+		dialog.setOnDismissListener(new OnDismissListener() {
+			
+			@Override
+			public void onDismiss(DialogInterface dialog) {
+				targetView.setSelected(false);
+			}
+		});
 		dialog.setCanceledOnTouchOutside(true);
 		dialog.getWindow().setGravity(Gravity.LEFT | Gravity.TOP);
 		dialog.getWindow().setLayout(Math.round(params.width * 1.2f), height);
@@ -740,6 +751,25 @@ public class AisenUtil {
 		text = converter.convert(text);
 		Logger.d(String.format("文字长度%s,简繁体转换耗时%sms", String.valueOf(length), String.valueOf(System.currentTimeMillis() - time)));
 		return text;
+	}
+	
+	public static void setAlpha(View view) {
+		if (AppSettings.isLaunchWallpaper() || AppContext.getWallpaper() != null)
+			view.setAlpha(0.85f);
+		else
+			view.setAlpha(1.0f);
+	}
+	
+	public static boolean isTranslucent() {
+		return AppSettings.isLaunchWallpaper() || AppContext.getWallpaper() != null;
+	}
+	
+	public static WallpaperBean generaterDefaultWallpaper() {
+		WallpaperBean launchWallpaper = new WallpaperBean();
+		launchWallpaper.setType("1");
+		launchWallpaper.setPath("5_5.jpg");
+		
+		return launchWallpaper;
 	}
 	
 }

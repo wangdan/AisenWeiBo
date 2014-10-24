@@ -2,9 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="horizontal" android:layout_width="match_parent"
 	android:layout_height="wrap_content">
 
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"
+    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical"
+        android:paddingLeft="@dimen/item_padding" android:paddingRight="@dimen/item_padding"
+        android:layout_marginLeft="@dimen/item_margin" android:layout_marginRight="@dimen/item_margin"
+        android:layout_marginTop="@dimen/item_margin" android:layout_marginBottom="@dimen/item_margin"
+        android:background="@drawable/bg_card_item_light" android:id="@+id/container" >
+    <!-- <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"
         android:id="@+id/container" android:background="@drawable/item_offline_channe_selector"
-        android:paddingLeft="@dimen/horizontal_margin">
+        android:paddingLeft="@dimen/horizontal_margin"> -->
 	    
         <LinearLayout android:layout_width="match_parent" android:layout_height="78dip" android:orientation="horizontal">
             <RelativeLayout android:layout_width="60dip" android:layout_height="60dip" android:layout_marginTop="@dimen/vertical_gap"

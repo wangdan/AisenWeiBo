@@ -9,6 +9,8 @@ import org.aisen.weibo.sina.support.utils.AppContext;
 import org.aisen.weibo.sina.support.utils.AppSettings;
 import org.aisen.weibo.sina.support.utils.BaiduAnalyzeUtils;
 import org.aisen.weibo.sina.ui.activity.main.MainActivity;
+import org.aisen.weibo.sina.ui.activity.search.SearchActivity;
+import org.aisen.weibo.sina.ui.component.AMainTabsFragment;
 import org.aisen.weibo.sina.ui.fragment.group.GroupSortFragment;
 import org.sina.android.bean.Group;
 import org.sina.android.bean.Groups;
@@ -22,7 +24,6 @@ import android.view.MenuItem;
 
 import com.m.common.context.GlobalContext;
 import com.m.ui.fragment.ABaseFragment;
-import com.m.ui.fragment.ATabTitlePagerFragment;
 
 /**
  * 首页微博界面
@@ -30,7 +31,7 @@ import com.m.ui.fragment.ATabTitlePagerFragment;
  * @author wangdan
  *
  */
-public class MainTimelinePagerFragment extends ATabTitlePagerFragment<TimelineGroupBean> {
+public class MainTimelinePagerFragment extends AMainTabsFragment<TimelineGroupBean> {
 
 	public static ABaseFragment newInstance() {
 		return new MainTimelinePagerFragment();
@@ -54,7 +55,6 @@ public class MainTimelinePagerFragment extends ATabTitlePagerFragment<TimelineGr
 		}
 		
 		super.layoutInit(inflater, null);
-		
 		
 		setHasOptionsMenu(true);
 	}
@@ -135,12 +135,17 @@ public class MainTimelinePagerFragment extends ATabTitlePagerFragment<TimelineGr
 		if (getActivity() != null && AppContext.getGroups() != null && AppContext.getGroups().getLists().size() > 0) {
 			menu.setGroupVisible(R.id.timelineMenus, !((MainActivity) getActivity()).isDrawerOpened());
 		}
+//		menu.setGroupVisible(R.id.timelineSearch, !((MainActivity) getActivity()).isDrawerOpened());
+		menu.setGroupVisible(R.id.timelineSearch, false);
+		
 	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.friendGroups)
 			GroupSortFragment.lanuch(getActivity());
+		else if (item.getItemId() == R.id.search)
+			SearchActivity.launch(getActivity());
 
 		return super.onOptionsItemSelected(item);
 	}
@@ -150,6 +155,7 @@ public class MainTimelinePagerFragment extends ATabTitlePagerFragment<TimelineGr
 		super.onResume();
 		
 		BaiduAnalyzeUtils.onPageStart("微博首页");
+		
 	}
 	
 	@Override

@@ -14,7 +14,6 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,7 +30,7 @@ import com.m.common.utils.ActivityHelper;
  * @author wangdan
  *
  */
-public class NotificationSettingsFragment extends PreferenceFragment implements OnPreferenceClickListener, OnPreferenceChangeListener,
+public class NotificationSettingsFragment extends BasePreferenceFragment implements OnPreferenceClickListener, OnPreferenceChangeListener,
 																			OnCheckedChangeListener {
 
 	public static void launch(Activity from) {
@@ -55,6 +54,7 @@ public class NotificationSettingsFragment extends PreferenceFragment implements 
 		addPreferencesFromResource(R.xml.ui_notification_settings);
 
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActivity().getActionBar().setDisplayShowHomeEnabled(false);
 		getActivity().getActionBar().setTitle(R.string.title_notification);
 		
 		setHasOptionsMenu(true);

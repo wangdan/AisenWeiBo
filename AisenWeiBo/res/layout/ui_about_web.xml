@@ -5,5 +5,6 @@
 	<WebView android:id="@+id/webView" android:layout_width="match_parent" android:layout_height="match_parent"
 	    android:padding="0dip" />
 	
-	<fr.castorflex.android.smoothprogressbar.SmoothProgressBar android:id="@+id/progress" android:layout_width="match_parent" android:layout_height="10dip" />
+	<fr.castorflex.android.smoothprogressbar.SmoothProgressBar android:id="@+id/progress" android:layout_width="match_parent" android:layout_height="10dip"
+	    style="@style/GNowProgressBar" android:indeterminate="true" />
 </RelativeLayout>

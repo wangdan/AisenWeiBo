@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.aisen.weibo.sina.R;
+import org.aisen.weibo.sina.support.utils.AisenUtil;
 import org.aisen.weibo.sina.support.utils.AppContext;
 import org.aisen.weibo.sina.support.utils.BaiduAnalyzeUtils;
 import org.aisen.weibo.sina.ui.activity.profile.UserProfileActivity;
@@ -31,6 +32,7 @@ import com.m.support.Inject.ViewInject;
 import com.m.support.adapter.ABaseAdapter.AbstractItemView;
 import com.m.support.task.TaskException;
 import com.m.ui.activity.AViewpagerActivity;
+import com.m.ui.activity.BaseActivity;
 import com.m.ui.fragment.ABaseFragment;
 import com.m.ui.fragment.AListFragment;
 
@@ -59,6 +61,8 @@ public class SearchUsers_v2Fragment extends AListFragment<SuggestionsUser, Sugge
 	View layEmpty;
 	@ViewInject(id = R.id.layList)
 	View layList;
+	@ViewInject(id = R.id.layEdit)
+	View layEdit;
 	
 	private SearchUsersTask mTask;
 	
@@ -109,6 +113,18 @@ public class SearchUsers_v2Fragment extends AListFragment<SuggestionsUser, Sugge
 			mSearchHistoryFragment = (SearchHistoryFragment) getActivity().getFragmentManager().findFragmentByTag("SearchUserHistoryFragment");
 		}
 		mSearchHistoryFragment.setOnseaItemClicked(this);
+		
+		BaseActivity baseActivity = (BaseActivity) getActivity();
+		org.aisen.weibo.sina.ui.fragment.base.ActivityHelper activityHelper = (org.aisen.weibo.sina.ui.fragment.base.ActivityHelper) baseActivity.getActivityHelper();
+		getRefreshView().setPadding(getRefreshView().getPaddingLeft(), 
+										getRefreshView().getPaddingTop(), 
+										getRefreshView().getPaddingRight(), 
+										activityHelper.wallpaper.systemBarConfig.getPixelInsetBottom());
+		
+		AisenUtil.setAlpha(layList);
+		AisenUtil.setAlpha(layHistory);
+		AisenUtil.setAlpha(layEdit);
+		layList.setVisibility(View.GONE);
 	}
 	
 	@Override
@@ -182,6 +198,8 @@ public class SearchUsers_v2Fragment extends AListFragment<SuggestionsUser, Sugge
 		@Override
 		public void bindingData(View convertView, SuggestionsUser data) {
 			txtName.setText(data.getScreen_name());
+			
+			AisenUtil.setAlpha(convertView);
 		}
 		
 	}

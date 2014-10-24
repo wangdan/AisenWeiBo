@@ -36,6 +36,18 @@ public class MentionTimelineFragment extends ATimelineFragment {
 	}
 	
 	@Override
+	protected void config(com.m.ui.fragment.ARefreshFragment.RefreshConfig config) {
+		super.config(config);
+		
+		config.savePosition = false;
+	}
+	
+	@Override
+	protected RefreshListType configListType() {
+		return RefreshListType.androidPulltorefresh;
+	}
+	
+	@Override
 	protected void requestData(RefreshMode mode) {
 		new MentionTimelineTask(mode).execute();
 	}

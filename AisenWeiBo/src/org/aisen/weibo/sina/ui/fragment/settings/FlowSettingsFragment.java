@@ -14,7 +14,6 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 
 import com.m.common.context.GlobalContext;
@@ -28,7 +27,7 @@ import com.m.ui.fragment.CacheClearFragment;
  * @author wangdan
  *
  */
-public class FlowSettingsFragment extends PreferenceFragment 
+public class FlowSettingsFragment extends BasePreferenceFragment 
 									implements OnPreferenceClickListener , OnPreferenceChangeListener {
 
 	public static void launch(Activity from) {
@@ -47,6 +46,7 @@ public class FlowSettingsFragment extends PreferenceFragment
 		addPreferencesFromResource(R.xml.ui_flow_settings);
 		
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActivity().getActionBar().setDisplayShowHomeEnabled(false);
 		getActivity().getActionBar().setTitle(R.string.title_flowsetting);
 		
 		// 图片上传设置

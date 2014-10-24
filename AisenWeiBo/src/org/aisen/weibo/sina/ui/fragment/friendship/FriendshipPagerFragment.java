@@ -8,6 +8,7 @@ import org.aisen.weibo.sina.support.utils.AisenUtil;
 import org.aisen.weibo.sina.support.utils.AppContext;
 import org.aisen.weibo.sina.support.utils.BaiduAnalyzeUtils;
 import org.aisen.weibo.sina.ui.activity.common.FragmentContainerActivity;
+import org.aisen.weibo.sina.ui.component.AMainTabsFragment;
 import org.sina.android.bean.WeiBoUser;
 
 import android.app.Activity;
@@ -15,7 +16,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 
 import com.m.ui.fragment.ABaseFragment;
-import com.m.ui.fragment.ATabTitlePagerFragment;
 import com.m.ui.utils.FragmentArgs;
 
 /**
@@ -24,7 +24,7 @@ import com.m.ui.utils.FragmentArgs;
  * @author wangdan
  *
  */
-public class FriendshipPagerFragment extends ATabTitlePagerFragment<TimelineGroupBean> {
+public class FriendshipPagerFragment extends AMainTabsFragment<TimelineGroupBean> {
 
 	/**
 	 * 用户关系 

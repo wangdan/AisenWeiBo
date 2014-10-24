@@ -155,4 +155,19 @@
 		<value>http://aisenyuedu.duapp.com/?p=31</value>
 	</setting>
 	
+	<setting type="com.m.Theme_color">
+		<des>默认主题</des>
+		<value>#ffa32724</value>
+	</setting>
+	
+	<!-- <setting type="fragment_lifecycle">
+		<des>Fragment帮助类</des>
+		<value>org.aisen.weibo.sina.ui.fragment.base.FragmentHelper</value>
+	</setting> -->
+	
+	<setting type="activity_lifecycle">
+		<des>Activity帮助类</des>
+		<value>org.aisen.weibo.sina.ui.fragment.base.ActivityHelper</value>
+	</setting>
+	
 </app-settings>

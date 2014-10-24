@@ -24,12 +24,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.m.support.Inject.ViewInject;
 import com.m.support.adapter.ABaseAdapter.AbstractItemView;
 import com.m.support.task.TaskException;
 import com.m.support.task.WorkTask;
+import com.m.ui.activity.BaseActivity;
 import com.m.ui.fragment.AListFragment;
 
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
@@ -76,6 +78,16 @@ public class MentionSuggestionFragment extends AListFragment<MentionSuggestionBe
 		progressBar.setIndeterminate(true);
 		
 		getRefreshView().setOnItemClickListener(this);
+		
+		BaseActivity baseActivity = (BaseActivity) getActivity();
+		org.aisen.weibo.sina.ui.fragment.base.ActivityHelper activityHelper = (org.aisen.weibo.sina.ui.fragment.base.ActivityHelper) baseActivity.getActivityHelper();
+		
+		ListView listView = (ListView) getRefreshView();
+		listView.setClipToPadding(false);
+		listView.setPadding(listView.getPaddingLeft(), 
+								listView.getPaddingTop(), 
+								listView.getPaddingRight(), 
+								activityHelper.wallpaper.systemBarConfig.getPixelInsetBottom());
 	};
 	
 	@Override
@@ -273,6 +285,8 @@ public class MentionSuggestionFragment extends AListFragment<MentionSuggestionBe
 		TextView txtRemark;
 		@ViewInject(id = R.id.txtDivider)
 		TextView txtDivider;
+		@ViewInject(id = R.id.layDivider)
+		View layDivider;
 		
 		@Override
 		public int inflateViewId() {
@@ -305,15 +319,17 @@ public class MentionSuggestionFragment extends AListFragment<MentionSuggestionBe
 			txtRemark.setText(remark);
 			
 			if (localUserList.size() > 0 && remoteUserList.size() > 0) {
-				txtDivider.setVisibility(getPosition() == 0 || getPosition() == localUserList.size() ? View.VISIBLE : View.GONE);
+				layDivider.setVisibility(getPosition() == 0 || getPosition() == localUserList.size() ? View.VISIBLE : View.GONE);
 				if (getPosition() == 0)
 					txtDivider.setText(R.string.publish_local_datas);
 				else if (getPosition() == localUserList.size())
 					txtDivider.setText(R.string.publish_service_datas);
 			}
 			else {
-				txtDivider.setVisibility(View.GONE);
+				layDivider.setVisibility(View.GONE);
 			}
+			
+			AisenUtil.setAlpha(convertView);
 		}
 		
 	}

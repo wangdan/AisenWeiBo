@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.TextView;
 
 import com.m.common.context.GlobalContext;
 import com.m.support.Inject.ViewInject;
@@ -36,11 +37,11 @@ public class TimelineCommentsActivity extends AViewpagerActivity implements OnCl
 	}
 	
 	@ViewInject(id = R.id.btnComment, click = "btnClicked")
-	View btnComment;
+	TextView btnComment;
 	@ViewInject(id = R.id.btnRepost, click = "btnClicked")
-	View btnRepost;
+	TextView btnRepost;
 	@ViewInject(id = R.id.btnFavor, click = "btnClicked")
-	View btnFavor;
+	TextView btnFavor;
 	@ViewInject(id = R.id.btnOverflow, click = "btnClicked")
 	View btnOverflow;
 	
@@ -53,9 +54,13 @@ public class TimelineCommentsActivity extends AViewpagerActivity implements OnCl
 		mStatusContent = savedInstanceState == null ? (StatusContent) getIntent().getSerializableExtra("bean")
 													: (StatusContent) savedInstanceState.getSerializable("bean");
 		
+		org.aisen.weibo.sina.ui.fragment.base.ActivityHelper activityHelper = (org.aisen.weibo.sina.ui.fragment.base.ActivityHelper) getActivityHelper();
+		activityHelper.insertBottom = true;
+		
 		super.onCreate(savedInstanceState);
 		
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setDisplayShowHomeEnabled(false);
 		getActionBar().setTitle(R.string.title_cmt);
 		
 		BizFragment.getBizFragment(this);
@@ -67,6 +72,17 @@ public class TimelineCommentsActivity extends AViewpagerActivity implements OnCl
 			findViewById(R.id.dividerRepost).setVisibility(View.GONE);
 			btnRepost.setVisibility(View.GONE);
 		}
+		
+		setTextColor(btnComment);
+		setTextColor(btnRepost);
+		setTextColor(btnFavor);
+	}
+	
+	private void setTextColor(TextView textview) {
+		if (AisenUtil.isTranslucent()) 
+			textview.setTextColor(getResources().getColor(R.color.white));
+		else
+			textview.setTextColor(getResources().getColor(R.drawable.post_counters));
 	}
 	
 	@Override

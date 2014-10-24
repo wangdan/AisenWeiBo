@@ -6,9 +6,11 @@ import java.util.List;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.MyApplication;
 import org.aisen.weibo.sina.support.bean.AccountBean;
+import org.aisen.weibo.sina.support.cache.TimelineMemoryCacheUtility;
 import org.aisen.weibo.sina.support.db.AccountDB;
 import org.aisen.weibo.sina.support.publish.PublishNotifier;
 import org.aisen.weibo.sina.support.publish.UnreadCountNotifier;
+import org.aisen.weibo.sina.support.utils.AisenUtil;
 import org.aisen.weibo.sina.support.utils.AppContext;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
 import org.aisen.weibo.sina.sys.service.PublishService;
@@ -73,6 +75,8 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
 			UnreadCountNotifier.mCount = new UnreadCount();
 			// 5、清理通知栏
 			PublishNotifier.cancelAll();
+			// 6、清理内存数据
+			TimelineMemoryCacheUtility.clear();
 		}
 		
 		// 登录该账号
@@ -233,6 +237,7 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
 			super.updateConvertView(data, convertView, selectedPosition);
 
 			container.setSelected(checkedArray.get(getPosition()));
+			AisenUtil.setAlpha(convertView);
 		}
 		
 	}

@@ -104,10 +104,16 @@ public class UserProfileFragment extends ATimelineFragment
 	}
 	
 	@Override
+	protected RefreshListType configListType() {
+		return RefreshListType.androidPulltorefresh;
+	}
+	
+	@Override
 	protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
 		ListView listView = (ListView) getRefreshView();
-		viewProfile = View.inflate(getActivity(), R.layout.lay_profile, null);
+		viewProfile = View.inflate(getActivity(), R.layout.lay_profile_v2, null);
 		listView.addHeaderView(viewProfile);
+		AisenUtil.setAlpha(viewProfile);
 		
 		super.layoutInit(inflater, savedInstanceSate);
 		

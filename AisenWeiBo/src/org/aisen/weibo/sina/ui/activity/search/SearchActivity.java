@@ -40,6 +40,7 @@ public class SearchActivity extends AViewpagerActivity implements OnClickListene
 		super.onCreate(savedInstanceState);
 		
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setDisplayShowHomeEnabled(false);
 		getActionBar().setTitle(R.string.title_search);
 	}
 	

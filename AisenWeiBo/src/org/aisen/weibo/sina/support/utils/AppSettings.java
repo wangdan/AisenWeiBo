@@ -326,7 +326,7 @@ public class AppSettings {
 	 */
 	public static int getPicLargeMode() {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
-		int index = Integer.parseInt(prefs.getString("pPicLargeMode", "0"));
+		int index = Integer.parseInt(prefs.getString("pPicLargeMode", "1"));
 		
 		return index;
 	}
@@ -435,6 +435,17 @@ public class AppSettings {
 		return prefs.getBoolean("pDebug", false);
 	}
 	
+	
+	/**
+	 * 网络请求延迟
+	 * 
+	 * @return
+	 */
+	public static boolean isNetworkDelay() {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
+		return prefs.getBoolean("pNetworkDelay", false);
+	}
+	
 	/**
 	 * 关闭缓存
 	 * 
@@ -455,10 +466,15 @@ public class AppSettings {
 		int value = Integer.parseInt(prefs.getString("pRefreshViewType", "0"));
 		
 		switch (value) {
+		// PullToRefresh刷新控件
 		case 0:
 			return 0;
+		// ActionBar刷新控件
 		case 1:
 			return 1;
+		// Google官方的刷新控件
+		case 2:
+			return 2;
 		default:
 			return 0;
 		}
@@ -490,6 +506,24 @@ public class AppSettings {
 		}
 		
 		return convert;
+	}
+	
+	public static boolean isLaunchWallpaper() {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
+		return prefs.getBoolean("pLaunchWallpaper", false);
+	}
+	
+	public static boolean isTranslucentModes() {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
+		return prefs.getBoolean("pTranslucent", true);
+	}
+	
+	public static String getThemeColor() {
+		return SettingUtility.getPermanentSettingAsStr("com.m.Theme_color", "");
+	}
+	
+	public static void setThemeColor(String color) {
+		SettingUtility.setPermanentSetting("com.m.Theme_color", color);
 	}
 	
 }

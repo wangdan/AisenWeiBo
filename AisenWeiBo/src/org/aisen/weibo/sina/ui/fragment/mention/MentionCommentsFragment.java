@@ -29,6 +29,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.TextView;
 
 import com.m.support.adapter.ABaseAdapter.AbstractItemView;
@@ -44,7 +45,7 @@ import com.m.ui.fragment.ATabTitlePagerFragment;
  *
  */
 public class MentionCommentsFragment extends ARefreshProxyFragment<StatusComment, StatusComments>
-										implements OnItemClickListener {
+										implements OnItemClickListener, OnItemLongClickListener {
 
 	public static ABaseFragment newInstance(TimelineGroupBean bean) {
 		ABaseFragment fragment = new MentionCommentsFragment();
@@ -65,6 +66,11 @@ public class MentionCommentsFragment extends ARefreshProxyFragment<StatusComment
 	}
 	
 	@Override
+	protected RefreshListType configListType() {
+		return RefreshListType.androidPulltorefresh;
+	}
+	
+	@Override
 	protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
 		super.layoutInit(inflater, savedInstanceSate);
 		
@@ -73,6 +79,7 @@ public class MentionCommentsFragment extends ARefreshProxyFragment<StatusComment
 											   : (TimelineGroupBean) savedInstanceSate.getSerializable("bean");
 		
 		getRefreshView().setOnItemClickListener(this);
+		getRefreshView().setOnItemLongClickListener(this);
 		
 		setHasOptionsMenu(true);
 		
@@ -91,6 +98,12 @@ public class MentionCommentsFragment extends ARefreshProxyFragment<StatusComment
 		ListView listView = (ListView) getRefreshView();
 		position -= listView.getHeaderViewsCount();
 		BizFragment.getBizFragment(this).replyComment(null, getAdapter().getDatas().get(position));
+	}
+	
+	@Override
+	public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+		view.findViewById(R.id.btnMenus).performClick();
+		return true;
 	}
 
 	@Override

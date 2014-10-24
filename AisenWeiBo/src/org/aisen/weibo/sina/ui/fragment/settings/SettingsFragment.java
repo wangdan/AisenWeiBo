@@ -1,15 +1,12 @@
 package org.aisen.weibo.sina.ui.fragment.settings;
 
-import java.util.List;
-
 import org.aisen.weibo.sina.R;
-import org.aisen.weibo.sina.support.bean.AccountBean;
-import org.aisen.weibo.sina.support.db.AccountDB;
+import org.aisen.weibo.sina.support.bean.WallpaperBean;
 import org.aisen.weibo.sina.support.utils.AppContext;
+import org.aisen.weibo.sina.support.utils.AppSettings;
 import org.aisen.weibo.sina.support.utils.BaiduAnalyzeUtils;
 import org.aisen.weibo.sina.ui.activity.common.FragmentContainerActivity;
 import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
-import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -17,8 +14,8 @@ import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 
-import com.m.support.task.TaskException;
-import com.m.support.task.WorkTask;
+import com.m.common.utils.CommSettings;
+import com.m.ui.activity.BaseActivity;
 
 /**
  * 程序设置
@@ -35,11 +32,14 @@ public class SettingsFragment extends VersionSettingsFragment implements OnPrefe
 	private Preference pBasic;
 	private Preference pNotification;
 	private Preference pFlow;
-	private Preference pAccount;
 	private Preference pAbout;
 	private Preference pShareAisen;
-	private CheckBoxPreference pRotatePic;// 设置旋转照片
-	private CheckBoxPreference pSendDelay;// 内容发布延迟
+	
+	
+	private Preference pTheme;// 主题设置
+	private Preference pCustomWallpaper;// 自定义壁纸设置
+	private CheckBoxPreference pLaunchWallpaper;// 桌面壁纸
+	private CheckBoxPreference pTranslucent;// Translucent Modes
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -48,6 +48,7 @@ public class SettingsFragment extends VersionSettingsFragment implements OnPrefe
 		addPreferencesFromResource(R.xml.ui_settings);
 		
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActivity().getActionBar().setDisplayShowHomeEnabled(false);
 		getActivity().getActionBar().setTitle(R.string.title_settings);
 		
 		pBasic = (Preference) findPreference("pBasic");
@@ -56,16 +57,25 @@ public class SettingsFragment extends VersionSettingsFragment implements OnPrefe
 		pNotification.setOnPreferenceClickListener(this);
 		pFlow = (Preference) findPreference("pFlow");
 		pFlow.setOnPreferenceClickListener(this);
-		pAccount = (Preference) findPreference("pAccount");
-		pAccount.setOnPreferenceClickListener(this);
 		pAbout = (Preference) findPreference("pAbout");
 		pAbout.setOnPreferenceClickListener(this);
 		pShareAisen = (Preference) findPreference("pShareAisen");
 		pShareAisen.setOnPreferenceClickListener(this);
-		pRotatePic = (CheckBoxPreference) findPreference("pRotatePic");
-		pRotatePic.setOnPreferenceChangeListener(this);
-		pSendDelay = (CheckBoxPreference) findPreference("pSendDelay");
-		pSendDelay.setOnPreferenceChangeListener(this);
+		
+		pTheme = (Preference) findPreference("pTheme");
+		pTheme.setOnPreferenceClickListener(this);
+		
+		Preference pMoreAdvanced = (Preference) findPreference("pMoreAdvanced");
+		pMoreAdvanced.setOnPreferenceClickListener(this);
+		
+		pCustomWallpaper = (Preference) findPreference("pCustomWallpaper");
+		pCustomWallpaper.setOnPreferenceClickListener(this);
+		
+		pLaunchWallpaper = (CheckBoxPreference) findPreference("pLaunchWallpaper");
+		pLaunchWallpaper.setOnPreferenceChangeListener(this);
+		
+		pTranslucent = (CheckBoxPreference) findPreference("pTranslucent");
+		pTranslucent.setOnPreferenceChangeListener(this);
 	}
 	
 	@Override
@@ -79,14 +89,22 @@ public class SettingsFragment extends VersionSettingsFragment implements OnPrefe
 		else if ("pFlow".equals(preference.getKey())) {
 			FlowSettingsFragment.launch(getActivity());
 		}
-		else if ("pAccount".equals(preference.getKey())) {
-			AccountFragment.launch(getActivity());
-		}
 		else if ("pAbout".equals(preference.getKey())) {
 			OtherSettingsFragment.launch(getActivity());
 		}
 		else if ("pShareAisen".equals(preference.getKey())) {
 			PublishActivity.publishRecommend(getActivity());
+		}
+		else if ("pMoreAdvanced".equals(preference.getKey())) {
+			AdvancedFragment.launch(getActivity());
+		} 
+		// 主题设置
+		else if ("pTheme".equals(preference.getKey())) {
+			ThemeStyleSettingsFragment.launch(getActivity());
+		}
+		// 自定义壁纸
+		if ("pCustomWallpaper".equals(preference.getKey())) {
+			WallpaperSettingsFragment.launch(getActivity());
 		}
 		
 		return super.onPreferenceClick(preference);
@@ -94,13 +112,40 @@ public class SettingsFragment extends VersionSettingsFragment implements OnPrefe
 	
 	@Override
 	public boolean onPreferenceChange(Preference preference, Object newValue) {
-		if ("pRotatePic".equals(preference.getKey())) {
-			if (Boolean.parseBoolean(newValue.toString()))
-				BaiduAnalyzeUtils.onEvent("set_rotate_pic", "设置旋转照片");
+		// Translucent Modes
+		if ("pTranslucent".equals(preference.getKey())) {
+			if (Boolean.parseBoolean(newValue.toString())) {
+
+				if (AppSettings.isLaunchWallpaper())
+					CommSettings.setAppTheme(R.style.BaseTheme_Wallpaper_Translucent);
+				else 
+					CommSettings.setAppTheme(R.style.BaseTheme_Translucent);
+			}
+			else {
+				if (AppSettings.isLaunchWallpaper()) 
+					CommSettings.setAppTheme(R.style.BaseTheme_Wallpaper);
+				else
+					CommSettings.setAppTheme(R.style.BaseTheme);
+			}
+			
+			((BaseActivity) getActivity()).reload();
 		}
-		else if ("pSendDelay".equals(preference.getKey())) {
-			if (Boolean.parseBoolean(newValue.toString()))
-				BaiduAnalyzeUtils.onEvent("set_publish_delay", "设置延迟发布");
+		// 桌面壁纸
+		else if ("pLaunchWallpaper".equals(preference.getKey())) {
+			if (Boolean.parseBoolean(newValue.toString())) {
+				if (AppSettings.isTranslucentModes())
+					CommSettings.setAppTheme(R.style.BaseTheme_Wallpaper_Translucent);
+				else
+					CommSettings.setAppTheme(R.style.BaseTheme_Wallpaper);
+			}
+			else {
+				if (AppSettings.isTranslucentModes())
+					CommSettings.setAppTheme(R.style.BaseTheme_Translucent);
+				else
+					CommSettings.setAppTheme(R.style.BaseTheme);
+			}
+			
+			((BaseActivity) getActivity()).reload();
 		}
 		
 		return true;
@@ -110,29 +155,36 @@ public class SettingsFragment extends VersionSettingsFragment implements OnPrefe
 	public void onResume() {
 		super.onResume();
 		
-		if (AppContext.isLogedin())
-			new AccountTask().execute();
-		else
-			getActivity().finish();
-		
 		BaiduAnalyzeUtils.onPageStart("设置");
+
+		resetTheme();
 	}
 	
-	class AccountTask extends WorkTask<Void, Void, List<AccountBean>> {
-
-		@Override
-		public List<AccountBean> workInBackground(Void... params) throws TaskException {
-			return AccountDB.query();
-		}
+	private void resetTheme() {
+		pCustomWallpaper.setEnabled(true);
+		pCustomWallpaper.setSummary("");
 		
-		@Override
-		protected void onSuccess(List<AccountBean> result) {
-			super.onSuccess(result);
+		pTheme.setEnabled(true);
+		pTheme.setSummary("");
+		
+		// 桌面壁纸
+		if (AppSettings.isLaunchWallpaper()) {
+			pTheme.setEnabled(false);
+			pTheme.setSummary(R.string.settings_ui_bg_summary_02);
 			
-			if (getActivity() != null)
-				pAccount.setSummary(String.format(getString(R.string.settings_account_sumary), result.size()));
+			pCustomWallpaper.setEnabled(false);
+			pCustomWallpaper.setSummary(R.string.settings_ui_bg_summary_02);
 		}
-		
+		else {
+			WallpaperBean wallpaper = AppContext.getWallpaper();
+			if (wallpaper != null) {
+				pTheme.setEnabled(false);
+				pTheme.setSummary(R.string.settings_ui_bg_summary_03);
+				
+				pCustomWallpaper.setEnabled(true);
+				pCustomWallpaper.setSummary(R.string.settings_ui_bg_summary_03);
+			}
+		}
 	}
 	
 	@Override

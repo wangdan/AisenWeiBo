@@ -2,13 +2,17 @@ package org.aisen.weibo.sina.base;
 
 import java.util.List;
 
+import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.bean.AppSettingsBean;
 import org.aisen.weibo.sina.support.bean.PublishBean;
+import org.aisen.weibo.sina.support.bean.WallpaperBean;
 import org.aisen.weibo.sina.support.biz.BizLogic;
 import org.aisen.weibo.sina.support.db.AccountDB;
 import org.aisen.weibo.sina.support.db.EmotionsDB;
+import org.aisen.weibo.sina.support.db.SinaDB;
 import org.aisen.weibo.sina.support.publish.PublishDB;
+import org.aisen.weibo.sina.support.utils.AisenUtil;
 import org.aisen.weibo.sina.support.utils.AppContext;
 import org.aisen.weibo.sina.support.utils.AppSettings;
 import org.aisen.weibo.sina.sys.receiver.TimingBroadcastReceiver;
@@ -21,9 +25,12 @@ import android.app.PendingIntent;
 
 import com.m.common.context.GlobalContext;
 import com.m.common.settings.SettingUtility;
+import com.m.common.utils.ActivityHelper;
+import com.m.common.utils.CommSettings;
 import com.m.common.utils.DateUtils;
 import com.m.common.utils.Logger;
 import com.m.support.sqlite.SqliteUtility;
+import com.m.support.sqlite.util.FieldUtils;
 import com.m.support.task.TaskException;
 import com.m.support.task.WorkTask;
 import com.m.ui.utils.MToast;
@@ -52,6 +59,22 @@ public class MyApplication extends GlobalContext {
 		try {
 			EmotionsDB.checkEmotions();
 		} catch (Exception e) {
+		}
+		
+		// 默认设置壁纸
+		if (ActivityHelper.getInstance().getBooleanShareData("app_wallpaper_init", true)) {
+			ActivityHelper.getInstance().putBooleanShareData("app_wallpaper_init", false);
+			
+			CommSettings.setAppTheme(R.style.BaseTheme_Translucent);
+			
+			AppContext.setWallpaper(AisenUtil.generaterDefaultWallpaper());
+		}
+		else {
+			String selection = String.format(" %s = ? ", FieldUtils.KEY);
+			String[] selectionArgs = new String[]{ "wallpaper_setting" };
+			List<WallpaperBean> settingList = SinaDB.getSqlite().selectAll(WallpaperBean.class, selection, selectionArgs);
+			if (settingList.size() > 0)
+				AppContext.setWallpaper(settingList.get(0));
 		}
 	}
 	

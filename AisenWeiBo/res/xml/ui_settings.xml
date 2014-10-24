@@ -12,13 +12,17 @@
     
     <PreferenceCategory android:title="@string/category_advanced">
         
-        <Preference android:key="pAccount" android:title="@string/settings_manage_account" />
+        <CheckBoxPreference android:key="pTranslucent" android:title="@string/settings_translucent" android:defaultValue="true"
+	 	    android:summary="@string/settings_translucent_summary" />
+
+        <CheckBoxPreference android:key="pLaunchWallpaper" android:title="@string/settings_launch_wallpaper"
+            android:defaultValue="false" />
+        <Preference android:key="pCustomWallpaper" android:title="@string/settings_custom_wallpaper" />
+
+        <Preference android:key="pTheme" android:title="@string/settings_app_theme" />
         
-        <CheckBoxPreference android:key="pSendDelay" android:title="@string/settings_publish_delay" android:defaultValue="false"
-            android:summary="@string/settings_publish_delay_summary" />
+        <Preference android:key="pMoreAdvanced" android:title="@string/settings_more_advanced" />
         
-        <CheckBoxPreference android:key="pRotatePic" android:title="@string/settings_pic_rotate" android:defaultValue="false"
-            android:summary="@string/settings_pic_rotate_summary" />
     </PreferenceCategory>
     
     <PreferenceCategory android:title="@string/category_other">

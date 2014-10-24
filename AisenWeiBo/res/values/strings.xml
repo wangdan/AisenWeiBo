@@ -37,10 +37,13 @@
 	<string name="draw_comment">评论</string>
 	<string name="draw_fav">收藏</string>
 	<string name="draw_fav_title">收藏的微博</string>
+	<string name="draw_search_v2">搜索</string>
+	<string name="draw_search_title">搜索</string>
 	<string name="draw_friendship">朋友圈</string>
 	<string name="draw_draft">草稿箱</string>
 	<string name="draw_settings">设置</string>
 	<string name="mention_title">提及我的</string>
+	<string name="draw_accounts">账号管理</string>
 
 	<!-- 菜单 -->
 	<string name="account_add">添加账号</string>
@@ -52,6 +55,7 @@
 	<string name="main_help">帮助</string>
 	<string name="main_feedback">意见反馈</string>
 	<string name="timeline_groups">好友分组</string>
+	<string name="timeline_search">用户、微博搜索</string>
 	<string name="timeline_refresh">刷新微博</string>
 	<string name="comments_refresh">刷新评论</string>
 	<string name="publish_send">发布</string>
@@ -66,6 +70,8 @@
 	<string name="group_sort">分组排序</string>
 	<string name="group_add">新增分组</string>
 	<string name="group_submit">确认</string>
+	<string name="wallpaper_disable">取消壁纸</string>
+	<string name="wallpaper_add">添加</string>
 	
 	<!-- 标题 -->
 	<string name="timeline_all">全部微博</string>
@@ -169,7 +175,7 @@
 	<string name="profile_des_hint">简介：%s</string>
 	<string name="profile_des_none">这个家伙什么都没留下</string>
 	<string name="profile_ver_reason">微博认证：%s</string>
-	<string name="profile_remark_hint">备注：%s</string>
+	<string name="profile_remark_hint">备注</string>
 	<string name="profile_remark_none">备注：未设置</string>
 	<string name="profile_group_none">分组：未分组</string>
 	<string name="profile_group_hint">分组：%s</string>
@@ -190,8 +196,8 @@
 	<string name="publish_repost_to_me">同时转发到我的微博</string>
 	<string name="publish_also_repost">转发微博</string>
 	<string name="publish_mention">提及</string>
-	<string name="publish_recent">最近</string>
-	<string name="publish_all">全部</string>
+	<string name="publish_recent">最近记录</string>
+	<string name="publish_all">全部好友</string>
 	<string name="publish_mention_hint">名称或者备注</string>
 	<string name="publish_pic_none">图片不存在，或者已删除</string>
 	<string name="error_length_too_long">字数超过限制，请删除%d个字后再发布</string>
@@ -323,9 +329,10 @@
 	<string name="settings_account_sumary">%d个授权账号</string>
 	<string name="category_def">常规设置</string>
 	<string name="settings_basic">基本设置</string>
-	<string name="settings_notify">通知设置</string>
+	<string name="settings_notify">通知中心</string>
 	<string name="settings_flow">流量控制</string>
 	<string name="category_advanced">高级设置</string>
+	<string name="settings_more_advanced">更多</string>
 	<string name="settings_manage_account">账号管理</string>
 	<string name="settings_publish_delay">内容延迟发布</string>
 	<string name="settings_publish_delay_summary">延迟5秒发布微博、评论，可点击撤销</string>
@@ -334,6 +341,9 @@
 	<string name="settings_share_aisen">推荐给好友</string>
 	<string name="settings_grade">给我好评</string>
 	<string name="settings_version_update">检查更新</string>
+	
+	<!-- 高级设置 -->
+	<string name="title_advanced">高级设置</string>
 	
 	<!-- 帮助设置 -->
 	<string name="title_about">关于</string>
@@ -349,11 +359,23 @@
 	<string name="settings_about_debug_summary">设置Debug模式后，所有相关设置选项都为测试缺省设置</string>
 	<string name="settings_about_screen_rotate">屏幕旋转</string>
 	<string name="settings_cache_disable">禁用缓存</string>
+	<string name="settings_network_delay">网络请求延迟10s</string>
 	<string name="settings_cache_disable_summary">禁用微博、评论缓存</string>
 	<string name="settings_dt_cache_validdate">设置缓存有效时间</string>
 	<string name="settings_cache_validdate">缓存数据有效时间</string>
 	<string name="settings_crash_log">Crash日志上传</string>
 	<string name="settings_crash_log_summary">Wifi时自动上传程序崩溃日志，建议开启，帮助我们定位BUG优化程序</string>
+	
+	<!-- 主题设置 -->
+	<string name="settings_app_theme">主题</string>
+	<string name="title_actionbar">主题设置</string>
+	<string name="title_wallpaper">自定义壁纸</string>
+	<string name="settings_custom_wallpaper">自定义壁纸</string>
+	<string name="settings_launch_wallpaper">使用桌面壁纸</string>
+	<string name="settings_ui_bg_summary_02">使用桌面壁纸作为背景</string>
+	<string name="settings_ui_bg_summary_03">使用自定义壁纸作为背景</string>
+	<string name="settings_translucent">Translucent Modes</string>
+	<string name="settings_translucent_summary">4.4以上系统有效</string>
 	
 	<!-- 基本设置 -->
 	<string name="title_basic_settings">基本设置</string>
@@ -400,7 +422,7 @@
 	<string name="settings_dt_cmt_count">评论每次加载数量</string>
 	
 	<!-- 通知设置 -->
-	<string name="title_notification">通知设置</string>
+	<string name="title_notification">通知中心</string>
 	<string name="settings_open">开启</string>
 	<string name="settings_close">关闭</string>
 	<string name="category_general">常规设置</string>

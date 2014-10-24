@@ -9,7 +9,7 @@
 			android:dialogTitle="@string/settings_language" android:title="@string/settings_language" android:defaultValue="0" />
 	    
         <ListPreference android:key="pPicLargeMode" android:entries="@array/picLargeMode" android:entryValues="@array/prefValues"
-			android:dialogTitle="@string/settings_dt_pic_style" android:title="@string/settings_pic_style" android:defaultValue="0" />
+			android:dialogTitle="@string/settings_dt_pic_style" android:title="@string/settings_pic_style" android:defaultValue="1" />
         
         <!-- <ListPreference android:key="pListViewAnim" android:entries="@array/pListViewAnim" android:entryValues="@array/prefValues"
 			android:dialogTitle="设置列表动画" android:title="列表动画" android:defaultValue="0" /> -->

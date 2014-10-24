@@ -20,7 +20,6 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.View;
@@ -41,7 +40,7 @@ import com.m.ui.utils.ViewUtils;
  * @author wangdan
  *
  */
-@SuppressLint("SdCardPath") public class BasicSettingsFragment extends PreferenceFragment 
+@SuppressLint("SdCardPath") public class BasicSettingsFragment extends BasePreferenceFragment 
 										implements OnPreferenceClickListener , OnPreferenceChangeListener {
 
 	public static void launch(Activity from) {
@@ -51,12 +50,13 @@ import com.m.ui.utils.ViewUtils;
 	private ListPreference pTextSize;// 字体大小
 	private ListPreference pLanguage;// 语言设置
 	private CheckBoxPreference pShowRemark;// 显示备注
-	private CheckBoxPreference pFastScrollBar;// 显示快速滚动条
+	private ListPreference pPicLargeMode;// 高清图片排版模式
 	private CheckBoxPreference pShowDefGroup;// 显示默认分组微博
+	
+	private CheckBoxPreference pFastScrollBar;// 显示快速滚动条
 	private Preference pPicSavePath;// 图片保存路径
 	private Preference pClearRecentMention;// 清理@历史记录
 	private CheckBoxPreference pDoubleClickToRefresh;// 置顶并刷新
-	private ListPreference pPicLargeMode;// 高清图片排版模式
 	private ListPreference pListViewAnim;// 列表动画
 	private ListPreference pRefreshViewType;// 列表刷新控件
 	private CheckBoxPreference pAutoRefresh;// 列表自动刷新
@@ -67,28 +67,15 @@ import com.m.ui.utils.ViewUtils;
 		
 		addPreferencesFromResource(R.xml.ui_basic_settings);
 		
-		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActivity().getActionBar().setTitle(R.string.title_basic_settings);
-		
-		pTextSize = (ListPreference) findPreference("pTextSize");
-		pTextSize.setOnPreferenceChangeListener(this);
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
-		int value = Integer.parseInt(prefs.getString("pTextSize", "0"));
-		setTextSize(value);
+		int value = 0;
 		
-		pLanguage = (ListPreference) findPreference("pLanguage");
-		pLanguage.setOnPreferenceChangeListener(this);
-		value = Integer.parseInt(prefs.getString("pLanguage", "0"));
-		setLanguage(value);
-		
-		pShowRemark = (CheckBoxPreference) findPreference("pShowRemark");
-		pShowRemark.setOnPreferenceChangeListener(this);
+		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActivity().getActionBar().setDisplayShowHomeEnabled(false);
+		getActivity().getActionBar().setTitle(R.string.title_basic_settings);
 		
 		pDoubleClickToRefresh = (CheckBoxPreference) findPreference("pDoubleClickToRefresh");
 		pDoubleClickToRefresh.setOnPreferenceChangeListener(this);
-		
-		pShowDefGroup = (CheckBoxPreference) findPreference("pShowDefGroup");
-		pShowDefGroup.setOnPreferenceChangeListener(this);
 		
 		pFastScrollBar = (CheckBoxPreference) findPreference("pFastScrollBar");
 		if (pFastScrollBar != null)
@@ -102,13 +89,6 @@ import com.m.ui.utils.ViewUtils;
 		pClearRecentMention = (Preference) findPreference("pClearRecentMention");
 		pClearRecentMention.setOnPreferenceClickListener(this);
 		setMentionHint();
-		
-		// 图片上传设置
-		pPicLargeMode = (ListPreference) findPreference("pPicLargeMode");
-		pPicLargeMode.setOnPreferenceChangeListener(this);
-		prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
-		value = Integer.parseInt(prefs.getString("pPicLargeMode", "0"));
-		setListSetting(value, R.array.picLargeMode, pPicLargeMode);
 		
 		pListViewAnim = (ListPreference) findPreference("pListViewAnim");
 		if (pListViewAnim != null) {
@@ -127,6 +107,29 @@ import com.m.ui.utils.ViewUtils;
 		pAutoRefresh = (CheckBoxPreference) findPreference("pAutoRefresh");
 		pAutoRefresh.setOnPreferenceChangeListener(this);
 		pAutoRefresh.setChecked(SettingUtility.getPermanentSettingAsBool("pAutoRefresh", true));
+		
+		
+		pTextSize = (ListPreference) findPreference("pTextSize");
+		pTextSize.setOnPreferenceChangeListener(this);
+		value = Integer.parseInt(prefs.getString("pTextSize", "0"));
+		setTextSize(value);
+		
+		pLanguage = (ListPreference) findPreference("pLanguage");
+		pLanguage.setOnPreferenceChangeListener(this);
+		value = Integer.parseInt(prefs.getString("pLanguage", "0"));
+		setLanguage(value);
+		
+		pShowRemark = (CheckBoxPreference) findPreference("pShowRemark");
+		pShowRemark.setOnPreferenceChangeListener(this);
+		
+		pShowDefGroup = (CheckBoxPreference) findPreference("pShowDefGroup");
+		pShowDefGroup.setOnPreferenceChangeListener(this);
+		
+		pPicLargeMode = (ListPreference) findPreference("pPicLargeMode");
+		pPicLargeMode.setOnPreferenceChangeListener(this);
+		prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
+		value = Integer.parseInt(prefs.getString("pPicLargeMode", "0"));
+		setListSetting(value, R.array.picLargeMode, pPicLargeMode);
 	}
 	
 	@Override
@@ -144,8 +147,32 @@ import com.m.ui.utils.ViewUtils;
 
 	@Override
 	public boolean onPreferenceChange(Preference preference, Object newValue) {
+		// 是否显示默认分组
+		if ("pShowDefGroup".equals(preference.getKey())) {
+			ActivityHelper.getInstance().putBooleanShareData("ChanneSortHasChanged", true);
+		}
+		// 双击ActionBar同时刷新
+		else if ("pDoubleClickToRefresh".equals(preference.getKey())) {
+			SettingUtility.setPermanentSetting("com.m.ON_DOUBLE_CLICK_AC_TO_REFRESH", Boolean.parseBoolean(newValue.toString()));
+		}
+		// 列表动画
+		else if ("pListViewAnim".equals(preference.getKey())) {
+			setListSetting(Integer.parseInt(newValue.toString()), R.array.pListViewAnim, pListViewAnim);
+		}
+		// 设置刷新控件
+		else if ("pRefreshViewType".equals(preference.getKey())) {
+			setListSetting(Integer.parseInt(newValue.toString()), R.array.pRefreshViewType, pRefreshViewType);
+		}
+		// 列表控件是否自动刷新
+		else if ("pAutoRefresh".equals(preference.getKey())) {
+			SettingUtility.setPermanentSetting("pAutoRefresh", Boolean.parseBoolean(newValue.toString()));
+		}
+		// 高清图片排版设置
+		else if ("pPicLargeMode".equals(preference.getKey())) {
+			setListSetting(Integer.parseInt(newValue.toString()), R.array.picLargeMode, pPicLargeMode);
+		}
 		// 列表字体
-		if ("pTextSize".equals(preference.getKey())) {
+		else if ("pTextSize".equals(preference.getKey())) {
 			setTextSize(Integer.parseInt(newValue.toString()));
 		}
 		// 语言设置
@@ -173,30 +200,6 @@ import com.m.ui.utils.ViewUtils;
 			
 			((BaseActivity) getActivity()).reload();
 		}
-		// 是否显示默认分组
-		else if ("pShowDefGroup".equals(preference.getKey())) {
-			ActivityHelper.getInstance().putBooleanShareData("ChanneSortHasChanged", true);
-		}
-		// 双击ActionBar同时刷新
-		else if ("pDoubleClickToRefresh".equals(preference.getKey())) {
-			SettingUtility.setPermanentSetting("com.m.ON_DOUBLE_CLICK_AC_TO_REFRESH", Boolean.parseBoolean(newValue.toString()));
-		}
-		// 高清图片排版设置
-		else if ("pPicLargeMode".equals(preference.getKey())) {
-			setListSetting(Integer.parseInt(newValue.toString()), R.array.picLargeMode, pPicLargeMode);
-		}
-		// 列表动画
-		else if ("pListViewAnim".equals(preference.getKey())) {
-			setListSetting(Integer.parseInt(newValue.toString()), R.array.pListViewAnim, pListViewAnim);
-		}
-		// 设置刷新控件
-		else if ("pRefreshViewType".equals(preference.getKey())) {
-			setListSetting(Integer.parseInt(newValue.toString()), R.array.pRefreshViewType, pRefreshViewType);
-		}
-		// 列表控件是否自动刷新
-		else if ("pAutoRefresh".equals(preference.getKey())) {
-			SettingUtility.setPermanentSetting("pAutoRefresh", Boolean.parseBoolean(newValue.toString()));
-		}
 		return true;
 	}
 	
@@ -217,18 +220,6 @@ import com.m.ui.utils.ViewUtils;
 			};
 			
 		}.execute();
-	}
-	
-	private void setTextSize(int value) {
-		String[] valueTitleArr = getResources().getStringArray(R.array.txtSize);
-		
-		pTextSize.setSummary(valueTitleArr[value]);
-	}
-	
-	private void setLanguage(int value) {
-		String[] valueTitleArr = getResources().getStringArray(R.array.pLanguage);
-		
-		pLanguage.setSummary(valueTitleArr[value]);
 	}
 	
 	// 修改图片保存路径
@@ -284,6 +275,20 @@ import com.m.ui.utils.ViewUtils;
 							})
 							.show();
 	}
+	
+	private void setTextSize(int value) {
+		String[] valueTitleArr = getResources().getStringArray(R.array.txtSize);
+		
+		pTextSize.setSummary(valueTitleArr[value]);
+	}
+	
+	private void setLanguage(int value) {
+		String[] valueTitleArr = getResources().getStringArray(R.array.pLanguage);
+		
+		pLanguage.setSummary(valueTitleArr[value]);
+	}
+	
+	
 	
 	private void setListSetting(int value, int hintId, ListPreference listPreference) {
 		String[] valueTitleArr = getResources().getStringArray(hintId);

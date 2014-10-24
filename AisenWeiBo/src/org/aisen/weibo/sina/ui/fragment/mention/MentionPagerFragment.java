@@ -6,6 +6,7 @@ import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.support.bean.TimelineGroupBean;
 import org.aisen.weibo.sina.support.utils.AisenUtil;
 import org.aisen.weibo.sina.support.utils.AppContext;
+import org.aisen.weibo.sina.ui.component.AMainTabsFragment;
 import org.aisen.weibo.sina.ui.fragment.profile.UserProfileFragment;
 import org.sina.android.bean.WeiBoUser;
 
@@ -14,7 +15,6 @@ import android.view.LayoutInflater;
 
 import com.m.common.utils.ActivityHelper;
 import com.m.ui.fragment.ABaseFragment;
-import com.m.ui.fragment.ATabTitlePagerFragment;
 
 /**
  * 提及的微博、评论Pager
@@ -22,7 +22,7 @@ import com.m.ui.fragment.ATabTitlePagerFragment;
  * @author wangdan
  *
  */
-public class MentionPagerFragment extends ATabTitlePagerFragment<TimelineGroupBean> {
+public class MentionPagerFragment extends AMainTabsFragment<TimelineGroupBean> {
 
 	public static ABaseFragment newInstance(int type) {
 		MentionPagerFragment fragment = new MentionPagerFragment();

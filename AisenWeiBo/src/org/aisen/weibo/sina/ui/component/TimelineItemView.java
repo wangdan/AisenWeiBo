@@ -120,7 +120,7 @@ public class TimelineItemView extends AbstractItemView<StatusContent>
 	
 	@Override
 	public int inflateViewId() {
-		return R.layout.item_timeline;
+		return R.layout.item_timeline_v2;
 	}
 
 	@Override
@@ -158,7 +158,7 @@ public class TimelineItemView extends AbstractItemView<StatusContent>
 			txtRepost.setText(AisenUtil.getCounter(Integer.parseInt(data.getReposts_count())));
 		}
 		if (TextUtils.isEmpty(data.getComments_count()) || Integer.parseInt(data.getComments_count()) == 0) {
-			txtComment.setVisibility(View.GONE);
+			txtComment.setVisibility(View.INVISIBLE);
 		}
 		else {
 			txtComment.setVisibility(View.VISIBLE);
@@ -224,6 +224,8 @@ public class TimelineItemView extends AbstractItemView<StatusContent>
 			data.setRetweeted_status(reStatus);
 		btnMenus.setTag(data);
 		btnMenus.setOnClickListener(this);
+		
+		AisenUtil.setAlpha(convertView);
 	}
 	
 	private void setUserInfo(WeiBoUser user, TextView txtName, ImageView imgPhoto, ImageView imgVerified) {

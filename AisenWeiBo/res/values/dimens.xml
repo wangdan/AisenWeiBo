@@ -30,8 +30,13 @@
     <!-- 用户资料的头像尺寸 -->
     <dimen name="photo_profile">90dip</dimen>
     
+    <!-- 字体大小 -->
     <dimen name="txt_small">14sp</dimen>
     <dimen name="txt_mid">16sp</dimen>
     <dimen name="txt_large">18sp</dimen>
     <dimen name="txt_huge">20sp</dimen>
+    
+    <!-- timeline padding -->
+    <dimen name="item_padding">10dip</dimen>
+    <dimen name="item_margin">5dip</dimen>
 </resources>

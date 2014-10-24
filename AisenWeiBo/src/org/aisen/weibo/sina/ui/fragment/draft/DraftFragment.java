@@ -9,6 +9,7 @@ import org.aisen.weibo.sina.support.bean.PublishBean;
 import org.aisen.weibo.sina.support.bean.PublishType;
 import org.aisen.weibo.sina.support.publish.PublishDB;
 import org.aisen.weibo.sina.support.publish.PublishManager;
+import org.aisen.weibo.sina.support.utils.AisenUtil;
 import org.aisen.weibo.sina.support.utils.AppContext;
 import org.aisen.weibo.sina.support.utils.BaiduAnalyzeUtils;
 import org.aisen.weibo.sina.sys.service.PublishService;
@@ -234,6 +235,8 @@ public class DraftFragment extends AListFragment<PublishBean, ArrayList<PublishB
 		public void updateConvertView(PublishBean data, View convertView, int selectedPosition) {
 			super.updateConvertView(data, convertView, selectedPosition);
 
+			AisenUtil.setAlpha(convertView);
+			
 			container.setSelected(checkedArray.get(getPosition()));
 			convertView.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT));
 		}
