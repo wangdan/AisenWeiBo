@@ -6,6 +6,7 @@ import org.aisen.weibo.sina.support.bean.ApkInfo;
 import org.aisen.weibo.sina.support.bean.MenuBean;
 import org.aisen.weibo.sina.support.iclass.IAcNavigation;
 import org.aisen.weibo.sina.support.utils.AppContext;
+import org.aisen.weibo.sina.support.utils.CheckChangedUtils;
 import org.aisen.weibo.sina.ui.activity.common.WeiboBaseActivity;
 import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
 import org.aisen.weibo.sina.ui.activity.search.SearchActivity;
@@ -76,7 +77,7 @@ public class MainActivity extends WeiboBaseActivity implements MenuCallback {
 		// 初始化信息弹窗
 		MToast.yOffset = SystemUtility.getStatusBarHeight(this) * 2 + SystemUtility.getActionBarHeight(this);
 		
-		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer_light, 
+		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, 
 				R.string.draw_open, R.string.draw_close) {
 			
 			@Override
@@ -102,9 +103,6 @@ public class MainActivity extends WeiboBaseActivity implements MenuCallback {
 				invalidateOptionsMenu();
 				
 				getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-				
-				// 将菜单置顶
-				((ListView) menuFragment.getRefreshView()).setSelectionFromTop(0, 0);
 			}
 			
 			@Override
@@ -121,7 +119,7 @@ public class MainActivity extends WeiboBaseActivity implements MenuCallback {
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 		
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setIcon(R.drawable.ic_logo);
+//		getActionBar().setIcon(R.drawable.ic_logo);
 		getActionBar().setDisplayShowHomeEnabled(true);
 		
 		lastSelectedMenu = savedInstanceState == null ? null : (MenuBean) savedInstanceState.getSerializable("menu");
@@ -187,6 +185,9 @@ public class MainActivity extends WeiboBaseActivity implements MenuCallback {
 				}
 			}
 		}
+		
+		// 每次启动应用，检测是否下载了壁纸
+		CheckChangedUtils.checkWallpaper();
 	}
 	
 	@Override

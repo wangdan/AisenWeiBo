@@ -1,10 +1,13 @@
 package org.aisen.weibo.sina.support.utils;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.List;
 
 import org.aisen.weibo.sina.support.bean.AccountBean;
+import org.aisen.weibo.sina.support.biz.BizLogic;
 import org.aisen.weibo.sina.support.db.AccountDB;
+import org.aisen.weibo.sina.support.http.GithubResourceDownloadHttpUtility;
 import org.sina.android.SinaSDK;
 import org.sina.android.bean.Groups;
 import org.sina.android.bean.Token;
@@ -13,9 +16,12 @@ import org.sina.android.bean.WeiBoUser;
 
 import android.os.AsyncTask;
 
+import com.m.common.context.GlobalContext;
 import com.m.common.utils.ActivityHelper;
 import com.m.common.utils.DateUtils;
 import com.m.common.utils.Logger;
+import com.m.common.utils.SystemUtility;
+import com.m.common.utils.SystemUtility.NetWorkType;
 import com.m.support.bizlogic.ABaseBizlogic;
 import com.m.support.task.TaskException;
 import com.m.support.task.WorkTask;
@@ -116,6 +122,68 @@ public class CheckChangedUtils {
 			}
 			
 			return null;
+		}
+		
+	}
+	
+	private static CheckWallpaperTask checkWallpaperTask;
+	
+	public static void checkWallpaper() {
+		if (ActivityHelper.getInstance().getBooleanShareData("DownloadWallpaper", true) && 
+				checkWallpaperTask == null && 
+				SystemUtility.getNetworkType() != NetWorkType.none)
+			new CheckWallpaperTask().execute();
+		else 
+			Logger.d(GithubResourceDownloadHttpUtility.TAG, "壁纸都存在了");
+	}
+	
+	static class CheckWallpaperTask extends WorkTask<Void, Void, Void> {
+
+		CheckWallpaperTask() {
+			checkWallpaperTask = this;
+		}
+		
+		@Override
+		public Void workInBackground(Void... params) throws TaskException {
+			final String TAG = GithubResourceDownloadHttpUtility.TAG;
+			
+			String dirFile = GlobalContext.getInstance().getFilesDir().getAbsolutePath();
+			int downloadCount = 0;
+			
+			for (String fileName : AisenUtil.wallpaperNames) {
+				File file = new File(dirFile + File.separator + fileName);
+				if (file.exists()) {
+					Logger.d(TAG, String.format("壁纸 %s 已存在", file.getName()));
+					
+					downloadCount++;
+				}
+				else {
+					if (BizLogic.newInstance().githubResDownload(fileName, dirFile)) {
+						downloadCount++;
+						
+						Logger.d(TAG, "下载了壁纸 file = " + fileName);
+					}
+				}
+			}
+			
+			Logger.d(TAG, "downloaded wallpaper count = " + downloadCount);
+			if (downloadCount == 8) {
+				ActivityHelper.getInstance().putBooleanShareData("DownloadWallpaper", false);
+				
+				Logger.d(TAG, "所有壁纸下载完成了");
+			}
+			else {
+				Logger.d(TAG, "所有壁纸下载完成了一部分，还有一部分下次启动程序时检测下载");
+			}
+			
+			return null;
+		}
+		
+		@Override
+		protected void onFinished() {
+			super.onFinished();
+			
+			checkWallpaperTask = null;
 		}
 		
 	}

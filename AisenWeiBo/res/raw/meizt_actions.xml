@@ -23,5 +23,19 @@
 		<des>获取配置信息</des>
 		<value>apkInfo_v3/querySettings</value>
 	</setting>
+	
+	<setting type="githubResDownload">
+		<des>Github资源下载</des>
+		<value>master/resource/</value>
+		<extras>
+			<extra type="base_url">
+				<des>获取Token的地址</des>
+				<value>https://raw.githubusercontent.com/wangdan/AisenWeiBo/</value>
+			</extra>
+			<extra type="http">
+				<value>org.aisen.weibo.sina.support.http.GithubResourceDownloadHttpUtility</value>
+			</extra>
+		</extras>
+	</setting>
 
 </app-settings>

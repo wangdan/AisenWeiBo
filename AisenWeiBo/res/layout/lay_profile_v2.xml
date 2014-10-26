@@ -53,13 +53,13 @@
 		                android:drawableRight="@drawable/triangle" android:drawablePadding="8dip" android:visibility="gone" />
 	    
 		<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtDesc" android:layout_width="match_parent" android:layout_height="wrap_content"
-		    android:lineSpacingExtra="@dimen/txt_gap" android:text="14sp" android:textColor="#ffbebfc0" android:ellipsize="marquee"
+		    android:lineSpacingExtra="@dimen/txt_gap" android:text="14sp" android:textColor="@color/black" android:ellipsize="marquee"
 		    android:textSize="15sp"
 		    android:layout_marginTop="@dimen/vertical_gap" android:layout_marginBottom="@dimen/vertical_gap"
 	        android:layout_marginLeft="@dimen/horizontal_gap" android:layout_marginRight="@dimen/horizontal_gap"/>
 		
 		<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtVerifiedReason" android:layout_width="match_parent" android:layout_height="wrap_content"
-		    android:lineSpacingExtra="@dimen/txt_gap" android:text="14sp" android:textColor="#ffbebfc0" android:ellipsize="marquee"
+		    android:lineSpacingExtra="@dimen/txt_gap" android:text="14sp" android:textColor="@color/black" android:ellipsize="marquee"
 		    android:textSize="15sp"
 		    android:layout_marginBottom="@dimen/vertical_gap" android:layout_marginTop="@dimen/vertical_gap"
 	        android:layout_marginLeft="@dimen/horizontal_gap" android:layout_marginRight="@dimen/horizontal_gap"/>
@@ -69,7 +69,7 @@
 	        android:layout_marginBottom="@dimen/vertical_gap">
 	        <LinearLayout android:id="@+id/btnStatusCounter" android:layout_width="0dip" android:layout_height="match_parent"
 	            android:orientation="vertical" android:gravity="center_vertical" android:layout_weight="1"
-	            android:background="@drawable/profile_counter" android:paddingLeft="@dimen/horizontal_gap"
+	            android:paddingLeft="@dimen/horizontal_gap"
 	            android:clickable="true">
 	            
 	            <org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtStatusCount" android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
 	        
 	        <LinearLayout android:id="@+id/btnFriendCounter" android:layout_width="0dip" android:layout_height="match_parent"
 	            android:orientation="vertical" android:gravity="center_vertical" android:layout_weight="1"
-	            android:background="@drawable/profile_counter" android:paddingLeft="@dimen/horizontal_gap" android:clickable="true">
+	            android:paddingLeft="@dimen/horizontal_gap" android:clickable="true">
 	            
 	            <org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtFriendCount" android:layout_width="wrap_content" android:layout_height="wrap_content"
 	                android:textColor="@color/profile_counter" android:textSize="28sp" android:layout_marginTop="-7dip"
@@ -102,7 +102,7 @@
 	        
 	        <LinearLayout android:id="@+id/btnFollowerCounter" android:layout_width="0dip" android:layout_height="match_parent"
 	            android:orientation="vertical" android:gravity="center_vertical" android:layout_weight="1"
-	            android:background="@drawable/profile_counter" android:paddingLeft="@dimen/horizontal_gap" android:clickable="true">
+	            android:clickable="true">
 	            
 	            <org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtFollowerCount" android:layout_width="wrap_content" android:layout_height="wrap_content"
 	                android:textColor="@color/profile_counter" android:textSize="28sp" android:layout_marginTop="-7dip"

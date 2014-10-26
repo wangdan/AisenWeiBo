@@ -496,6 +496,17 @@ public class MenuFragment_v2 extends AListFragment<MenuBean, ArrayList<MenuBean>
 		
 		getAdapter().notifyDataSetChanged();
 		
+		// 将菜单置顶
+		final ListView listView = ((ListView) getRefreshView()); 
+		listView.postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+				listView.setSelectionFromTop(0, 0);
+			}
+		
+		}, 100);
+		
 		if (AppContext.isLogedin())
 			new RefreshDraftTask().execute();
 		

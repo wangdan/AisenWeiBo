@@ -13,11 +13,9 @@ import org.sina.android.bean.WeiBoUser;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.m.common.params.Params;
 import com.m.support.Inject.ViewInject;
@@ -41,10 +39,6 @@ public class PublishStatusRepostFragment extends APublishFragment implements OnC
 		return fragment;
 	}
 	
-	@ViewInject(id = R.id.checkbox)
-	CheckBox checkBox;
-	@ViewInject(id = R.id.txtContent)
-	TextView txtContent;
 	@ViewInject(id = R.id.imgPhoto)
 	ImageView imgPhoto;
 	

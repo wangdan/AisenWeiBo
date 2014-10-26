@@ -43,6 +43,7 @@ public class TopicsFragment extends ATimelineFragment {
 		
 		getActivity().getActionBar().setTitle(R.string.title_topics);
 		getActivity().getActionBar().setSubtitle(query);
+		getActivity().getActionBar().setDisplayShowHomeEnabled(false);
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 	

@@ -25,16 +25,16 @@
     <PreferenceCategory android:title="@string/category_operation">
 		<CheckBoxPreference android:key="pAutoRefresh" android:title="@string/settings_list_auto_update" android:defaultValue="true" />
 	 	
-	 	<ListPreference android:key="pRefreshViewType" android:entries="@array/pRefreshViewType" android:entryValues="@array/prefValues"
-			android:dialogTitle="@string/settings_dt_list_widget" android:title="@string/settings_list_widget" android:defaultValue="0" />
+	 	<!-- <ListPreference android:key="pRefreshViewType" android:entries="@array/pRefreshViewType" android:entryValues="@array/prefValues"
+			android:dialogTitle="@string/settings_dt_list_widget" android:title="@string/settings_list_widget" android:defaultValue="0" /> -->
 
 	 	<CheckBoxPreference android:key="pDoubleClickToRefresh" android:title="@string/settings_doubleclick_update" android:defaultValue="true"
 	 	    android:summary="" />        
     </PreferenceCategory>
     
     <PreferenceCategory android:title="@string/category_feedback">
-        <CheckBoxPreference android:key="pRefreshSound" android:title="@string/settings_sound" android:defaultValue="false"
- 	    	android:summary="@string/settings_sound_summary" />
+        <!-- <CheckBoxPreference android:key="pRefreshSound" android:title="@string/settings_sound" android:defaultValue="false"
+ 	    	android:summary="@string/settings_sound_summary" /> -->
         
         <CheckBoxPreference android:key="pSendVibrate" android:title="@string/settings_vibrate" android:defaultValue="true"
  	    	android:summary="@string/settings_vibrate_summary" />

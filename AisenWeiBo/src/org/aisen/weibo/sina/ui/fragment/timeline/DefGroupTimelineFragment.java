@@ -43,7 +43,7 @@ public class DefGroupTimelineFragment extends ATimelineFragment {
 	@Override
 	public void saveRefreshListState(Bundle outState) {
 //		super.saveRefreshListState(outState);
-		cleatTaskCount("TimelineTask");
+//		cleatTaskCount("TimelineTask");
 	}
 	
 	@Override

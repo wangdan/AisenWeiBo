@@ -99,10 +99,12 @@ import com.m.ui.utils.ViewUtils;
 		}
 		
 		pRefreshViewType = (ListPreference) findPreference("pRefreshViewType");
-		pRefreshViewType.setOnPreferenceChangeListener(this);
-		prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
-		value = Integer.parseInt(prefs.getString("pRefreshViewType", "0"));
-		setListSetting(value, R.array.pRefreshViewType, pRefreshViewType);
+		if (pRefreshViewType != null) {
+			pRefreshViewType.setOnPreferenceChangeListener(this);
+			prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
+			value = Integer.parseInt(prefs.getString("pRefreshViewType", "0"));
+			setListSetting(value, R.array.pRefreshViewType, pRefreshViewType);
+		}
 		
 		pAutoRefresh = (CheckBoxPreference) findPreference("pAutoRefresh");
 		pAutoRefresh.setOnPreferenceChangeListener(this);

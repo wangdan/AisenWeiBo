@@ -5,16 +5,7 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent" >
 
-    <LinearLayout android:layout_width="match_parent" android:layout_height="30dip" android:orientation="horizontal"
-        android:gravity="center_vertical" android:id="@+id/layDivider" >
-        <View android:layout_width="30dip" android:layout_height="1dip" android:background="?attr/text_color" />
-        
-	    <org.aisen.weibo.sina.ui.widget.TraditionalTextView android:id="@+id/txtDivider" android:layout_width="wrap_content" android:layout_height="match_parent"
-	        android:textSize="14sp" android:gravity="center_vertical" android:textColor="?attr/text_color"
-	        android:layout_marginLeft="8dip" android:layout_marginRight="8dip" />
-	    
-	    <View android:layout_width="0dip" android:layout_height="1dip" android:layout_weight="1" android:background="?attr/text_color" />
-    </LinearLayout>
+    <include android:layout_width="match_parent" android:layout_height="wrap_content" layout="@layout/lay_divider"/>
     
     <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="horizontal"
         android:paddingLeft="@dimen/horizontal_gap" android:paddingRight="@dimen/horizontal_gap"

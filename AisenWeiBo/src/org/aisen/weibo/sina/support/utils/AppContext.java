@@ -97,13 +97,13 @@ public class AppContext {
 	
 	public static void setWallpaper(WallpaperBean wallpaper) {
 		AppContext.wallpaper = wallpaper;
+		
+		String whereClause = String.format(" %s = ? ", FieldUtils.KEY);
+		String[] whereArgs = new String[]{ "wallpaper_setting" };
+		SinaDB.getSqlite().delete(WallpaperBean.class, whereClause, whereArgs);
+		
 		if (wallpaper != null) {
 			SinaDB.getSqlite().insert(new Extra(null, "wallpaper_setting"), AppContext.getWallpaper());
-		}
-		else {
-			String whereClause = String.format(" %s = ? ", FieldUtils.KEY);
-			String[] whereArgs = new String[]{ "wallpaper_setting" };
-			SinaDB.getSqlite().delete(WallpaperBean.class, whereClause, whereArgs);
 		}
 	}
 	

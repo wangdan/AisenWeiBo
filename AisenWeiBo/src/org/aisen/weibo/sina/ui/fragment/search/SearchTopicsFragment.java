@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnCloseListener;
 import android.widget.SearchView.OnQueryTextListener;
@@ -177,6 +178,8 @@ public class SearchTopicsFragment extends ATimelineFragment
 		mSmoothProgressBar.setVisibility(View.VISIBLE);
 		
 		new SearchTopicsTask(RefreshMode.reset).execute();
+		
+		((ListView) getRefreshView()).setSelectionFromTop(0, 0);
 	}
 	
 	@Override

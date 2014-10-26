@@ -11,9 +11,9 @@ import org.sina.android.bean.StatusRepost;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.m.common.params.Params;
 import com.m.support.adapter.ABaseAdapter.AbstractItemView;
@@ -39,6 +39,7 @@ public class RepostTimelineFragment extends ATimelineFragment {
 	}
 	
 	private View headerView;
+	private View headerDivider;
 	
 	private StatusContent mStatusContent;
 
@@ -57,8 +58,8 @@ public class RepostTimelineFragment extends ATimelineFragment {
 	}
 	
 	@Override
-	protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
-		super.layoutInit(inflater, savedInstanceSate);
+	protected void initRefreshList(Bundle savedInstanceSate) {
+		super.initRefreshList(savedInstanceSate);
 		
 		ListView listView = (ListView) getRefreshView();
 		TimelineItemView timelineItem = new TimelineItemView(this, true);
@@ -68,6 +69,10 @@ public class RepostTimelineFragment extends ATimelineFragment {
 		listView.addHeaderView(view);
 		
 		headerView = view;
+		
+		headerDivider = View.inflate(getActivity(), R.layout.lay_divider, null);
+		listView.addHeaderView(headerDivider);
+		headerDivider.setVisibility(View.GONE);
 		
 		mStatusContent = savedInstanceSate == null ? (StatusContent) getArguments().getSerializable("status")
 												   : (StatusContent) savedInstanceSate.getSerializable("status");
@@ -139,6 +144,21 @@ public class RepostTimelineFragment extends ATimelineFragment {
 			}
 
 			return null;
+		}
+		
+		@Override
+		protected void onFinished() {
+			super.onFinished();
+			
+			if (getAdapter().getDatas().size() > 0) {
+				headerDivider.setVisibility(View.VISIBLE);
+				
+				TextView txtDivider = (TextView) headerDivider.findViewById(R.id.txtDivider);
+				txtDivider.setText(getString(R.string.timelinecmt_divider_status));
+			}
+			else {
+				headerDivider.setVisibility(View.GONE);
+			}
 		}
 		
 	}

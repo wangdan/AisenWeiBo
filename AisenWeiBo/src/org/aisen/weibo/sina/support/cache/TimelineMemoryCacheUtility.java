@@ -65,6 +65,21 @@ public class TimelineMemoryCacheUtility implements ICacheUtility {
 	public void addCacheData(Setting action, Params params, Object responseObj) {
 		StatusContents statusContents = (StatusContents) responseObj;
 
+		if (statusContents.getStatuses().size() == 0)
+			return;
+		
+		// 如果是用户微博
+		if (action.getValue().equals("statuses/user_timeline.json")) {
+			// 是当前登录用户
+			if (params.containsKey("user_id") && params.getParameter("user_id").equals(AppContext.getUser().getIdstr())) {
+			}
+			else if (params.containsKey("screen_name") && params.getParameter("screen_name").equals(AppContext.getUser().getScreen_name())) {
+			}
+			else {
+				return;
+			}
+		}
+		
 		Logger.w(TimelineCacheUtility.TAG, String.format("写入内存微博数据，共%d条", statusContents.getStatuses().size()));
 		
 		String key = TimelineCacheUtility.getCacheKey(action, params);

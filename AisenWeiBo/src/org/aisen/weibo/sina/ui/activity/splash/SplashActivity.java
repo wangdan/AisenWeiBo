@@ -19,6 +19,8 @@ import org.sina.android.bean.Group;
 import org.sina.android.bean.UnreadCount;
 
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.m.common.params.Params;
 import com.m.support.bizlogic.ABaseBizlogic.CacheMode;
@@ -30,7 +32,7 @@ public class SplashActivity extends BaseActivity {
 
 	@Override
 	protected int configTheme() {
-		return R.style.BaseTheme_Notitle;
+		return R.style.BaseTheme_Wallpaper_Translucent_Splash;
 	}
 	
 	@Override
@@ -39,7 +41,14 @@ public class SplashActivity extends BaseActivity {
 		activityHelper.blur = false;
 		
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.ui_splash);
+		if (AppContext.getWallpaper() == null) {
+			View contentView = View.inflate(this, R.layout.ui_splash, null);
+			
+			setContentView(contentView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+		}
+		else {
+			setContentView(R.layout.ui_splash);
+		}
 		
 		// 清空未读消息记录
 		UnreadCountNotifier.mCount = new UnreadCount();
@@ -96,8 +105,8 @@ public class SplashActivity extends BaseActivity {
 		}
 		
 		@Override
-		protected void onSuccess(Boolean result) {
-			super.onSuccess(result);
+		protected void onFinished() {
+			super.onFinished();
 			
 			MainActivity.login();
 			finish();

@@ -40,7 +40,7 @@ public class FriendGroupTimelineFragment extends ATimelineFragment {
 	@Override
 	protected void saveRefreshListState(Bundle outState) {
 //		super.saveRefreshListState(outState);
-		cleatTaskCount("TimelineTask");
+//		cleatTaskCount("TimelineTask");
 	}
 	
 	@Override

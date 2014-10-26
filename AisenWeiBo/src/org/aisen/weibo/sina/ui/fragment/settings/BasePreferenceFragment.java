@@ -19,14 +19,14 @@ public class BasePreferenceFragment extends PreferenceFragment {
 		if (AppSettings.isTranslucentModes() && AppSettings.isLaunchWallpaper()) {
 			return R.style.BaseTheme_Dark_Wallpaper_Translucent;
 		}
-		else if (AppSettings.isTranslucentModes()) {
-			if (AppContext.getWallpaper() == null)
-				return R.style.BaseTheme_Translucent;
-			else 
-				return R.style.BaseTheme_Dark_Translucent;
-		}
 		else if (AppSettings.isLaunchWallpaper()) {
 			return R.style.BaseTheme_Dark_Wallpaper;
+		}
+		else if (AppContext.getWallpaper() != null) {
+			if (AppSettings.isTranslucentModes())
+				return R.style.BaseTheme_Dark_Translucent;
+			else
+				return R.style.BaseTheme_Dark;
 		}
 		
 		return 0;

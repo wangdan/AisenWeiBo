@@ -6,6 +6,7 @@ import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.support.bean.WallpaperBean;
 import org.aisen.weibo.sina.support.utils.AppContext;
 import org.aisen.weibo.sina.support.utils.AppSettings;
+import org.android.loader.core.BitmapDecoder;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -34,6 +35,7 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.m.common.context.GlobalContext;
+import com.m.common.utils.BitmapUtil;
 import com.m.common.utils.Logger;
 import com.m.common.utils.SystemUtility;
 import com.m.common.utils.Utils;
@@ -186,21 +188,7 @@ public class WallpaperViewGroup extends LinearLayout {
 				wallpaper = newWallpaper;
 				
 				if (wallpaperBitmap == null) {
-					// 默认壁纸
-					if ("1".equals(wallpaper.getType())) {
-						try {
-							wallpaperBitmap = BitmapFactory.decodeStream(GlobalContext.getInstance().getAssets().open("5_5.jpg"));
-						} catch (Exception e) {
-						}
-					}
-					// 网络默认壁纸
-					else if ("2".equals(wallpaper.getType())) {
-						
-					}
-					// 自定义壁纸
-					else if ("3".equals(wallpaper.getType())) {
-						
-					}
+					wallpaperBitmap = getWallpaperBitmap();
 				}
 				setBackground(new BitmapDrawable(getResources(), wallpaperBitmap));
 				
@@ -212,7 +200,7 @@ public class WallpaperViewGroup extends LinearLayout {
 				
 				wallpaper = newWallpaper;
 				
-				wallpaperBitmap.recycle();
+//				wallpaperBitmap.recycle();
 				wallpaperBitmap = getWallpaperBitmap();
 				if (wallpaperBitmap != null)
 					setBackground(new BitmapDrawable(getResources(), wallpaperBitmap));
@@ -261,6 +249,21 @@ public class WallpaperViewGroup extends LinearLayout {
 			bm = Bitmap.createBitmap(bm, 0, 0, reqWidth, SystemUtility.getScreenHeight());
 			
 			return bm;
+		}
+		// 默认壁纸
+		else if ("1".equals(wallpaper.getType())) {
+			try {
+				return BitmapFactory.decodeStream(GlobalContext.getInstance().getAssets().open("8_8.jpg"));
+			} catch (Exception e) {
+			}
+		}
+		// 网络默认壁纸
+		else if ("100".equals(wallpaper.getType())) {
+			return BitmapDecoder.decodeSampledBitmapFromFile(wallpaper.getPath(), 800, 1280);
+		}
+		// 自定义壁纸
+		else if ("10".equals(wallpaper.getType())) {
+			return BitmapDecoder.decodeSampledBitmapFromFile(wallpaper.getPath(), 800, 1280);
 		}
 		
 		return null;

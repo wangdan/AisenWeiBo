@@ -69,6 +69,9 @@ import com.m.ui.utils.ViewUtils;
 import com.spreada.utils.chinese.ZHConverter;
 
 public class AisenUtil {
+	
+	public static final String[] wallpaperNames = new String[]{"7_7.jpg", "8_8.jpg", "1_1.jpg", "2_2.jpg", "3_3.jpg", 
+																	"4_4.jpg", "5_5.jpg", "6_6.jpg" };
 
 //	public static String getUserKey(String key) {
 //		return key + "-" + AppContext.getUser().getIdstr();
@@ -755,7 +758,7 @@ public class AisenUtil {
 	
 	public static void setAlpha(View view) {
 		if (AppSettings.isLaunchWallpaper() || AppContext.getWallpaper() != null)
-			view.setAlpha(0.85f);
+			view.setAlpha(0.75f);
 		else
 			view.setAlpha(1.0f);
 	}
@@ -766,8 +769,9 @@ public class AisenUtil {
 	
 	public static WallpaperBean generaterDefaultWallpaper() {
 		WallpaperBean launchWallpaper = new WallpaperBean();
+		launchWallpaper.setBeanId("default_wallpaper");
 		launchWallpaper.setType("1");
-		launchWallpaper.setPath("5_5.jpg");
+		launchWallpaper.setPath("8_8.jpg");
 		
 		return launchWallpaper;
 	}

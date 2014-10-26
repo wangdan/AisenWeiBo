@@ -59,5 +59,21 @@ public class BizLogic extends ABaseBizlogic {
 		
 		return doGet(SettingUtility.getSetting("getSettings"), params, AppSettingsBean.class);
 	}
+	
+	/**
+	 * Github资源下载
+	 * 
+	 * @param fileName 下载的资源名称
+	 * @param saveDir 保存的文件路径
+	 * @return
+	 * @throws TaskException
+	 */
+	public Boolean githubResDownload(String fileName, String saveDir) throws TaskException {
+		Params params = new Params();
+		params.addParameter("fileName", fileName);
+		params.addParameter("dir", saveDir);
+		
+		return doGet(getSetting("githubResDownload"), params, Boolean.class);
+	}
 
 }

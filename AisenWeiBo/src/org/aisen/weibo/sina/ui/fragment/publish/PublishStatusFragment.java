@@ -391,4 +391,14 @@ public class PublishStatusFragment extends APublishFragment {
 		return true;
 	}
 	
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		if (AisenUtil.isTranslucent()) {
+			txtTiming.setTextColor(getResources().getColor(R.color.edit_hint_wallpaper));
+			txtGroupHint.setTextColor(getResources().getColor(R.color.edit_hint_wallpaper));
+		}
+	}
+	
 }

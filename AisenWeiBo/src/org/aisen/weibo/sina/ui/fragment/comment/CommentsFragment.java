@@ -96,7 +96,8 @@ public class CommentsFragment extends ARefreshProxyFragment<StatusComment, Statu
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		ListView listView = (ListView) getRefreshView();
 		position -= listView.getHeaderViewsCount();
-		BizFragment.getBizFragment(this).replyComment(null, getAdapter().getDatas().get(position));
+		if (position >= 0 && position < getAdapter().getCount())
+			BizFragment.getBizFragment(this).replyComment(null, getAdapter().getDatas().get(position));
 	}
 	
 	@Override

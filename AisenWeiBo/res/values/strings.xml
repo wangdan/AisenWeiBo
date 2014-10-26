@@ -156,6 +156,8 @@
 	<string name="timelinecmt_cmt">评论</string>
 	<string name="timelinecmt_repost">转发</string>
 	<string name="timelinecmt_fav">收藏</string>
+	<string name="timelinecmt_divider_cmt">评论列表</string>
+	<string name="timelinecmt_divider_status">转发列表</string>
 	
 	<!-- 提及 -->
 	<string name="mention_status">微博</string>
@@ -176,6 +178,7 @@
 	<string name="profile_des_none">这个家伙什么都没留下</string>
 	<string name="profile_ver_reason">微博认证：%s</string>
 	<string name="profile_remark_hint">备注</string>
+	<string name="profile_remark">备注：%s</string>
 	<string name="profile_remark_none">备注：未设置</string>
 	<string name="profile_group_none">分组：未分组</string>
 	<string name="profile_group_hint">分组：%s</string>
@@ -376,6 +379,14 @@
 	<string name="settings_ui_bg_summary_03">使用自定义壁纸作为背景</string>
 	<string name="settings_translucent">Translucent Modes</string>
 	<string name="settings_translucent_summary">4.4以上系统有效</string>
+	
+	<!-- 壁纸设置 -->
+	<string name="settings_wallpaper_error">添加自定义壁纸错误</string>
+	<string name="settings_wallpaper_handle">壁纸处理中</string>
+	<string name="settings_wallpaper_handle_error">壁纸处理错误</string>
+	<string name="settings_wallpaper_delete_error">默认壁纸不能删除</string>
+	<string name="settings_wallpaper_delete_success">已删除壁纸</string>
+	<string name="settings_wallpaper_delete_remind">是否删除壁纸？</string>
 	
 	<!-- 基本设置 -->
 	<string name="title_basic_settings">基本设置</string>

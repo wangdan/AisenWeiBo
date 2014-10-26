@@ -126,8 +126,11 @@
     
 	<style name="BaseTheme.Dark.Wallpaper.Translucent">
     </style>
-
-	
+    
+	<!-- 启动界面 -->
+	<style name="BaseTheme.Wallpaper.Translucent.Splash">
+	    <item name="android:windowNoTitle">true</item>
+    </style>
 	
     
     <style name="BaseTheme.Notitle" parent="android:Theme.Holo.Light">
@@ -160,12 +163,11 @@
         <item name="android:windowNoTitle">true</item>
     </style>
     
-    <style name="PictureTheme" parent="BaseTheme">
+    <style name="PictureTheme" parent="BaseTheme.Dark.Translucent">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowFullscreen">false</item>
         <item name="android:windowFrame">@null</item>
         <item name="android:windowContentOverlay">@null</item>
-		<item name="android:actionBarStyle">@style/PictureActionBar</item>
         <item name="android:backgroundDimEnabled">false</item>
         <item name="android:windowIsTranslucent">true</item>
     </style>

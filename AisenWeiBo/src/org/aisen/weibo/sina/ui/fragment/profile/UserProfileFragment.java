@@ -109,11 +109,17 @@ public class UserProfileFragment extends ATimelineFragment
 	}
 	
 	@Override
-	protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
+	protected void initRefreshList(Bundle savedInstanceState) {
+		super.initRefreshList(savedInstanceState);
+		
 		ListView listView = (ListView) getRefreshView();
 		viewProfile = View.inflate(getActivity(), R.layout.lay_profile_v2, null);
-		listView.addHeaderView(viewProfile);
 		AisenUtil.setAlpha(viewProfile);
+		listView.addHeaderView(viewProfile);
+	}
+	
+	@Override
+	protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
 		
 		super.layoutInit(inflater, savedInstanceSate);
 		
@@ -228,7 +234,7 @@ public class UserProfileFragment extends ATimelineFragment
 			} catch (Exception e) {
 			}
 			if (!TextUtils.isEmpty(mUser.getRemark()))
-				txtRemark.setText(String.format(getString(R.string.profile_remark_hint), mUser.getRemark()));
+				txtRemark.setText(String.format(getString(R.string.profile_remark), mUser.getRemark()));
 			else
 				txtRemark.setText(R.string.profile_remark_none);
 		}
@@ -325,7 +331,7 @@ public class UserProfileFragment extends ATimelineFragment
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// @Ta
 		if (item.getItemId() == R.id.mention) {
-			BizFragment.getBizFragment(this).mentionUser(mUser);
+			BizFragment.getBizFragment(this).mentionUser(getActivity(), mUser);
 		}
 		// 关注
 		else if (item.getItemId() == R.id.create) {

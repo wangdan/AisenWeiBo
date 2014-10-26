@@ -76,6 +76,8 @@ public class SettingsFragment extends VersionSettingsFragment implements OnPrefe
 		
 		pTranslucent = (CheckBoxPreference) findPreference("pTranslucent");
 		pTranslucent.setOnPreferenceChangeListener(this);
+		
+		wallpaperBean = AppContext.getWallpaper();
 	}
 	
 	@Override
@@ -151,6 +153,8 @@ public class SettingsFragment extends VersionSettingsFragment implements OnPrefe
 		return true;
 	}
 	
+	private WallpaperBean wallpaperBean;
+	
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -158,6 +162,9 @@ public class SettingsFragment extends VersionSettingsFragment implements OnPrefe
 		BaiduAnalyzeUtils.onPageStart("设置");
 
 		resetTheme();
+		
+		if (wallpaperBean != AppContext.getWallpaper())
+			((BaseActivity) getActivity()).reload();
 	}
 	
 	private void resetTheme() {

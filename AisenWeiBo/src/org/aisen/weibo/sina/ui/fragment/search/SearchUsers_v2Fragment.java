@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnCloseListener;
 import android.widget.SearchView.OnQueryTextListener;
@@ -183,6 +184,8 @@ public class SearchUsers_v2Fragment extends AListFragment<SuggestionsUser, Sugge
 
 	private void query(String q) {
 		new SearchUsersTask().execute(q);
+		
+		((ListView) getRefreshView()).setSelectionFromTop(0, 0);
 	}
 	
 	class SearchUsersItemView extends AbstractItemView<SuggestionsUser> {

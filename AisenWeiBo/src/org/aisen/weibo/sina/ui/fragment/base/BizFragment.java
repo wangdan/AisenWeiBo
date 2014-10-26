@@ -842,8 +842,8 @@ public class BizFragment extends ABaseFragment {
 	
 	// XXX \@用户
 	/* \@用户 */
-	public void mentionUser(WeiBoUser user) {
-		PublishActivity.publishStatusWithMention(getActivity(), user);
+	public void mentionUser(Activity from, WeiBoUser user) {
+		PublishActivity.publishStatusWithMention(from, user);
 	}
 	
 }

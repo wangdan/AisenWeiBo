@@ -19,9 +19,9 @@ import org.sina.android.bean.StatusContent;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
@@ -60,6 +60,7 @@ public class TimelineCommentsFragment extends ARefreshProxyFragment<StatusCommen
 	private StatusContent mStatusContent;
 	
 	private View headerView;
+	private View headerDivider;
 	
 	@Override
 	protected int inflateContentView() {
@@ -72,28 +73,32 @@ public class TimelineCommentsFragment extends ARefreshProxyFragment<StatusCommen
 	}
 	
 	@Override
-	protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceState) {
-		super.layoutInit(inflater, savedInstanceState);
+	protected void initRefreshList(Bundle savedInstanceState) {
+		super.initRefreshList(savedInstanceState);
 		
 		ListView listView = (ListView) getRefreshView();
+
 		TimelineItemView timelineItem = new TimelineItemView(this, true);
 		View view = View.inflate(getActivity(), timelineItem.inflateViewId(), null);
 		timelineItem.bindingView(view);
 		view.setTag(timelineItem);
 		listView.addHeaderView(view);
-		
 		headerView = view;
 		
-		mStatusContent = savedInstanceState == null ? (StatusContent) getArguments().getSerializable("bean")
-													: (StatusContent) savedInstanceState.getSerializable("bean");
+		headerDivider = View.inflate(getActivity(), R.layout.lay_divider, null);
+		listView.addHeaderView(headerDivider);
+		headerDivider.setVisibility(View.GONE);
 		
+		mStatusContent = savedInstanceState == null ? (StatusContent) getArguments().getSerializable("bean")
+				: (StatusContent) savedInstanceState.getSerializable("bean");
+
 		timelineItem.bindingData(headerView, mStatusContent);
 		
 		listView.setOnItemClickListener(this);
 		listView.setOnItemLongClickListener(this);
 		
 		if (savedInstanceState == null) {
-			listView.setSelectionFromTop(listView.getFooterViewsCount(), 0);
+		listView.setSelectionFromTop(listView.getFooterViewsCount(), 0);
 		}
 	}
 	
@@ -112,7 +117,7 @@ public class TimelineCommentsFragment extends ARefreshProxyFragment<StatusCommen
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		ListView listView = (ListView) getRefreshView();
 		position -= listView.getHeaderViewsCount();
-		if (position >= 0)
+		if (position >= 0 && position < getAdapter().getCount())
 			BizFragment.getBizFragment(this).replyComment(mStatusContent, getAdapter().getDatas().get(position));
 	}
 	
@@ -186,6 +191,16 @@ public class TimelineCommentsFragment extends ARefreshProxyFragment<StatusCommen
 			// 第一次加载完数据，将评论置顶
 			if (mode == RefreshMode.reset)
 				listView.setSelectionFromTop(listView.getFooterViewsCount(), 0);
+			
+			if (getAdapter().getDatas().size() > 0) {
+				headerDivider.setVisibility(View.VISIBLE);
+				
+				TextView txtDivider = (TextView) headerDivider.findViewById(R.id.txtDivider);
+				txtDivider.setText(getString(R.string.timelinecmt_divider_cmt));
+			}
+			else {
+				headerDivider.setVisibility(View.GONE);
+			}
 		}
 		
 		@Override

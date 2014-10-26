@@ -51,6 +51,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -110,6 +111,11 @@ public abstract class APublishFragment extends ABaseFragment
 	View layEmotion;
 	@ViewInject(id = R.id.txtContentSurplus)
 	TextView txtContentSurplus;
+	
+	@ViewInject(id = R.id.checkbox)
+	CheckBox checkBox;
+	@ViewInject(id = R.id.txtContent)
+	TextView txtContent;
 	
 	private final LayoutTransition transitioner = new LayoutTransition();
 	
@@ -750,6 +756,20 @@ public abstract class APublishFragment extends ABaseFragment
 	
 	public PublishBean getPublishBean() {
 		return mBean;
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		if (AisenUtil.isTranslucent()) {
+			if (txtContent != null)
+				txtContent.setTextColor(getResources().getColor(R.color.edit_hint_wallpaper));
+			if (checkBox != null)
+				checkBox.setTextColor(getResources().getColor(R.color.edit_hint_wallpaper));
+			
+			layEmotion.setBackgroundColor(getResources().getColor(R.color.transparent));
+		}
 	}
 	
 	/**

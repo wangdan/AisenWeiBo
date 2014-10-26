@@ -5,6 +5,7 @@ import org.aisen.weibo.sina.support.bean.WallpaperBean;
 import org.android.loader.BitmapLoader;
 import org.android.loader.core.ImageConfig;
 import org.android.loader.download.AssetsDownloader;
+import org.android.loader.download.SdcardDownloader;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -50,8 +51,18 @@ public class WallpaperSettingsImageView extends ImageView {
 				imageConfig = new ImageConfig();
 			
 			if ("1".equals(wallpaper.getType())) {
-				imageConfig.setId("wallpaper_setting");
+				imageConfig.setId("def_wallpaper");
 				imageConfig.setDownloaderClass(AssetsDownloader.class);
+				imageConfig.setLoadingBitmapRes(R.drawable.bg_timeline_loading);
+				imageConfig.setLoadfaildBitmapRes(R.drawable.bg_timeline_loading);
+				imageConfig.setMaxWidth(getWidth());
+				imageConfig.setMaxHeight(getHeight());
+				
+				BitmapLoader.getInstance().display(null, wallpaper.getPath(), this, imageConfig);
+			}
+			else if ("100".equals(wallpaper.getType())) {
+				imageConfig.setId("github_def_wallpaper");
+				imageConfig.setDownloaderClass(SdcardDownloader.class);
 				imageConfig.setLoadingBitmapRes(R.drawable.bg_timeline_loading);
 				imageConfig.setLoadfaildBitmapRes(R.drawable.bg_timeline_loading);
 				imageConfig.setMaxWidth(getWidth());
