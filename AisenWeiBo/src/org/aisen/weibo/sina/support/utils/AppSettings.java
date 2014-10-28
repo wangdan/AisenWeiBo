@@ -94,7 +94,7 @@ public class AppSettings {
 	 */
 	public static boolean isListAnim() {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
-		return prefs.getBoolean("pListAnim", false);
+		return prefs.getBoolean("pListAnim", true);
 	}
 	
 	/**

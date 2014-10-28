@@ -48,8 +48,6 @@ public class MyApplication extends GlobalContext {
 		if (AppSettings.isCrashLogUpload()) 
 			initBaiduAnalyze();
 		
-		Logger.DEBUG = true;
-		
 		// 设置登录账户
 		AccountBean accountBean = AccountDB.getLogedinAccount();
 		if (accountBean != null) 
@@ -62,7 +60,8 @@ public class MyApplication extends GlobalContext {
 		}
 		
 		// 默认设置壁纸
-		if (ActivityHelper.getInstance().getBooleanShareData("app_wallpaper_init", true)) {
+		// 暂时不默认设置壁纸
+		if (false && ActivityHelper.getInstance().getBooleanShareData("app_wallpaper_init", true)) {
 			ActivityHelper.getInstance().putBooleanShareData("app_wallpaper_init", false);
 			
 			CommSettings.setAppTheme(R.style.BaseTheme_Translucent);
