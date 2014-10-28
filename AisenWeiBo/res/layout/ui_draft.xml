@@ -12,6 +12,6 @@
 	<LinearLayout android:id="@id/layoutEmpty" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical"
 		android:gravity="center" android:visibility="gone" android:paddingBottom="30dip">
 		<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/empty_draft"
-			android:gravity="center_horizontal" android:textSize="16sp" android:textColor="?attr/text_hint_color" />
+			android:gravity="center_horizontal" android:textSize="16sp" android:textColor="?attr/text_hint_color" android:id="@+id/txtDraftEmpty" />
 	</LinearLayout>
 </RelativeLayout>

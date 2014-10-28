@@ -92,7 +92,7 @@ public class SplashActivity extends BaseActivity {
 		@Override
 		public Boolean workInBackground(Void... p) throws TaskException {
 			
-			if (AppContext.getGroups() != null) {
+			if (false && AppContext.getGroups() != null) {
 				for (Group group : AppContext.getGroups().getLists()) {
 					Params params = new Params();
 					params.addParameter("list_id", group.getIdstr());

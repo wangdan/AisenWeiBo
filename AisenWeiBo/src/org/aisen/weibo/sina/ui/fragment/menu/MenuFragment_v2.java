@@ -107,8 +107,9 @@ public class MenuFragment_v2 extends AListFragment<MenuBean, ArrayList<MenuBean>
 			if (getArguments() != null) {
 				String type = getArguments().getString("type");
 				
-				for (int i = 0; i < getAdapter().getDatas().size(); i++) {
-					MenuBean bean = getAdapter().getDatas().get(i);
+				lastSelectedMenu = newMenu(type);
+				for (int i = 0; i < getAdapterItems().size(); i++) {
+					MenuBean bean = getAdapterItems().get(i);
 					if (bean.getType().equals(type)) {
 						lastSelectedMenu = bean;
 						index = i + getListView().getHeaderViewsCount();
@@ -118,7 +119,7 @@ public class MenuFragment_v2 extends AListFragment<MenuBean, ArrayList<MenuBean>
 				
 			}
 			
-			if (index == getListView().getHeaderViewsCount()) {
+			if (index <= getListView().getHeaderViewsCount()) {
 				onMenuClicked(lastSelectedMenu);
 			}
 			else {
@@ -220,7 +221,7 @@ public class MenuFragment_v2 extends AListFragment<MenuBean, ArrayList<MenuBean>
 			entity = newMenu("0");
 		}
 		else {
-			entity = getAdapter().getDatas().get(position - getListView().getHeaderViewsCount());
+			entity = getAdapterItems().get(position - getListView().getHeaderViewsCount());
 		}
 		
 		

@@ -48,7 +48,7 @@ public class MyApplication extends GlobalContext {
 		if (AppSettings.isCrashLogUpload()) 
 			initBaiduAnalyze();
 		
-//		Logger.DEBUG = true;
+		Logger.DEBUG = true;
 		
 		// 设置登录账户
 		AccountBean accountBean = AccountDB.getLogedinAccount();

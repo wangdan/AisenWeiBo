@@ -61,7 +61,7 @@ public class RepostTimelineFragment extends ATimelineFragment {
 	protected void initRefreshList(Bundle savedInstanceSate) {
 		super.initRefreshList(savedInstanceSate);
 		
-		ListView listView = (ListView) getRefreshView();
+		final ListView listView = (ListView) getRefreshView();
 		TimelineItemView timelineItem = new TimelineItemView(this, true);
 		View view = View.inflate(getActivity(), timelineItem.inflateViewId(), null);
 		timelineItem.bindingView(view);
@@ -72,13 +72,21 @@ public class RepostTimelineFragment extends ATimelineFragment {
 		
 		headerDivider = View.inflate(getActivity(), R.layout.lay_divider, null);
 		listView.addHeaderView(headerDivider);
-		headerDivider.setVisibility(View.GONE);
+//		headerDivider.setVisibility(View.GONE);
+		TextView txtDivider = (TextView) headerDivider.findViewById(R.id.txtDivider);
+		txtDivider.setText(getString(R.string.timelinecmt_divider_status));
 		
 		mStatusContent = savedInstanceSate == null ? (StatusContent) getArguments().getSerializable("status")
 												   : (StatusContent) savedInstanceSate.getSerializable("status");
 		
 		if (savedInstanceSate == null) {
-			listView.setSelectionFromTop(listView.getFooterViewsCount(), 0);
+			listView.postDelayed(new Runnable() {
+				
+				@Override
+				public void run() {
+					listView.setSelectionFromTop(2, 0);
+				}
+			}, 10);
 		}
 	}
 	
@@ -150,11 +158,8 @@ public class RepostTimelineFragment extends ATimelineFragment {
 		protected void onFinished() {
 			super.onFinished();
 			
-			if (getAdapter().getDatas().size() > 0) {
+			if (getAdapterCount() > 0) {
 				headerDivider.setVisibility(View.VISIBLE);
-				
-				TextView txtDivider = (TextView) headerDivider.findViewById(R.id.txtDivider);
-				txtDivider.setText(getString(R.string.timelinecmt_divider_status));
 			}
 			else {
 				headerDivider.setVisibility(View.GONE);

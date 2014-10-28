@@ -138,7 +138,7 @@ public class SearchUsers_v2Fragment extends AListFragment<SuggestionsUser, Sugge
 		InputMethodManager im = (InputMethodManager) GlobalContext.getInstance().getSystemService(Context.INPUT_METHOD_SERVICE);
 		im.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
 		
-		UserProfileActivity.launch(getActivity(), getAdapter().getDatas().get(position).getScreen_name());
+		UserProfileActivity.launch(getActivity(), getAdapterItems().get(position).getScreen_name());
 	}
 	
 	@Override
@@ -171,7 +171,7 @@ public class SearchUsers_v2Fragment extends AListFragment<SuggestionsUser, Sugge
 			setItems(new ArrayList<SuggestionsUser>());
 		}
 		
-		if (getAdapter().getDatas().size() == 0) {
+		if (getAdapterCount() == 0) {
 			layList.setVisibility(View.GONE);
 			layEmpty.setVisibility(View.GONE);
 		}
@@ -249,7 +249,7 @@ public class SearchUsers_v2Fragment extends AListFragment<SuggestionsUser, Sugge
 			mTask = null;
 			mSmoothProgressBar.setVisibility(View.GONE);
 			
-			if (getAdapter().getDatas().size() == 0) {
+			if (getAdapterCount() == 0) {
 				layEmpty.setVisibility(View.VISIBLE);
 				
 				layList.setVisibility(View.GONE);

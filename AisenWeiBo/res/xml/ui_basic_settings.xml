@@ -36,6 +36,9 @@
         <!-- <CheckBoxPreference android:key="pRefreshSound" android:title="@string/settings_sound" android:defaultValue="false"
  	    	android:summary="@string/settings_sound_summary" /> -->
         
+        <CheckBoxPreference android:key="pListAnim" android:title="@string/settings_list_anim" android:defaultValue="false"
+ 	    	android:summary="@string/settings_list_anim_summary" />
+        
         <CheckBoxPreference android:key="pSendVibrate" android:title="@string/settings_vibrate" android:defaultValue="true"
  	    	android:summary="@string/settings_vibrate_summary" />
     </PreferenceCategory>

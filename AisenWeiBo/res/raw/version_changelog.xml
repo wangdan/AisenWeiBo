@@ -12,6 +12,7 @@
 	    <changelogtext>新增主题设置功能，多种颜色主题供君选择.</changelogtext>
 	    <changelogtext>新增背景自定义壁纸功能.</changelogtext>
 	    <changelogtext>新增背景开启桌面壁纸功能.</changelogtext>
+	    <changelogtext>新增列表加载动画.</changelogtext>
 	</changelogversion>
 
 	<changelogversion versionName="3.1.7" changeDate="2014-10">

@@ -417,6 +417,8 @@
 	<string name="settings_sound_summary">列表刷新后声音反馈</string>
 	<string name="settings_vibrate">震动反馈</string>
 	<string name="settings_vibrate_summary">内容发送成功后震动反馈</string>
+	<string name="settings_list_anim">列表动画</string>
+	<string name="settings_list_anim_summary">列表加载时显示动画</string>
 	<string name="category_other">其他</string>
 	<string name="settings_pic_path">图片保存路径</string>
 	<string name="settings_mention_history">清理@好友历史记录</string>

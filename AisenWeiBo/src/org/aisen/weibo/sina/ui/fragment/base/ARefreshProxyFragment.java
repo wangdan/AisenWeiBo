@@ -3,6 +3,8 @@ package org.aisen.weibo.sina.ui.fragment.base;
 import java.io.Serializable;
 
 import org.aisen.weibo.sina.support.utils.AisenUtil;
+import org.aisen.weibo.sina.support.utils.AppContext;
+import org.aisen.weibo.sina.support.utils.AppSettings;
 import org.aisen.weibo.sina.ui.activity.common.FragmentContainerActivity;
 import org.aisen.weibo.sina.ui.activity.main.MainActivity;
 import org.aisen.weibo.sina.ui.fragment.friendship.AFriendshipFragment;
@@ -11,6 +13,7 @@ import org.aisen.weibo.sina.ui.fragment.publish.AddFriendMentionFragment;
 import org.aisen.weibo.sina.ui.fragment.search.SearchTopicsFragment;
 import org.aisen.weibo.sina.ui.fragment.topics.TopicsFragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.widget.ListView;
@@ -19,6 +22,7 @@ import android.widget.TextView;
 import com.m.R;
 import com.m.ui.activity.BaseActivity;
 import com.m.ui.fragment.ACombinationRefreshListFragment;
+import com.nhaarman.listviewanimations.appearance.AnimationAdapter;
 
 public abstract class ARefreshProxyFragment<T extends Serializable, Ts extends Serializable> 
 							extends ACombinationRefreshListFragment<T, Ts> {
@@ -51,10 +55,25 @@ public abstract class ARefreshProxyFragment<T extends Serializable, Ts extends S
 				) {
 			ListView listView = (ListView) getRefreshView();
 			listView.setClipToPadding(false);
+			int bottom = activityHelper.wallpaper.systemBarConfig.getPixelInsetBottom() + listView.getBottom();
 			listView.setPadding(listView.getPaddingLeft(), 
 									listView.getPaddingTop(), 
 									listView.getPaddingRight(), 
-									activityHelper.wallpaper.systemBarConfig.getPixelInsetBottom());
+									bottom);
+		}
+	}
+	
+	@Override
+	public void resetRefreshView(com.m.ui.fragment.ARefreshFragment.RefreshConfig config) {
+		super.resetRefreshView(config);
+		
+		// ActionBarPullToRefresh的背景颜色
+		// 如果是设定主题，就保持颜色一致，其他情况就是透明色
+		if (configListType() == RefreshListType.actionbarPulltorefresh) {
+			if (AisenUtil.isTranslucent())
+				getPullToRefreshLayout().getHeaderView().findViewById(R.id.ptr_text).setBackgroundColor(getResources().getColor(R.color.transparent));
+			else
+				getPullToRefreshLayout().getHeaderView().findViewById(R.id.ptr_text).setBackgroundColor(Color.parseColor(AppSettings.getThemeColor()));
 		}
 	}
 	
@@ -70,6 +89,13 @@ public abstract class ARefreshProxyFragment<T extends Serializable, Ts extends S
 			txtLoadingHint.setTextColor(getResources().getColor(R.color.black));
 			btnLoadMore.setTextColor(getResources().getColor(R.color.black));
 		}
+		
+		if (AppSettings.isLaunchWallpaper() || AppContext.getWallpaper() != null)
+			AnimationAdapter.alpha = 0.75f;
+		else 
+			AnimationAdapter.alpha = 1.0f;
+		
+		getConfig().animEnable = AppSettings.isListAnim();
 	}
 	
 }

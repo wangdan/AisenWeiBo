@@ -52,7 +52,7 @@ public class ThemeStyleSettingsFragment extends AGridFragment<String, String[]> 
 	
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		AppSettings.setThemeColor(getAdapter().getDatas().get(position));
+		AppSettings.setThemeColor(getAdapterItems().get(position));
 
 		BaseActivity activity = (BaseActivity) getActivity();
 		WallpaperViewGroup wallpaper = (WallpaperViewGroup) activity.getRootView();

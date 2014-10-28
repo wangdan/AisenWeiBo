@@ -158,10 +158,11 @@ public class SearchTopicsFragment extends ATimelineFragment
 		layHistory.setVisibility(TextUtils.isEmpty(newText) ? View.VISIBLE : View.GONE);
 
 		if (layHistory.getVisibility() == View.VISIBLE) {
-			getAdapter().setDatasAndRefresh(new ArrayList<StatusContent>());
+			setAdapterItems(new ArrayList<StatusContent>());
+			notifyDataSetChanged();
 		}
 		
-		if (getAdapter().getDatas().size() == 0) {
+		if (getAdapterCount() == 0) {
 			layList.setVisibility(View.GONE);
 			layEmpty.setVisibility(View.GONE);
 		}
@@ -184,7 +185,7 @@ public class SearchTopicsFragment extends ATimelineFragment
 	
 	@Override
 	protected void requestData(RefreshMode mode) {
-		if (getAdapter().getDatas().size() > 0)
+		if (getAdapterCount() > 0)
 			new SearchTopicsTask(mode == RefreshMode.refresh ? RefreshMode.reset : mode).execute();
 	}
 	
@@ -238,7 +239,7 @@ public class SearchTopicsFragment extends ATimelineFragment
 			mTask = null;
 			mSmoothProgressBar.setVisibility(View.GONE);
 			
-			if (getAdapter().getDatas().size() == 0) {
+			if (getAdapterCount() == 0) {
 				layEmpty.setVisibility(View.VISIBLE);
 				
 				layList.setVisibility(View.GONE);

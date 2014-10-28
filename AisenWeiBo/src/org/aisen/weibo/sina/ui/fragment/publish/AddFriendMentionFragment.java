@@ -100,10 +100,10 @@ public class AddFriendMentionFragment extends ARefreshProxyFragment<WeiBoUser, F
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		position = position - ((ListView) getRefreshView()).getHeaderViewsCount();
 		
-		FriendMentionDB.addFriend(getAdapter().getDatas().get(position));
+		FriendMentionDB.addFriend(getAdapterItems().get(position));
 		
 		Intent data = new Intent();
-		data.putExtra("bean", getAdapter().getDatas().get(position));
+		data.putExtra("bean", getAdapterItems().get(position));
 		getActivity().setResult(Activity.RESULT_OK, data);
 		getActivity().finish();
 	}

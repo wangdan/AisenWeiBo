@@ -114,7 +114,7 @@ public class SearchUsersFragment extends AListFragment<SuggestionsUser, Suggesti
 		InputMethodManager im = (InputMethodManager) GlobalContext.getInstance().getSystemService(Context.INPUT_METHOD_SERVICE);
 		im.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
 		
-		UserProfileActivity.launch(getActivity(), getAdapter().getDatas().get(position).getScreen_name());
+		UserProfileActivity.launch(getActivity(), getAdapterItems().get(position).getScreen_name());
 	}
 	
 	@Override

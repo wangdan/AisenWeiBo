@@ -15,6 +15,7 @@ import org.sina.android.bean.StatusContent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -44,6 +45,8 @@ public class TimelineCommentsActivity extends AViewpagerActivity implements OnCl
 	TextView btnFavor;
 	@ViewInject(id = R.id.btnOverflow, click = "btnClicked")
 	View btnOverflow;
+	@ViewInject(id = R.id.layBtns)
+	View layBtns;
 	
 	private StatusContent mStatusContent;
 	
@@ -73,16 +76,8 @@ public class TimelineCommentsActivity extends AViewpagerActivity implements OnCl
 			btnRepost.setVisibility(View.GONE);
 		}
 		
-		setTextColor(btnComment);
-		setTextColor(btnRepost);
-		setTextColor(btnFavor);
-	}
-	
-	private void setTextColor(TextView textview) {
-		if (AisenUtil.isTranslucent()) 
-			textview.setTextColor(getResources().getColor(R.color.white));
-		else
-			textview.setTextColor(getResources().getColor(R.drawable.post_counters));
+		if (!AisenUtil.isTranslucent())
+        	layBtns.setBackgroundColor(Color.parseColor(AppSettings.getThemeColor()));
 	}
 	
 	@Override

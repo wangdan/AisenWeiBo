@@ -76,7 +76,7 @@ public class TimelineCommentsFragment extends ARefreshProxyFragment<StatusCommen
 	protected void initRefreshList(Bundle savedInstanceState) {
 		super.initRefreshList(savedInstanceState);
 		
-		ListView listView = (ListView) getRefreshView();
+		final ListView listView = (ListView) getRefreshView();
 
 		TimelineItemView timelineItem = new TimelineItemView(this, true);
 		View view = View.inflate(getActivity(), timelineItem.inflateViewId(), null);
@@ -87,7 +87,9 @@ public class TimelineCommentsFragment extends ARefreshProxyFragment<StatusCommen
 		
 		headerDivider = View.inflate(getActivity(), R.layout.lay_divider, null);
 		listView.addHeaderView(headerDivider);
-		headerDivider.setVisibility(View.GONE);
+//		headerDivider.setVisibility(View.GONE);
+		TextView txtDivider = (TextView) headerDivider.findViewById(R.id.txtDivider);
+		txtDivider.setText(getString(R.string.timelinecmt_divider_cmt));
 		
 		mStatusContent = savedInstanceState == null ? (StatusContent) getArguments().getSerializable("bean")
 				: (StatusContent) savedInstanceState.getSerializable("bean");
@@ -98,7 +100,13 @@ public class TimelineCommentsFragment extends ARefreshProxyFragment<StatusCommen
 		listView.setOnItemLongClickListener(this);
 		
 		if (savedInstanceState == null) {
-		listView.setSelectionFromTop(listView.getFooterViewsCount(), 0);
+			listView.postDelayed(new Runnable() {
+				
+				@Override
+				public void run() {
+					listView.setSelectionFromTop(2, 0);
+				}
+			}, 10);
 		}
 	}
 	
@@ -118,7 +126,7 @@ public class TimelineCommentsFragment extends ARefreshProxyFragment<StatusCommen
 		ListView listView = (ListView) getRefreshView();
 		position -= listView.getHeaderViewsCount();
 		if (position >= 0 && position < getAdapter().getCount())
-			BizFragment.getBizFragment(this).replyComment(mStatusContent, getAdapter().getDatas().get(position));
+			BizFragment.getBizFragment(this).replyComment(mStatusContent, getAdapterItems().get(position));
 	}
 	
 	@Override
@@ -176,7 +184,7 @@ public class TimelineCommentsFragment extends ARefreshProxyFragment<StatusCommen
 			if (mode == RefreshMode.reset || mode == RefreshMode.refresh)
 				// 目前微博加载分页大小是默认大小
 				if (datas.size() >= AppSettings.getCommentCount()) {
-					getAdapter().setDatas(new ArrayList<StatusComment>());
+					setAdapterItems(new ArrayList<StatusComment>());
 					return true;
 				}
 
@@ -192,11 +200,8 @@ public class TimelineCommentsFragment extends ARefreshProxyFragment<StatusCommen
 			if (mode == RefreshMode.reset)
 				listView.setSelectionFromTop(listView.getFooterViewsCount(), 0);
 			
-			if (getAdapter().getDatas().size() > 0) {
+			if (getAdapterItems().size() > 0) {
 				headerDivider.setVisibility(View.VISIBLE);
-				
-				TextView txtDivider = (TextView) headerDivider.findViewById(R.id.txtDivider);
-				txtDivider.setText(getString(R.string.timelinecmt_divider_cmt));
 			}
 			else {
 				headerDivider.setVisibility(View.GONE);

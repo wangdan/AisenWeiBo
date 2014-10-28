@@ -107,7 +107,7 @@ public class MentionSuggestionFragment extends AListFragment<MentionSuggestionBe
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		MentionSuggestionBean bean = getAdapter().getDatas().get(position);
+		MentionSuggestionBean bean = getAdapterItems().get(position);
 		
 		WeiBoUser friend = bean.getUser();
 		if (friend == null) {
@@ -212,7 +212,7 @@ public class MentionSuggestionFragment extends AListFragment<MentionSuggestionBe
 			for (SuggestionAtUser suggestionAtUser : userArr) {
 				boolean exist = false;
 				
-				for (MentionSuggestionBean bean : getAdapter().getDatas()) {
+				for (MentionSuggestionBean bean : getAdapterItems()) {
 					if (bean.getUser() != null && bean.getUser().getIdstr().equals(suggestionAtUser.getUid())) {
 						exist = true;
 						break;
@@ -256,11 +256,11 @@ public class MentionSuggestionFragment extends AListFragment<MentionSuggestionBe
 					remoteUserList.add(bean);
 				}
 				
-				getAdapter().getDatas().addAll(remoteUserList);
-				getAdapter().notifyDataSetChanged();
+				getAdapterItems().addAll(remoteUserList);
+				notifyDataSetChanged();
 			}
 			
-			if (getAdapter().getDatas().size() == 0) {
+			if (getAdapterCount() == 0) {
 				getRefreshView().setVisibility(View.GONE);
 				viewNone.setVisibility(View.VISIBLE);
 			}

@@ -108,7 +108,7 @@ public class SearchHistoryFragment extends AListFragment<SearchHisotyBean, Array
 	
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		if (position == getAdapter().getDatas().size() - 1) {
+		if (position == getAdapterCount() - 1) {
 			new AlertDialog.Builder(getActivity()).setTitle(R.string.remind)
 											.setIconAttribute(android.R.attr.alertDialogIcon)
 											.setMessage(R.string.search_clear_search_remind)
@@ -137,7 +137,7 @@ public class SearchHistoryFragment extends AListFragment<SearchHisotyBean, Array
 											.show();
 		}
 		else {
-			onseaItemClicked.onItemClicked(getAdapter().getDatas().get(position).getQuery());
+			onseaItemClicked.onItemClicked(getAdapterItems().get(position).getQuery());
 		}
 	}
 

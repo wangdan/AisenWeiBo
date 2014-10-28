@@ -97,8 +97,8 @@ public class MentionCommentsFragment extends ARefreshProxyFragment<StatusComment
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		ListView listView = (ListView) getRefreshView();
 		position -= listView.getHeaderViewsCount();
-		if (position >= 0 && position < getAdapter().getCount())
-			BizFragment.getBizFragment(this).replyComment(null, getAdapter().getDatas().get(position));
+		if (position >= 0 && position < getAdapterCount())
+			BizFragment.getBizFragment(this).replyComment(null, getAdapterItems().get(position));
 	}
 	
 	@Override
@@ -158,7 +158,7 @@ public class MentionCommentsFragment extends ARefreshProxyFragment<StatusComment
 			if (mode == RefreshMode.refresh)
 				// 目前微博加载分页大小是默认大小
 				if (datas.size() >= AppSettings.getCommentCount()) {
-					getAdapter().setDatas(new ArrayList<StatusComment>());
+					setAdapterItems(new ArrayList<StatusComment>());
 				}
 
 			return super.handleResult(mode, datas);

@@ -333,9 +333,9 @@ public class GroupSortFragment extends ADragSortFragment<Group, Groups>
 			
 			List<Group> groupList = new ArrayList<Group>();
 			SparseBooleanArray selectedItems = checkedArray;
-            for (int i = 0; i < getAdapter().getDatas().size(); i++) {
+            for (int i = 0; i < getAdapterItems().size(); i++) {
             	if (selectedItems.get(i)) {
-            		Group group = getAdapter().getDatas().get(i);
+            		Group group = getAdapterItems().get(i);
             		
             		groupList.add(group);
             	}
@@ -345,9 +345,9 @@ public class GroupSortFragment extends ADragSortFragment<Group, Groups>
 		}
 		else if (item.getItemId() == R.id.edit) {
 			SparseBooleanArray selectedItems = checkedArray;
-            for (int i = 0; i < getAdapter().getDatas().size(); i++) {
+            for (int i = 0; i < getAdapterItems().size(); i++) {
             	if (selectedItems.get(i)) {
-            		Group group = getAdapter().getDatas().get(i);
+            		Group group = getAdapterItems().get(i);
             		
             		modifyGroup(group, group.getName());
             	}
@@ -386,7 +386,7 @@ public class GroupSortFragment extends ADragSortFragment<Group, Groups>
 			group.setName(getParams()[0]);
 			
 			AccountBean accountBean = AccountDB.getLogedinAccount();
-			AppContext.getGroups().setLists(getAdapter().getDatas());
+			AppContext.getGroups().setLists(getAdapterItems());
 			accountBean.setGroups(AppContext.getGroups());
 			
 			AccountDB.newAccount(accountBean);
@@ -518,10 +518,10 @@ public class GroupSortFragment extends ADragSortFragment<Group, Groups>
 					SinaSDK.getInstance(AppContext.getToken()).friendshipGroupsDestory(group.getIdstr());
 					
 					// 删除本地分组
-					getAdapter().removeItem(group);
+					getAdapterItems().remove(group);
 					
 					AccountBean accountBean = AccountDB.getLogedinAccount();
-					AppContext.getGroups().setLists(getAdapter().getDatas());
+					AppContext.getGroups().setLists(getAdapterItems());
 					accountBean.setGroups(AppContext.getGroups());
 					
 					AccountDB.newAccount(accountBean);
@@ -570,10 +570,10 @@ public class GroupSortFragment extends ADragSortFragment<Group, Groups>
 		
 		@Override
 		public GroupSortResult workInBackground(Void... params) throws TaskException {
-			GroupSortResult result = SinaSDK.getInstance(AppContext.getToken()).friendshipGroupsOrder(getAdapter().getDatas());
+			GroupSortResult result = SinaSDK.getInstance(AppContext.getToken()).friendshipGroupsOrder(getAdapterItems());
 			
 			AccountBean accountBean = AccountDB.getLogedinAccount();
-			AppContext.getGroups().setLists(getAdapter().getDatas());
+			AppContext.getGroups().setLists(getAdapterItems());
 			accountBean.setGroups(AppContext.getGroups());
 			
 			AccountDB.newAccount(accountBean);

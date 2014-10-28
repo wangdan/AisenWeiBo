@@ -375,10 +375,11 @@ public class AisenUtil {
 															if (fragment instanceof ARefreshFragment) {
 																@SuppressWarnings("rawtypes")
 																ARefreshFragment aRefreshFragment = ((ARefreshFragment) fragment);
-																for (Object so : aRefreshFragment.getAdapter().getDatas()) {
+																for (Object so : aRefreshFragment.getAdapterItems()) {
 																	StatusComment s = (StatusComment) so;
 																	if (s.getId().equals(commnet.getId())) {
-																		aRefreshFragment.getAdapter().removeItemAndRefresh(s);
+																		aRefreshFragment.getAdapterItems().remove(s);
+																		aRefreshFragment.notifyDataSetChanged();
 																		break;
 																	}
 																}
@@ -410,10 +411,11 @@ public class AisenUtil {
 											public void onStatusDestory(StatusContent status) {
 												if (fragment instanceof ATimelineFragment) {
 													ARefreshFragment aRefreshFragment = ((ARefreshFragment) fragment);
-													for (Object so : aRefreshFragment.getAdapter().getDatas()) {
+													for (Object so : aRefreshFragment.getAdapterItems()) {
 														StatusContent s = (StatusContent) so;
 														if (s.getId().equals(status.getId())) {
-															aRefreshFragment.getAdapter().removeItemAndRefresh(s);
+															aRefreshFragment.getAdapterItems().remove(s);
+															aRefreshFragment.notifyDataSetChanged();
 															break;
 														}
 													}

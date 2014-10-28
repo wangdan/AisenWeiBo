@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.m.common.params.Params;
+import com.m.common.utils.Logger;
 import com.m.support.task.TaskException;
 import com.m.ui.fragment.ABaseFragment;
 
@@ -21,6 +22,23 @@ import com.m.ui.fragment.ABaseFragment;
  */
 public class FriendGroupTimelineFragment extends ATimelineFragment {
 
+	static int count = 0;
+	
+	public FriendGroupTimelineFragment() {
+		count++;
+		
+		Logger.e("Friend", "friendGroup count = "+count);
+	}
+	
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+		
+		count--;
+		
+		Logger.e("Friend","friendGroup count = "+count);
+	}
+	
 	public static ABaseFragment newInstance(TimelineGroupBean groupBean) {
 		FriendGroupTimelineFragment fragment = new FriendGroupTimelineFragment();
 		

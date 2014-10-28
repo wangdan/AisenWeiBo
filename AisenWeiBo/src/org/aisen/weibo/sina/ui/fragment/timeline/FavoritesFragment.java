@@ -147,10 +147,11 @@ public class FavoritesFragment extends ATimelineFragment {
 	}
     
     private void destoryFav(String statusId) {
-    	for (StatusContent status : getAdapter().getDatas()) {
+    	for (StatusContent status : getAdapterItems()) {
     		if (status.getId().equals(statusId)) {
     			// 更新ListView
-    			getAdapter().removeItemAndRefresh(status);
+    			getAdapterItems().remove(status);
+    			notifyDataSetChanged();
     			
     			FavoritesCacheUtility.destory(statusId);
     			break;

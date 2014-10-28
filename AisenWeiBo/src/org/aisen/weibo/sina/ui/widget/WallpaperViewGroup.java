@@ -35,7 +35,6 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.m.common.context.GlobalContext;
-import com.m.common.utils.BitmapUtil;
 import com.m.common.utils.Logger;
 import com.m.common.utils.SystemUtility;
 import com.m.common.utils.Utils;
@@ -116,6 +115,9 @@ public class WallpaperViewGroup extends LinearLayout {
 		}
 		
 		initKitkat();
+		
+		if (!isKitKat())
+			mStatusBarAvailable = false;
 		
 		systemBarConfig = new SystemBarConfig(activity, mStatusBarAvailable, mNavBarAvailable);
 		

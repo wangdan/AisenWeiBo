@@ -67,6 +67,9 @@ public class DraftFragment extends AListFragment<PublishBean, ArrayList<PublishB
 	private boolean isSelectedModeActivated = false;
 	private SparseBooleanArray checkedArray;
 	
+	@ViewInject(id = R.id.txtDraftEmpty)
+	TextView txtDraftEmpty;
+	
 	@Override
 	protected int inflateContentView() {
 		return R.layout.ui_draft;
@@ -94,7 +97,7 @@ public class DraftFragment extends AListFragment<PublishBean, ArrayList<PublishB
 			getListView().setItemChecked(position, !getListView().isItemChecked(position));
 		}
 		else {
-			PublishBean bean = getAdapter().getDatas().get(position);
+			PublishBean bean = getAdapterItems().get(position);
 			
 			switch (bean.getType()) {
 			case status:
@@ -131,6 +134,10 @@ public class DraftFragment extends AListFragment<PublishBean, ArrayList<PublishB
 		new DraftTask(RefreshMode.reset).execute();
 		
 		BaiduAnalyzeUtils.onPageStart("草稿箱");
+		
+		if (AisenUtil.isTranslucent()) {
+			txtDraftEmpty.setTextColor(getResources().getColor(R.color.edit_hint_wallpaper));
+		}
 	}
 	
 	@Override
@@ -304,9 +311,9 @@ public class DraftFragment extends AListFragment<PublishBean, ArrayList<PublishB
 		}
 		else if (item.getItemId() == R.id.reSend) {
 			SparseBooleanArray selectedItems = checkedArray;
-            for (int i = 0; i < getAdapter().getDatas().size(); i++) {
+            for (int i = 0; i < getAdapterItems().size(); i++) {
             	if (selectedItems.get(i)) {
-            		PublishService.publish(getActivity(), getAdapter().getDatas().get(i));
+            		PublishService.publish(getActivity(), getAdapterItems().get(i));
             	}
             }
             mode.finish();
@@ -337,7 +344,8 @@ public class DraftFragment extends AListFragment<PublishBean, ArrayList<PublishB
 											               	
 											               	@Override
 											               	protected void onSuccess(java.util.ArrayList<PublishBean> result) {
-											               		getAdapter().setDatasAndRefresh(result);
+											               		setAdapterItems(result);
+											               		notifyDataSetChanged();
 											               		
 											               		showMessage(String.format(getString(R.string.draft_del_draft_hint), size));
 											               		
@@ -366,12 +374,12 @@ public class DraftFragment extends AListFragment<PublishBean, ArrayList<PublishB
 	
 												        		SparseBooleanArray selectedItems = checkedArray;
 												                ArrayList<PublishBean> unselectedBeans = new ArrayList<PublishBean>();
-												                for (int i = 0; i < getAdapter().getDatas().size(); i++) {
+												                for (int i = 0; i < getAdapterItems().size(); i++) {
 												                	if (selectedItems.get(i)) {
-												                		if (getAdapter().getDatas().get(i).getTiming() > 0)
-												                			MyApplication.removePublishAlarm(getAdapter().getDatas().get(i));
+												                		if (getAdapterItems().get(i).getTiming() > 0)
+												                			MyApplication.removePublishAlarm(getAdapterItems().get(i));
 												                		 
-												                		PublishDB.deletePublish(getAdapter().getDatas().get(i), AppContext.getUser());
+												                		PublishDB.deletePublish(getAdapterItems().get(i), AppContext.getUser());
 												                	}
 												                }
 																

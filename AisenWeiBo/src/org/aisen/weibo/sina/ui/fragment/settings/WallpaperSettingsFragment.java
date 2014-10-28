@@ -89,7 +89,7 @@ public class WallpaperSettingsFragment extends AGridFragment<WallpaperBean, Arra
 	
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		AppContext.setWallpaper(getAdapter().getDatas().get(position));
+		AppContext.setWallpaper(getAdapterItems().get(position));
 		
 		BaseActivity activity = (BaseActivity) getActivity();
 		WallpaperViewGroup wallpaper = (WallpaperViewGroup) activity.getRootView();
@@ -100,7 +100,7 @@ public class WallpaperSettingsFragment extends AGridFragment<WallpaperBean, Arra
 	
 	@Override
 	public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-		final WallpaperBean wallpaper = getAdapter().getDatas().get(position);
+		final WallpaperBean wallpaper = getAdapterItems().get(position);
 		if ("10".equals(wallpaper.getType())) {
 			new AlertDialog.Builder(getActivity()).setTitle(R.string.remind)
 								.setMessage(R.string.settings_wallpaper_delete_remind)

@@ -88,6 +88,16 @@ public class AppSettings {
 	}
 	
 	/**
+	 * 列表加载动画
+	 * 
+	 * @return
+	 */
+	public static boolean isListAnim() {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
+		return prefs.getBoolean("pListAnim", false);
+	}
+	
+	/**
 	 * 刷新微博音效反馈
 	 * 
 	 * @return

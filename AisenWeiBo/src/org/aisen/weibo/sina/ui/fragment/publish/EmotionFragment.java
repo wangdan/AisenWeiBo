@@ -43,6 +43,14 @@ public class EmotionFragment extends AGridFragment<Emotion, Emotions>
 	}
 	
 	@Override
+	protected void config(RefreshConfig config) {
+		super.config(config);
+		
+		config.animEnable = false;
+		config.savePosition = false;
+	}
+	
+	@Override
 	protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
 		super.layoutInit(inflater, savedInstanceSate);
 		
@@ -53,12 +61,12 @@ public class EmotionFragment extends AGridFragment<Emotion, Emotions>
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		if (onEmotionSelectedListener != null)
-			onEmotionSelectedListener.onEmotionSelected(getAdapter().getDatas().get(position));
+			onEmotionSelectedListener.onEmotionSelected(getAdapterItems().get(position));
 	}
 	
 	@Override
 	public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-		showMessage(getAdapter().getDatas().get(position).getKey());
+		showMessage(getAdapterItems().get(position).getKey());
 		return true;
 	}
 

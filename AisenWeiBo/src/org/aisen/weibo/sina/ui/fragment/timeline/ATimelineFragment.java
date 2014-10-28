@@ -99,8 +99,8 @@ public abstract class ATimelineFragment extends ARefreshProxyFragment<StatusCont
 		ListView listView = (ListView) getRefreshView();
 		int index = listView.getHeaderViewsCount();
 
-		if (getAdapter().getDatas().size() > 0 && position >= index) {
-			StatusContent status = getAdapter().getDatas().get(position - index);
+		if (getAdapterCount() > 0 && position >= index) {
+			StatusContent status = getAdapterItems().get(position - index);
 
 			TimelineCommentsFragment.launch(this, status);
 		}
@@ -146,7 +146,7 @@ public abstract class ATimelineFragment extends ARefreshProxyFragment<StatusCont
 			if (mode == RefreshMode.refresh) {
 				// 目前微博加载分页大小是默认大小
 				if (datas.size() >= AppSettings.getTimelineCount()) {
-					getAdapter().setDatas(new ArrayList<StatusContent>());
+					setAdapterItems(new ArrayList<StatusContent>());
 					return true;
 				}
 			}
@@ -286,9 +286,9 @@ public abstract class ATimelineFragment extends ARefreshProxyFragment<StatusCont
 		if (resultCode == Activity.RESULT_OK && requestCode == 1000) {
 			String statusId = data.getStringExtra("status");
 			if (!TextUtils.isEmpty(statusId)) {
-				for (int i = 0; i < getAdapter().getDatas().size(); i++) {
-					if (statusId.equals(getAdapter().getDatas().get(i).getId())) {
-						getAdapter().removeItem(i);
+				for (int i = 0; i < getAdapterItems().size(); i++) {
+					if (statusId.equals(getAdapterItems().get(i).getId())) {
+						getAdapterItems().remove(i);
 
 						getAdapter().notifyDataSetChanged();
 						break;

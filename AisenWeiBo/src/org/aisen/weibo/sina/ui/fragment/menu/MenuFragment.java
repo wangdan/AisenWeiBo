@@ -89,8 +89,8 @@ public class MenuFragment extends AListFragment<MenuBean, ArrayList<MenuBean>> i
 			if (getArguments() != null) {
 				String type = getArguments().getString("type");
 				
-				for (int i = 0; i < getAdapter().getDatas().size(); i++) {
-					MenuBean bean = getAdapter().getDatas().get(i);
+				for (int i = 0; i < getAdapterItems().size(); i++) {
+					MenuBean bean = getAdapterItems().get(i);
 					if (bean.getType().equals(type)) {
 						index = i + getListView().getHeaderViewsCount();
 						break;
@@ -103,7 +103,7 @@ public class MenuFragment extends AListFragment<MenuBean, ArrayList<MenuBean>> i
 		else {
 			selectedPosition = savedInstanceSate.getInt("selectedPosition", 0);
 			
-			getAdapter().setSelected(selectedPosition);
+			setAdapterSelected(selectedPosition);
 		}
 	}
 	
@@ -122,7 +122,7 @@ public class MenuFragment extends AListFragment<MenuBean, ArrayList<MenuBean>> i
 	
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-		MenuBean entity = getAdapter().getDatas().get(position - getListView().getHeaderViewsCount());
+		MenuBean entity = getAdapterItems().get(position - getListView().getHeaderViewsCount());
 		
 		if ("0".equals(entity.getType()))
 			Logger.d("查看用户信息");
@@ -135,7 +135,7 @@ public class MenuFragment extends AListFragment<MenuBean, ArrayList<MenuBean>> i
 		
 		selectedPosition = position;
 		
-		getAdapter().setSelected(position);
+		setAdapterSelected(position);
 		((MainActivity) getActivity()).closeDrawer();
 	}
 	

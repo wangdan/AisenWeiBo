@@ -11,22 +11,24 @@
     <View android:layout_width="match_parent" android:layout_height="1.5dip" android:background="@drawable/divider_panel" />
 
 	<LinearLayout android:layout_width="match_parent" android:layout_height="50dip" android:orientation="horizontal" android:gravity="center_vertical"
-		android:paddingLeft="@dimen/vertical_margin" android:paddingRight="@dimen/vertical_margin">
-		<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:layout_width="50dip" android:layout_height="40dip" android:text="@string/timelinecmt_cmt" android:textSize="16sp" android:textColor="@drawable/post_counters"
+		android:paddingLeft="@dimen/vertical_margin" android:paddingRight="@dimen/vertical_margin"
+		android:id="@+id/layBtns">
+		<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:layout_width="50dip" android:layout_height="40dip" android:text="@string/timelinecmt_cmt" android:textSize="16sp" android:textColor="@color/white"
 			android:background="@drawable/bg_btn_comments" android:clickable="true" android:gravity="center" 
 			android:id="@+id/btnComment"/>
 
 		<View android:layout_width="1dip" android:layout_height="23dip" android:layout_marginLeft="@dimen/vertical_gap" android:layout_marginRight="@dimen/vertical_gap"
 			android:background="#38000000" android:id="@+id/dividerRepost" />
 
-		<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:layout_width="50dip" android:layout_height="40dip" android:text="@string/timelinecmt_repost" android:textSize="16sp" android:textColor="@drawable/post_counters"
+		<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:layout_width="50dip" android:layout_height="40dip" android:text="@string/timelinecmt_repost" android:textSize="16sp" android:textColor="@color/white"
 			android:background="@drawable/bg_btn_comments" android:clickable="true" android:gravity="center" 
 			android:id="@+id/btnRepost"/>
 
 		<View android:layout_width="1dip" android:layout_height="23dip" android:layout_marginLeft="@dimen/vertical_gap" android:layout_marginRight="@dimen/vertical_gap"
 			android:background="#38000000" />
 
-		<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:layout_width="50dip" android:layout_height="40dip" android:text="@string/timelinecmt_fav" android:textSize="16sp" android:textColor="@drawable/post_counters"
+		<!-- @drawable/post_counters -->
+		<org.aisen.weibo.sina.ui.widget.TraditionalTextView android:layout_width="50dip" android:layout_height="40dip" android:text="@string/timelinecmt_fav" android:textSize="16sp" android:textColor="@color/white"
 			android:background="@drawable/bg_btn_comments" android:clickable="true" android:gravity="center" 
 			android:id="@+id/btnFavor"/>
 		

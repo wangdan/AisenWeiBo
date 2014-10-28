@@ -118,7 +118,7 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
 	
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-		AccountBean account = getAdapter().getDatas().get(position);
+		AccountBean account = getAdapterItems().get(position);
 		if (AccountBean.isExpired(account)) {
 			new AlertDialog.Builder(getActivity()).setTitle(R.string.remind)
 								.setMessage(R.string.account_expired)
@@ -309,9 +309,9 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
 										@Override
 										public Boolean workInBackground(Void... params) throws TaskException {
 											SparseBooleanArray selectedItems = checkedArray;
-							                for (int i = 0; i < getAdapter().getDatas().size(); i++) {
+							                for (int i = 0; i < getAdapterItems().size(); i++) {
 							                	if (selectedItems.get(i)) {
-							                		AccountBean account = getAdapter().getDatas().get(i);
+							                		AccountBean account = getAdapterItems().get(i);
 							                		
 							                		Logger.w(TAG, "删除账号 uid = " + account.getUserId());
 							                		AccountDB.remove(account.getUserId());

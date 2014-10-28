@@ -95,7 +95,7 @@ public abstract class AFriendshipFragment extends ARefreshProxyFragment<WeiBoUse
 	
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		int header = ((ListView) getRefreshView()).getHeaderViewsCount();
-		UserProfileFragment.launch(getActivity(), getAdapter().getDatas().get(position - header));
+		UserProfileFragment.launch(getActivity(), getAdapterItems().get(position - header));
 	}
 
 	@Override
@@ -224,7 +224,7 @@ public abstract class AFriendshipFragment extends ARefreshProxyFragment<WeiBoUse
 	 * @return
 	 */
 	int getSize() {
-		return getAdapter().getDatas().size();
+		return getAdapterItems().size();
 	}
 	
 	@Override

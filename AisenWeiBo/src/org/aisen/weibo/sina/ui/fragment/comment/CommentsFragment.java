@@ -97,7 +97,7 @@ public class CommentsFragment extends ARefreshProxyFragment<StatusComment, Statu
 		ListView listView = (ListView) getRefreshView();
 		position -= listView.getHeaderViewsCount();
 		if (position >= 0 && position < getAdapter().getCount())
-			BizFragment.getBizFragment(this).replyComment(null, getAdapter().getDatas().get(position));
+			BizFragment.getBizFragment(this).replyComment(null, getAdapterItems().get(position));
 	}
 	
 	@Override
@@ -201,7 +201,7 @@ public class CommentsFragment extends ARefreshProxyFragment<StatusComment, Statu
 			if (mode == RefreshMode.refresh)
 				// 目前微博加载分页大小是默认大小
 				if (datas.size() >= AppSettings.getCommentCount()) {
-					getAdapter().setDatas(new ArrayList<StatusComment>());
+					setAdapterItems(new ArrayList<StatusComment>());
 					return true;
 				}
 
