@@ -207,6 +207,8 @@ public class PublishActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.ui_fragment_container);
 		
+		getActionBar().setDisplayShowHomeEnabled(false);
+		
 		// 接收分享
 		if (savedInstanceState == null) {
             Intent intent = getIntent();
@@ -268,7 +270,6 @@ public class PublishActivity extends BaseActivity {
 				getFragmentManager().beginTransaction().add(R.id.fragmentContainer, fragment, "PublishFragment").commit();
 		}
 		
-		getActionBar().setDisplayShowHomeEnabled(false);
 	}
 	
 	@Override

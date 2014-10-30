@@ -22,6 +22,10 @@ import com.m.ui.activity.BaseActivity;
 public class MainGuideActivity extends BaseActivity {
 	
 	public static void launch(Activity from) {
+		// 屏蔽向导页
+		if (true)
+			return;
+		
 		if (BaseActivity.getRunningActivity() != null && BaseActivity.getRunningActivity() instanceof MainActivity) {
 			Intent intent = new Intent(from, MainGuideActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

@@ -668,6 +668,8 @@ public class UserProfileFragment extends ATimelineFragment
 		
 		setProfileView();
 		
+		setGroupList();
+		
 		getActivity().invalidateOptionsMenu();
 		
 		getAdapter().notifyDataSetChanged();

@@ -31,7 +31,7 @@
 	<!--加载被测主程序包名 -->
 	<instrumentation android:targetPackage="org.aisen.weibo.sina" android:name="android.test.InstrumentationTestRunner" />
 
-	<application android:allowBackup="true" android:icon="@drawable/a_icon" android:label="@string/app_name" android:theme="@style/BaseTheme"
+	<application android:allowBackup="true" android:icon="@drawable/a_icon_b" android:label="@string/app_name" android:theme="@style/BaseTheme"
 		android:name="org.aisen.weibo.sina.base.MyApplication">
 		<!-- 您从百度网站获取的APP KEY -->
 		<meta-data android:name="BaiduMobAd_STAT_ID" android:value="3124a3bb28" /> <!-- abcd1234 -->

@@ -55,9 +55,17 @@ public class PublishStatusCommentFragment extends APublishFragment implements On
 		txtContent.setText(AisenUtil.getCommentText(status.getText()));
 		if (status.getUser() != null)
 			BitmapLoader.getInstance().display(this, AisenUtil.getUserPhoto(status.getUser()), imgPhoto, ImageConfigUtils.getLargePhotoConfig());
+		if (AisenUtil.isTranslucent())
+			txtContent.setTextColor(getResources().getColor(R.color.edit_hint_wallpaper));
+        else
+        	txtContent.setTextColor(getResources().getColor(R.color.edit_hint));
 		
 		checkBox.setChecked(Boolean.parseBoolean(getPublishBean().getExtras().getParameter("forward")));
 		checkBox.setOnCheckedChangeListener(this);
+		if (AisenUtil.isTranslucent())
+			checkBox.setTextColor(getResources().getColor(R.color.edit_hint_wallpaper));
+        else
+        	checkBox.setTextColor(getResources().getColor(R.color.edit_hint));
 		
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActivity().getActionBar().setTitle(R.string.title_cmt_status);

@@ -167,7 +167,7 @@ public class MenuFragment_v2 extends AListFragment<MenuBean, ArrayList<MenuBean>
 		layMenthion.setOnClickListener(onMenuClickListener);
 		layMenthion.setTag(menu);
 		txtMentionTitle = (TextView) layMenthion.findViewById(R.id.txtTitle);
-		txtMentionTitle.setText(getString(menu.getTitleRes()));
+		txtMentionTitle.setText(getString(menu.getMenuTitleRes()));
 		txtMentionCounter = (TextView) layMenthion.findViewById(R.id.txtCounter);
 		
 		menu = newMenu("3");
@@ -263,33 +263,42 @@ public class MenuFragment_v2 extends AListFragment<MenuBean, ArrayList<MenuBean>
 		
 		if (menu.getType().equals("1")) {
 			txtMainTitle.setTextColor(Color.parseColor(AppSettings.getThemeColor()));
+			txtMainTitle.getPaint().setFakeBoldText(true);
 		}
 		else {
 			txtMainTitle.setTextColor(Color.parseColor("#ff333333"));
+			txtMainTitle.getPaint().setFakeBoldText(false);
 		}
 		
 		if (menu.getType().equals("2")) {
 			txtMentionTitle.setTextColor(Color.parseColor(AppSettings.getThemeColor()));
+			txtMentionTitle.getPaint().setFakeBoldText(true);
 		}
 		else {
 			txtMentionTitle.setTextColor(Color.parseColor("#ff333333"));
+			txtMentionTitle.getPaint().setFakeBoldText(false);
 		}
 		
 		if (menu.getType().equals("3")) {
 			txtCmtTitle.setTextColor(Color.parseColor(AppSettings.getThemeColor()));
+			txtCmtTitle.getPaint().setFakeBoldText(true);
 		}
 		else {
 			txtCmtTitle.setTextColor(Color.parseColor("#ff333333"));
+			txtCmtTitle.getPaint().setFakeBoldText(false);
 		}
 		
 		if (menu.getType().equals("4")) {
 			txtFriendsTitle.setTextColor(Color.parseColor(AppSettings.getThemeColor()));
+			txtFriendsTitle.getPaint().setFakeBoldText(true);
 		}
 		else {
 			txtFriendsTitle.setTextColor(Color.parseColor("#ff333333"));
+			txtFriendsTitle.getPaint().setFakeBoldText(false);
 		}
 		
 		getAdapter().notifyDataSetChanged();
+		updateHeaderCounter();
 	}
 	
 	@Override
@@ -309,9 +318,10 @@ public class MenuFragment_v2 extends AListFragment<MenuBean, ArrayList<MenuBean>
 		
 	}
 	
-	private void updateCounter(TextView view, MenuBean menu) {
+	private void updateHeaderCounter() {
 		int count = 0;
 		
+		// 朋友圈
 		if (AppContext.getUnreadCount().getFollower() > 0) {
 			txtFriendsCounter.setText(String.valueOf(AppContext.getUnreadCount().getFollower()));
 			txtFriendsCounter.setVisibility(View.VISIBLE);
@@ -320,6 +330,7 @@ public class MenuFragment_v2 extends AListFragment<MenuBean, ArrayList<MenuBean>
 			txtFriendsCounter.setVisibility(View.GONE);
 		}
 		
+		// 提及
 		if (AppSettings.isNotifyStatusMention()) 
 			count += AppContext.getUnreadCount().getMention_status();
 		if (AppSettings.isNotifyCommentMention()) 
@@ -332,6 +343,7 @@ public class MenuFragment_v2 extends AListFragment<MenuBean, ArrayList<MenuBean>
 			txtMentionCounter.setVisibility(View.GONE);
 		}
 		
+		// 评论
 		if (AppContext.getUnreadCount().getCmt() > 0) {
 			txtCmtCounter.setText(String.valueOf(AppContext.getUnreadCount().getCmt()));
 			txtCmtCounter.setVisibility(View.VISIBLE);
@@ -339,6 +351,9 @@ public class MenuFragment_v2 extends AListFragment<MenuBean, ArrayList<MenuBean>
 		else {
 			txtCmtCounter.setVisibility(View.GONE);
 		}
+	}
+	
+	private void updateCounter(TextView view, MenuBean menu) {
 		
 		view.setVisibility(View.GONE);
 
@@ -347,27 +362,8 @@ public class MenuFragment_v2 extends AListFragment<MenuBean, ArrayList<MenuBean>
 			return;
 		}
 		
+		int count = 0;
 		switch (Integer.parseInt(menu.getType())) {
-		// 朋友圈
-		case 4:
-			if (AppContext.getUnreadCount().getFollower() > 0)
-				count = AppContext.getUnreadCount().getFollower();
-			
-			break;
-		// 提及
-		case 2:
-			if (AppSettings.isNotifyStatusMention()) 
-				count += AppContext.getUnreadCount().getMention_status();
-			if (AppSettings.isNotifyCommentMention()) 
-				count += AppContext.getUnreadCount().getMention_cmt();
-			
-			break;
-		// 评论
-		case 3:
-			if (AppContext.getUnreadCount().getCmt() > 0) 
-				count = AppContext.getUnreadCount().getCmt();
-				
-			break;
 		// 草稿
 		case 6:
 			if (draftSize > 0)
@@ -376,11 +372,6 @@ public class MenuFragment_v2 extends AListFragment<MenuBean, ArrayList<MenuBean>
 		// 设置
 		case 5:
 			count = ActivityHelper.getInstance().getBooleanShareData("newVersion", false) ? 1 : 0;
-			break;
-		// 微博
-		case 1:
-		// 个人信息
-		case 0:
 			break;
 		default:
 			break;
@@ -495,6 +486,7 @@ public class MenuFragment_v2 extends AListFragment<MenuBean, ArrayList<MenuBean>
 	public void onResume() {
 		super.onResume();
 		
+		updateHeaderCounter();
 		getAdapter().notifyDataSetChanged();
 		
 		// 将菜单置顶
@@ -534,6 +526,7 @@ public class MenuFragment_v2 extends AListFragment<MenuBean, ArrayList<MenuBean>
 			if (intent != null && !TextUtils.isEmpty(intent.getAction())) {
 				if (UnreadService.ACTION_UNREAD_CHANGED.equals(intent.getAction())) {
 					getAdapter().notifyDataSetChanged();
+					updateHeaderCounter();
 				}
 				else if (PublishManager.ACTION_PUBLISH_CHANNGED.equals(intent.getAction())) {
 					new RefreshDraftTask().execute();
@@ -572,9 +565,11 @@ public class MenuFragment_v2 extends AListFragment<MenuBean, ArrayList<MenuBean>
 			
 			if (lastSelectedMenu.getType().equals(data.getType())) {
 				txtTitle.setTextColor(Color.parseColor(AppSettings.getThemeColor()));
+				txtTitle.getPaint().setFakeBoldText(true);
 			}
 			else {
 				txtTitle.setTextColor(Color.parseColor("#ff676767"));
+				txtTitle.getPaint().setFakeBoldText(false);
 			}
 		}
 		

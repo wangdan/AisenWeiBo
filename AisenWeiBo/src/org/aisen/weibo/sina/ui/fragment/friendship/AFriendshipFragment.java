@@ -131,7 +131,7 @@ public abstract class AFriendshipFragment extends ARefreshProxyFragment<WeiBoUse
 		public void bindingData(View convertView, WeiBoUser data) {
 			BitmapLoader.getInstance().display(AFriendshipFragment.this, 
 							AisenUtil.getUserPhoto(data), imgPhoto, ImageConfigUtils.getPhotoConfig());
-			txtName.setText(AisenUtil.getUserScreenName(data));
+			txtName.setText(data.getScreen_name());
 			if (!TextUtils.isEmpty(data.getRemark())) {
 				txtRemark.setVisibility(View.VISIBLE);
 				

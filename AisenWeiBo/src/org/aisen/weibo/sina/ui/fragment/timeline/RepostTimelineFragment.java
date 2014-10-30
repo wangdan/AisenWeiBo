@@ -1,6 +1,7 @@
 package org.aisen.weibo.sina.ui.fragment.timeline;
 
 import org.aisen.weibo.sina.R;
+import org.aisen.weibo.sina.support.utils.AisenUtil;
 import org.aisen.weibo.sina.support.utils.AppContext;
 import org.aisen.weibo.sina.support.utils.AppSettings;
 import org.aisen.weibo.sina.ui.component.TimelineItemView;
@@ -75,6 +76,7 @@ public class RepostTimelineFragment extends ATimelineFragment {
 //		headerDivider.setVisibility(View.GONE);
 		TextView txtDivider = (TextView) headerDivider.findViewById(R.id.txtDivider);
 		txtDivider.setText(getString(R.string.timelinecmt_divider_status));
+		AisenUtil.setDivider(headerDivider);
 		
 		mStatusContent = savedInstanceSate == null ? (StatusContent) getArguments().getSerializable("status")
 												   : (StatusContent) savedInstanceSate.getSerializable("status");
@@ -152,18 +154,6 @@ public class RepostTimelineFragment extends ATimelineFragment {
 			}
 
 			return null;
-		}
-		
-		@Override
-		protected void onFinished() {
-			super.onFinished();
-			
-			if (getAdapterCount() > 0) {
-				headerDivider.setVisibility(View.VISIBLE);
-			}
-			else {
-				headerDivider.setVisibility(View.GONE);
-			}
 		}
 		
 	}

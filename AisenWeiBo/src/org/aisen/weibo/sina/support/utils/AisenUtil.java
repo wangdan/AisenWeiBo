@@ -778,4 +778,16 @@ public class AisenUtil {
 		return launchWallpaper;
 	}
 	
+	public static void setDivider(View divider) {
+		Resources res = GlobalContext.getInstance().getResources();
+		
+		if (!AisenUtil.isTranslucent()) {
+			divider.findViewById(R.id.viewDividerLeft).setBackgroundColor(res.getColor(R.color.edit_hint));
+
+			((TextView) divider.findViewById(R.id.txtDivider)).setTextColor(res.getColor(R.color.edit_hint));
+			
+			divider.findViewById(R.id.viewDividerRight).setBackgroundColor(res.getColor(R.color.edit_hint));
+		}
+	}
+	
 }

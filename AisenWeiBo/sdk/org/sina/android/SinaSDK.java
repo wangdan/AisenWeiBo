@@ -1191,5 +1191,38 @@ public class SinaSDK extends ABaseBizlogic {
 		
 		return doGet(getSetting("searchSuggestionsUsers"), params, SuggestionsUser[].class);
 	}
+	
+	/**
+	 * 返回最近一小时内的热门话题
+	 * 
+	 * @return
+	 * @throws TaskException
+	 */
+	public String trendsHourly() throws TaskException {
+		
+		return doGet(getSetting("trendsHourly"), configParams(null), String.class);
+	}
+	
+	/**
+	 * 返回最近一天内的热门话题
+	 * 
+	 * @return
+	 * @throws TaskException
+	 */
+	public String trendsDaily() throws TaskException {
+		
+		return doGet(getSetting("trendsDaily"), configParams(null), String.class);
+	}
+	
+	/**
+	 * 返回最近一周内的热门话题
+	 * 
+	 * @return
+	 * @throws TaskException
+	 */
+	public String trendsWeekly() throws TaskException {
+		
+		return doGet(getSetting("trendsWeekly"), configParams(null), String.class);
+	}
 
 }

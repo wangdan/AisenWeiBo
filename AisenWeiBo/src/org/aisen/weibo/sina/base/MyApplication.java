@@ -1,5 +1,6 @@
 package org.aisen.weibo.sina.base;
 
+import java.io.File;
 import java.util.List;
 
 import org.aisen.weibo.sina.R;
@@ -18,10 +19,14 @@ import org.aisen.weibo.sina.support.utils.AppSettings;
 import org.aisen.weibo.sina.sys.receiver.TimingBroadcastReceiver;
 import org.aisen.weibo.sina.sys.receiver.TimingIntent;
 import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
+import org.aisen.weibo.sina.ui.widget.WallpaperViewGroup;
 import org.sina.android.bean.WeiBoUser;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.preference.PreferenceManager;
 
 import com.m.common.context.GlobalContext;
 import com.m.common.settings.SettingUtility;
@@ -59,6 +64,14 @@ public class MyApplication extends GlobalContext {
 		} catch (Exception e) {
 		}
 		
+		// KitKat以下，禁用设置选项
+		if (!WallpaperViewGroup.isKitKat()) {
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
+			Editor editor = prefs.edit();
+			editor.putBoolean("pTranslucent", false);
+			editor.commit();
+		}
+		
 		// 默认设置壁纸
 		// 暂时不默认设置壁纸
 		if (false && ActivityHelper.getInstance().getBooleanShareData("app_wallpaper_init", true)) {
@@ -75,6 +88,13 @@ public class MyApplication extends GlobalContext {
 			if (settingList.size() > 0)
 				AppContext.setWallpaper(settingList.get(0));
 		}
+		
+		if (ActivityHelper.getInstance().getBooleanShareData("theme_init", true)) {
+			ActivityHelper.getInstance().putBooleanShareData("theme_init", false);
+			
+			if (WallpaperViewGroup.isKitKat())
+				CommSettings.setAppTheme(R.style.BaseTheme_Translucent);
+		}
 	}
 	
 	@Override
@@ -82,6 +102,11 @@ public class MyApplication extends GlobalContext {
 		// 读取SD卡文件速度慢很多
 		return getCacheDir().getAbsolutePath();
 //		return super.getDataPath();
+	}
+	
+	@Override
+	public String getImagePath() {
+		return super.getAppPath() + SettingUtility.getPermanentSettingAsStr("com_m_common_image", "image") + File.separator;
 	}
 	
 	private void initBaiduAnalyze() {

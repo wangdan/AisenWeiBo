@@ -6,6 +6,7 @@ import org.aisen.weibo.sina.support.bean.ApkInfo;
 import org.aisen.weibo.sina.support.bean.MenuBean;
 import org.aisen.weibo.sina.support.iclass.IAcNavigation;
 import org.aisen.weibo.sina.support.utils.AppContext;
+import org.aisen.weibo.sina.support.utils.AppSettings;
 import org.aisen.weibo.sina.support.utils.CheckChangedUtils;
 import org.aisen.weibo.sina.ui.activity.common.WeiboBaseActivity;
 import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
@@ -67,8 +68,8 @@ public class MainActivity extends WeiboBaseActivity implements MenuCallback {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		org.aisen.weibo.sina.ui.fragment.base.ActivityHelper activityHelper = (org.aisen.weibo.sina.ui.fragment.base.ActivityHelper) getActivityHelper();
-		activityHelper.blur = true;
+		final org.aisen.weibo.sina.ui.fragment.base.ActivityHelper activityHelper = (org.aisen.weibo.sina.ui.fragment.base.ActivityHelper) getActivityHelper();
+		activityHelper.blur = AppSettings.isMainBlur();
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.ui_main);
@@ -118,7 +119,7 @@ public class MainActivity extends WeiboBaseActivity implements MenuCallback {
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 		
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-//		getActionBar().setIcon(R.drawable.ic_logo);
+		getActionBar().setIcon(R.drawable.ic_ab_app);
 		getActionBar().setDisplayShowHomeEnabled(true);
 		
 		lastSelectedMenu = savedInstanceState == null ? null : (MenuBean) savedInstanceState.getSerializable("menu");
@@ -187,6 +188,16 @@ public class MainActivity extends WeiboBaseActivity implements MenuCallback {
 		
 		// 每次启动应用，检测是否下载了壁纸
 		CheckChangedUtils.checkWallpaper();
+		
+		// 2014-10-29 解决首次进入首页时，ActionBar的颜色总差一点点的BUG
+		new Handler().postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+				activityHelper.wallpaper.setWallpaper();
+			}
+			
+		}, 200);
 	}
 	
 	@Override
@@ -421,6 +432,9 @@ public class MainActivity extends WeiboBaseActivity implements MenuCallback {
 	
 	@Override
 	protected void onResume() {
+		final org.aisen.weibo.sina.ui.fragment.base.ActivityHelper activityHelper = (org.aisen.weibo.sina.ui.fragment.base.ActivityHelper) getActivityHelper();
+		activityHelper.wallpaper.blur = AppSettings.isMainBlur();
+		
 		super.onResume();
 		
 		if (!AppContext.isLogedin())

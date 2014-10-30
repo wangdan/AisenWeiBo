@@ -455,4 +455,19 @@
 		<value>statuses/mentions/shield.json</value>
 	</setting>
 	
+	<setting type="trendsHourly">
+		<des>返回最近一小时内的热门话题</des>
+		<value>trends/hourly.json</value>
+	</setting>
+	
+	<setting type="trendsDaily">
+		<des>返回最近一天内的热门话题</des>
+		<value>trends/daily.json</value>
+	</setting>
+	
+	<setting type="trendsWeekly">
+		<des>返回最近一周内的热门话题</des>
+		<value>trends/weekly.json</value>
+	</setting>
+	
 </app-settings>

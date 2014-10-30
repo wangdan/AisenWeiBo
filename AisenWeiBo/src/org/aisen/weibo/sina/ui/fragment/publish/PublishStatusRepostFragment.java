@@ -69,10 +69,18 @@ public class PublishStatusRepostFragment extends APublishFragment implements OnC
 		txtContent.setText(AisenUtil.getCommentText(status.getText()));
 		if (status.getUser() != null)
 			BitmapLoader.getInstance().display(this, AisenUtil.getUserPhoto(status.getUser()), imgPhoto, ImageConfigUtils.getLargePhotoConfig());
+		if (AisenUtil.isTranslucent())
+			txtContent.setTextColor(getResources().getColor(R.color.edit_hint_wallpaper));
+        else
+        	txtContent.setTextColor(getResources().getColor(R.color.edit_hint));
 		
 		checkBox.setText(R.string.publish_cmt_to_user);
 		checkBox.setChecked("3".equals(getPublishBean().getParams().getParameter("is_comment")));
 		checkBox.setOnCheckedChangeListener(this);
+		if (AisenUtil.isTranslucent())
+			checkBox.setTextColor(getResources().getColor(R.color.edit_hint_wallpaper));
+        else
+        	checkBox.setTextColor(getResources().getColor(R.color.edit_hint));
 		
 		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActivity().getActionBar().setTitle(R.string.title_repost);

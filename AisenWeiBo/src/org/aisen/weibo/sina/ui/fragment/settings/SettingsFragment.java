@@ -7,6 +7,7 @@ import org.aisen.weibo.sina.support.utils.AppSettings;
 import org.aisen.weibo.sina.support.utils.BaiduAnalyzeUtils;
 import org.aisen.weibo.sina.ui.activity.common.FragmentContainerActivity;
 import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
+import org.aisen.weibo.sina.ui.widget.WallpaperViewGroup;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -76,6 +77,8 @@ public class SettingsFragment extends VersionSettingsFragment implements OnPrefe
 		
 		pTranslucent = (CheckBoxPreference) findPreference("pTranslucent");
 		pTranslucent.setOnPreferenceChangeListener(this);
+		if (!WallpaperViewGroup.isKitKat())
+			pTranslucent.setEnabled(false);
 		
 		wallpaperBean = AppContext.getWallpaper();
 	}

@@ -158,6 +158,7 @@ public class AddFriendMentionFragment extends ARefreshProxyFragment<WeiBoUser, F
 			else {
 				layDivider.setVisibility(View.GONE);
 			}
+			AisenUtil.setDivider(layDivider);
 			
 			AisenUtil.setAlpha(convertView);
 		}

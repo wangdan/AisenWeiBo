@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.support.paging.CommentsPagingProcessor;
+import org.aisen.weibo.sina.support.utils.AisenUtil;
 import org.aisen.weibo.sina.support.utils.AppContext;
 import org.aisen.weibo.sina.support.utils.AppSettings;
 import org.aisen.weibo.sina.ui.activity.comment.TimelineCommentsActivity;
@@ -90,9 +91,10 @@ public class TimelineCommentsFragment extends ARefreshProxyFragment<StatusCommen
 //		headerDivider.setVisibility(View.GONE);
 		TextView txtDivider = (TextView) headerDivider.findViewById(R.id.txtDivider);
 		txtDivider.setText(getString(R.string.timelinecmt_divider_cmt));
+		AisenUtil.setDivider(headerDivider);
 		
 		mStatusContent = savedInstanceState == null ? (StatusContent) getArguments().getSerializable("bean")
-				: (StatusContent) savedInstanceState.getSerializable("bean");
+													: (StatusContent) savedInstanceState.getSerializable("bean");
 
 		timelineItem.bindingData(headerView, mStatusContent);
 		
@@ -199,13 +201,6 @@ public class TimelineCommentsFragment extends ARefreshProxyFragment<StatusCommen
 			// 第一次加载完数据，将评论置顶
 			if (mode == RefreshMode.reset)
 				listView.setSelectionFromTop(listView.getFooterViewsCount(), 0);
-			
-			if (getAdapterItems().size() > 0) {
-				headerDivider.setVisibility(View.VISIBLE);
-			}
-			else {
-				headerDivider.setVisibility(View.GONE);
-			}
 		}
 		
 		@Override

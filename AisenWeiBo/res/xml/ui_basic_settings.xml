@@ -23,13 +23,14 @@
     </PreferenceCategory>
     
     <PreferenceCategory android:title="@string/category_operation">
-		<CheckBoxPreference android:key="pAutoRefresh" android:title="@string/settings_list_auto_update" android:defaultValue="true" />
+		<CheckBoxPreference android:key="pAutoRefresh" android:title="@string/settings_list_auto_update"
+		    android:defaultValue="true" android:summary="@string/settings_list_auto_update_summary" />
 	 	
 	 	<!-- <ListPreference android:key="pRefreshViewType" android:entries="@array/pRefreshViewType" android:entryValues="@array/prefValues"
 			android:dialogTitle="@string/settings_dt_list_widget" android:title="@string/settings_list_widget" android:defaultValue="0" /> -->
 
 	 	<CheckBoxPreference android:key="pDoubleClickToRefresh" android:title="@string/settings_doubleclick_update" android:defaultValue="true"
-	 	    android:summary="" />        
+	 	    android:summary="@string/settings_doubleclick_update_summary" />        
     </PreferenceCategory>
     
     <PreferenceCategory android:title="@string/category_feedback">

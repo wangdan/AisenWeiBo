@@ -467,6 +467,16 @@ public class AppSettings {
 	}
 	
 	/**
+	 * 首页壁纸添加一层蒙版
+	 * 
+	 * @return
+	 */
+	public static boolean isMainBlur() {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
+		return prefs.getBoolean("pMainBlur", true);
+	}
+	
+	/**
 	 * 列表刷新控件
 	 * 
 	 * @return

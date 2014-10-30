@@ -209,7 +209,7 @@ public class WallpaperViewGroup extends LinearLayout {
 			}
 		}
 		
-		invalidate();
+		postInvalidate();
 	}
 	
 	public void setTranslucent(int topOffset, int bottomOffset) {

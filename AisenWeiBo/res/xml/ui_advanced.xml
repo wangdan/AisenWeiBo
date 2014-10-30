@@ -8,5 +8,8 @@
        
        <CheckBoxPreference android:key="pRotatePic" android:title="@string/settings_pic_rotate" android:defaultValue="false"
            android:summary="@string/settings_pic_rotate_summary" />
+       
+       <CheckBoxPreference android:key="pMainBlur" android:title="@string/settings_main_blur" android:defaultValue="true"
+           android:summary="@string/settings_main_blur_summary" />
     
 </PreferenceScreen>

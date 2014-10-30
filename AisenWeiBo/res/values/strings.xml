@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<string name="app_name">Aisen微博</string>
+	<string name="app_name">Aisen</string>
 
 	<string name="reload">刷新看看</string>
 	<string name="draw_open">打开</string>
@@ -33,7 +33,7 @@
 	<string name="draw_search">Search</string>
 	<string name="draw_profile">用户资料</string>
 	<string name="draw_timeline">微博首页</string>
-	<string name="draw_message">\@我的</string>
+	<string name="draw_message">提及</string>
 	<string name="draw_comment">评论</string>
 	<string name="draw_fav">收藏</string>
 	<string name="draw_fav_title">收藏的微博</string>
@@ -344,6 +344,8 @@
 	<string name="settings_share_aisen">推荐给好友</string>
 	<string name="settings_grade">给我好评</string>
 	<string name="settings_version_update">检查更新</string>
+	<string name="settings_main_blur">首页蒙版</string>
+	<string name="settings_main_blur_summary">首页壁纸添加一层灰色蒙版</string>
 	
 	<!-- 高级设置 -->
 	<string name="title_advanced">高级设置</string>
@@ -407,10 +409,11 @@
 	
 	<string name="category_operation">操作</string>
 	<string name="settings_list_auto_update">列表自动刷新</string>
+	<string name="settings_list_auto_update_summary">缓存数据过期后，自动刷新列表数据</string>
 	<string name="settings_dt_list_widget">设置列表控件</string>
 	<string name="settings_list_widget">列表刷新控件</string>
 	<string name="settings_doubleclick_update">置顶同时刷新列表</string>
-	<string name="settings_doubleclick_update_summary">双击操作栏列表置顶时</string>
+	<string name="settings_doubleclick_update_summary">双击操作栏将列表置顶的同时</string>
 	
 	<string name="category_feedback">反馈</string>
 	<string name="settings_sound">音效</string>
@@ -418,7 +421,7 @@
 	<string name="settings_vibrate">震动反馈</string>
 	<string name="settings_vibrate_summary">内容发送成功后震动反馈</string>
 	<string name="settings_list_anim">列表动画</string>
-	<string name="settings_list_anim_summary">列表加载时显示动画</string>
+	<string name="settings_list_anim_summary">列表内容加载时，显示动画</string>
 	<string name="category_other">其他</string>
 	<string name="settings_pic_path">图片保存路径</string>
 	<string name="settings_mention_history">清理@好友历史记录</string>
