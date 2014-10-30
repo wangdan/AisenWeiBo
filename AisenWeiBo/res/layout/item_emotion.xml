@@ -5,7 +5,7 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent" android:gravity="center">
 
-    <ImageView android:id="@+id/imgEmotion" android:layout_width="40dip" android:layout_height="40dip"
-        android:scaleType="fitCenter" android:padding="4dip"/>
+    <ImageView android:id="@+id/imgEmotion" android:layout_width="32dip" android:layout_height="32dip"
+        android:scaleType="fitCenter" android:padding="0dip"/>
     
 </LinearLayout>

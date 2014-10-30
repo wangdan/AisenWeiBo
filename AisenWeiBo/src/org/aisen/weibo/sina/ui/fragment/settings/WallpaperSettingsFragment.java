@@ -158,8 +158,8 @@ public class WallpaperSettingsFragment extends AGridFragment<WallpaperBean, Arra
 			File dir = new File(GlobalContext.getInstance().getFilesDir().getAbsolutePath());
 			String[] fileNames = AisenUtil.wallpaperNames;
 			for (String fileName : fileNames) {
-				if ("8_8.jpg".equals(fileName))
-					continue;
+//				if ("8_8.jpg".equals(fileName))
+//					continue;
 				
 				File wallpaperFile = new File(dir + File.separator + fileName);
 				if (wallpaperFile.exists()) {
@@ -175,7 +175,7 @@ public class WallpaperSettingsFragment extends AGridFragment<WallpaperBean, Arra
 			ArrayList<WallpaperBean> wallpaperList = new ArrayList<WallpaperBean>();
 			
 			// 添加默认壁纸
-			wallpaperList.add(AisenUtil.generaterDefaultWallpaper());
+//			wallpaperList.add(AisenUtil.generaterDefaultWallpaper());
 			
 			// 排除设置的壁纸, 根据type排序[默认壁纸排在第一，自定义添加的排在中间，其他github的壁纸排在第三]
 			String selection = String.format(" %s is null ", FieldUtils.KEY);

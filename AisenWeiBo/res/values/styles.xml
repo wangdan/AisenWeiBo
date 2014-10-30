@@ -1,7 +1,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 	<style name="ActionBarStyle" parent="@*android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
 		<!-- <item name="android:icon">@drawable/ic_ab_app</item> -->
-		<item name="android:icon">@drawable/title_icon</item>
+		<item name="android:icon">@drawable/ic_ab_app</item>
 		<item name="android:progressBarStyle">@style/ActionBarProgress</item>
 		<item name="android:background">@drawable/bg_actionbar</item>
 		<item name="android:titleTextStyle">@style/ActionBarTitleStyle</item>

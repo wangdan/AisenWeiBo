@@ -189,7 +189,7 @@ public class AppSettings {
 	 */
 	public static int getPictureMode() {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
-		int value = Integer.parseInt(prefs.getString("pPicMode", "2"));
+		int value = Integer.parseInt(prefs.getString("pPicMode", "0"));
 		return value;
 	}
 	

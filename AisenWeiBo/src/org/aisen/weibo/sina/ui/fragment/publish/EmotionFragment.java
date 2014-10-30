@@ -1,5 +1,6 @@
 package org.aisen.weibo.sina.ui.fragment.publish;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -111,7 +112,26 @@ public class EmotionFragment extends AGridFragment<Emotion, Emotions>
 
 		@Override
 		protected Emotions workInBackground(RefreshMode mode, String previousPage, String nextPage, String... params) throws TaskException {
-			return EmotionsDB.getEmotions(params[0]);
+//			return EmotionsDB.getEmotions(params[0]);
+			Emotions es = new Emotions();
+			es.setEmotions(new ArrayList<Emotion>());
+			
+			Emotions emotions = EmotionsDB.getEmotions("d_");
+			es.getEmotions().addAll(emotions.getEmotions());
+			emotions = EmotionsDB.getEmotions("hs_");
+			es.getEmotions().addAll(emotions.getEmotions());
+			emotions = EmotionsDB.getEmotions("f_");
+			es.getEmotions().addAll(emotions.getEmotions());
+			emotions = EmotionsDB.getEmotions("o_");
+			es.getEmotions().addAll(emotions.getEmotions());
+			emotions = EmotionsDB.getEmotions("w_");
+			es.getEmotions().addAll(emotions.getEmotions());
+			emotions = EmotionsDB.getEmotions("l_");
+			es.getEmotions().addAll(emotions.getEmotions());
+//			emotions = EmotionsDB.getEmotions("lxh_");
+//			es.getEmotions().addAll(emotions.getEmotions());
+			
+			return es;
 		}
 
 	}

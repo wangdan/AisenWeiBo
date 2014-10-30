@@ -257,6 +257,7 @@ public class WallpaperViewGroup extends LinearLayout {
 			try {
 				return BitmapFactory.decodeStream(GlobalContext.getInstance().getAssets().open("8_8.jpg"));
 			} catch (Exception e) {
+				return BitmapDecoder.decodeSampledBitmapFromFile(wallpaper.getPath(), 800, 1280);
 			}
 		}
 		// 网络默认壁纸

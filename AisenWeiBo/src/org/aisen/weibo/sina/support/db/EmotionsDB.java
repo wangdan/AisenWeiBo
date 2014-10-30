@@ -16,10 +16,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.m.common.context.GlobalContext;
-import com.m.common.settings.SettingUtility;
 import com.m.common.utils.FileUtility;
 import com.m.common.utils.Logger;
-import com.m.common.utils.SystemUtility;
 import com.m.support.task.TaskException;
 import com.m.support.task.WorkTask;
 import com.spreada.utils.chinese.ZHConverter;
@@ -32,8 +30,7 @@ public class EmotionsDB {
 
 	// 创建表情库
 	static {
-		String path = SystemUtility.getSdcardPath() + File.separator + SettingUtility.getStringSetting("root_path") + File.separator + "."
-				+ "emotions.db";
+		String path = GlobalContext.getInstance().getAppPath() + File.separator + "emotions.db";
 		File dbf = new File(path);
 		if (!dbf.exists()) {
 			dbf.getParentFile().mkdirs();
@@ -113,7 +110,7 @@ public class EmotionsDB {
 						emotionsDb.execSQL(String.format("delete from %s", EmotionTable.table));
 						for (Object key : keySet) {
 							String value = properties.getProperty(key.toString());
-							Logger.w(String.format("emotion's key(%s), value(%s)", key, value));
+							Logger.w(TAG, String.format("emotion's key(%s), value(%s)", key, value));
 
 							ContentValues values = new ContentValues();
 							values.put(EmotionTable.key, key.toString());
@@ -145,6 +142,7 @@ public class EmotionsDB {
 
 		Cursor cursor = emotionsDb.rawQuery(" SELECT " + EmotionTable.value + " FROM " + EmotionTable.table + " WHERE " + EmotionTable.key + " = ? ",
 				new String[] { key });
+		
 		try {
 			if (cursor.moveToFirst()) {
 				byte[] data = cursor.getBlob(cursor.getColumnIndex(EmotionTable.value));
@@ -166,6 +164,8 @@ public class EmotionsDB {
 		query = "like";
 		Cursor cursor = emotionsDb.rawQuery(" SELECT * FROM " + EmotionTable.table + " WHERE " + EmotionTable.file + " " + query + " '" + type
 				+ "%' ", null);
+//		Cursor cursor = emotionsDb.rawQuery(" SELECT * FROM " + EmotionTable.table + " order by org_aisen_weibo_sina_id ", null);
+		
 		try {
 			if (cursor.moveToFirst()) {
 				do {

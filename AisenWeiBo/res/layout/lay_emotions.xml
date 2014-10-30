@@ -7,7 +7,7 @@
 
     <GridView android:id="@+id/gridview" 
 		    android:layout_width="match_parent" android:layout_height="match_parent"
-		    android:verticalSpacing="4dip" android:numColumns="auto_fit" android:columnWidth="47dip"
+		    android:verticalSpacing="4dip" android:numColumns="auto_fit" android:columnWidth="40dip"
 		    android:horizontalSpacing="4dip" android:stretchMode="columnWidth" android:gravity="fill"/>
     
 </LinearLayout>
