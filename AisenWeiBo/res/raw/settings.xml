@@ -123,6 +123,21 @@
 		<setting>
 			<value>baidu</value>
 		</setting>
+		<setting>
+			<value>wandoujia</value>
+		</setting>
+		<setting>
+			<value>360</value>
+		</setting>
+		<setting>
+			<value>samsung</value>
+		</setting>
+		<setting>
+			<value>anzhi</value>
+		</setting>
+		<setting>
+			<value>xiaomi</value>
+		</setting>
 	</setting-array>
 	
 	<setting type="bd_debug">
@@ -142,7 +157,7 @@
 	
 	<setting type="recommend_image">
 		<des>推荐图片</des>
-		<value>http://ww3.sinaimg.cn/bmiddle/694ebe21gw1eit3ohrrdij20c80f4my7.jpg</value>
+		<value></value>
 	</setting>
 	
 	<setting type="about_url">

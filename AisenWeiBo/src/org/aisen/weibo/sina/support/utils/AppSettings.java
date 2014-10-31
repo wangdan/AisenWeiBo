@@ -390,7 +390,9 @@ public class AppSettings {
 		SettingExtraBean extraBean = new SettingExtraBean();
 		
 		extraBean.setRecommentText(SettingUtility.getStringSetting("recommend_text"));
-		extraBean.setRecommentImage(SettingUtility.getStringSetting("recommend_image"));
+		String recommentImage = SettingUtility.getStringSetting("recommend_image");
+		if (!TextUtils.isEmpty(recommentImage))
+			extraBean.setRecommentImage(recommentImage);
 		extraBean.setAboutURL(SettingUtility.getStringSetting("about_url"));
 		extraBean.setHelpURL(SettingUtility.getStringSetting("help_url"));
 		
