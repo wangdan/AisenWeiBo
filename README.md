@@ -36,6 +36,12 @@ Aisen微博是新浪微博的第三方客户端，遵循Android Design，Holo主
 ## 应用截图
 
 ![](https://github.com/wangdan/AisenWeiBo/raw/master/resource/device-2014-10-29-224027.jpg) 
+![](https://github.com/wangdan/AisenWeiBo/raw/master/resource/device-2014-10-29-225600.jpg) 
+![](https://github.com/wangdan/AisenWeiBo/raw/master/resource/device-2014-10-29-224214.jpg) 
+![](https://github.com/wangdan/AisenWeiBo/raw/master/resource/device-2014-10-29-224353.jpg) 
+![](https://github.com/wangdan/AisenWeiBo/raw/master/resource/device-2014-10-29-225042.jpg) 
+![](https://github.com/wangdan/AisenWeiBo/raw/master/resource/device-2014-10-29-224525.jpg) 
+![](https://github.com/wangdan/AisenWeiBo/raw/master/resource/device-2014-10-29-224543.jpg)  
 
 ## 须知
  * 私信、多图上传、点赞功能没有权限
