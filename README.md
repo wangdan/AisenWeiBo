@@ -6,10 +6,13 @@
 
 
 ## 说明
-Aisen微博是新浪微博的第三方客户端，遵循Android Design，Holo主题风格，设计从界面简约清爽操作简单易用出发，力争为Android用户提供更好以及特别的微博体验。基于[AisenForAndroid](https://github.com/wangdan/AisenForAndroid)(Aisen)框架开发，Aisen框架是一个android快速开发框架，包含ORM、IOC、BitmapLoader等开发组件，四层结构：UI层、业务接口层、持久层、数据通讯层。
+Aisen微博是新浪微博的第三方客户端，遵循Android Design，Holo主题风格，设计界面简约清爽，操作简单易用，多样化的颜色主题，炫酷的自定义壁纸设置，适配Translucent Modes，极致流畅的列表动画，力争为Android用户提供更好以及特别的微博体验。Aisen微博基于[AisenForAndroid](https://github.com/wangdan/AisenForAndroid)(Aisen)框架开发，Aisen框架是一个android快速开发框架，包含ORM、IOC、BitmapLoader等开发组件，四层结构：UI层、业务接口层、持久层、数据通讯层。
 
 ## 基本功能
  
+ * 18种颜色主题设置
+ * 适配Translucent Modes，流畅全屏体验
+ * 壁纸设置功能，壁纸可以使用透明桌面或者自定义美图
  * 多账号授权管理
  * 侧边栏抽屉菜单
  * 图片高清阅读（9宫格、智能排版风格）
@@ -32,25 +35,7 @@ Aisen微博是新浪微博的第三方客户端，遵循Android Design，Holo主
 
 ## 应用截图
 
- * 账号管理
- 
- ![github](http://ww4.sinaimg.cn/mw1024/94389574gw1el6hpgvc4vg20ae0gz7wi.gif)  
 
- * [Aisen](https://github.com/wangdan/AisenForAndroid)支持三种主流刷新控件
- 
- ![github](http://ww4.sinaimg.cn/bmiddle/94389574gw1el668azuwag20b20ghqkh.gif)  
-
- * 分组左右切屏阅读，可以编辑、排序
- 
- ![github](http://ww1.sinaimg.cn/bmiddle/94389574gw1el6f6mj8hgg20ae0ghqv7.gif)
-
- * 内容离线编辑，可以保存到草稿箱，可以设置定时发布
- 
- ![github](http://ww4.sinaimg.cn/bmiddle/94389574gw1el6gpodcwwg20ae0gzqmj.gif)
-
- * 图片高清阅读，支持自动排版、9宫格模式
- 
- ![github](http://ww1.sinaimg.cn/bmiddle/94389574gw1el6g2t8hepg20ae0ghqvc.gif)
 
 ## 须知
  * 私信、多图上传、点赞功能没有权限
