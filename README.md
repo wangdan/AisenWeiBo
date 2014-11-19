@@ -3,6 +3,7 @@
 **注意** 工程依赖[AisenForAndroid](https://github.com/wangdan/AisenForAndroid)
 
 [![Get it on Google Play](http://www.android.com/images/brand/get_it_on_play_logo_small.png)](http://play.google.com/store/apps/details?id=org.aisen.weibo.sina)
+[点击下载](https://github.com/wangdan/AisenForOSC/raw/master/screenshot/googleplay_v3.2.3.apk)
 
 
 ## 说明
