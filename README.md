@@ -33,13 +33,11 @@ Aisen微博是新浪微博的第三方客户端，设计界面简约清爽，操
 
 ## 应用截图
 
-![](https://github.com/wangdan/AisenWeiBo/raw/master/resource/device-2014-10-29-224027.jpg) 
-![](https://github.com/wangdan/AisenWeiBo/raw/master/resource/device-2014-10-29-225600.jpg) 
-![](https://github.com/wangdan/AisenWeiBo/raw/master/resource/device-2014-10-29-224214.jpg) 
-![](https://github.com/wangdan/AisenWeiBo/raw/master/resource/device-2014-10-29-224353.jpg) 
-![](https://github.com/wangdan/AisenWeiBo/raw/master/resource/device-2014-10-29-225042.jpg) 
-![](https://github.com/wangdan/AisenWeiBo/raw/master/resource/device-2014-10-29-224525.jpg) 
-![](https://github.com/wangdan/AisenWeiBo/raw/master/resource/device-2014-10-29-224543.jpg)  
+![](https://github.com/wangdan/AisenForOSC/raw/master/screenshot/1_git.jpg) 
+![](https://github.com/wangdan/AisenForOSC/raw/master/screenshot/2_git.jpg) 
+![](https://github.com/wangdan/AisenForOSC/raw/master/screenshot/3_git.jpg) 
+![](https://github.com/wangdan/AisenForOSC/raw/master/screenshot/4_git.jpg) 
+![](https://github.com/wangdan/AisenForOSC/raw/master/screenshot/5_git.jpg) 
 
 ## 须知
  * 私信、多图上传、点赞功能没有权限
