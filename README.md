@@ -38,6 +38,7 @@ Aisen微博是新浪微博的第三方客户端，设计界面简约清爽，操
 ![](https://github.com/wangdan/AisenForOSC/raw/master/screenshot/3_git.jpg) 
 ![](https://github.com/wangdan/AisenForOSC/raw/master/screenshot/4_git.jpg) 
 ![](https://github.com/wangdan/AisenForOSC/raw/master/screenshot/5_git.jpg) 
+![](https://github.com/wangdan/AisenForOSC/raw/master/screenshot/6_git.jpg) 
 
 ## 须知
  * 私信、多图上传、点赞功能没有权限
