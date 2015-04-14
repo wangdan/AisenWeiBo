@@ -4,7 +4,7 @@
 
 [![Get it on Google Play](http://www.android.com/images/brand/get_it_on_play_logo_small.png)](http://play.google.com/store/apps/details?id=org.aisen.weibo.sina)
 
-# 说明
+## 看这里
 项目开始重构，旧的代码都备份在backup目录
 
 ## 说明
