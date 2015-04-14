@@ -10,6 +10,8 @@ import android.support.annotation.AttrRes;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+import com.m.common.utils.Utils;
+
 import org.aisen.weibo.sina.R;
 
 /**
@@ -34,12 +36,12 @@ public class FlatButton extends TextView {
     }
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        setBackgroundCompat(resolveDrawable(context, R.attr.flat_text));
+        setBackgroundCompat(Utils.resolveDrawable(context, R.attr.flat_text));
 
         final int materialBlue = Color.parseColor("#ff0000");
-        int widgetColor = resolveColor(context, R.attr.colorAccent, materialBlue);
+        int widgetColor = Utils.resolveColor(context, R.attr.colorAccent, materialBlue);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            widgetColor = resolveColor(context, android.R.attr.colorAccent, widgetColor);
+            widgetColor = Utils.resolveColor(context, android.R.attr.colorAccent, widgetColor);
         }
         setTextColor(widgetColor);
     }
@@ -50,31 +52,6 @@ public class FlatButton extends TextView {
             setBackgroundDrawable(d);
         } else {
             setBackground(d);
-        }
-    }
-
-    private Drawable resolveDrawable(Context context, @AttrRes int attr) {
-        return resolveDrawable(context, attr, null);
-    }
-
-    private Drawable resolveDrawable(Context context, @AttrRes int attr, @SuppressWarnings("SameParameterValue") Drawable fallback) {
-        TypedArray a = context.getTheme().obtainStyledAttributes(new int[]{attr});
-        try {
-            Drawable d = a.getDrawable(0);
-            if (d == null && fallback != null)
-                d = fallback;
-            return d;
-        } finally {
-            a.recycle();
-        }
-    }
-
-    private int resolveColor(Context context, @AttrRes int attr, int fallback) {
-        TypedArray a = context.getTheme().obtainStyledAttributes(new int[]{attr});
-        try {
-            return a.getColor(0, fallback);
-        } finally {
-            a.recycle();
         }
     }
 

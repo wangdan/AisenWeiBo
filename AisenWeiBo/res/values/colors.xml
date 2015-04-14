@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--适配Materail Design后添加的颜色-->
+    <color name="text_100">#ff000000</color>
+    <color name="text_87">#dd000000</color>
+    <color name="text_80">#cc000000</color>
+    <color name="text_60">#99000000</color>
+    <color name="text_54">#69000000</color>
+
     <color name="gplus_color_1">#3e802f</color>
     <color name="gplus_color_2">#f4b400</color>
     <color name="gplus_color_3">#427fed</color>
     <color name="gplus_color_4">#b23424</color>
+
     <integer-array name="gplus_colors">
         <item>@color/gplus_color_1</item>
         <item>@color/gplus_color_2</item>
         <item>@color/gplus_color_3</item>
         <item>@color/gplus_color_4</item>
     </integer-array>
+
 </resources>

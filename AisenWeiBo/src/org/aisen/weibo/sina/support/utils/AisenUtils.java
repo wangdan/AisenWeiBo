@@ -1,15 +1,25 @@
 package org.aisen.weibo.sina.support.utils;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.os.Build;
+import android.view.View;
 
+import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.m.common.context.GlobalContext;
 import com.m.common.setting.SettingUtility;
 import com.m.common.utils.FileUtils;
 import com.m.common.utils.Logger;
 import com.m.common.utils.SystemUtils;
+import com.m.common.utils.Utils;
 import com.m.component.bitmaploader.core.BitmapDecoder;
+import com.m.ui.fragment.ABaseFragment;
 
+import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
 
 import java.io.ByteArrayOutputStream;
@@ -20,6 +30,12 @@ import java.io.FileOutputStream;
  * Created by wangdan on 15/4/12.
  */
 public class AisenUtils {
+
+    public static int getThemeColor(Context context) {
+        final int materialBlue = Color.parseColor("#ff0000");
+        int themeColor = Utils.resolveColor(context, R.attr.theme_color, materialBlue);
+        return themeColor;
+    }
 
     public static File getUploadFile(File source) {
         if (source.getName().toLowerCase().endsWith(".gif")) {
@@ -139,5 +155,11 @@ public class AisenUtils {
         return file;
     }
 
+    public static void showMenuDialog(ABaseFragment fragment, final View targetView,
+                                      String[] menuArr, DialogInterface.OnClickListener onItemClickListener) {
+        new AlertDialogWrapper.Builder(fragment.getActivity())
+                .setItems(menuArr, onItemClickListener)
+                .show();
+    }
 
 }

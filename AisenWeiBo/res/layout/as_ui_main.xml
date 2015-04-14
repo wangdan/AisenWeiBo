@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent" android:layout_height="match_parent"
+                android:fitsSystemWindows="?attr/fits_windows" android:orientation="vertical">
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:layout_width="match_parent" android:layout_height="match_parent">
+
+            <FrameLayout
+                android:id="@+id/content_frame" android:layout_width="match_parent"
+                android:layout_height="match_parent" android:background="?attr/theme_background"/>
+
+            <com.melnykov.fab.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_margin="16dp"
+                android:src="@drawable/ic_menu_edit_white"/>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/abc_action_bar_default_height_material">
+
+                <include
+                    layout="@layout/comm_lay_toolbar" android:layout_width="match_parent"
+                    android:layout_height="@dimen/abc_action_bar_default_height_material"/>
+
+
+            </FrameLayout>
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/menu_frame" android:layout_width="match_parent"
+            android:layout_height="match_parent" android:layout_gravity="start"
+            android:layout_marginRight="10dip" android:background="?attr/theme_background"
+            android:orientation="vertical"/>
+        <!--android:paddingTop="@dimen/abc_action_bar_default_height_material"-->
+
+        <LinearLayout
+            android:id="@+id/groups_frame" android:layout_width="match_parent"
+            android:layout_height="match_parent" android:layout_gravity="end"
+            android:layout_marginRight="10dip"
+            android:orientation="vertical"/>
+        <!--android:layout_marginTop="@dimen/abc_action_bar_default_height_material"-->
+    </android.support.v4.widget.DrawerLayout>
+
+
+</RelativeLayout>

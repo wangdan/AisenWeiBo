@@ -8,5 +8,7 @@
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowBackground">?attr/theme_color</item>
+
+        <item name="fits_windows">true</item>
     </style>
 </resources>

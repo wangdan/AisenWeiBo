@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent"
+              android:orientation="vertical">
+
+
+    <View
+        android:id="@+id/viewDivider" android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:layout_marginBottom="6dip" android:layout_marginTop="6dip"
+        android:background="@drawable/divider_horizontal_bright_opaque"/>
+
+    <LinearLayout
+        android:id="@+id/layItem"
+        android:layout_width="match_parent" android:layout_height="48dip"
+        android:orientation="horizontal" android:paddingLeft="@dimen/comm_h_margin" android:paddingRight="@dimen/comm_h_margin"
+        >
+
+        <LinearLayout
+            android:id="@+id/layIcon" android:layout_width="56dip" android:layout_height="match_parent"
+            android:gravity="center_vertical" android:orientation="horizontal" android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/imgIcon" android:layout_width="20dip" android:layout_height="22dip"
+                android:scaleType="centerCrop" android:src="@drawable/ic_view_day_grey600_24dp"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtTitle" android:layout_width="0dip"
+            android:layout_height="match_parent" android:layout_weight="1.0" android:gravity="center_vertical" android:singleLine="true" android:text="TextView"
+            android:textColor="#ff676767" android:textSize="16.0sp"/>
+
+        <TextView
+            android:id="@+id/txtCounter" android:layout_width="wrap_content"
+            android:layout_height="27.0dip" android:layout_marginRight="11.0dip" android:gravity="center" android:minWidth="23.0dip" android:paddingLeft="6.0dip"
+            android:paddingRight="6.0dip" android:singleLine="true" android:text="1" android:textColor="@color/text_54" android:textSize="14.0sp"
+            />
+    </LinearLayout>
+
+</LinearLayout>

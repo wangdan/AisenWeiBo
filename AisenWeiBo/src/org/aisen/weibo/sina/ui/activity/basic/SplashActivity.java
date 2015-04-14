@@ -4,9 +4,13 @@ import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.m.ui.activity.basic.BaseActivity;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * 欢迎页
@@ -32,11 +36,19 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void delayToMain() {
+        new Timer().schedule(new TimerTask() {
 
+            @Override
+            public void run() {
+               toMain();
+            }
+
+        }, 1500);
     }
 
     private void toMain() {
-
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 
     private void toAccount() {

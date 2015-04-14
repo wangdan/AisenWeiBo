@@ -10,6 +10,7 @@
         <item name="flat_text">@drawable/md_btn_selector</item>
 
         <item name="theme_background">@color/comm_white</item>
+        <item name="fits_windows">false</item>
     </style>
 
     <style name="AppBaseTheme" parent="BaseTheme.Light">
@@ -18,6 +19,14 @@
 
     <style name="AppTheme" parent="AppBaseTheme">
         <item name="theme_color">@color/material_deep_teal_500</item>
+    </style>
+
+    <style name="AppTheme.Main">
+        <item name="android:windowIsTranslucent">false</item>
+    </style>
+    <style name="AppTheme.Splash">
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowBackground">?attr/theme_background</item>
     </style>
     
 </resources>

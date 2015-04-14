@@ -173,4 +173,14 @@ public class AppSettings {
         return value;
     }
 
+    /**
+     * 应用常驻内存
+     *
+     * @return
+     */
+    public static boolean isAppResident() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
+        return prefs.getBoolean("pAppResident", true);
+    }
+
 }

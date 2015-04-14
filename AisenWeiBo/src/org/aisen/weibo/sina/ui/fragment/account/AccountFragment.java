@@ -117,7 +117,28 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        AccountBean account = getAdapterItems().get(position);
+        if (AccountBean.isExpired(account)) {
+            new AlertDialogWrapper.Builder(getActivity())
+                    .setTitle(R.string.remind)
+                    .setMessage(R.string.account_expired)
+                    .setNegativeButton(R.string.no, null)
+                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            LoginFragment.launch(AccountFragment.this, 1000);
+                        }
+
+                    })
+                    .show();
+
+            return;
+        }
+
+        login(account, true);
+
+        getActivity().finish();
     }
 
     @Override

@@ -6,4 +6,5 @@
     <attr name="theme_background" format="color" />
     <!--flat样式的TextView-->
     <attr name="flat_text" format="color" />
+    <attr name="fits_windows" format="boolean" />
 </resources>
