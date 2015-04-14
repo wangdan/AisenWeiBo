@@ -1,25 +1,20 @@
 package org.sina.android.http;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.SocketTimeoutException;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.net.UnknownHostException;
-import java.security.KeyStore;
+import android.text.TextUtils;
 
-import org.aisen.weibo.sina.support.utils.AppSettings;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.multipart.FilePart;
-import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
-import org.apache.commons.httpclient.methods.multipart.Part;
-import org.apache.commons.httpclient.methods.multipart.StringPart;
-import org.apache.commons.httpclient.params.HttpMethodParams;
+import com.alibaba.fastjson.JSON;
+import com.m.common.setting.Setting;
+import com.m.common.utils.FileUtils;
+import com.m.common.utils.Logger;
+import com.m.common.utils.SystemUtils;
+import com.m.network.biz.ABaseBizlogic;
+import com.m.network.http.HttpConfig;
+import com.m.network.http.IHttpUtility;
+import com.m.network.http.Params;
+import com.m.network.http.ParamsUtil;
+import com.m.network.task.TaskException;
+
+import org.aisen.weibo.sina.base.AppSettings;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -45,25 +40,23 @@ import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 import org.sina.android.core.SinaErrorMsgUtil;
 
-import android.text.TextUtils;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.SocketTimeoutException;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.net.UnknownHostException;
+import java.security.KeyStore;
 
-import com.alibaba.fastjson.JSON;
-import com.m.common.params.Params;
-import com.m.common.params.ParamsUtil;
-import com.m.common.settings.Setting;
-import com.m.common.utils.Logger;
-import com.m.common.utils.SystemUtility;
-import com.m.common.utils.SystemUtility.NetWorkType;
-import com.m.support.bizlogic.ABaseBizlogic;
-import com.m.support.network.HttpConfig;
-import com.m.support.network.HttpUtility;
-import com.m.support.task.TaskException;
+public class HttpsUtility implements IHttpUtility {
 
-public class HttpsUtility implements HttpUtility {
+	private int connectTimeout = 15 * 1000;
 
-	private static final int connectTimeout = 8 * 1000;
-
-	private static final int soTimeout = 8 * 1000;
+	private int soTimeout = 15 * 1000;
 
 	protected HttpClient getHttpsClient() throws TaskException {
 		BasicHttpParams httpParameters = new BasicHttpParams();
@@ -92,7 +85,7 @@ public class HttpsUtility implements HttpUtility {
 			throw new TaskException(TaskException.TaskError.timeout.toString());
 		}
 
-		HttpHost proxy = SystemUtility.getProxy();
+		HttpHost proxy = SystemUtils.getProxy();
 		if (proxy != null)
 			client.getParams().setParameter(ConnRouteParams.DEFAULT_PROXY, proxy);
 
@@ -102,7 +95,7 @@ public class HttpsUtility implements HttpUtility {
 	@Override
 	public <T> T doGet(HttpConfig config, Setting action, Params params, Class<T> responseCls) throws TaskException {
 		// 是否有网络连接
-		if (SystemUtility.getNetworkType() == NetWorkType.none)
+		if (SystemUtils.getNetworkType() == SystemUtils.NetWorkType.none)
 			throw new TaskException(TaskException.TaskError.noneNetwork.toString());
 
 		String url = config.baseUrl + action.getValue();
@@ -132,7 +125,7 @@ public class HttpsUtility implements HttpUtility {
 	@Override
 	public <T> T doPost(HttpConfig config, Setting action, Params params, Class<T> responseCls, Object requestObj) throws TaskException {
 		// 是否有网络连接
-		if (SystemUtility.getNetworkType() == NetWorkType.none)
+		if (SystemUtils.getNetworkType() == SystemUtils.NetWorkType.none)
 			throw new TaskException(TaskException.TaskError.noneNetwork.toString());
 
 		String url = config.baseUrl + action.getValue();
@@ -168,57 +161,166 @@ public class HttpsUtility implements HttpUtility {
 	}
 
 	public <T> T uploadFile(HttpConfig config, Setting action, Params params, File file, Params headers, Class<T> responseClazz) throws TaskException {
+//		try {
+//			PostMethod postMethod = new PostMethod((config.baseUrl + action.getValue()));
+//
+//			FilePart fp = null;
+//			try {
+//				fp = new FilePart("pic", file.getName(), file);
+//			} catch (FileNotFoundException e) {
+//				e.printStackTrace();
+//			}
+//
+//			postMethod.addRequestHeader("Authorization", config.authrization);
+//
+//			int index = 0;
+//			Part[] part = new Part[params.size() + 1];
+//			for (String key : params.getKeys())
+//				part[index++] = new StringPart(key, ParamsUtil.encode(params.getParameter(key)));
+//			part[index] = fp;
+//
+//			MultipartRequestEntity mrp = new MultipartRequestEntity(part, postMethod.getParams());
+//			postMethod.setRequestEntity(mrp);
+//
+//			if (headers != null)
+//				for (String key : headers.getKeys())
+//					postMethod.addRequestHeader(key, ParamsUtil.encode(headers.getParameter(key)));
+//
+//			// 执行postMethod
+//			org.apache.commons.httpclient.HttpClient httpClient = new org.apache.commons.httpclient.HttpClient();
+//			httpClient.getHttpConnectionManager().getParams().setConnectionTimeout(connectTimeout);
+//			postMethod.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, soTimeout);
+//			postMethod.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET, "utf-8");
+//			httpClient.executeMethod(postMethod);
+//			Logger.v(ABaseBizlogic.TAG, String.format("upload file's response body = %s", postMethod.getResponseBodyAsString()));
+//			T result = null;
+//			try {
+//				result = JSON.parseObject(postMethod.getResponseBodyAsString(), responseClazz);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//				throw new TaskException(TaskException.TaskError.timeout.toString());
+//			}
+//			return result;
+//		} catch (SocketTimeoutException e) {
+//			e.printStackTrace();
+//			throw new TaskException(TaskException.TaskError.timeout.toString());
+//		} catch (ConnectTimeoutException e) {
+//			e.printStackTrace();
+//			throw new TaskException(TaskException.TaskError.timeout.toString());
+//		} catch (ClientProtocolException e) {
+//			e.printStackTrace();
+//			throw new TaskException(TaskException.TaskError.timeout.toString());
+//		} catch (UnknownHostException e) {
+//			e.printStackTrace();
+//			throw new TaskException(TaskException.TaskError.timeout.toString());
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//			throw new TaskException(TaskException.TaskError.timeout.toString());
+//		}
+		
+		soTimeout = 3 * 60 * 1000;// 上传文件连接时间改长一点
+		connectTimeout = 3 * 60 * 1000;
+		
+		HttpClient client = null;
 		try {
-			PostMethod postMethod = new PostMethod((config.baseUrl + action.getValue()));
-
-			FilePart fp = null;
 			try {
-				fp = new FilePart("pic", file.getName(), file);
-			} catch (FileNotFoundException e) {
+				KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+				keyStore.load(null, null);
+
+				// 如果不设置这里，会报no peer certificate错误
+				SSLSocketFactory sf = new MSSLSocketFactory(keyStore);
+				sf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+
+				SchemeRegistry schemeRegistry = new SchemeRegistry();
+				schemeRegistry.register(new Scheme("https", sf, 443));
+				schemeRegistry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
+				HttpParams httpParams = new BasicHttpParams();
+				HttpProtocolParams.setVersion(httpParams, HttpVersion.HTTP_1_1);
+				HttpProtocolParams.setContentCharset(httpParams, HTTP.UTF_8);
+				SingleClientConnManager clientManager = new SingleClientConnManager(httpParams, schemeRegistry);
+				BasicHttpParams httpParameters = new BasicHttpParams();
+				HttpConnectionParams.setConnectionTimeout(httpParameters, connectTimeout);
+				HttpConnectionParams.setSoTimeout(httpParameters, soTimeout);
+				client = new DefaultHttpClient(clientManager, httpParameters);
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			
+			// 添加代理
+			HttpHost proxy = SystemUtils.getProxy();
+			if (proxy != null)
+				client.getParams().setParameter(ConnRouteParams.DEFAULT_PROXY, proxy);
+			
+			String url = config.baseUrl + action.getValue();
+			HttpPost request = new HttpPost(url);
 
-			postMethod.addRequestHeader("Authorization", config.authrization);
+			request.setHeader("Content-Type", "multipart/form-data; boundary=" + boundary);
+			
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			StringBuffer buffer = new StringBuffer();
 
-			int index = 0;
-			Part[] part = new Part[params.size() + 1];
-			for (String key : params.getKeys())
-				part[index++] = new StringPart(key, ParamsUtil.encode(params.getParameter(key)));
-			part[index] = fp;
+			for (String key : params.getKeys()) {
+				buffer.append("--").append(boundary);
+				buffer.append("\r\n");
+				buffer.append("Content-Disposition: form-data; name=" + "\"" + key + "\"");
+				buffer.append("\r\n\r\n");// 每一行必须以\r\n结尾,包括最后一行
+				buffer.append(ParamsUtil.encode(params.getParameter(key)));
+				buffer.append("\r\n");
+			}
 
-			MultipartRequestEntity mrp = new MultipartRequestEntity(part, postMethod.getParams());
-			postMethod.setRequestEntity(mrp);
+			String imageKey = "pic";
+			if (params.containsKey("imageKey")) {
+				imageKey = params.getParameter("imageKey");
+			}
 
-			if (headers != null)
-				for (String key : headers.getKeys())
-					postMethod.addRequestHeader(key, ParamsUtil.encode(headers.getParameter(key)));
+			buffer.append("--" + boundary);
+			buffer.append("\r\n");
+			buffer.append("Content-Disposition: form-data; name=").append("\"").append(imageKey).append("\"").append(";").append("filename=")
+					.append("\"").append("lovesong.jpg").append("\"");
+			buffer.append("Content-Type: " + "image/jpge");
+			buffer.append("\r\n\r\n");
+			out.write(buffer.toString().getBytes());
+			// Logger.d(TAG, "form-data = " + buffer.toString());
+			out.write(FileUtils.readFileToBytes(file));
+			out.write(("\r\n--" + boundary + "--\r\n").getBytes());
 
-			// 执行postMethod
-			org.apache.commons.httpclient.HttpClient httpClient = new org.apache.commons.httpclient.HttpClient();
-			httpClient.getHttpConnectionManager().getParams().setConnectionTimeout(connectTimeout);
-			postMethod.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, soTimeout);
-			postMethod.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET, "utf-8");
-			httpClient.executeMethod(postMethod);
-			Logger.v(ABaseBizlogic.TAG, String.format("upload file's response body = %s", postMethod.getResponseBodyAsString()));
+			ByteArrayEntity entity = new ByteArrayEntity(out.toByteArray());
+			request.setEntity(entity);
+			try {
+				out.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 
+			request.setHeader("Authorization", config.authrization);
+			HttpResponse httpResponse = client.execute(request);
+			String responseStr = readResponse(httpResponse);
+			
+			Logger.v(ABaseBizlogic.TAG, String.format("upload file's response body = %s", responseStr));
 			T result = null;
 			try {
-				result = JSON.parseObject(postMethod.getResponseBodyAsString(), responseClazz);
+				result = JSON.parseObject(responseStr, responseClazz);
 			} catch (Exception e) {
 				e.printStackTrace();
 				throw new TaskException(TaskException.TaskError.timeout.toString());
 			}
 			return result;
-
 		} catch (SocketTimeoutException e) {
 			e.printStackTrace();
-			throw new TaskException(TaskException.TaskError.timeout.toString());
+			
+			if (client != null) 
+				client.getConnectionManager().shutdown();
+			
+			throw new TaskException(TaskException.TaskError.socketTimeout.toString());
 		} catch (ConnectTimeoutException e) {
 			e.printStackTrace();
+			
+			if (client != null) 
+				client.getConnectionManager().shutdown();
+			
 			throw new TaskException(TaskException.TaskError.timeout.toString());
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
-			throw new TaskException(TaskException.TaskError.timeout.toString());
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 			throw new TaskException(TaskException.TaskError.timeout.toString());
@@ -226,6 +328,8 @@ public class HttpsUtility implements HttpUtility {
 			e.printStackTrace();
 			throw new TaskException(TaskException.TaskError.timeout.toString());
 		}
+		
+		throw new TaskException(TaskException.TaskError.timeout.toString());
 	}
 
 	@SuppressWarnings("deprecation")
@@ -242,15 +346,8 @@ public class HttpsUtility implements HttpUtility {
 
 			String responseStr = readResponse(httpResponse);
 			
-			if (!TextUtils.isEmpty(responseStr) && AppSettings.isTraditional()) {
-				// 太耗时，取消这里的统一转换
-//				long time = System.currentTimeMillis();
-//				int length = responseStr.length();
-//				ZHConverter converter = ZHConverter.getInstance(ZHConverter.TRADITIONAL);
-//				responseStr = converter.convert(responseStr);
-//				Logger.w(String.format("文字长度%s,简繁体转换耗时%sms", String.valueOf(length), String.valueOf(System.currentTimeMillis() - time)));
-			}
-
+			Logger.w(ABaseBizlogic.TAG, String.format("%sKb", String.valueOf(responseStr.length() * 1.0f / 1024)));
+			
 			if (httpResponse.getStatusLine().getStatusCode() / 100 == 2) {
 				T result = null;
 				try {
@@ -261,12 +358,17 @@ public class HttpsUtility implements HttpUtility {
 				}
 				return result;
 			} else {
-				responseStr = URLDecoder.decode(responseStr);
+				try {
+					responseStr = URLDecoder.decode(responseStr);
+				} catch (Exception e) {
+					e.printStackTrace();
+					throw new TaskException(TaskException.TaskError.resultIllegal.toString());
+				}
 				throw SinaErrorMsgUtil.transToException(responseStr);
 			}
 		} catch (SocketTimeoutException e) {
 			e.printStackTrace();
-			throw new TaskException(TaskException.TaskError.timeout.toString());
+			throw new TaskException(TaskException.TaskError.socketTimeout.toString());
 		} catch (ConnectTimeoutException e) {
 			e.printStackTrace();
 			throw new TaskException(TaskException.TaskError.timeout.toString());
@@ -289,7 +391,7 @@ public class HttpsUtility implements HttpUtility {
 		HttpConnectionParams.setSoTimeout(httpParameters, soTimeout);
 		HttpClient client = new DefaultHttpClient(httpParameters);
 
-		HttpHost proxy = SystemUtility.getProxy();
+		HttpHost proxy = SystemUtils.getProxy();
 		if (proxy != null)
 			client.getParams().setParameter(ConnRouteParams.DEFAULT_PROXY, proxy);
 		return client;

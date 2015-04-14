@@ -42,10 +42,15 @@
 			</extra>
 		</extras>
 	</setting>
-
+	
 	<setting type="usershow">
 		<des>按用户ID或昵称返回用户资料以及用户的最新发布的一条微博消息</des>
 		<value>users/show.json</value>
+	</setting>
+
+	<setting type="accountLogin">
+		<des>用户名密码登录授权</des>
+		<value>oauth2/access_token</value>
 	</setting>
 
 	<setting type="statusesPublicTimeLine">
@@ -60,9 +65,9 @@
 			<extra type="cache_enable">
 				<value>true</value>
 			</extra>
-			<extra type="memory_cache_utility">
-				<value>org.aisen.weibo.sina.support.cache.TimelineMemoryCacheUtility</value>
-			</extra>
+			<!--<extra type="memory_cache_utility">-->
+				<!--<value>org.aisen.weibo.sina.support.cache.TimelineMemoryCacheUtility</value>-->
+			<!--</extra>-->
 			<extra type="cache_utility">
 				<value>org.aisen.weibo.sina.support.cache.TimelineCacheUtility</value>
 			</extra>
@@ -76,9 +81,9 @@
 			<extra type="cache_enable">
 				<value>true</value>
 			</extra>
-			<extra type="memory_cache_utility">
-				<value>org.aisen.weibo.sina.support.cache.TimelineMemoryCacheUtility</value>
-			</extra>
+			<!--<extra type="memory_cache_utility">-->
+				<!--<value>org.aisen.weibo.sina.support.cache.TimelineMemoryCacheUtility</value>-->
+			<!--</extra>-->
 			<extra type="cache_utility">
 				<value>org.aisen.weibo.sina.support.cache.TimelineCacheUtility</value>
 			</extra>
@@ -92,9 +97,9 @@
 			<extra type="cache_enable">
 				<value>true</value>
 			</extra>
-			<extra type="memory_cache_utility">
-				<value>org.aisen.weibo.sina.support.cache.TimelineMemoryCacheUtility</value>
-			</extra>
+			<!--<extra type="memory_cache_utility">-->
+				<!--<value>org.aisen.weibo.sina.support.cache.TimelineMemoryCacheUtility</value>-->
+			<!--</extra>-->
 			<extra type="cache_utility">
 				<value>org.aisen.weibo.sina.support.cache.TimelineCacheUtility</value>
 			</extra>
@@ -108,9 +113,9 @@
 			<extra type="cache_enable">
 				<value>true</value>
 			</extra>
-			<extra type="memory_cache_utility">
-				<value>org.aisen.weibo.sina.support.cache.TimelineMemoryCacheUtility</value>
-			</extra>
+			<!--<extra type="memory_cache_utility">-->
+				<!--<value>org.aisen.weibo.sina.support.cache.TimelineMemoryCacheUtility</value>-->
+			<!--</extra>-->
 			<extra type="cache_utility">
 				<value>org.aisen.weibo.sina.support.cache.TimelineCacheUtility</value>
 			</extra>
@@ -129,9 +134,9 @@
 			<extra type="cache_enable">
 				<value>true</value>
 			</extra>
-			<extra type="memory_cache_utility">
-				<value>org.aisen.weibo.sina.support.cache.TimelineMemoryCacheUtility</value>
-			</extra>
+			<!--<extra type="memory_cache_utility">-->
+				<!--<value>org.aisen.weibo.sina.support.cache.TimelineMemoryCacheUtility</value>-->
+			<!--</extra>-->
 			<extra type="cache_utility">
 				<value>org.aisen.weibo.sina.support.cache.TimelineCacheUtility</value>
 			</extra>
@@ -145,9 +150,9 @@
 			<extra type="cache_enable">
 				<value>true</value>
 			</extra>
-			<extra type="memory_cache_utility">
-				<value>org.aisen.weibo.sina.support.cache.TimelineMemoryCacheUtility</value>
-			</extra>
+			<!--<extra type="memory_cache_utility">-->
+				<!--<value>org.aisen.weibo.sina.support.cache.TimelineMemoryCacheUtility</value>-->
+			<!--</extra>-->
 			<extra type="cache_utility">
 				<value>org.aisen.weibo.sina.support.cache.TimelineCacheUtility</value>
 			</extra>
@@ -171,14 +176,24 @@
 			<extra type="cache_enable">
 				<value>true</value>
 			</extra>
-			<extra type="memory_cache_utility">
-				<value>org.aisen.weibo.sina.support.cache.TimelineMemoryCacheUtility</value>
-			</extra>
+			<!--<extra type="memory_cache_utility">-->
+				<!--<value>org.aisen.weibo.sina.support.cache.TimelineMemoryCacheUtility</value>-->
+			<!--</extra>-->
 			<extra type="cache_utility">
 				<value>org.aisen.weibo.sina.support.cache.TimelineCacheUtility</value>
 			</extra>
 		</extras>
 	</setting>
+
+    <setting type="offlineFriendshipGroupsTimeline">
+        <des>获取当前登录用户某一好友分组的微博列表-离线数据</des>
+        <value>friendships/groups/timeline.json</value>
+        <extras>
+            <extra type="http">
+                <value>org.aisen.weibo.sina.support.http.OfflineGroupsHttpUtility</value>
+            </extra>
+        </extras>
+    </setting>
 
 	<setting type="commentsShow">
 		<des>根据微博ID返回某条微博的评论列表</des>
@@ -458,16 +473,87 @@
 	<setting type="trendsHourly">
 		<des>返回最近一小时内的热门话题</des>
 		<value>trends/hourly.json</value>
+		<extras>
+		    <extra type="cache_enable">
+				<value>true</value>
+			</extra>
+			<extra type="cache_utility">
+				<value>org.aisen.weibo.sina.support.cache.TrendsCacheUtility</value>
+			</extra>
+			<extra type="http">
+				<value>org.aisen.weibo.sina.support.http.TopicsHttpUtility</value>
+			</extra>
+		</extras>
 	</setting>
 	
 	<setting type="trendsDaily">
 		<des>返回最近一天内的热门话题</des>
 		<value>trends/daily.json</value>
+		<extras>
+		    <extra type="cache_enable">
+				<value>true</value>
+			</extra>
+			<extra type="cache_utility">
+				<value>org.aisen.weibo.sina.support.cache.TrendsCacheUtility</value>
+			</extra>
+			<extra type="http">
+				<value>org.aisen.weibo.sina.support.http.TopicsHttpUtility</value>
+			</extra>
+		</extras>
 	</setting>
 	
 	<setting type="trendsWeekly">
 		<des>返回最近一周内的热门话题</des>
 		<value>trends/weekly.json</value>
+		<extras>
+		    <extra type="cache_enable">
+				<value>true</value>
+			</extra>
+			<extra type="cache_utility">
+				<value>org.aisen.weibo.sina.support.cache.TrendsCacheUtility</value>
+			</extra>
+			<extra type="http">
+				<value>org.aisen.weibo.sina.support.http.TopicsHttpUtility</value>
+			</extra>
+		</extras>
+	</setting>
+	
+	<setting type="getDmMessage">
+		<des>获取私信</des>
+		<value>direct_messages/user_list.json</value>
+		<extras>
+		    <extra type="cache_enable">
+				<value>true</value>
+			</extra>
+			<extra type="cache_utility">
+				<value>org.aisen.weibo.sina.support.cache.DmCacheUtility</value>
+			</extra>
+		</extras>
+	</setting>
+	
+	<setting type="getDmConversation">
+		<des>获取私信对话</des>
+		<value>direct_messages/conversation.json</value>
+	</setting>
+	
+	<setting type="sendDmMessage">
+		<des>发送私信</des>
+		<value>direct_messages/new.json</value>
+	</setting>
+	
+	<setting type="statusesShow">
+		<des>根据id获取微博</des>
+		<value>statuses/show.json</value>
+	</setting>
+	
+	<setting type="getFriendsTimelineIds">
+		<des>获取当前登录用户及其所关注用户的最新微博的ID</des>
+		<value>statuses/friends_timeline/ids.json</value>
+	</setting>
+	
+	<setting type="getGroupsTimelineIds">
+		<des>获取当前登陆用户某一好友分组的微博ID列表</des>
+		<value>friendships/groups/timeline/ids.json</value>
 	</setting>
 	
 </app-settings>

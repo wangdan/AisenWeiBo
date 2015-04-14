@@ -1,9 +1,9 @@
 package org.sina.android.bean;
 
+import com.m.network.biz.IResult;
+
 import java.io.Serializable;
 import java.util.List;
-
-import com.m.support.iclass.IResult;
 
 public class Friendship implements Serializable, IResult {
 

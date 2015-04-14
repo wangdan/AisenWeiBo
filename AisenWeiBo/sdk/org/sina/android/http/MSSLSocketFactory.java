@@ -1,34 +1,23 @@
 package org.sina.android.http;
 
-import java.io.IOException;
+import org.apache.http.conn.ssl.SSLSocketFactory;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.InetAddress;
 import java.net.Socket;
-
 import java.net.UnknownHostException;
-
 import java.security.KeyManagementException;
-
 import java.security.KeyStore;
-
 import java.security.KeyStoreException;
-
 import java.security.NoSuchAlgorithmException;
-
 import java.security.UnrecoverableKeyException;
-
-import javax.net.ssl.SSLContext;
-
-import javax.net.ssl.TrustManager;
-
-import javax.net.ssl.X509TrustManager;
-
 import java.security.cert.CertificateException;
-
 import java.security.cert.X509Certificate;
 
-import org.apache.http.conn.ssl.SSLSocketFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 public class MSSLSocketFactory extends SSLSocketFactory {
 	

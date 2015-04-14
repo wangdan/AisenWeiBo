@@ -1,14 +1,5 @@
 package org.aisen.weibo.sina.sys.service;
 
-import java.util.Calendar;
-
-import org.aisen.weibo.sina.support.db.SinaDB;
-import org.aisen.weibo.sina.support.publish.UnreadCountNotifier;
-import org.aisen.weibo.sina.support.utils.AppContext;
-import org.aisen.weibo.sina.support.utils.AppSettings;
-import org.sina.android.SinaSDK;
-import org.sina.android.bean.UnreadCount;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -17,13 +8,21 @@ import android.os.IBinder;
 
 import com.m.common.context.GlobalContext;
 import com.m.common.utils.Logger;
-import com.m.support.sqlite.property.Extra;
-import com.m.support.task.TaskException;
-import com.m.support.task.WorkTask;
+import com.m.network.task.TaskException;
+import com.m.network.task.WorkTask;
+
+import org.aisen.weibo.sina.base.AppContext;
+import org.aisen.weibo.sina.base.AppSettings;
+import org.aisen.weibo.sina.support.db.SinaDB;
+import org.aisen.weibo.sina.support.notifier.UnreadCountNotifier;
+import org.sina.android.SinaSDK;
+import org.sina.android.bean.UnreadCount;
+
+import java.util.Calendar;
 
 /**
- * 未读消息服务
- * 
+ * 未读消息服务<br/>
+ *
  * @author wangdan
  * 
  */
@@ -56,7 +55,7 @@ public class UnreadService extends Service {
 		GlobalContext.getInstance().startService(intent);
 	}
 	
-	private UnreadCountNotifier unreadCountNotifier;
+	public UnreadCountNotifier unreadCountNotifier;
 
 	private UnreadTask unreadTask;
 
@@ -73,7 +72,7 @@ public class UnreadService extends Service {
 			unreadCountNotifier = new UnreadCountNotifier(this);
 
 
-		if (!AppContext.isLogedin()) { 
+		if (!AppContext.isLogedin()) {
 			stopSelf();
 			return super.onStartCommand(intent, flags, startId);
 		}
@@ -153,6 +152,8 @@ public class UnreadService extends Service {
 				AppContext.getUnreadCount().setMention_status(result.getMention_status());
 			if (AppSettings.isNotifyFollower())
 				AppContext.getUnreadCount().setFollower(result.getFollower());
+			if (AppSettings.isNotifyDm())
+				AppContext.getUnreadCount().setDm(result.getDm());
 			
 			// 更新DB
 			result.setId(AppContext.getUser().getIdstr());
@@ -175,8 +176,6 @@ public class UnreadService extends Service {
 			super.onFinished();
 			
 			unreadTask = null;
-			
-			stopSelf();
 		}
 
 	}
@@ -195,6 +194,7 @@ public class UnreadService extends Service {
 		
 		if (unreadTask != null)
 			unreadTask.cancel(true);
+		
 	}
 
 	@Override
@@ -206,7 +206,7 @@ public class UnreadService extends Service {
 		if (!AppContext.isLogedin())
 			return null;
 		
-		return SinaDB.getSqlite().selectById(new Extra(AppContext.getUser().getIdstr()), UnreadCount.class);
+		return SinaDB.getSqlite().selectById(null, UnreadCount.class, AppContext.getUser().getIdstr());
 	}
 
 }

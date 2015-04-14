@@ -1,12 +1,26 @@
 package org.sina.android;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import android.content.Context;
+import android.net.wifi.ScanResult;
+import android.net.wifi.WifiManager;
+import android.telephony.NeighboringCellInfo;
+import android.telephony.TelephonyManager;
+import android.telephony.gsm.GsmCellLocation;
+import android.text.TextUtils;
+import android.webkit.WebView;
+
+import com.alibaba.fastjson.JSON;
+import com.m.common.context.GlobalContext;
+import com.m.common.utils.Consts;
+import com.m.network.biz.ABaseBizlogic;
+import com.m.network.http.HttpConfig;
+import com.m.network.http.IHttpUtility;
+import com.m.network.http.Params;
+import com.m.network.task.TaskException;
 
 import org.sina.android.bean.AccessToken;
+import org.sina.android.bean.DirectMessages;
+import org.sina.android.bean.DmMessages;
 import org.sina.android.bean.Favorities;
 import org.sina.android.bean.Favority;
 import org.sina.android.bean.Friendship;
@@ -22,31 +36,21 @@ import org.sina.android.bean.StatusComments;
 import org.sina.android.bean.StatusContent;
 import org.sina.android.bean.StatusContents;
 import org.sina.android.bean.StatusRepost;
+import org.sina.android.bean.StatusesIds;
 import org.sina.android.bean.SuggestionAtUser;
 import org.sina.android.bean.SuggestionsUser;
 import org.sina.android.bean.Token;
 import org.sina.android.bean.TokenInfo;
+import org.sina.android.bean.TrendsBean;
 import org.sina.android.bean.UnreadCount;
 import org.sina.android.bean.WeiBoUser;
 import org.sina.android.http.HttpsUtility;
 
-import android.content.Context;
-import android.net.wifi.ScanResult;
-import android.net.wifi.WifiManager;
-import android.telephony.NeighboringCellInfo;
-import android.telephony.TelephonyManager;
-import android.telephony.gsm.GsmCellLocation;
-import android.text.TextUtils;
-import android.webkit.WebView;
-
-import com.alibaba.fastjson.JSON;
-import com.m.common.context.GlobalContext;
-import com.m.common.params.Params;
-import com.m.common.utils.Consts;
-import com.m.support.bizlogic.ABaseBizlogic;
-import com.m.support.network.HttpConfig;
-import com.m.support.network.HttpUtility;
-import com.m.support.task.TaskException;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 新浪微博SDK
@@ -59,14 +63,14 @@ public class SinaSDK extends ABaseBizlogic {
 	private Token token;
 
 	@Override
-	protected HttpUtility configHttpUtility() {
+	protected IHttpUtility configHttpUtility() {
 		return new HttpsUtility();
 	}
 
 	@Override
 	protected HttpConfig configHttpConfig() {
 		HttpConfig httpConfig = new HttpConfig();
-		httpConfig.baseUrl = getSetting(Consts.Setting.BASE_URL).getValue();
+		httpConfig.baseUrl = getSetting(Consts.BASE_URL).getValue();
 		if (token != null)
 			httpConfig.authrization = "OAuth2 " + token.getToken();
 		httpConfig.contentType = "application/x-www-form-urlencoded";
@@ -108,7 +112,8 @@ public class SinaSDK extends ABaseBizlogic {
 			params = new Params();
 		}
 
-		params.addParameter("source", getAppKey());
+		if (!params.containsKey("source"))
+			params.addParameter("source", getAppKey());
 		if (token != null)
 			params.addParameter("access_token", token.getToken());
 
@@ -156,13 +161,34 @@ public class SinaSDK extends ABaseBizlogic {
 	}
 	
 	/**
+	 * 用户名账号密码登录
+	 * 
+	 * @param username
+	 * @param pwd
+	 * @param appId
+	 * @param appSecret
+	 * @return
+	 * @throws Exception
+	 */
+	public AccessToken accountLogin(String username, String pwd, String appId, String appSecret) throws TaskException {
+		Params params = new Params();
+		params.addParameter("username", username);
+		params.addParameter("password", pwd);
+		params.addParameter("client_id", appId);
+		params.addParameter("client_secret", appSecret);
+		params.addParameter("grant_type", "password");
+		
+		return doPost(getHttpConfig(), getSetting("accountLogin"), null, AccessToken.class, params);
+	}
+	
+	/**
 	 * 按用户ID或昵称返回用户资料以及用户的最新发布的一条微博消息。<br>
 	 * <br>
 	 * 
 	 * 
 	 * @param uid
 	 *            (true):必须设置
-	 * @param screen_name
+	 * @param screenName
 	 *            (false):微博昵称，主要是用来区分用户UID跟微博昵称，当二者一样而产生歧义的时候，建议使用该参数
 	 * @return
 	 */
@@ -210,6 +236,13 @@ public class SinaSDK extends ABaseBizlogic {
 
 		return doGet(getSetting("friendshipGroupsTimeline"), configParams(params), StatusContents.class);
 	}
+
+    public StatusContents offlineFriendshipGroupsTimeline(Params params) throws TaskException {
+        if (!params.containsKey("count"))
+            params.addParameter("count", getPageCount(getSetting("offlineFriendshipGroupsTimeline")));
+
+        return doGet(getSetting("offlineFriendshipGroupsTimeline"), configParams(params), StatusContents.class);
+    }
 
 	/**
 	 * 返回最新的20条公共微博。<br>
@@ -292,6 +325,7 @@ public class SinaSDK extends ABaseBizlogic {
 	public StatusContents statusesUserTimeLine(Params params) throws TaskException {
 		if (!params.containsKey("count"))
 			params.addParameter("count", getPageCount(getSetting("statusesUserTimeLine")));
+		params.setEncodeAble(false);
 
 		return doGet(getSetting("statusesUserTimeLine"), configParams(params), StatusContents.class);
 	}
@@ -421,12 +455,23 @@ public class SinaSDK extends ABaseBizlogic {
 	/**
 	 * 获取好友的分组信息
 	 * 
-	 * @param params
-	 * @param token
 	 * @return
 	 */
 	public Groups friendshipGroups() throws TaskException {
-		return doGet(getSetting("friendshipGroups"), configParams(null), Groups.class);
+        Groups groups = doGet(getSetting("friendshipGroups"), configParams(null), Groups.class);
+
+        Map<String, String> groupMap = new HashMap<String, String>();
+        List<Group> groupList = new ArrayList<Group>();
+        // fuck 有两个特别关注
+        for (Group group : groups.getLists()) {
+            if (!groupMap.containsKey(group.getIdstr())) {
+                groupList.add(group);
+                groupMap.put(group.getIdstr(), group.getIdstr());
+            }
+        }
+        groups.setLists(groupList);
+
+		return groups;
 	}
 
 	/**
@@ -1198,9 +1243,9 @@ public class SinaSDK extends ABaseBizlogic {
 	 * @return
 	 * @throws TaskException
 	 */
-	public String trendsHourly() throws TaskException {
+	public TrendsBean trendsHourly() throws TaskException {
 		
-		return doGet(getSetting("trendsHourly"), configParams(null), String.class);
+		return doGet(getSetting("trendsHourly"), configParams(null), TrendsBean.class);
 	}
 	
 	/**
@@ -1209,9 +1254,9 @@ public class SinaSDK extends ABaseBizlogic {
 	 * @return
 	 * @throws TaskException
 	 */
-	public String trendsDaily() throws TaskException {
+	public TrendsBean trendsDaily() throws TaskException {
 		
-		return doGet(getSetting("trendsDaily"), configParams(null), String.class);
+		return doGet(getSetting("trendsDaily"), configParams(null), TrendsBean.class);
 	}
 	
 	/**
@@ -1220,9 +1265,104 @@ public class SinaSDK extends ABaseBizlogic {
 	 * @return
 	 * @throws TaskException
 	 */
-	public String trendsWeekly() throws TaskException {
+	public TrendsBean trendsWeekly() throws TaskException {
 		
-		return doGet(getSetting("trendsWeekly"), configParams(null), String.class);
+		return doGet(getSetting("trendsWeekly"), configParams(null), TrendsBean.class);
 	}
+	
+	/**
+	 * 获取私信列表
+	 * 
+	 * @return
+	 * @throws TaskException
+	 */
+	public DmMessages getDmMessage(String cursor, String source) throws TaskException {
+		Params params = new Params();
+		params.addParameter("count", "20");
+		params.addParameter("cursor", cursor);
+		params.addParameter("source", source);
+		
+		DmMessages dms = doGet(getSetting("getDmMessage"), params, DmMessages.class);
+		return dms;
+	}
+	
+	/**
+	 * 获取私信对话
+	 * 
+	 * @param cursor
+	 * @param source
+	 * @return
+	 * @throws TaskException
+	 */
+	public DirectMessages getDmConversation(String uid, int page, String source) throws TaskException {
+		Params params = new Params();
+		params.addParameter("uid", uid);
+		params.addParameter("count", "30");
+		params.addParameter("source", source);
+		params.addParameter("page", String.valueOf(page));
+		
+		DirectMessages dms = doGet(getSetting("getDmConversation"), params, DirectMessages.class);
+		return dms;
+	}
+	
+	/**
+	 * 发送私信
+	 * 
+	 * @param uid
+	 * @param text
+	 * @return
+	 * @throws TaskException
+	 */
+	public Boolean sendDmMessage(String uid, String text) throws TaskException {
+		Params params = new Params();
+		params.addParameter("uid", uid);
+		params.addParameter("text", text);
 
+		return doPost(getHttpConfig(), getSetting("sendDmMessage"), null, Boolean.class, params);
+	}
+	
+	/**
+	 * 根据id获取某条微博
+	 * 
+	 * @param id
+	 * @return
+	 * @throws TaskException
+	 */
+	public StatusContent statusesShow(String id) throws TaskException {
+		Params params = new Params();
+		params.addParameter("id", id);
+		
+		return doGet(getSetting("statusesShow"), params, StatusContent.class);
+	}
+	
+	/**
+	 * 获取当前登录用户及其所关注用户的最新微博的ID
+	 * 
+	 * @return
+	 * @throws TaskException
+	 */
+	public StatusesIds getFriendsTimelineIds(String sinceId) throws TaskException {
+		Params params = new Params();
+		if (!TextUtils.isEmpty(sinceId))
+			params.addParameter("since_id", sinceId);
+		params.addParameter("count", "100");
+		
+		return doGet(getSetting("getFriendsTimelineIds"), params, StatusesIds.class);
+	}
+	
+	/**
+	 * 获取当前登录用户及其所关注用户的最新微博的ID
+	 * 
+	 * @return
+	 * @throws TaskException
+	 */
+	public StatusesIds getGroupsTimelineIds(String sinceId, String listId) throws TaskException {
+		Params params = new Params();
+		params.addParameter("since_id", sinceId);
+		params.addParameter("list_id", listId);
+		params.addParameter("count", "101");
+		
+		return doGet(getSetting("getGroupsTimelineIds"), params, StatusesIds.class);
+	}
+	
 }

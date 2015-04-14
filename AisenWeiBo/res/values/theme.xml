@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="BaseTheme.Light" parent="Theme.AppCompat.Light">
+        <!-- Actionbar color -->
+        <item name="colorPrimary">?attr/comm_toolbar</item>
+        <!-- Status bar color-->
+        <item name="colorPrimaryDark">?attr/comm_toolbar</item>
+        <item name="colorAccent">?attr/comm_toolbar</item>
+        <item name="windowActionBar">false</item>
+
+        <item name="comm_flatbtn">@drawable/md_btn_selector</item>
+    </style>
+
+    <style name="AppBaseTheme" parent="BaseTheme.Light">
+        <item name="android:selectableItemBackground">@drawable/selector_list_holo</item>
+    </style>
+
+    <style name="AppTheme" parent="AppBaseTheme">
+        <item name="comm_toolbar">@color/material_deep_teal_500</item>
+    </style>
+    
+</resources>

@@ -1,12 +1,14 @@
 package org.sina.android.bean;
 
+import com.m.network.biz.IResult;
+
+import org.aisen.weibo.sina.support.bean.PhotosBean;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.m.support.iclass.IResult;
-
-public class StatusContents implements Serializable, IResult {
+public class StatusContents extends PhotosBean implements Serializable, IResult {
 
 	private static final long serialVersionUID = 2115103214814709009L;
 

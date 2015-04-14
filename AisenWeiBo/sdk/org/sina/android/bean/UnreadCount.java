@@ -1,9 +1,9 @@
 package org.sina.android.bean;
 
+import com.m.component.sqlite.annotation.PrimaryKey;
+
 import java.io.Serializable;
 import java.util.UUID;
-
-import com.m.support.sqlite.annotation.Id;
 
 /**
  * 用户的各种消息未读数
@@ -15,7 +15,7 @@ public class UnreadCount implements Serializable {
 
 	private static final long serialVersionUID = 3633461417848980465L;
 
-	@Id(column = "id")
+	@PrimaryKey(column = "id")
 	private String id = UUID.randomUUID().toString();
 
 	/**

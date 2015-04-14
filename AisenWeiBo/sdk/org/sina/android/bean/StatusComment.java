@@ -1,8 +1,8 @@
 package org.sina.android.bean;
 
-import java.io.Serializable;
+import com.m.component.sqlite.annotation.PrimaryKey;
 
-import com.m.support.sqlite.annotation.Id;
+import java.io.Serializable;
 
 public class StatusComment implements Serializable {
 
@@ -15,7 +15,7 @@ public class StatusComment implements Serializable {
 	/**
 	 * 评论ID
 	 */
-	@Id(column = "id")
+	@PrimaryKey(column = "id")
 	private String id;
 
 	/**

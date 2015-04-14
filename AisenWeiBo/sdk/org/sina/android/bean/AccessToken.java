@@ -11,6 +11,8 @@ public class AccessToken extends Token implements Serializable{
 	private String uid;
 	
 	private String access_token;
+
+	private String expires_in = "0";
 	
 	public String getVerifier() {
 		return verifier;
@@ -40,6 +42,14 @@ public class AccessToken extends Token implements Serializable{
 	public void setAccess_token(String access_token) {
 		this.access_token = access_token;
 		setToken(access_token);
+	}
+
+	public String getExpires_in() {
+		return expires_in;
+	}
+
+	public void setExpires_in(String expires_in) {
+		this.expires_in = expires_in;
 	}
 
 	@Override

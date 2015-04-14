@@ -1,581 +1,92 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<string name="app_name">Aisen</string>
+    <string name="app_name">Aisen</string>
 
-	<string name="reload">刷新看看</string>
-	<string name="draw_open">打开</string>
-	<string name="draw_close">关闭</string>
-	
-	<!-- 公共 -->
-	<string name="copy">复制</string>
-	<string name="repost">转发</string>
-	<string name="confirm">确定</string>
-	<string name="cancel">取消</string>
-	<string name="yes">是</string>
-	<string name="no">否</string>
-	<string name="bu">否</string>
-	<string name="remind">提示</string>
-	<string name="update">更新</string>
-	<string name="add">添加</string>
-	<string name="i_know">我知道了</string>
-	<string name="donnot_remind">不再提示</string>
-	<string name="next_time_remind">下次再说</string>
-	<string name="none_opts_selected">没有选中项</string>
-	<string name="opts_select_remind">选中%d项</string>
-	<string name="delete_success">删除成功</string>
-	<string name="delete_faild">删除失败</string>
-	<string name="update_success">更新成功</string>
-	<string name="update_faild">更新失败</string>
-	<string name="processing">正在处理</string>
-	
-	<!-- 抽屉菜单 -->
-	<string name="draw_search">Search</string>
-	<string name="draw_profile">用户资料</string>
-	<string name="draw_timeline">微博首页</string>
-	<string name="draw_message">提及</string>
-	<string name="draw_comment">评论</string>
-	<string name="draw_fav">收藏</string>
-	<string name="draw_fav_title">收藏的微博</string>
-	<string name="draw_search_v2">搜索</string>
-	<string name="draw_search_title">搜索</string>
-	<string name="draw_friendship">朋友圈</string>
-	<string name="draw_draft">草稿箱</string>
-	<string name="draw_settings">设置</string>
-	<string name="mention_title">提及我的</string>
-	<string name="draw_accounts">账号管理</string>
+    <!--菜单管理-->
+    <string name="menu_add_account">添加账号</string>
 
-	<!-- 菜单 -->
-	<string name="account_add">添加账号</string>
-	<string name="profile_mention">\@Ta</string>
-	<string name="profile_friendship_create">关注</string>
-	<string name="profile_friendship_destory">取消关注</string>
-	<string name="profile_follower_destory">移除粉丝</string>
-	<string name="main_publish">写微博</string>
-	<string name="main_help">帮助</string>
-	<string name="main_feedback">意见反馈</string>
-	<string name="timeline_groups">好友分组</string>
-	<string name="timeline_search">用户、微博搜索</string>
-	<string name="timeline_refresh">刷新微博</string>
-	<string name="comments_refresh">刷新评论</string>
-	<string name="publish_send">发布</string>
-	<string name="search_friend">搜索好友</string>
-	<string name="draft_send">重新发布</string>
-	<string name="edit">编辑</string>
-	<string name="delete">删除</string>
-	<string name="clear">清空</string>
-	<string name="notify">提醒设置</string>
-	<string name="save_pic">保存图片</string>
-	<string name="share">分享</string>
-	<string name="group_sort">分组排序</string>
-	<string name="group_add">新增分组</string>
-	<string name="group_submit">确认</string>
-	<string name="wallpaper_disable">取消壁纸</string>
-	<string name="wallpaper_add">添加</string>
-	
-	<!-- 标题 -->
-	<string name="timeline_all">全部微博</string>
-	<string name="timeline_bilateral">互相关注</string>
-	<string name="timeline_tome">发给我的</string>
+    <!-- 账号管理 -->
+    <string name="title_acount">账号管理</string>
+    <string name="account_expired">这个账号授权过期了，是否重新授权</string>
+    <string name="account_newaccount_remind">请注意，根据新浪微博的平台政策，刚添加的帐号会在 %s 天后过期，到时需要重新登录</string>
+    <string name="account_relogin_remind">授权过期了，请重新登录授权</string>
+    <string name="account_destory_account_remind">确定删除选中的账号吗？</string>
+    <string name="account_delete_account_loading">正在删除账号</string>
+    <string name="account_account_exit_remind">没有账号登录，将退出程序</string>
+    <string name="account_account_select_remind">请选中要删除的账号</string>
+    <string name="account_account_deleted">删除%d个账号</string>
+    <string name="account_newaccount_notmatch">当前普通授权用户是[%s]，您高级授权的用户不匹配，请重新授权，谢谢！</string>
+    <string name="account_login_remind">Aisen是开源项目，不会保留您个人任何的敏感数据，严格上来说，当您卸载Aisen后所有缓存数据将被系统删除。请确保从正常渠道获取安装包。</string>
+    <string name="account_again">重新授权</string>
+    <string name="account_getsettings_faild">初始化失败，是否重新获取</string>
+    <string name="account_dm_closed">抱歉！私信功能暂时关闭了。感谢支持！</string>
+    <string name="account_skip">跳过</string>
+    <string name="account_login">开始授权</string>
+    <string name="account_invalid_input">用户名或者密码不能为空</string>
+    <string name="account_get_html_faild">网络异常，请稍后重试</string>
+    <string name="acount_timeout">检测到网页版未登录或已失效，是否重新授权？</string>
+    <string name="account_empty">没有授权账号</string>
+    <string name="account_add">添加账号</string>
+    <string name="title_login">用户授权</string>
+    <string name="account_auth_success">授权成功</string>
+    <string name="account_load_userinfo">正在加载用户信息</string>
+    <string name="account_load_groups">正在加载分组信息</string>
+    <string name="account_load_auth">正在完成授权，请稍等</string>
+    <string name="account_illegal_app">安全方面考虑，开发人员重置了应用秘钥，当前应用被视为盗版，请重新从应用市场下载!</string>
+    <string name="account_remind">账号、密码仅存本地，用于授权页面、微博网页版辅助登录，不是黑魔法授权噢，亲！\n\n如有疑问，请联系我 : wangd.info@gmail.com</string>
+    <string name="account_pwd_hint">密码</string>
+    <string name="account_username_hint">邮箱/手机号</string>
 
-	<!-- Message -->
-	<string name="msg_loading">正在加载</string>
-	<string name="msg_timeline">加载了 %d 条微博</string>
-	<string name="msg_load_profile">正在获取用户信息</string>
+    <!-- 公共 -->
+    <string name="copy">复制</string>
+    <string name="repost">转发</string>
+    <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="bu">否</string>
+    <string name="remind">提示</string>
+    <string name="update">更新</string>
+    <string name="add">添加</string>
+    <string name="i_know">我知道了</string>
+    <string name="donnot_remind">不再提示</string>
+    <string name="next_time_remind">下次再说</string>
+    <string name="none_opts_selected">没有选中项</string>
+    <string name="opts_select_remind">选中%d项</string>
+    <string name="delete_success">删除成功</string>
+    <string name="delete_faild">删除失败</string>
+    <string name="update_success">更新成功</string>
+    <string name="update_faild">更新失败</string>
+    <string name="processing">正在处理</string>
 
-	<!-- Empty -->
-	<string name="empty_status">没有微博</string>
-	<string name="empty_cmts">没有评论</string>
-	<string name="empty_account">没有授权账号</string>
-	<string name="empty_search_users">没有搜索到相关用户信息</string>
-	<string name="empty_search_topics">没有搜索到相关微博信息</string>
-	
-	<!-- 发布微博为空 -->
-	<string name="error_none_status">还没有写内容</string>
-	<string name="error_none_comment">还没有写评论内容</string>
-	
-	<!-- 历史记录 -->
-	<string name="hint_clear_history">清空历史记录</string>
-	
-	<!-- BizFragment -->
-	<string name="biz_destory_friend">取消对Ta的关注吗？</string>
-	<string name="biz_create_friendship">正在添加关注</string>
-	<string name="biz_destory_friendship">正在取消关注</string>
-	<string name="biz_remark_hint">备注信息</string>
-	<string name="biz_remark_update">更新好友备注</string>
-	<string name="biz_remark_loading">正在更新备注信息</string>
-	<string name="title_destory_friend">移除粉丝</string>
-	<string name="biz_destory_follower">Ta是你的粉丝，将解除Ta对你的关注</string>
-	<string name="biz_delete_cmt_loading">正在删除评论</string>
-	<string name="biz_delete_status_loading">正在删除微博</string>
-	<string name="biz_add_fav">正在添加收藏</string>
-	<string name="biz_fav_success">成功收藏</string>
-	<string name="biz_remove_fav">正在取消收藏</string>
-	<string name="biz_fav_removed">已取消收藏</string>
-	<string name="biz_fav_remove_faild">取消收藏失败</string>
-	<string name="biz_destory_follower_loading">正在解除Ta对你的关注</string>
-	
-	<!-- 账号授权 -->
-	<string name="title_login">用户授权</string>
-	<string name="account_auth_success">授权成功</string>
-	<string name="account_load_userinfo">正在加载用户信息</string>
-	<string name="account_load_groups">正在加载分组信息</string>
-	<string name="account_load_auth">正在完成授权，请稍等</string>
-	<string name="account_illegal_app">安全方面考虑，开发人员重置了应用秘钥，当前应用被视为盗版，请重新从应用市场下载!</string>
-	
-	<!-- 账号管理 -->
-	<string name="title_acount">账号管理</string>
-	<string name="account_expired">这个账号授权过期了，是否重新授权</string>
-	<string name="account_newaccount_remind">根据新浪微博开放平台政策，账号授权会在有效期过后失效，授权失效后需要重新登录授权，谢谢!</string>
-	<string name="account_relogin_remind">授权过期了，请重新登录授权</string>
-	<string name="account_destory_account_remind">确定删除选中的账号吗？</string>
-	<string name="account_delete_account_loading">正在删除账号</string>
-	<string name="account_account_exit_remind">没有用户账号登录，将退出程序</string>
-	<string name="account_account_select_remind">请选中要删除的账号</string>
-	<string name="account_account_deleted">删除%d个账号</string>
-	
-	<!-- 微博首页 -->
-	<string name="hint_exit">再按一次退出</string>
-	
-	<!-- 朋友圈 -->
-	<string name="followers">粉丝</string>
-	<string name="friends">关注</string>
-	<string name="bilateral">互粉</string>
-	<string name="friendship_my_friends">Ta的关注</string>
-	<string name="friendship_my_followers">Ta的粉丝</string>
-	<string name="friendship_my_bilateral">Ta的互粉</string>
-	<string name="empty_friends">没有关注</string>
-	<string name="empty_bilateral">没有互粉</string>
-	<string name="empty_followers">没有粉丝</string>
-		
-	<!-- 评论页面 -->
-	<string name="title_cmt">微博正文</string>
-	<string name="title_to_me">我收到的</string>
-	<string name="title_by_me">我发出的</string>
-	<string name="error_cmts">该用户不存在</string>
-	<string name="timelinecmt_cmt">评论</string>
-	<string name="timelinecmt_repost">转发</string>
-	<string name="timelinecmt_fav">收藏</string>
-	<string name="timelinecmt_divider_cmt">评论列表</string>
-	<string name="timelinecmt_divider_status">转发列表</string>
-	
-	<!-- 提及 -->
-	<string name="mention_status">微博</string>
-	<string name="mention_cmt">评论</string>
-	<string name="mention_all">所有人</string>
-	<string name="mention_friends">关注人的</string>
-	<string name="mention_self_status">原创微博</string>
-	
-	<!-- 查看图片 -->
-	<string name="title_pic">查看图片</string>
-	<string name="msg_save_pic_success">保存图片成功</string>
-	<string name="error_pic_load_faild">获取失败</string>
-	<string name="error_pic_load_faild_1">图片加载失败\n点击屏幕刷新</string>
-	
-	<!-- 用户资料 -->
-	<string name="title_user_profile">用户资料</string>
-	<string name="profile_des_hint">简介：%s</string>
-	<string name="profile_des_none">这个家伙什么都没留下</string>
-	<string name="profile_ver_reason">微博认证：%s</string>
-	<string name="profile_remark_hint">备注</string>
-	<string name="profile_remark">备注：%s</string>
-	<string name="profile_remark_none">备注：未设置</string>
-	<string name="profile_group_none">分组：未分组</string>
-	<string name="profile_group_hint">分组：%s</string>
-	<string name="profile_group_update_loading">正在更新分组信息</string>
-	<string name="profile_add_to_group">添加到分组[%s]</string>
-	<string name="profile_group_remvoe_friend">从分组[%s]中移除</string>
-	<string name="profile_edit_group_faild">编辑分组失败</string>
-	<string name="profile_edit_group_success">编辑分组成功</string>
-	<string name="profile_fuck_sina">因为新浪微博开放平台政策原因，获取用户的粉丝、关注、微博等数据存在问题，目前正在申请核实。正常后，不会再有这个提示</string>
-	<string name="profile_profile_status">微博</string>
-	<string name="profile_group_setting">设置分组</string>
-	
-	<!-- 发布 -->
-	<string name="publish_please_login">请登录后再分享</string>
-	<string name="publish_share_def">分享心得</string>
-	<string name="publish_status_none">该微博已删除</string>
-	<string name="publish_cmt_to_user">同时评论给作者</string>
-	<string name="publish_repost_to_me">同时转发到我的微博</string>
-	<string name="publish_also_repost">转发微博</string>
-	<string name="publish_mention">提及</string>
-	<string name="publish_recent">最近记录</string>
-	<string name="publish_all">全部好友</string>
-	<string name="publish_mention_hint">名称或者备注</string>
-	<string name="publish_pic_none">图片不存在，或者已删除</string>
-	<string name="error_length_too_long">字数超过限制，请删除%d个字后再发布</string>
-	<string name="publish_draft_title">是否保存到草稿？</string>
-	<string name="publish_rotate_remind">部分手机相机拍摄照片分享时，照片默认是横向的，你可以在设置界面设置照片旋转90度解决这个问题</string>
-	<string name="publish_share_pic">分享图片 </string>
-	<string name="publish_get_recent_pic_faild">获取拍摄照片失败</string>
-	<string name="publish_recent_pic_none">最近没有拍摄照片</string>
-	<string name="publish_local_datas">本地记录</string>
-	<string name="publish_service_datas">网络搜索</string>
-	<string name="publish_cmt_def">写评论</string>
-	<string name="title_reply_cmt">回复评论</string>
-	<string name="title_cmt_status">评论微博</string>
-	<string name="title_feedback">意见反馈</string>
-	<string name="title_recommend">推荐给好友</string>
-	<string name="title_share">分享</string>
-	<string name="title_new_status">新微博</string>
-	<string name="title_status_def">分享新鲜事</string>
-	<string name="publish_all_visiable">所有人可见</string>
-	<string name="publish_miyou_visiable">密友可见</string>
-	<string name="publish_group_visiable">分组可见：%s</string>
-	<string name="publish_group_visiable_menu">分组可见</string>
-	<string name="publish_set_timing">定时发布</string>
-	<string name="publish_cancel_timing">取消定时</string>
-	<string name="publish_today">今天</string>
-	<string name="publish_date_format_hm">HH时mm分</string>
-	<string name="publish_date_format_md">MM月dd日</string>
-	<string name="publish_timing_set_title">设置定时</string>
-	<string name="error_timing">发布日期不能早于当前时间</string>
-	<string name="title_repost">转发</string>
-	
-	<!-- 发布通知 -->
-	<string name="notifer_from_aisen">来自Aisen</string>
-	<string name="notifer_new_followers">%d 个粉丝</string>
-	<string name="notifer_new_cmts">%d 个评论</string>
-	<string name="notifer_new_mention_status">%d 个提及你的微博</string>
-	<string name="notifer_new_mention_cmt">%d 个提及你的评论</string>
-	<string name="notifer_timging_draft">定时发布，已存入草稿</string>
-	<string name="notifer_cancel_publish">撤销发布</string>
-	<string name="notifer_send_delay">%s秒后发送微博</string>
-	<string name="notifer_status_sending">正在发送微博</string>
-	<string name="notifer_send_success">微博发送成功</string>
-	<string name="notifer_send_faild">微博发送失败，已存入草稿</string>
-	<string name="notifer_send_cancel_save_draft">取消微博发送，已存入草稿</string>
-	<string name="notifer_send_cmt_delay">%s秒后发送评论</string>
-	<string name="notifer_cmt_sending">正在发送评论</string>
-	<string name="notifer_cmt_success">评论发送成功</string>
-	<string name="notifer_cmt_draft">评论发送失败，已存入草稿</string>
-	<string name="notifer_cmt_cancel">取消评论，已存入草稿</string>
-	<string name="notifer_reply_cmt_delay">%s秒后回复评论</string>
-	<string name="notifer_reply_cmt_sending">正在回复评论</string>
-	<string name="notifer_reply_cmt_success">回复评论成功</string>
-	<string name="notifer_reply_cmt_faild">回复评论失败，已存入草稿</string>
-	<string name="notifer_reply_cmt_cancel">取消回复评论，已存入草稿</string>
-	<string name="notifer_repost_delay">%s秒后转发微博</string>
-	<string name="notifer_repost_sending">正在转发微博</string>
-	<string name="notifer_repost_success">转发微博成功</string>
-	<string name="notifer_repost_faild">转发微博失败，已存入草稿</string>
-	<string name="notifer_repost_cancel">取消转发微博，已存入草稿</string>
-	
-	<!-- 搜索 -->
-	<string name="title_search">搜索</string>
-	<string name="search_search_user">用户</string>
-	<string name="search_search_status">微博</string>
-	<string name="search_clear_search_remind">确定清空历史记录吗？</string>
-	<string name="hint_topics">话题关键字</string>
-	<string name="hint_user_name">用户名称</string>
-	<string name="title_search_user">用户搜索</string>
-	<string name="search_search_remind">搜索提示</string>
-	<string name="search_search_fuck">根据新浪微博开放平台政策，搜索用户的范围是：v用户、粉丝500以上的达人、粉丝600以上的普通用户</string>
-	<string name="empty_mention_suggestion">没有搜索到相关好友信息</string>
-	
-	<!-- 话题 -->
-	<string name="title_topics">话题</string>
-	
-	<!-- 好友分组 -->
-	<string name="title_groups">好友分组</string>
-	<string name="group_sort_cancel_remind">取消分组排序吗？</string>
-	<string name="group_group_name_hint">分组名称</string>
-	<string name="group_create_group">新建分组</string>
-	<string name="group_create_group_hint">分组名称不能为空</string>
-	<string name="group_update_group_name">更新分组名称</string>
-	<string name="group_del_group_title">删除分组</string>
-	<string name="group_del_group_confirm">确定删除选中的分组吗？</string>
-	<string name="title_edit_group">编辑分组</string>
-	<string name="group_update_group_loading">正在更新分组名称</string>
-	<string name="group_create_group_loading">正在新增分组</string>
-	<string name="group_del_group_loading">正在删除分组</string>
-	<string name="group_del_group_faild">删除\"%s\"分组失败</string>
-	<string name="group_del_group_update">正在删除\"%s\"分组</string>
-	<string name="group_sort_group_loading">正在更新分组排序</string>
-	
-	<!-- 草稿箱 -->
-	<string name="title_draft">草稿箱</string>
-	<string name="draft_type_status">新微博</string>
-	<string name="draft_type_create_cmt">评论微博</string>
-	<string name="draft_type_reply_cmt">回复评论</string>
-	<string name="draft_type_repost_status">转发微博</string>
-	<string name="draft_timing_expired">定时发布时间已过期</string>
-	<string name="draft_timing_hint">[定时发布：%s]</string>
-	<string name="draft_del_draft_remind">请选中要删除的草稿</string>
-	<string name="draft_date_format">MM月dd日 HH时mm分</string>
-	<string name="draft_del_confirm">确定删除选中的草稿吗？</string>
-	<string name="draft_del_draft_loading">正在删除草稿</string>
-	<string name="draft_del_draft_hint">删除%d个草稿</string>
-	<string name="empty_draft">没有草稿</string>
-	
-	<!-- 向导 -->
-	<string name="msg_guide_main">点击空白处返回顶部\n可设置同时刷新列表</string>
+    <!-- 发布通知 -->
+    <string name="notifer_from_aisen">来自Aisen</string>
+    <string name="notifer_new_followers">%d 个新粉丝</string>
+    <string name="notifer_new_cmts">%d 个新评论</string>
+    <string name="notifer_new_mention_status">%d 个提及你的微博</string>
+    <string name="notifer_new_mention_cmt">%d 个提及你的评论</string>
+    <string name="notifer_new_dm">%d 条新私信</string>
+    <string name="notifer_timging_draft">定时发布，已存入草稿</string>
+    <string name="notifer_cancel_publish">撤销发布</string>
+    <string name="notifer_send_delay">%s秒后发送微博</string>
+    <string name="notifer_status_sending">正在发送微博</string>
+    <string name="notifer_send_success">微博发送成功</string>
+    <string name="notifer_send_faild">微博发送失败，已存入草稿</string>
+    <string name="notifer_send_cancel_save_draft">取消微博发送，已存入草稿</string>
+    <string name="notifer_send_cmt_delay">%s秒后发送评论</string>
+    <string name="notifer_cmt_sending">正在发送评论</string>
+    <string name="notifer_cmt_success">评论发送成功</string>
+    <string name="notifer_cmt_draft">评论发送失败，已存入草稿</string>
+    <string name="notifer_cmt_cancel">取消评论，已存入草稿</string>
+    <string name="notifer_reply_cmt_delay">%s秒后回复评论</string>
+    <string name="notifer_reply_cmt_sending">正在回复评论</string>
+    <string name="notifer_reply_cmt_success">回复评论成功</string>
+    <string name="notifer_reply_cmt_faild">回复评论失败，已存入草稿</string>
+    <string name="notifer_reply_cmt_cancel">取消回复评论，已存入草稿</string>
+    <string name="notifer_repost_delay">%s秒后转发微博</string>
+    <string name="notifer_repost_sending">正在转发微博</string>
+    <string name="notifer_repost_success">转发微博成功</string>
+    <string name="notifer_repost_faild">转发微博失败，已存入草稿</string>
+    <string name="notifer_repost_cancel">取消转发微博，已存入草稿</string>
 
-	<!-- AisenUtil -->
-	<string name="msg_now">刚刚</string>
-	<string name="msg_today">今天</string>
-	<string name="msg_yesterday">昨天</string>
-	<string name="msg_few_minutes_ago">分钟前</string>
-	<string name="msg_male">男</string>
-	<string name="msg_female">女</string>
-	<string name="msg_gender_unknow">未知</string>
-	<string name="msg_ten_thousand">万</string>
-	<string name="msg_text_copyed">内容已复制</string>
-	<string name="msg_del_cmt_remind">确定删除评论吗？</string>
-	<string name="msg_del_status_remind">确定删除微博吗？</string>
-	<string name="msg_shield_remind">是否屏蔽当前微博，以及后续对其转发而引起的@提到你的微博？</string>
-	<string name="msg_shield_success">屏蔽成功</string>
-	<string name="msg_shield_faild">屏蔽失败</string>
-	
-	<!-- 程序设置 -->
-	<string name="title_settings">设置</string>
-	<string name="settings_account_sumary">%d个授权账号</string>
-	<string name="category_def">常规设置</string>
-	<string name="settings_basic">基本设置</string>
-	<string name="settings_notify">通知中心</string>
-	<string name="settings_flow">流量控制</string>
-	<string name="category_advanced">高级设置</string>
-	<string name="settings_more_advanced">更多</string>
-	<string name="settings_manage_account">账号管理</string>
-	<string name="settings_publish_delay">内容延迟发布</string>
-	<string name="settings_publish_delay_summary">延迟5秒发布微博、评论，可点击撤销</string>
-	<string name="settings_pic_rotate">旋转照片</string>
-	<string name="settings_pic_rotate_summary">拍摄照片分享时将照片旋转90度</string>
-	<string name="settings_share_aisen">推荐给好友</string>
-	<string name="settings_grade">给我好评</string>
-	<string name="settings_version_update">检查更新</string>
-	<string name="settings_main_blur">首页蒙版</string>
-	<string name="settings_main_blur_summary">首页壁纸添加一层灰色蒙版</string>
-	
-	<!-- 高级设置 -->
-	<string name="title_advanced">高级设置</string>
-	
-	<!-- 帮助设置 -->
-	<string name="title_about">关于</string>
-	<string name="title_help">帮助</string>
-	<string name="title_opensource">开源协议</string>
-	<string name="settings_about_feedback">意见反馈</string>
-	<string name="settings_about_feedback_summary">告诉我您的想法和建议</string>
-	<string name="settings_about">关于</string>
-	<string name="settings_help">帮助</string>
-	<string name="settings_opensource">开源协议</string>
-	<string name="category_developer">开发者选项</string>
-	<string name="settings_about_debug">Debug模式</string>
-	<string name="settings_about_debug_summary">设置Debug模式后，所有相关设置选项都为测试缺省设置</string>
-	<string name="settings_about_screen_rotate">屏幕旋转</string>
-	<string name="settings_cache_disable">禁用缓存</string>
-	<string name="settings_network_delay">网络请求延迟10s</string>
-	<string name="settings_cache_disable_summary">禁用微博、评论缓存</string>
-	<string name="settings_dt_cache_validdate">设置缓存有效时间</string>
-	<string name="settings_cache_validdate">缓存数据有效时间</string>
-	<string name="settings_crash_log">Crash日志上传</string>
-	<string name="settings_crash_log_summary">Wifi时自动上传程序崩溃日志，建议开启，帮助我们定位BUG优化程序</string>
-	
-	<!-- 主题设置 -->
-	<string name="settings_app_theme">主题</string>
-	<string name="title_actionbar">主题设置</string>
-	<string name="title_wallpaper">自定义壁纸</string>
-	<string name="settings_custom_wallpaper">自定义壁纸</string>
-	<string name="settings_launch_wallpaper">使用桌面壁纸</string>
-	<string name="settings_ui_bg_summary_02">使用桌面壁纸作为背景</string>
-	<string name="settings_ui_bg_summary_03">使用自定义壁纸作为背景</string>
-	<string name="settings_translucent">Translucent Modes</string>
-	<string name="settings_translucent_summary">4.4以上系统有效</string>
-	
-	<!-- 壁纸设置 -->
-	<string name="settings_wallpaper_error">添加自定义壁纸错误</string>
-	<string name="settings_wallpaper_handle">壁纸处理中</string>
-	<string name="settings_wallpaper_handle_error">壁纸处理错误</string>
-	<string name="settings_wallpaper_delete_error">默认壁纸不能删除</string>
-	<string name="settings_wallpaper_delete_success">已删除壁纸</string>
-	<string name="settings_wallpaper_delete_remind">是否删除壁纸？</string>
-	
-	<!-- 基本设置 -->
-	<string name="title_basic_settings">基本设置</string>
-	<string name="settings_basic_history_remind">%d条历史数据</string>
-	<string name="settings_dir_hint">文件夹名称</string>
-	<string name="settings_modify_picpath_title">修改图片保存路径</string>
-	<string name="settings_clear">清理</string>
-	<string name="settings_clear_history_remind">将删除掉所有的@历史记录？</string>
-	
-	<string name="category_read">阅读</string>
-	<string name="settings_text_size">字体大小</string>
-	<string name="settings_language">语言</string>
-	<string name="settings_dt_pic_style">排版风格</string>
-	<string name="settings_pic_style">高清图片排版风格</string>
-	<string name="settings_remark">显示备注名</string>
-	<string name="settings_def_group">显示默认分组</string>
-	<string name="settings_def_group_summary">首页是否显示默认分组微博</string>
-	
-	<string name="category_operation">操作</string>
-	<string name="settings_list_auto_update">列表自动刷新</string>
-	<string name="settings_list_auto_update_summary">缓存数据过期后，自动刷新列表数据</string>
-	<string name="settings_dt_list_widget">设置列表控件</string>
-	<string name="settings_list_widget">列表刷新控件</string>
-	<string name="settings_doubleclick_update">置顶同时刷新列表</string>
-	<string name="settings_doubleclick_update_summary">双击操作栏将列表置顶的同时</string>
-	
-	<string name="category_feedback">反馈</string>
-	<string name="settings_sound">音效</string>
-	<string name="settings_sound_summary">列表刷新后声音反馈</string>
-	<string name="settings_vibrate">震动反馈</string>
-	<string name="settings_vibrate_summary">内容发送成功后震动反馈</string>
-	<string name="settings_list_anim">列表动画</string>
-	<string name="settings_list_anim_summary">列表内容加载时，显示动画</string>
-	<string name="category_other">其他</string>
-	<string name="settings_pic_path">图片保存路径</string>
-	<string name="settings_mention_history">清理@好友历史记录</string>
-	
-	<!-- 流量控制设置 -->
-	<string name="title_flowsetting">流量控制</string>
-	<string name="settings_pic_upload_auto">WIFI时原图、移动网络时小于700Kb上传</string>
-	<string name="settings_pic_upload_gif">gif原图上传</string>
-	<string name="settings_clear_cache">清理缓存</string>
-	<string name="settings_dt_pic_upload">图片上传质量</string>
-	<string name="settings_photo">显示高清头像</string>
-	<string name="settings_pic_mode">图片模式</string>
-	<string name="settings_dt_status_count">微博每次加载数量</string>
-	<string name="settings_dt_cmt_count">评论每次加载数量</string>
-	
-	<!-- 通知设置 -->
-	<string name="title_notification">通知中心</string>
-	<string name="settings_open">开启</string>
-	<string name="settings_close">关闭</string>
-	<string name="category_general">常规设置</string>
-	<string name="settings_dt_notify_interval">消息间隔</string>
-	<string name="settings_bother">夜间免打扰</string>
-	<string name="settings_bother_summary">凌晨1点-早上8点关闭通知提醒</string>
-	<string name="category_notify_type">通知类型</string>
-	<string name="settings_status_mention">\@我的微博</string>
-	<string name="settings_cmt_mention">\@我的评论</string>
-	<string name="settings_followers_notify">粉丝</string>
-	<string name="settings_cmt_notify">评论</string>
-	<string name="category_notify_feedback">提醒方式</string>
-	<string name="settings_notify_sound">声音提醒</string>
-	<string name="settings_notify_virate">振动提醒</string>
-	<string name="settings_notify_led">LED提醒</string>
-	
-	<!-- 版本信息设置 -->
-	<string name="settings_version_detail">版本信息</string>
-	<string name="settings_version_p">版本信息</string>
-	<string name="settings_current_version">当前版本: %s</string>
-	<string name="settings_find_version">发现新版本</string>
-	<string name="settings_version_summary" formatted="false">当前版本: %s, 最新版本: %s</string>
-	<string name="settings_new_version_remind">新版本提示(%s)</string>
-	<string name="settings_update_now">立即更新</string>
-	<string name="settings_error_market">无法打开应用市场</string>
-	
-	<string-array name="timeline_menus">
-	    <item>原微博</item>
-	    <item>复制</item>
-	    <item>转发</item>
-	    <item>评论</item>
-	    <item>收藏</item>
-	    <item>取消收藏</item>
-	    <item>删除</item>
-	    <item>屏蔽</item>
-	    <item>围观</item>
-	</string-array>
-	
-	<string-array name="cmt_menus">
-	    <item>@string/copy</item>
-	    <item>@string/repost</item>
-	    <item>@string/delete</item>
-	</string-array>	
-	
-	<string-array name="search_title">
-	    <item>用户</item>
-	    <item>微博</item>
-	</string-array>
-	
-	<string-array name="txtSize">
-	    <!-- 14sp -->
-		<item>小</item>
-		<!-- 16sp -->
-		<item>中</item>
-		<!-- 18sp -->
-		<item>大</item>
-		<item>超大</item>
-	</string-array>
-	
-	<string-array name="txtUpload">
-		<item>自动</item>
-		<item>原图</item>
-		<item>高 (小于700Kb)</item>
-		<item>中 (小于300Kb)</item>
-		<item>低 (小于100Kb)</item>
-	</string-array>
-	
-	<string-array name="txtUnread">
-		<item>1分钟</item>
-		<item>5分钟</item>
-		<item>15分钟</item>
-		<item>1小时</item>
-	</string-array>
-	
-	<string-array name="comments">
-		<item>评论</item>
-		<item>转发</item>
-	</string-array>
-
-	<string-array name="mention">
-		<item>微博</item>
-		<item>评论</item>
-	</string-array>
-	
-	<string-array name="publish_pic_edit">
-		<item>重新选择</item>
-		<item>删除</item>
-	</string-array>
-	
-	<string-array name="publish_pic">
-		<item>相册</item>
-		<item>拍照</item>
-		<item>刚拍的照片</item>
-	</string-array>
-	
-	<string-array name="picMode">
-	    <item>小图</item>
-	    <item>大图</item>
-	    <item>自动</item>
-	</string-array>
-	
-	<string-array name="timelineCount">
-	    <item>20条</item>
-	    <item>50条</item>
-	    <item>100条</item>
-	    <item>自动</item>
-	</string-array>
-	
-	<string-array name="commentCount">
-	    <item>20条</item>
-	    <item>50条</item>
-	    <item>100条</item>
-	    <item>自动</item>
-	</string-array>
-	
-	<string-array name="picLargeMode">
-	    <item>智能排版</item>
-	    <item>9宫格</item>
-	</string-array>
-	
-	<string-array name="pCacheValidity">
-	    <item>30秒</item>
-	    <item>1小时</item>
-	    <item>4小时</item>
-	    <item>8小时</item>
-	</string-array>
-	
-	<string-array name="pLanguage">
-	    <item>跟随系统语言</item>
-	    <item>简体中文</item>
-	    <item>繁體中文</item>
-	</string-array>
-	
-	<string-array name="pRefreshViewType">
-	    <item>PullToRefresh</item>
-	    <item>ActionbarSwipeRefresh</item>
-	    <item>Google-SwipeRefresh</item>
-	</string-array>
-	
 </resources>

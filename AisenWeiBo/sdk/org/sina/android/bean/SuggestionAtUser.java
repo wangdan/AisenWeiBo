@@ -1,14 +1,14 @@
 package org.sina.android.bean;
 
-import java.io.Serializable;
+import com.m.component.sqlite.annotation.PrimaryKey;
 
-import com.m.support.sqlite.annotation.Id;
+import java.io.Serializable;
 
 public class SuggestionAtUser implements Serializable {
 
 	private static final long serialVersionUID = -1295044472748529056L;
 
-	@Id(column = "id")
+	@PrimaryKey(column = "id")
 	private String uid;
 
 	private String nickname;

@@ -1,8 +1,8 @@
 package org.sina.android.bean;
 
-import java.io.Serializable;
+import com.m.component.sqlite.annotation.PrimaryKey;
 
-import com.m.support.sqlite.annotation.Id;
+import java.io.Serializable;
 
 /**
  * 好友分组信息
@@ -14,7 +14,7 @@ public class Group implements Serializable {
 
 	private static final long serialVersionUID = 1364226754711881171L;
 
-	@Id(column = "id")
+	@PrimaryKey(column = "id")
 	private String id;
 
 	private String idstr;

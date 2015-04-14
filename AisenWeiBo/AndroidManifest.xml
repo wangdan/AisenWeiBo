@@ -1,144 +1,76 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.aisen.weibo.sina"
-    android:versionCode="320" android:versionName="3.2.0">
+<manifest package="org.aisen.weibo.sina" xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="501" android:versionName="5.0.1">
 
-	<uses-sdk android:minSdkVersion="14" android:targetSdkVersion="19" />
+    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="21"/>
 
-	<!-- 允许程序打开网络 -->
-	<uses-permission android:name="android.permission.INTERNET" />
-	<!-- 允许程序访问Wi-Fi网络状态信息 -->
-	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-	<!-- 允许程序改变Wi-Fi连接状态 -->
-	<uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-	<!-- 允许程序写入API设置 -->
-	<!-- <uses-permission android:name="android.permission.WRITE_APN_SETTINGS" /> -->
-	<!-- 允许写入sdcard -->
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
-	<!-- 允许一个程序访问GPS信息 -->
-	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-	<!-- 允许程序访问有关GSM网络信息 -->
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-	<!-- 允许访问振动设备 -->
-	<uses-permission android:name="android.permission.VIBRATE" />
-	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
-	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-	<uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
-	<uses-permission android:name="android.permission.WRITE_SETTINGS" />
-	<!-- 开机自启动 -->
-	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-	
-	<!--加载被测主程序包名 -->
-	<instrumentation android:targetPackage="org.aisen.weibo.sina" android:name="android.test.InstrumentationTestRunner" />
+    <!-- 允许程序打开网络 -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- 允许程序访问Wi-Fi网络状态信息 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <!-- 允许程序改变Wi-Fi连接状态 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <!-- 允许程序写入API设置 -->
+    <!-- <uses-permission android:name="android.permission.WRITE_APN_SETTINGS" /> -->
+    <!-- 允许写入sdcard -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <!-- 允许一个程序访问GPS信息 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <!-- 允许程序访问有关GSM网络信息 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <!-- 允许访问振动设备 -->
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <!-- 开机自启动 -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
-	<application android:allowBackup="true" android:icon="@drawable/a_icon_b" android:label="@string/app_name" android:theme="@style/BaseTheme"
-		android:name="org.aisen.weibo.sina.base.MyApplication">
-		<!-- 您从百度网站获取的APP KEY -->
-		<meta-data android:name="BaiduMobAd_STAT_ID" android:value="3124a3bb28" /> <!-- abcd1234 -->
-		<!-- 渠道商编号 -->
-		<meta-data android:name="BaiduMobAd_CHANNEL" android:value="test" />
-		<!-- 是否开启错误日志统计，默认为false -->
-		<meta-data android:name="BaiduMobAd_EXCEPTION_LOG" android:value="true" />
-		<!-- 日志发送策略，可选值：APP_START、ONCE_A_DAY、SET_TIME_INTERVAL，默认为APP_START -->
-		<meta-data android:name="BaiduMobAd_SEND_STRATEGY" android:value="APP_START" />
-		<!-- 日志发送策略 为SET_TIME_INTERVAL时，需设定时间间隔(取消下行注释)。取值为1-24的整数，默认为1 -->
-		<!-- <meta-data android:name="BaiduMobAd_TIME_INTERVAL" android:value="2" /> -->
-		<!-- 日志仅在wifi网络下发送，默认为false -->
-		<meta-data android:name="BaiduMobAd_ONLY_WIFI" android:value="true" />
-		<!-- 是否获取基站位置信息 ,默认为true -->
-		<meta-data android:name="BaiduMobAd_CELL_LOCATION" android:value="true" />
-		<!-- 是否获取GPS位置信息，默认为true -->
-		<meta-data android:name="BaiduMobAd_GPS_LOCATION" android:value="false" />
-		<!-- 是否获取WIFI位置信息，默认为true -->
-		<meta-data android:name="BaiduMobAd_WIFI_LOCATION" android:value="true" />
+    <application android:name="org.aisen.weibo.sina.base.MyApplication" android:allowBackup="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name"
+                 android:theme="@style/AppTheme">
 
-		<!--需要加载测试扩展包 -->
-		<uses-library android:name="android.test.runner" />
-		
-		<!-- 启动界面 -->
-		<activity android:name="org.aisen.weibo.sina.ui.activity.splash.SplashActivity" android:label="@string/app_name" android:theme="@style/BaseTheme.Notitle"
-			android:screenOrientation="portrait">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
+        <!-- 启动界面 -->
+        <activity android:name="org.aisen.weibo.sina.ui.activity.basic.SplashActivity" android:label="@string/app_name" android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
 
-				<category android:name="android.intent.category.LAUNCHER" />
-			</intent-filter>
-		</activity>
-		<!-- 公共界面 -->
-		<activity android:name="org.aisen.weibo.sina.ui.activity.common.FragmentContainerActivity" android:screenOrientation="portrait" />
-		<!-- 首页 -->
-		<activity android:name="org.aisen.weibo.sina.ui.activity.main.MainActivity" android:launchMode="singleTask" android:screenOrientation="portrait" />
-		<!-- 评论 -->
-		<activity android:name="org.aisen.weibo.sina.ui.activity.comment.TimelineCommentsActivity" android:screenOrientation="portrait" />
-		<!-- 用户信息、搜索 -->
-		<activity android:name="org.aisen.weibo.sina.ui.activity.profile.UserProfileActivity" android:screenOrientation="portrait">
-			<intent-filter>
-				<category android:name="android.intent.category.DEFAULT" />
-				<action android:name="android.intent.action.VIEW" />
-				<data android:scheme="org.aisen.weibo.sina.userinfo" />
-			</intent-filter>
-		</activity>
-		<!-- 发布微博、转发微博、评论、回复评论、意见反馈、分享 -->
-		<activity android:name="org.aisen.weibo.sina.ui.activity.publish.PublishActivity" android:windowSoftInputMode="stateVisible|adjustResize" android:launchMode="singleTop"
-			android:screenOrientation="portrait">
-			<intent-filter>
-				<action android:name="android.intent.action.SEND" />
-				<category android:name="android.intent.category.DEFAULT" />
-				<data android:mimeType="image/*" />
-			</intent-filter>
-			<intent-filter>
-				<action android:name="android.intent.action.SEND" />
-				<category android:name="android.intent.category.DEFAULT" />
-				<data android:mimeType="text/plain" />
-			</intent-filter>
-		</activity>
-		<!-- 图片详情 -->
-		<activity android:name="org.aisen.weibo.sina.ui.activity.picture.PicsActivity" android:theme="@style/PicsDark" android:screenOrientation="sensor" />
-		<!-- 话题 -->
-		<activity android:name="org.aisen.weibo.sina.ui.activity.topics.TopicsActivity" android:screenOrientation="portrait">
-			<intent-filter>
-				<category android:name="android.intent.category.DEFAULT" />
-				<action android:name="android.intent.action.VIEW" />
-				<data android:scheme="org.aisen.weibo.sina.topics" />
-			</intent-filter>
-		</activity>
-		<!-- 搜索话题微博或者用户 -->
-		<activity android:name="org.aisen.weibo.sina.ui.activity.search.SearchActivity" android:screenOrientation="portrait"
-		    android:windowSoftInputMode="stateAlwaysHidden" />
-		<!-- 首页引导页 -->
-		<activity android:name="org.aisen.weibo.sina.ui.activity.guide.MainGuideActivity" android:screenOrientation="portrait"
-		    android:theme="@style/GuideTheme" android:launchMode="singleTop" />
-		
-		<!-- 发布服务 -->
-		<service android:name="org.aisen.weibo.sina.sys.service.PublishService" />
-		<!-- 未读消息服务 -->
-		<service android:name="org.aisen.weibo.sina.sys.service.UnreadService" android:exported="true">
-			<intent-filter>
-				<action android:name="org.aisen.weibo.sina.ACTION_GET" />
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
 
-				<category android:name="android.intent.category.DEFAULT" />
-			</intent-filter>
-			<intent-filter>
-				<action android:name="org.aisen.weibo.sina.ACTION_UPDATE" />
+        <!-- 公共界面 -->
+        <activity android:name="com.m.component.container.FragmentContainerActivity" android:screenOrientation="portrait"/>
 
-				<category android:name="android.intent.category.DEFAULT" />
-			</intent-filter>
-		</service>
-		<!-- 定时发布广播 -->
-		<receiver android:name="org.aisen.weibo.sina.sys.receiver.TimingBroadcastReceiver">
-			<intent-filter>
-				<action android:name="org.aisen.weibo.sina.ACTION_TIMING_PUBLISH" />
+        <!-- 发布服务 -->
+        <service android:name="org.aisen.weibo.sina.sys.service.PublishService"/>
+        <!-- 未读消息服务 -->
+        <service android:name="org.aisen.weibo.sina.sys.service.UnreadService" android:exported="true">
+            <intent-filter>
+                <action android:name="org.aisen.weibo.sina.ACTION_GET"/>
 
-				<category android:name="android.intent.category.DEFAULT" />
-			</intent-filter>
-		</receiver>
-		<!-- 开机自启动 -->
-		<receiver android:name="org.aisen.weibo.sina.sys.receiver.BootCompletedReceiver" android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
-			<intent-filter>
-				<action android:name="android.intent.action.BOOT_COMPLETED" />
-				<category android:name="android.intent.category.DEFAULT" />
-			</intent-filter>
-		</receiver>
-	</application>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="org.aisen.weibo.sina.ACTION_UPDATE"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </service>
+        <!-- 定时发布广播 -->
+        <receiver android:name="org.aisen.weibo.sina.sys.receiver.TimingBroadcastReceiver">
+            <intent-filter>
+                <action android:name="org.aisen.weibo.sina.ACTION_TIMING_PUBLISH"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </receiver>
+        <!-- 开机自启动 -->
+        <receiver android:name="org.aisen.weibo.sina.sys.receiver.BootCompletedReceiver" android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </receiver>
+    </application>
 
 </manifest>

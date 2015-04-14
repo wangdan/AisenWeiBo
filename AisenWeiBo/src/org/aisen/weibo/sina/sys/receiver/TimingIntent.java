@@ -1,8 +1,8 @@
 package org.aisen.weibo.sina.sys.receiver;
 
-import com.m.common.utils.Logger;
-
 import android.content.Intent;
+
+import com.m.common.utils.Logger;
 
 public class TimingIntent extends Intent {
 

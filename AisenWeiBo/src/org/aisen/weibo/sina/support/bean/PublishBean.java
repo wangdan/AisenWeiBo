@@ -1,13 +1,14 @@
 package org.aisen.weibo.sina.support.bean;
 
-import java.io.Serializable;
-import java.util.UUID;
+
+import com.m.component.sqlite.annotation.PrimaryKey;
+import com.m.network.http.Params;
 
 import org.sina.android.bean.StatusComment;
 import org.sina.android.bean.StatusContent;
 
-import com.m.common.params.Params;
-import com.m.support.sqlite.annotation.Id;
+import java.io.Serializable;
+import java.util.UUID;
 
 public class PublishBean implements Serializable {
 
@@ -35,7 +36,7 @@ public class PublishBean implements Serializable {
 	
 	long delay = 0;
 	
-	@Id(column = "id")
+	@PrimaryKey(column = "id")
 	String id = UUID.randomUUID().toString();
 	
 	String text;
@@ -47,8 +48,10 @@ public class PublishBean implements Serializable {
 	Params extras = new Params();
 	
 	StatusContent statusContent;
-	
+
 	StatusComment statusComment;
+
+    String[] pics;
 
 	public String getId() {
 		return id;
@@ -138,4 +141,11 @@ public class PublishBean implements Serializable {
 		this.delay = delay;
 	}
 
+    public String[] getPics() {
+        return pics;
+    }
+
+    public void setPics(String[] pics) {
+        this.pics = pics;
+    }
 }

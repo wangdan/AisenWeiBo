@@ -1,8 +1,9 @@
 package org.sina.android.bean;
 
+import com.m.component.sqlite.annotation.PrimaryKey;
+
 import java.io.Serializable;
 
-import com.m.support.sqlite.annotation.Id;
 
 /**
  * 微博用户信息
@@ -24,7 +25,7 @@ public class WeiBoUser implements Serializable {
 	 */
 	private String id;
 
-	@Id(column = "idStr")
+	@PrimaryKey(column = "idStr")
 	private String idstr;
 
 	/**

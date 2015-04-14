@@ -4,7 +4,7 @@
 	<setting-array type="root_path" index="0">
 		<des>应用程序相对sdcard的相对路径目录，所有的文件都存储在这个文件夹中</des>
 		<setting>
-			<value>aisenweibo</value>
+			<value>android</value>
 		</setting>
 	</setting-array>
 
@@ -28,11 +28,6 @@
 			<value>draft</value>
 		</setting>
 	</setting-array>
-	
-	<setting type="double_click_refresh">
-		<des>双击操作栏自动刷新程序</des>
-		<value>true</value>
-	</setting>
 
 	<setting type="saveImage">
 		<des>我收藏的图片</des>
@@ -48,22 +43,6 @@
 		<des>错误日志目录</des>
 		<value>crashlog</value>
 	</setting>
-
-	<setting type="crashToRestart">
-		<des>崩溃重启</des>
-		<value>false</value>
-	</setting>
-
-	<setting-array type="app_type" index="1">
-		<setting>
-			<des>PAD版本</des>
-			<value>1</value>
-		</setting>
-		<setting>
-			<des>MOBILE版本</des>
-			<value>2</value>
-		</setting>
-	</setting-array>
 
 	<setting-array type="cache_utility" index="2">
 		<des>缓存模式设置</des>
@@ -93,7 +72,7 @@
 
 	<setting type="debug">
 		<des>APP是否是DEBUG模式</des>
-		<value>true</value>
+		<value>false</value>
 	</setting>
 
 	<setting type="cache_enable">
@@ -106,38 +85,17 @@
 		<value>50</value>
 	</setting>
 
-	<setting-array type="app_channel" index="0">
+	<setting-array type="app_channel" index="1">
 		<des>应用渠道</des>
 		<setting>
 			<value>test</value>
 		</setting>
 		<setting>
-			<value>googleplay</value>
-		</setting>
-		<setting>
-			<value>yingyongbao</value>
-		</setting>
-		<setting>
-			<value>anzhuoshichang</value>
-		</setting>
-		<setting>
-			<value>baidu</value>
-		</setting>
-		<setting>
 			<value>wandoujia</value>
 		</setting>
-		<setting>
-			<value>360</value>
-		</setting>
-		<setting>
-			<value>samsung</value>
-		</setting>
-		<setting>
-			<value>anzhi</value>
-		</setting>
-		<setting>
-			<value>xiaomi</value>
-		</setting>
+        <setting>
+            <value>googleplay</value>
+        </setting>
 	</setting-array>
 	
 	<setting type="bd_debug">
@@ -150,16 +108,6 @@
 		<value>auto</value>
 	</setting>
 	
-	<setting type="recommend_text">
-		<des>推荐文本</des>
-		<value>Aisen是一个符合Android Design设计规范，界面清爽简洁，操作丝滑流畅的新浪微博第三方Android客户端；亲爱的，我来了，你来这里下载吧 http://aisenyuedu.duapp.com/?page_id=18</value>
-	</setting>
-	
-	<setting type="recommend_image">
-		<des>推荐图片</des>
-		<value></value>
-	</setting>
-	
 	<setting type="about_url">
 		<des>关于</des>
 		<value>http://aisenyuedu.duapp.com/?page_id=18</value>
@@ -170,19 +118,14 @@
 		<value>http://aisenyuedu.duapp.com/?p=31</value>
 	</setting>
 	
-	<setting type="com.m.Theme_color">
-		<des>默认主题</des>
-		<value>#ff009688</value>
-	</setting>
-	
 	<!-- <setting type="fragment_lifecycle">
 		<des>Fragment帮助类</des>
 		<value>org.aisen.weibo.sina.ui.fragment.base.FragmentHelper</value>
 	</setting> -->
-	
-	<setting type="activity_lifecycle">
-		<des>Activity帮助类</des>
-		<value>org.aisen.weibo.sina.ui.fragment.base.ActivityHelper</value>
-	</setting>
-	
+
+	<!--<setting type="activity_lifecycle">-->
+		<!--<des>Activity帮助类</des>-->
+		<!--<value>org.aisen.weibo.sina.ui.fragment.base.ActivityHelper</value>-->
+	<!--</setting>-->
+
 </app-settings>

@@ -1,8 +1,8 @@
 package org.aisen.weibo.sina.support.utils;
 
-import com.m.common.settings.SettingUtility;
+import com.m.common.setting.SettingUtility;
 import com.m.common.utils.Logger;
-import com.m.ui.activity.BaseActivity;
+import com.m.ui.activity.basic.BaseActivity;
 
 public class BaiduAnalyzeUtils {
 
@@ -17,7 +17,7 @@ public class BaiduAnalyzeUtils {
 		
 		Logger.d(TAG, String.format("page %s end", pageName));
 		
-		if (BaseActivity.getRunningActivity() != null && !pageName.equals(lastPageTitleString)) { 
+		if (BaseActivity.getRunningActivity() != null && !pageName.equals(lastPageTitleString)) {
 			com.baidu.mobstat.StatService.onPageEnd(BaseActivity.getRunningActivity(), pageName);
 			
 //			StatService.trackEndPage(BaseActivity.getRunningActivity(), pageName);

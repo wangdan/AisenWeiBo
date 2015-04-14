@@ -1,11 +1,13 @@
 package org.sina.android.bean;
 
+import com.m.component.sqlite.annotation.PrimaryKey;
+
+import org.aisen.weibo.sina.support.bean.PhotoBean;
+
 import java.io.Serializable;
 import java.util.Date;
 
-import com.m.support.sqlite.annotation.Id;
-
-public class StatusContent implements Serializable {
+public class StatusContent extends PhotoBean implements Serializable {
 
     private static final long serialVersionUID = 4658890626870999594L;
 
@@ -23,8 +25,8 @@ public class StatusContent implements Serializable {
     /**
      * 微博ID
      */
-    @Id(column = "id")
-    private String id;
+    @PrimaryKey(column = "id")
+    private long id;
 
     /**
      * 微博信息内容
@@ -133,11 +135,11 @@ public class StatusContent implements Serializable {
         this.geo = geo;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 

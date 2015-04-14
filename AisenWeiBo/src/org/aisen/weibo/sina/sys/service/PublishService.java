@@ -1,13 +1,5 @@
 package org.aisen.weibo.sina.sys.service;
 
-import org.aisen.weibo.sina.support.bean.PublishBean;
-import org.aisen.weibo.sina.support.bean.PublishBean.PublishStatus;
-import org.aisen.weibo.sina.support.publish.InterfacePublisher;
-import org.aisen.weibo.sina.support.publish.PublishDB;
-import org.aisen.weibo.sina.support.publish.PublishManager;
-import org.aisen.weibo.sina.support.utils.AppContext;
-import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
-
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +8,14 @@ import android.os.IBinder;
 
 import com.m.common.context.GlobalContext;
 import com.m.common.utils.Logger;
+
+import org.aisen.weibo.sina.base.AppContext;
+import org.aisen.weibo.sina.support.bean.PublishBean;
+import org.aisen.weibo.sina.support.bean.PublishBean.PublishStatus;
+import org.aisen.weibo.sina.support.db.PublishDB;
+import org.aisen.weibo.sina.support.publisher.InterfacePublisher;
+import org.aisen.weibo.sina.support.publisher.PublishManager;
+import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
 
 /**
  * 任务发布服务，将所有发布任务保存在一个队列依次发布

@@ -1,19 +1,20 @@
 package org.aisen.weibo.sina.support.bean;
 
-import java.io.Serializable;
+import com.m.component.sqlite.annotation.PrimaryKey;
 
+import org.sina.android.bean.AccessToken;
 import org.sina.android.bean.Groups;
 import org.sina.android.bean.Token;
 import org.sina.android.bean.TokenInfo;
 import org.sina.android.bean.WeiBoUser;
 
-import com.m.support.sqlite.annotation.Id;
+import java.io.Serializable;
 
 public class AccountBean implements Serializable {
 
 	private static final long serialVersionUID = -6805443927915693862L;
 
-	@Id(column = "userId")
+	@PrimaryKey(column = "userId")
 	private String userId;
 	
 	private String _token;
@@ -25,6 +26,18 @@ public class AccountBean implements Serializable {
 	private Groups groups;
 	
 	private TokenInfo tokenInfo;
+	
+	private String advancedAppKey;// 高级授权
+	
+	private String advancedAppScreet;// 高级授权
+	
+	private AccessToken advancedToken;// 高级授权的Token
+
+    private String account;
+
+    private String password;
+
+    private String cookie;
 
 	public String get_token() {
 		return _token;
@@ -97,4 +110,51 @@ public class AccountBean implements Serializable {
 		return false;
 	}
 
+	public String getAdvancedAppKey() {
+		return advancedAppKey;
+	}
+
+	public void setAdvancedAppKey(String advancedAppKey) {
+		this.advancedAppKey = advancedAppKey;
+	}
+
+	public String getAdvancedAppScreet() {
+		return advancedAppScreet;
+	}
+
+	public void setAdvancedAppScreet(String advancedAppScreet) {
+		this.advancedAppScreet = advancedAppScreet;
+	}
+
+	public AccessToken getAdvancedToken() {
+		return advancedToken;
+	}
+
+	public void setAdvancedToken(AccessToken advancedToken) {
+		this.advancedToken = advancedToken;
+	}
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getCookie() {
+        return cookie;
+    }
+
+    public void setCookie(String cookie) {
+        this.cookie = cookie;
+    }
 }
