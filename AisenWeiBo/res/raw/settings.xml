@@ -123,9 +123,9 @@
 		<value>org.aisen.weibo.sina.ui.fragment.base.FragmentHelper</value>
 	</setting> -->
 
-	<!--<setting type="activity_lifecycle">-->
-		<!--<des>Activity帮助类</des>-->
-		<!--<value>org.aisen.weibo.sina.ui.fragment.base.ActivityHelper</value>-->
-	<!--</setting>-->
+	<setting type="activity_helper">
+		<des>Activity帮助类</des>
+		<value>org.aisen.weibo.sina.ui.activity.basic.AisenActivityHelper</value>
+	</setting>
 
 </app-settings>

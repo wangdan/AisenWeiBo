@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppBaseTheme" parent="BaseTheme.Light">
+        <item name="android:selectableItemBackground">@drawable/selector_list_holo</item>
+
+        <!--Translucent system bars-->
+        <item name="android:windowTranslucentNavigation" >true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">?attr/theme_color</item>
+    </style>
+</resources>

@@ -34,7 +34,7 @@ public class FlatButton extends TextView {
     }
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        setBackgroundCompat(resolveDrawable(context, R.attr.comm_flatbtn));
+        setBackgroundCompat(resolveDrawable(context, R.attr.flat_text));
 
         final int materialBlue = Color.parseColor("#ff0000");
         int widgetColor = resolveColor(context, R.attr.colorAccent, materialBlue);

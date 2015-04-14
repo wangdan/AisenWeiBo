@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="comm_flatbtn" format="color" />
-    <attr name="comm_toolbar" format="color" />
+    <!--主题颜色-->
+    <attr name="theme_color" format="color" />
+    <!--主题背景色-->
+    <attr name="theme_background" format="color" />
+    <!--flat样式的TextView-->
+    <attr name="flat_text" format="color" />
 </resources>

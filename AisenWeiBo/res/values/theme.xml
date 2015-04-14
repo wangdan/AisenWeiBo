@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="BaseTheme.Light" parent="Theme.AppCompat.Light">
+    <style name="BaseTheme.Light" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Actionbar color -->
-        <item name="colorPrimary">?attr/comm_toolbar</item>
+        <item name="colorPrimary">?attr/theme_color</item>
         <!-- Status bar color-->
-        <item name="colorPrimaryDark">?attr/comm_toolbar</item>
-        <item name="colorAccent">?attr/comm_toolbar</item>
-        <item name="windowActionBar">false</item>
+        <item name="colorPrimaryDark">?attr/theme_color</item>
+        <item name="colorAccent">?attr/theme_color</item>
 
-        <item name="comm_flatbtn">@drawable/md_btn_selector</item>
+        <item name="flat_text">@drawable/md_btn_selector</item>
+
+        <item name="theme_background">@color/comm_white</item>
     </style>
 
     <style name="AppBaseTheme" parent="BaseTheme.Light">
@@ -16,7 +17,7 @@
     </style>
 
     <style name="AppTheme" parent="AppBaseTheme">
-        <item name="comm_toolbar">@color/material_deep_teal_500</item>
+        <item name="theme_color">@color/material_deep_teal_500</item>
     </style>
     
 </resources>
