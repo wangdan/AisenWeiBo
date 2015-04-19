@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import com.alibaba.fastjson.JSON;
 import com.m.common.context.GlobalContext;
 import com.m.common.utils.Logger;
-import com.m.network.biz.ABaseBizlogic;
+import com.m.network.biz.ABizLogic;
 import com.m.network.http.HttpConfig;
 import com.m.network.http.Params;
 import com.m.network.task.TaskException;
@@ -17,7 +17,7 @@ import org.jsoup.Jsoup;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BizLogic extends ABaseBizlogic {
+public class BizLogic extends ABizLogic {
 
 	@Override
 	protected HttpConfig configHttpConfig() {
@@ -95,7 +95,7 @@ public class BizLogic extends ABaseBizlogic {
 
             String body = connection.execute().body();
             if (!TextUtils.isEmpty(body)) {
-                Logger.d(ABaseBizlogic.TAG, body);
+                Logger.d(ABizLogic.TAG, body);
 
                 if (body.indexOf("http://passport.weibo.cn/sso/crossdomain") != -1)
                     throw new TaskException("-100", "未登录");

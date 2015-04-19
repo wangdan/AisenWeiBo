@@ -7,6 +7,14 @@
     <color name="text_60">#99000000</color>
     <color name="text_54">#69000000</color>
 
+    <color name="text_100_inverse">#ffffffff</color>
+    <color name="text_87_inverse">#ddffffff</color>
+    <color name="text_80_inverse">#ccffffff</color>
+    <color name="text_60_inverse">#99ffffff</color>
+    <color name="text_54_inverse">#89ffffff</color>
+
+    <color name="divider">#ebeef4</color>
+
     <color name="gplus_color_1">#3e802f</color>
     <color name="gplus_color_2">#f4b400</color>
     <color name="gplus_color_3">#427fed</color>
@@ -18,5 +26,6 @@
         <item>@color/gplus_color_3</item>
         <item>@color/gplus_color_4</item>
     </integer-array>
+
 
 </resources>

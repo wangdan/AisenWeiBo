@@ -11,6 +11,11 @@
 
         <item name="theme_background">@color/comm_white</item>
         <item name="fits_windows">false</item>
+
+        <item name="text_title">@color/text_100</item>
+        <item name="text_subhead">@color/text_54</item>
+        <item name="text_body">@color/text_80</item>
+        <item name="lay_divider">@color/divider</item>
     </style>
 
     <style name="AppBaseTheme" parent="BaseTheme.Light">

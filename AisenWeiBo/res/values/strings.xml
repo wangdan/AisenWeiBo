@@ -8,6 +8,11 @@
     <!--菜单管理-->
     <string name="menu_add_account">添加账号</string>
 
+    <!-- 标题 -->
+    <string name="timeline_all">全部微博</string>
+    <string name="timeline_bilateral">互相关注</string>
+    <string name="timeline_tome">发给我的</string>
+
     <!-- 账号管理 -->
     <string name="title_acount">账号管理</string>
     <string name="account_expired">这个账号授权过期了，是否重新授权</string>
@@ -119,4 +124,85 @@
     <string name="draw_weibo_top_title">微博头条</string>
     <string name="draw_weibo_offline_read">离线阅读</string>
     <string name="draw_my_liked">我赞过的</string>
+
+    <!-- Empty -->
+    <string name="empty_status">没有微博</string>
+    <string name="empty_cmts">没有评论</string>
+    <string name="empty_account">没有授权账号</string>
+    <string name="empty_search_users">没有搜索到相关用户信息</string>
+    <string name="empty_search_topics">没有搜索到相关微博信息</string>
+
+    <!-- AisenUtil -->
+    <string name="msg_now">刚刚</string>
+    <string name="msg_today">今天</string>
+    <string name="msg_yesterday">昨天</string>
+    <string name="msg_few_minutes_ago">分钟前</string>
+    <string name="msg_male">男</string>
+    <string name="msg_female">女</string>
+    <string name="msg_gender_unknow">未知</string>
+    <string name="msg_ten_thousand">万</string>
+    <string name="msg_url_copyed">链接已复制</string>
+    <string name="msg_text_copyed">内容已复制</string>
+    <string name="msg_image_copyed">图片链接已复制</string>
+    <string name="msg_del_cmt_remind">确定删除评论吗？</string>
+    <string name="msg_del_status_remind">确定删除微博吗？</string>
+    <string name="msg_shield_remind">是否屏蔽当前微博，以及后续对其转发而引起的@提到你的微博？</string>
+    <string name="msg_shield_success">屏蔽成功</string>
+    <string name="msg_shield_faild">屏蔽失败</string>
+
+    <!-- 发布 -->
+    <string name="publish_please_login">请登录后再分享</string>
+    <string name="publish_share_def">分享心得</string>
+    <string name="publish_status_none">该微博已删除</string>
+    <string name="publish_cmt_to_user">同时评论给作者</string>
+    <string name="publish_repost_to_me">同时转发到我的微博</string>
+    <string name="publish_also_repost">转发微博</string>
+    <string name="publish_mention">添加好友</string>
+    <string name="publish_recent">最近记录</string>
+    <string name="publish_all">全部好友</string>
+    <string name="publish_mention_hint">名称或者备注</string>
+    <string name="publish_pic_none">图片不存在，或者已删除</string>
+    <string name="error_length_too_long">字数超过限制，请删除%d个字后再发布</string>
+    <string name="publish_draft_title">是否保存到草稿？</string>
+    <string name="publish_rotate_remind">部分手机相机拍摄照片分享时，照片默认是横向的，你可以在设置界面设置照片旋转90度解决这个问题</string>
+    <string name="publish_share_pic">分享图片 </string>
+    <string name="publish_get_recent_pic_faild">获取拍摄照片失败</string>
+    <string name="publish_recent_pic_none">最近没有拍摄照片</string>
+    <string name="publish_local_datas">本地记录</string>
+    <string name="publish_service_datas">网络搜索</string>
+    <string name="publish_cmt_def">写评论</string>
+    <string name="title_reply_cmt">回复评论</string>
+    <string name="title_cmt_status">评论微博</string>
+    <string name="title_feedback">意见反馈</string>
+    <string name="title_recommend">推荐给好友</string>
+    <string name="title_share">分享</string>
+    <string name="title_new_status">新微博</string>
+    <string name="title_status_def">分享新鲜事</string>
+    <string name="publish_all_visiable">所有人可见</string>
+    <string name="publish_miyou_visiable">密友可见</string>
+    <string name="publish_group_visiable">分组可见：%s</string>
+    <string name="publish_group_visiable_menu">分组可见</string>
+    <string name="publish_set_timing">定时发布</string>
+    <string name="publish_cancel_timing">取消定时</string>
+    <string name="publish_today">今天</string>
+    <string name="publish_date_format_hm">HH时mm分</string>
+    <string name="publish_date_format_md">MM月dd日</string>
+    <string name="publish_timing_set_title">设置定时</string>
+    <string name="error_timing">发布日期不能早于当前时间</string>
+    <string name="title_repost">转发</string>
+    <string name="publish_clip_empty">剪切板没有内容</string>
+    <string name="publish_clip_faild">剪切板内容不是图片链接</string>
+    <string name="dm_pic_notexist">图片不存在</string>
+
+    <string-array name="timeline_menus">
+        <item>原微博</item>
+        <item>复制</item>
+        <item>转发</item>
+        <item>评论</item>
+        <item>收藏</item>
+        <item>取消收藏</item>
+        <item>删除</item>
+        <item>屏蔽</item>
+        <item>围观</item>
+    </string-array>
 </resources>

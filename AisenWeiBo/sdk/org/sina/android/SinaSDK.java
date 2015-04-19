@@ -12,7 +12,7 @@ import android.webkit.WebView;
 import com.alibaba.fastjson.JSON;
 import com.m.common.context.GlobalContext;
 import com.m.common.utils.Consts;
-import com.m.network.biz.ABaseBizlogic;
+import com.m.network.biz.ABizLogic;
 import com.m.network.http.HttpConfig;
 import com.m.network.http.IHttpUtility;
 import com.m.network.http.Params;
@@ -58,7 +58,7 @@ import java.util.Map;
  * @author wangdan
  * 
  */
-public class SinaSDK extends ABaseBizlogic {
+public class SinaSDK extends ABizLogic {
 
 	private Token token;
 

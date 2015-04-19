@@ -1,6 +1,7 @@
 package org.aisen.weibo.sina.ui.activity.basic;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import org.aisen.weibo.sina.support.bean.MenuBean;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.ui.fragment.basic.MenuFragment;
 import org.aisen.weibo.sina.ui.fragment.basic.MenuGenerator;
+import org.aisen.weibo.sina.ui.fragment.timeline.TimelineTabsFragment;
 
 /**
  * Created by wangdan on 15/4/12.
@@ -40,6 +42,10 @@ public class MainActivity extends BaseActivity {
         intent.setAction(ACTION_LOGIN);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         GlobalContext.getInstance().startActivity(intent);
+    }
+
+    public static Fragment getContentFragment(MainActivity activity) {
+        return activity.getFragmentManager().findFragmentByTag("MainFragment");
     }
 
     @ViewInject(id = R.id.drawer)
@@ -180,7 +186,7 @@ public class MainActivity extends BaseActivity {
         switch (type) {
         // 微博首页
         case 1:
-//            fragment = TimelineStripTabsProxy.newInstance();
+            fragment = TimelineTabsFragment.newInstance();
             break;
         }
 

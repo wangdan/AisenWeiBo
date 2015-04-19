@@ -11,6 +11,7 @@ import com.m.network.task.TaskException;
 import com.m.network.task.WorkTask;
 
 import org.aisen.weibo.sina.support.bean.PublishBean;
+import org.aisen.weibo.sina.support.db.EmotionsDB;
 import org.aisen.weibo.sina.support.db.PublishDB;
 import org.aisen.weibo.sina.sys.receiver.TimingBroadcastReceiver;
 import org.aisen.weibo.sina.sys.receiver.TimingIntent;
@@ -30,6 +31,13 @@ public class MyApplication extends GlobalContext {
 		BitmapLoader.newInstance(this, getImagePath());
         // 配置异常处理类
         TaskException.config(new SinaErrorMsgUtil());
+        // 检查表情
+        try {
+            EmotionsDB.checkEmotions();
+        } catch (Exception e) {
+        }
+        // 打开Debug日志
+        Logger.DEBUG = true;
 	}
 
     // 刷新定时发布任务

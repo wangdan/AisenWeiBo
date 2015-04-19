@@ -7,7 +7,7 @@ import com.m.common.setting.Setting;
 import com.m.common.utils.FileUtils;
 import com.m.common.utils.Logger;
 import com.m.common.utils.SystemUtils;
-import com.m.network.biz.ABaseBizlogic;
+import com.m.network.biz.ABizLogic;
 import com.m.network.http.HttpConfig;
 import com.m.network.http.IHttpUtility;
 import com.m.network.http.Params;
@@ -104,7 +104,7 @@ public class HttpsUtility implements IHttpUtility {
 			url += ParamsUtil.encodeToURLParams(params);
 		}
 
-		Logger.i(ABaseBizlogic.TAG, String.format("url ---> %s", url));
+		Logger.i(ABizLogic.TAG, String.format("url ---> %s", url));
 
 		HttpGet httpGet = null;
 		URL uRL = null;
@@ -130,7 +130,7 @@ public class HttpsUtility implements IHttpUtility {
 
 		String url = config.baseUrl + action.getValue();
 
-		Logger.i(ABaseBizlogic.TAG, String.format("url ---> %s", url));
+		Logger.i(ABizLogic.TAG, String.format("url ---> %s", url));
 
 		HttpPost httpPost = new HttpPost(url);
 
@@ -144,7 +144,7 @@ public class HttpsUtility implements IHttpUtility {
 		else if (params != null && params.size() != 0) {
 			postStringEntity = encodeNetParamsByContentType(params, config.contentType);
 		}
-		Logger.d(ABaseBizlogic.TAG, String.format("post entity --->%s", postStringEntity));
+		Logger.d(ABizLogic.TAG, String.format("post entity --->%s", postStringEntity));
 		
 		ByteArrayEntity entity;
 		try {
@@ -296,7 +296,7 @@ public class HttpsUtility implements IHttpUtility {
 			HttpResponse httpResponse = client.execute(request);
 			String responseStr = readResponse(httpResponse);
 			
-			Logger.v(ABaseBizlogic.TAG, String.format("upload file's response body = %s", responseStr));
+			Logger.v(ABizLogic.TAG, String.format("upload file's response body = %s", responseStr));
 			T result = null;
 			try {
 				result = JSON.parseObject(responseStr, responseClazz);
@@ -346,7 +346,7 @@ public class HttpsUtility implements IHttpUtility {
 
 			String responseStr = readResponse(httpResponse);
 			
-			Logger.w(ABaseBizlogic.TAG, String.format("%sKb", String.valueOf(responseStr.length() * 1.0f / 1024)));
+			Logger.w(ABizLogic.TAG, String.format("%sKb", String.valueOf(responseStr.length() * 1.0f / 1024)));
 			
 			if (httpResponse.getStatusLine().getStatusCode() / 100 == 2) {
 				T result = null;
@@ -421,7 +421,7 @@ public class HttpsUtility implements IHttpUtility {
 
 		content.close();
 		
-		Logger.v(ABaseBizlogic.TAG, result);
+		Logger.v(ABizLogic.TAG, result);
 		return result;
 	}
 

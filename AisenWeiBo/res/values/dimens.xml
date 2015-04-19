@@ -10,5 +10,22 @@
     <!-- 右侧图片大小 -->
     <dimen name="righticon_size">22dip</dimen>
     <dimen name="righticon_padding">16dip</dimen>
-
+    <!-- TimelinePicsGap -->
+    <dimen name="gap_pics">4sp</dimen>
+    <!--标签的大小-->
+    <dimen name="emotion_size">18dip</dimen>
+    <dimen name="publish_emotion_size">22dip</dimen>
+    <!-- timeline padding -->
+    <dimen name="item_padding">10dip</dimen>
+    <dimen name="item_margin">5dip</dimen>
+    <!--字体大小-->
+    <dimen name="sp_12">12sp</dimen>
+    <dimen name="sp_13">13sp</dimen>
+    <dimen name="sp_14">14sp</dimen>
+    <dimen name="sp_15">15sp</dimen>
+    <dimen name="sp_16">16sp</dimen>
+    <dimen name="sp_17">17sp</dimen>
+    <dimen name="sp_18">18sp</dimen>
+    <dimen name="sp_19">19sp</dimen>
+    <dimen name="sp_20">20sp</dimen>
 </resources>

@@ -13,7 +13,8 @@
 
             <FrameLayout
                 android:id="@+id/content_frame" android:layout_width="match_parent"
-                android:layout_height="match_parent" android:background="?attr/theme_background"/>
+                android:layout_height="match_parent" android:background="?attr/theme_background"
+                android:layout_marginTop="@dimen/abc_action_bar_default_height_material"/>
 
             <com.melnykov.fab.FloatingActionButton
                 android:id="@+id/fab"

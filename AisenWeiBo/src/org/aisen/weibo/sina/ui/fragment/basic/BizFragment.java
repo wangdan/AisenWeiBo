@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.view.View;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.m.component.bitmaploader.core.LruMemoryCache;
@@ -21,6 +22,7 @@ import org.aisen.weibo.sina.support.db.LikeDB;
 import org.aisen.weibo.sina.support.db.SinaDB;
 import org.aisen.weibo.sina.support.sdk.BizLogic;
 import org.sina.android.bean.StatusContent;
+import org.sina.android.bean.WeiBoUser;
 
 import java.util.List;
 
@@ -209,6 +211,34 @@ public class BizFragment extends ABaseFragment {
                 showMessage("登录成功");
             }
         }
+    }
+
+    View.OnClickListener PreviousArrOnClickListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            Object[] tag = (Object[]) v.getTag();
+            StatusContent bean = (StatusContent) tag[0];
+            int selectedIndex = Integer.parseInt(tag[1].toString());
+
+//            PicsActivity.launch(getActivity(), bean, selectedIndex);
+        }
+    };
+
+    public void previousPics(View view, StatusContent bean, int selectedIndex) {
+        Object[] tag = new Object[] { bean, selectedIndex };
+        view.setTag(tag);
+        view.setOnClickListener(PreviousArrOnClickListener);
+    }
+
+    public void userShow(View view, WeiBoUser user) {
+    }
+
+    public enum RemindType {
+        follower, cmt, mention_status, mention_cmt
+    }
+    public void remindSetCount(final RemindType remindType) {
+
     }
 
 }
