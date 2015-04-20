@@ -90,7 +90,7 @@ public class TimelineDefaultFragment extends ATimelineFragment implements AStrip
 				e.printStackTrace();
 
 				if (e.getCause() instanceof TaskException)
-					throw new TaskException(e.getCause().getMessage());
+					throw ((TaskException) e.getCause());
 				if (e instanceof TaskException)
 					throw (TaskException) e;
 				

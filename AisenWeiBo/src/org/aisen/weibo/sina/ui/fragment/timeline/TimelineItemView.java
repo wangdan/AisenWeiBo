@@ -103,14 +103,6 @@ public class TimelineItemView extends ABaseAdapter.AbstractItemView<StatusConten
 
     @ViewInject(id = R.id.layRe)
     View layRe;
-    @ViewInject(id = R.id.imgRePhoto)
-    ImageView imgRePhoto;
-    @ViewInject(id = R.id.txtReName)
-    TextView txtReName;
-    @ViewInject(id = R.id.imgReVerified)
-    ImageView imgReVerified;
-    @ViewInject(id = R.id.txtReDesc)
-    TextView txtReDesc;
 
     @ViewInject(id = R.id.txtReContent)
     AisenTextView txtReContent;
@@ -224,19 +216,22 @@ public class TimelineItemView extends ABaseAdapter.AbstractItemView<StatusConten
             WeiBoUser reUser = reContent.getUser();
 
             // reUserInfo
-            setUserInfo(reUser, txtReName, imgRePhoto, imgReVerified);
+//            setUserInfo(reUser, txtReName, imgRePhoto, imgReVerified);
 
             // re desc
-            from = "";
-            createAt = "";
-            if (!TextUtils.isEmpty(reContent.getCreated_at()))
-                createAt = AisenUtils.convDate(reContent.getCreated_at());
-            if (!TextUtils.isEmpty(reContent.getSource()))
-                from = String.format("%s", Html.fromHtml(reContent.getSource()));
-            desc = String.format("%s %s", createAt, from);
-            txtReDesc.setText(desc);
+//            from = "";
+//            createAt = "";
+//            if (!TextUtils.isEmpty(reContent.getCreated_at()))
+//                createAt = AisenUtils.convDate(reContent.getCreated_at());
+//            if (!TextUtils.isEmpty(reContent.getSource()))
+//                from = String.format("%s", Html.fromHtml(reContent.getSource()));
+//            desc = String.format("%s %s", createAt, from);
+//            txtReDesc.setText(desc);
 
-            txtReContent.setContent(reContent.getText());
+            String reUserName = "";
+            if (reUser != null && !TextUtils.isEmpty(reUser.getScreen_name()))
+                reUserName = String.format("@%s :", reUser.getScreen_name());
+            txtReContent.setContent(reUserName + reContent.getText());
             // 正文
             setTextSize(txtReContent, textSize);
         }

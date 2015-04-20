@@ -37,6 +37,8 @@ public class MainActivity extends BaseActivity {
     private static final String ACTION_NOTIFICATION_MS = "org.aisen.sina.weibo.ACTION_NOTIFICATION_MS";
     private static final String ACTION_NOTIFICATION_MC = "org.aisen.sina.weibo.ACTION_NOTIFICATION_MC";
 
+    public static final String FRAGMENT_TAG = "MainFragment";
+
     public static void login() {
         Intent intent = new Intent(GlobalContext.getInstance(), MainActivity.class);
         intent.setAction(ACTION_LOGIN);
@@ -200,7 +202,7 @@ public class MainActivity extends BaseActivity {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
 //		ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out,
 //									android.R.animator.fade_in, android.R.animator.fade_out);
-        ft.replace(R.id.content_frame, fragment, "MainFragment").commit();
+        ft.replace(R.id.content_frame, fragment, FRAGMENT_TAG).commit();
 
         lastSelectedMenu = menu;
         menuFragment.setSelectedMenu(menu);

@@ -9,13 +9,15 @@
 
         <item name="flat_text">@drawable/md_btn_selector</item>
 
-        <item name="theme_background">@color/comm_white</item>
+        <item name="theme_background">#dcdee3</item>
         <item name="fits_windows">false</item>
 
         <item name="text_title">@color/text_100</item>
         <item name="text_subhead">@color/text_54</item>
         <item name="text_body">@color/text_80</item>
-        <item name="lay_divider">@color/divider</item>
+
+        <item name="divider_timeline_item">@color/divider</item>
+        <item name="bg_timline_item">@drawable/timeline_publish_single_normal</item>
     </style>
 
     <style name="AppBaseTheme" parent="BaseTheme.Light">

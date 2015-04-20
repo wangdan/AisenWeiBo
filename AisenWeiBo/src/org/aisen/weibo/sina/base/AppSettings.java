@@ -201,7 +201,7 @@ public class AppSettings {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
         int index = Integer.parseInt(prefs.getString("pTimelineCount", "3"));
 
-        int count = 50;
+        int count = countArr[0];
         if (index == 3) {
             if (SystemUtils.getNetworkType() == SystemUtils.NetWorkType.wifi)
                 count = 100;

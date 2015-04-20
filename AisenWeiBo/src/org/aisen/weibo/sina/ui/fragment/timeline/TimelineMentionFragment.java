@@ -36,8 +36,6 @@ public class TimelineMentionFragment extends ATimelineFragment {
     @Override
     protected void config(com.m.ui.fragment.ARefreshFragment.RefreshConfig config) {
         super.config(config);
-
-        config.savePosition = false;
     }
 
     @Override
@@ -109,14 +107,6 @@ public class TimelineMentionFragment extends ATimelineFragment {
                 }, 20);
         }
 
-    }
-
-    @Override
-    public String getLastReadKey() {
-        if (AppContext.isLogedin())
-            return String.format("MentionTimeline-%s", AppContext.getUser().getIdstr());
-
-        return super.getLastReadKey();
     }
 
 }

@@ -13,8 +13,8 @@
 
             <FrameLayout
                 android:id="@+id/content_frame" android:layout_width="match_parent"
-                android:layout_height="match_parent" android:background="?attr/theme_background"
-                android:layout_marginTop="@dimen/abc_action_bar_default_height_material"/>
+                android:layout_height="match_parent" android:layout_marginTop="@dimen/abc_action_bar_default_height_material"
+                android:background="?attr/theme_background"/>
 
             <com.melnykov.fab.FloatingActionButton
                 android:id="@+id/fab"
@@ -44,12 +44,11 @@
             android:orientation="vertical"/>
         <!--android:paddingTop="@dimen/abc_action_bar_default_height_material"-->
 
-        <LinearLayout
-            android:id="@+id/groups_frame" android:layout_width="match_parent"
-            android:layout_height="match_parent" android:layout_gravity="end"
-            android:layout_marginRight="10dip"
-            android:orientation="vertical"/>
-        <!--android:layout_marginTop="@dimen/abc_action_bar_default_height_material"-->
+        <!--<LinearLayout-->
+        <!--android:id="@+id/groups_frame" android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent" android:layout_gravity="end"-->
+        <!--android:layout_marginRight="10dip"-->
+        <!--android:orientation="vertical"/>-->
     </android.support.v4.widget.DrawerLayout>
 
 

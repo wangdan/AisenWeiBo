@@ -5,7 +5,7 @@
                 android:paddingBottom="4dip" android:paddingLeft="8dip" android:paddingRight="8dip" android:paddingTop="4dip">
 
     <LinearLayout
-        android:layout_width="match_parent" android:layout_height="match_parent" android:background="?attr/selectableItemBackground" android:clipChildren="false"
+        android:layout_width="match_parent" android:layout_height="match_parent" android:background="?attr/bg_timline_item" android:clipChildren="false"
         android:clipToPadding="false"
         android:orientation="vertical" android:paddingLeft="@dimen/item_padding" android:paddingRight="@dimen/item_padding"
         android:paddingTop="@dimen/item_padding">
@@ -35,45 +35,25 @@
             <org.aisen.weibo.sina.ui.widget.AisenTextView
                 android:id="@+id/txtContent" style="@style/TextBody" android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:layout_below="@id/imgPhoto" android:layout_marginBottom="4dip" android:layout_marginTop="10dip"
-                android:lineSpacingExtra="4dip"
+                android:lineSpacingExtra="2dip"
                 android:text="哈哈，我今天发了条微博"/>
 
             <!--android:background="@drawable/timeline_profile_question_single_normal"-->
             <RelativeLayout
                 android:id="@+id/layRe" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_below="@id/txtContent"
                 android:layout_marginLeft="-10dip" android:layout_marginRight="-10dip"
-                android:orientation="vertical" android:paddingBottom="8dip" android:paddingLeft="10dip"
+                android:orientation="vertical" android:paddingBottom="4dip" android:paddingLeft="10dip"
                 android:paddingRight="10dip">
 
                 <View
                     android:id="@+id/layReDivider"
                     android:layout_width="match_parent" android:layout_height="1.5dip" android:layout_marginBottom="8dip"
-                    />
+                    android:background="?attr/divider_timeline_item"/>
 
-                <com.m.ui.widget.CircleImageView
-                    android:id="@+id/imgRePhoto" android:layout_width="40dip" android:layout_height="40dip" android:layout_below="@id/layReDivider"
-                    android:layout_marginRight="12dip" android:src="@drawable/ic_launcher"/>
-
-                <TextView
-                    android:id="@+id/txtReName" style="@style/TextTitle" android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:layout_below="@id/layReDivider" android:layout_marginBottom="4dip" android:layout_toRightOf="@id/imgRePhoto"
-                    android:drawablePadding="4dip"
-                    android:textSize="14sp"/>
-
-                <ImageView
-                    android:id="@+id/imgReVerified" android:layout_width="17dip" android:layout_height="17dip" android:layout_below="@id/layReDivider" android:layout_marginLeft="4dip"
-                    android:layout_marginRight="@dimen/comm_h_gap" android:layout_toRightOf="@id/txtReName" android:visibility="gone"/>
-
-                <TextView
-                    android:id="@+id/txtReDesc" style="@style/TextSubhead" android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:layout_below="@id/txtReName" android:layout_toRightOf="@id/imgRePhoto"
-                    android:text="来自Aisen 2015-01-26" android:textSize="12sp"/>
-
-                <!--org.aisen.weibo.sina.ui.widget.AisenTextView-->
                 <org.aisen.weibo.sina.ui.widget.AisenTextView
                     android:id="@+id/txtReContent"
                     style="@style/TextBody" android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:layout_below="@id/imgRePhoto" android:layout_marginTop="10dip" android:lineSpacingExtra="4dip"
+                    android:layout_height="wrap_content" android:layout_below="@id/layReDivider" android:lineSpacingExtra="2dip"
                     android:text="哈哈，我发了条微博被baby转发了，教主吃屎！"/>
 
             </RelativeLayout>
@@ -123,15 +103,15 @@
         </org.aisen.weibo.sina.ui.widget.TimelinePicsView>
 
         <TextView
-            android:id="@+id/txtPics" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="24sp"/>
+            android:id="@+id/txtPics" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="?attr/text_body" android:textSize="24sp"/>
 
         <TextView
             android:id="@+id/txtVisiable" style="@style/TextSubhead" android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:visibility="gone"/>
+            android:layout_height="wrap_content" android:textColor="?attr/text_subhead" android:visibility="gone"/>
 
         <RelativeLayout
-            android:layout_width="match_parent" android:layout_height="40dip" android:clipChildren="false"
-            android:clipToPadding="false" android:gravity="center_vertical" android:orientation="horizontal" android:paddingTop="10dip">
+            android:layout_width="match_parent" android:layout_height="35dip" android:clipChildren="false"
+            android:clipToPadding="false" android:gravity="center_vertical" android:orientation="horizontal" >
 
             <LinearLayout
                 android:id="@+id/btnLike"
@@ -192,7 +172,5 @@
     <ImageView
         android:id="@+id/btnMenus" android:layout_width="40dip" android:layout_height="40dip" android:layout_alignParentRight="true"
         android:paddingBottom="8dip" android:src="@drawable/selector_card_menu"/>
-
-    <!-- <View android:layout_width="match_parent" android:layout_height="1dip" android:background="#ffe5e5e5" /> -->
 
 </RelativeLayout>

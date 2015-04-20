@@ -125,6 +125,10 @@
     <string name="draw_weibo_offline_read">离线阅读</string>
     <string name="draw_my_liked">我赞过的</string>
 
+    <!--no more-->
+    <string name="disable_status">没有更多微博了</string>
+    <!--Loading-->
+    <string name="loading_status">正在加载%d条微博</string>
     <!-- Empty -->
     <string name="empty_status">没有微博</string>
     <string name="empty_cmts">没有评论</string>

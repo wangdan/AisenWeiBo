@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
@@ -16,7 +15,6 @@ import com.m.component.container.FragmentContainerActivity;
 import com.m.network.task.TaskException;
 import com.m.support.adapter.ABaseAdapter.AbstractItemView;
 import com.m.support.paging.IPaging;
-import com.m.ui.fragment.ABaseFragment;
 import com.m.ui.fragment.ARefreshFragment;
 import com.m.ui.fragment.AStripTabsFragment;
 
@@ -52,6 +50,8 @@ public abstract class ATimelineFragment extends AWeiboRefreshListFragment<Status
 	
 	@Override
 	public void onCreate(Bundle savedInstanceSate) {
+        loggedIn = AppContext.getUser();
+
 		mGroupBean = savedInstanceSate == null ? (TimelineGroupBean) getArguments().getSerializable("bean")
 				   : (TimelineGroupBean) savedInstanceSate.getSerializable("bean");
 		
@@ -62,7 +62,7 @@ public abstract class ATimelineFragment extends AWeiboRefreshListFragment<Status
 	protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
 		super.layoutInit(inflater, savedInstanceSate);
 		
-		loggedIn = AppContext.getUser();
+        getRefreshView().setOnItemLongClickListener(this);
 
 		setHasOptionsMenu(true);
 	}
@@ -70,12 +70,24 @@ public abstract class ATimelineFragment extends AWeiboRefreshListFragment<Status
 	@Override
 	protected void config(ARefreshFragment.RefreshConfig config) {
 		super.config(config);
-		
-		config.savePosition = true;
+
+        if (getGroup() != null)
+            config.saveLastPositionKey = AisenUtils.getUserKey(getGroup().getType(), loggedIn);
 		config.emptyLabel = getString(R.string.empty_status);
+        config.animEnable = false;
 	}
 
-	@Override
+    @Override
+    protected String loadingLabel() {
+        return String.format(getString(R.string.loading_status), AppSettings.getTimelineCount());
+    }
+
+    @Override
+    protected String loadDisabledLabel() {
+        return getString(R.string.disable_status);
+    }
+
+    @Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 
@@ -116,7 +128,7 @@ public abstract class ATimelineFragment extends AWeiboRefreshListFragment<Status
 	}
 
 	static final int[] imageResArr = new int[] { R.id.img01, R.id.img02, R.id.img03, R.id.img04, R.id.img05, R.id.img06, R.id.img07, R.id.img08,
-			R.id.img09, R.id.imgPhoto, R.id.imgRePhoto };
+			R.id.img09, R.id.imgPhoto };
 
 	@Override
 	protected int[] recyleImageViewRes() {
@@ -163,6 +175,7 @@ public abstract class ATimelineFragment extends AWeiboRefreshListFragment<Status
         else if (getActivity() instanceof FragmentContainerActivity) {
             aFragment = getActivity().getFragmentManager().findFragmentByTag(FragmentContainerActivity.FRAGMENT_TAG);
         }
+
 		if (aFragment instanceof AStripTabsFragment) {
             AStripTabsFragment fragment = (AStripTabsFragment) aFragment;
             return fragment.getCurrentFragment();
@@ -178,14 +191,6 @@ public abstract class ATimelineFragment extends AWeiboRefreshListFragment<Status
 			picsView.release();
 
 		return super.releaseView(view);
-	}
-
-	@Override
-	public String getLastReadKey() {
-		if (getGroup() != null)
-			return AisenUtils.getUserKey(getGroup().getType(), loggedIn);
-
-		return null;
 	}
 
 	@Override
@@ -211,31 +216,22 @@ public abstract class ATimelineFragment extends AWeiboRefreshListFragment<Status
 
     @Override
 	public boolean onToolbarDoubleClick() {
-        // 首页
-        ABaseFragment aFragment = null;
-        if (getActivity() instanceof MainActivity) {
-            aFragment = (ABaseFragment) getActivity().getFragmentManager().findFragmentByTag("MainFragment");
-        }
-        // 其他页面
-        else if (getActivity() instanceof FragmentContainerActivity) {
-            aFragment = (ABaseFragment) getActivity().getFragmentManager().findFragmentByTag(FragmentContainerActivity.FRAGMENT_TAG);
-        }
-		if (aFragment instanceof AStripTabsFragment) {
-            AStripTabsFragment tabTitlePagerFragment = (AStripTabsFragment) aFragment;
-			if (tabTitlePagerFragment.getCurrentFragment() == this)
-				return super.onToolbarDoubleClick();
-			else 
-				return false;
-		}
-
-//		if (getActivity() instanceof AViewpagerActivity) {
+        //		if (getActivity() instanceof AViewpagerActivity) {
 //			AViewpagerActivity activity = (AViewpagerActivity) getActivity();
 //			if (activity.getCurrentFragment() == this)
 //				return super.onToolbarDoubleClick();
 //			else
 //				return false;
 //		}
-			
+        Fragment aFragment = getPagerCurrentFragment();
+        if (aFragment == this) {
+            ListView listView = (ListView) getRefreshView();
+            listView.setSelectionFromTop(0, 0);
+            requestDataDelay(200);
+
+            return true;
+        }
+
 		return super.onToolbarDoubleClick();
 	}
 
@@ -259,7 +255,8 @@ public abstract class ATimelineFragment extends AWeiboRefreshListFragment<Status
         protected void onFailure(TaskException exception) {
             super.onFailure(exception);
 
-            showMessage(exception.getMessage());
+            if (!isContentEmpty())
+                showMessage(exception.getMessage());
         }
 
         @Override

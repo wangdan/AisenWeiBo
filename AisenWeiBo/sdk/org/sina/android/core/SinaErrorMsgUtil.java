@@ -2,7 +2,6 @@ package org.sina.android.core;
 
 import android.text.TextUtils;
 
-import com.m.common.context.GlobalContext;
 import com.m.common.utils.Logger;
 import com.m.network.task.IExceptionDeclare;
 import com.m.network.task.TaskException;
@@ -81,8 +80,6 @@ public class SinaErrorMsgUtil implements IExceptionDeclare {
 
         if (errorMap.containsKey(code))
             msg = errorMap.get(code);
-        if (TextUtils.isEmpty(msg))
-            msg = GlobalContext.getInstance().getResources().getString(com.m.R.string.comm_error_timeout);
 
         return msg;
     }
