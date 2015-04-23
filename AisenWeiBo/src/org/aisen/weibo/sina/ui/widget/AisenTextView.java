@@ -245,8 +245,7 @@ public class AisenTextView extends TextView {
 	
 	private OnTouchListener onTouchListener = new OnTouchListener() {
 
-		ClickableTextViewMentionLinkOnTouchListener listener =
-                new ClickableTextViewMentionLinkOnTouchListener(Utils.resolveColor(getContext(), R.attr.colorPrimary, Color.BLUE));
+		ClickableTextViewMentionLinkOnTouchListener listener = new ClickableTextViewMentionLinkOnTouchListener();
 
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {

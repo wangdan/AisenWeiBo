@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -83,9 +84,7 @@ public class MenuFragment extends AListFragment<MenuBean, ArrayList<MenuBean>> {
     }
 
     @Override
-    protected void config(RefreshConfig config) {
-        super.config(config);
-
+    public void setInitRefreshView(AbsListView refreshView) {
         profileHeader = View.inflate(getActivity(), R.layout.as_lay_leftmenu, null);
 
         View btnAccounts = profileHeader.findViewById(R.id.btnAccount);

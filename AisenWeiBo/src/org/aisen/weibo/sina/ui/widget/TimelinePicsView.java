@@ -26,7 +26,7 @@ import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.support.bean.PicSize;
 import org.aisen.weibo.sina.support.compress.TimelineThumbBitmapCompress;
 import org.aisen.weibo.sina.ui.fragment.basic.BizFragment;
-import org.aisen.weibo.sina.ui.fragment.cmt.TimelineCmtsFragment;
+import org.aisen.weibo.sina.ui.fragment.comment.TimelineCommentFragment;
 import org.aisen.weibo.sina.ui.fragment.profile.PhotosFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineRepostFragment;
 import org.sina.android.bean.PicUrls;
@@ -823,7 +823,7 @@ public class TimelinePicsView extends ViewGroup implements BitmapOwner {
         if (ownerFragment == null)
             return large;
 
-        return large && (ownerFragment instanceof TimelineCmtsFragment ||
+        return large && (ownerFragment instanceof TimelineCommentFragment ||
                 ownerFragment instanceof TimelineRepostFragment);
     }
 

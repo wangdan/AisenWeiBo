@@ -3,13 +3,13 @@ package org.aisen.weibo.sina.ui.fragment.timeline;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 
+import com.m.ui.fragment.AAutoReleaseStripTabsFragment;
 import com.m.ui.fragment.ABaseFragment;
 import com.m.ui.fragment.AStripTabsFragment;
 
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
-import org.aisen.weibo.sina.support.bean.TimelineGroupBean;
-import org.aisen.weibo.sina.support.utils.BaiduAnalyzeUtils;
+import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.sina.android.bean.Group;
 import org.sina.android.bean.Groups;
 import org.sina.android.bean.WeiBoUser;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
  *
  * Created by wangdan on 15/4/14.
  */
-public class TimelineTabsFragment extends AStripTabsFragment<TimelineGroupBean> {
+public class TimelineTabsFragment extends AAutoReleaseStripTabsFragment<AStripTabsFragment.StripTabItem> {
 
     public static ABaseFragment newInstance() {
         return new TimelineTabsFragment();
@@ -35,7 +35,7 @@ public class TimelineTabsFragment extends AStripTabsFragment<TimelineGroupBean> 
 
         // 2014-8-30 解决因为状态保存而导致的耗时阻塞
         if (savedInstanceSate != null) {
-            ArrayList<TimelineGroupBean> mChanneList = generateTabs();
+            ArrayList<AStripTabsFragment.StripTabItem> mChanneList = generateTabs();
             for (int i = 0; i < mChanneList.size(); i++) {
                 ABaseFragment fragment = (ABaseFragment) getActivity().getFragmentManager()
                         .findFragmentByTag(makeFragmentName(i));
@@ -50,13 +50,18 @@ public class TimelineTabsFragment extends AStripTabsFragment<TimelineGroupBean> 
     }
 
     @Override
+    protected String configLastPositionKey() {
+        return AisenUtils.getUserKey("Timeline", loggedIn);
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
 //		super.onSaveInstanceState(outState);
     }
 
     @Override
-    protected ArrayList<TimelineGroupBean> generateTabs() {
-        ArrayList<TimelineGroupBean> groupList = new ArrayList<TimelineGroupBean>();
+    protected ArrayList<AStripTabsFragment.StripTabItem> generateTabs() {
+        ArrayList<AStripTabsFragment.StripTabItem> groupList = new ArrayList<AStripTabsFragment.StripTabItem>();
 
         // 全部好友
         groupList.add(newGroup("0", getString(R.string.timeline_all), "statusesFriendsTimeLine"));
@@ -75,26 +80,20 @@ public class TimelineTabsFragment extends AStripTabsFragment<TimelineGroupBean> 
         return groupList;
     }
 
-    public static TimelineGroupBean newGroup(String group, String title, String type) {
-        TimelineGroupBean bean = new TimelineGroupBean();
+    public static AStripTabsFragment.StripTabItem newGroup(String group, String title, String type) {
+        AStripTabsFragment.StripTabItem bean = new AStripTabsFragment.StripTabItem();
 
-        bean.setGroup(group);
+        bean.setTag(group);
         bean.setTitle(title);
         bean.setType(type);
 
         return bean;
     }
 
-    // 不同的用户，最后阅读的标签页是不同的
     @Override
-    protected String makeFragmentName(int position) {
-        return super.makeFragmentName(position) + loggedIn.getId();
-    }
-
-    @Override
-    protected ABaseFragment newFragment(TimelineGroupBean bean) {
+    protected ABaseFragment newFragment(AStripTabsFragment.StripTabItem bean) {
         // 默认分组
-        if ("0".equals(bean.getGroup()))
+        if ("0".equals(bean.getTag()))
             return TimelineDefaultFragment.newInstance(bean);
         // 好友分组
         return TimelineGroupsFragment.newInstance(bean);
@@ -105,20 +104,5 @@ public class TimelineTabsFragment extends AStripTabsFragment<TimelineGroupBean> 
 //                .replace(R.id.content_frame, newInstance(), "MainFragment")
 //                .commit();
 //    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        BaiduAnalyzeUtils.onPageStart("微博首页");
-
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        BaiduAnalyzeUtils.onPageEnd("微博首页");
-    }
 
 }

@@ -1,4 +1,4 @@
-package org.aisen.weibo.sina.ui.fragment.timeline;
+package org.aisen.weibo.sina.ui.fragment.mention;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -7,11 +7,12 @@ import android.widget.ListView;
 import com.m.network.http.Params;
 import com.m.network.task.TaskException;
 import com.m.ui.fragment.ABaseFragment;
+import com.m.ui.fragment.AStripTabsFragment;
 
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
-import org.aisen.weibo.sina.support.bean.TimelineGroupBean;
 import org.aisen.weibo.sina.ui.fragment.basic.BizFragment;
+import org.aisen.weibo.sina.ui.fragment.timeline.ATimelineFragment;
 import org.sina.android.SinaSDK;
 import org.sina.android.bean.StatusContents;
 
@@ -21,21 +22,16 @@ import org.sina.android.bean.StatusContents;
  *
  * Created by wangdan on 15/4/15.
  */
-public class TimelineMentionFragment extends ATimelineFragment {
+public class MentionTimelineFragment extends ATimelineFragment {
 
-    public static ABaseFragment newInstance(TimelineGroupBean bean) {
-        ABaseFragment fragment = new TimelineMentionFragment();
+    public static ABaseFragment newInstance(AStripTabsFragment.StripTabItem bean) {
+        ABaseFragment fragment = new MentionTimelineFragment();
 
         Bundle args = new Bundle();
         args.putSerializable("bean", bean);
         fragment.setArguments(args);
 
         return fragment;
-    }
-
-    @Override
-    protected void config(com.m.ui.fragment.ARefreshFragment.RefreshConfig config) {
-        super.config(config);
     }
 
     @Override
@@ -57,7 +53,7 @@ public class TimelineMentionFragment extends ATimelineFragment {
                 params.addParameter("since_id", previousPage);
             if (mode == RefreshMode.update && !TextUtils.isEmpty(nextPage))
                 params.addParameter("max_id", nextPage);
-            switch (Integer.parseInt(getGroup().getGroup())) {
+            switch (Integer.parseInt(getGroup().getType())) {
                 case 100:
                     params.addParameter("filter_by_author", "0");
                     break;
@@ -79,32 +75,18 @@ public class TimelineMentionFragment extends ATimelineFragment {
             super.onSuccess(result);
 
             try {
-                if (AppContext.getUnreadCount() != null && AppContext.getUnreadCount().getMention_status() > 0) {
+                if (AppContext.getUnreadCount() != null && AppContext.getUnreadCount().getMention_status() > 0
+                        && result.isCache()) {
                     requestDataDelay(AppSettings.REQUEST_DATA_DELAY);
 
                     // fuck sina
                     AppContext.getUnreadCount().setMention_status(0);
 
-                    BizFragment.getBizFragment(TimelineMentionFragment.this).remindSetCount(BizFragment.RemindType.mention_status);
+                    BizFragment.getBizFragment(MentionTimelineFragment.this).remindSetCount(BizFragment.RemindType.mention_status);
                 }
 
             } catch (Exception e) {
             }
-        }
-
-        @Override
-        protected void onFinished() {
-            super.onFinished();
-
-            if (mode != RefreshMode.update)
-                getRefreshView().postDelayed(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        ((ListView) getRefreshView()).setSelectionFromTop(0, 0);
-                    }
-
-                }, 20);
         }
 
     }

@@ -1,11 +1,11 @@
-package org.aisen.weibo.sina.ui.fragment.cmt;
+package org.aisen.weibo.sina.ui.fragment.comment;
 
 import com.m.ui.fragment.ABaseFragment;
 
 /**
  * Created by wangdan on 15/4/15.
  */
-public class TimelineCmtsFragment extends ABaseFragment {
+public class TimelineCommentFragment extends ABaseFragment {
 
     @Override
     protected int inflateContentView() {

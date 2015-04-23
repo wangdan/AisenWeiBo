@@ -8,8 +8,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -332,6 +334,29 @@ public class AisenUtils {
 
     public static void timelineMenuSelected(final ABaseFragment fragment, String selectedItem, final StatusContent status) {
 
+    }
+
+    public static String getCommentText(String text) {
+        if (TextUtils.isEmpty(text))
+            return "";
+
+        try {
+            if (text.startsWith("回覆") || text.startsWith("回复")) {
+                if (text.indexOf(":") != -1) {
+                    text = text.substring(text.indexOf(":") + 1, text.length());
+                }
+                else if (text.indexOf("：") != -1) {
+                    text = text.substring(text.indexOf("：") + 1, text.length());
+                }
+            }
+        } catch (Exception e) {
+        }
+
+        return text.trim();
+    }
+
+    public static void setTextSize(TextView textView) {
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, AppSettings.getTextSize());
     }
 
 }

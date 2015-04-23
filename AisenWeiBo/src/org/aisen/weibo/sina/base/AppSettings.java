@@ -198,10 +198,33 @@ public class AppSettings {
      * @return
      */
     public static int getTimelineCount() {
+//        if (true) return 5;
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
         int index = Integer.parseInt(prefs.getString("pTimelineCount", "3"));
 
         int count = countArr[0];
+        if (index == 3) {
+            if (SystemUtils.getNetworkType() == SystemUtils.NetWorkType.wifi)
+                count = 100;
+        }
+        else {
+            count = countArr[index];
+        }
+
+        return count;
+    }
+
+    /**
+     * 评论加载数量
+     *
+     * @return
+     */
+    public static int getCommentCount() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
+        int index = Integer.parseInt(prefs.getString("pCommentCount", "0"));
+
+        int count = 50;
         if (index == 3) {
             if (SystemUtils.getNetworkType() == SystemUtils.NetWorkType.wifi)
                 count = 100;

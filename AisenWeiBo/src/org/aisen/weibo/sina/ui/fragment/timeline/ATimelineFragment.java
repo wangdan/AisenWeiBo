@@ -21,7 +21,6 @@ import com.m.ui.fragment.AStripTabsFragment;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
-import org.aisen.weibo.sina.support.bean.TimelineGroupBean;
 import org.aisen.weibo.sina.support.paging.TimelinePagingProcessor;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.ui.activity.basic.MainActivity;
@@ -44,7 +43,9 @@ import java.util.List;
 public abstract class ATimelineFragment extends AWeiboRefreshListFragment<StatusContent, StatusContents>
 											implements OnItemLongClickListener, BizFragment.OnLikeCallback {
 
-	private TimelineGroupBean mGroupBean;
+    static final String TAG = "ARefresh-Timeline";
+
+	private AStripTabsFragment.StripTabItem mGroupBean;
 
 	private WeiBoUser loggedIn;
 	
@@ -52,8 +53,8 @@ public abstract class ATimelineFragment extends AWeiboRefreshListFragment<Status
 	public void onCreate(Bundle savedInstanceSate) {
         loggedIn = AppContext.getUser();
 
-		mGroupBean = savedInstanceSate == null ? (TimelineGroupBean) getArguments().getSerializable("bean")
-				   : (TimelineGroupBean) savedInstanceSate.getSerializable("bean");
+		mGroupBean = savedInstanceSate == null ? (AStripTabsFragment.StripTabItem) getArguments().getSerializable("bean")
+				                               : (AStripTabsFragment.StripTabItem) savedInstanceSate.getSerializable("bean");
 		
 		super.onCreate(savedInstanceSate);
 	}
@@ -66,15 +67,17 @@ public abstract class ATimelineFragment extends AWeiboRefreshListFragment<Status
 
 		setHasOptionsMenu(true);
 	}
-	
+
 	@Override
-	protected void config(ARefreshFragment.RefreshConfig config) {
-		super.config(config);
+	protected void configRefresh(ARefreshFragment.RefreshConfig config) {
+		super.configRefresh(config);
 
         if (getGroup() != null)
             config.saveLastPositionKey = AisenUtils.getUserKey(getGroup().getType(), loggedIn);
 		config.emptyLabel = getString(R.string.empty_status);
         config.animEnable = false;
+        config.ignoreScroll = false;
+        config.expiredAutoRefresh = true;
 	}
 
     @Override
@@ -123,7 +126,7 @@ public abstract class ATimelineFragment extends AWeiboRefreshListFragment<Status
 		return new TimelineItemView(this, true);
 	}
 
-	public TimelineGroupBean getGroup() {
+	public AStripTabsFragment.StripTabItem getGroup() {
 		return mGroupBean;
 	}
 
@@ -131,22 +134,8 @@ public abstract class ATimelineFragment extends AWeiboRefreshListFragment<Status
 			R.id.img09, R.id.imgPhoto };
 
 	@Override
-	protected int[] recyleImageViewRes() {
+	protected int[] configCanReleaseIds() {
 		return imageResArr;
-	}
-
-	/**
-	 * 如果当前的视图是Pager显示的视图，释放后会造成视图闪烁的情况出现
-	 */
-	@Override
-	public void onMovedToScrapHeap(View view) {
-//	    Logger.v("当前展示的是" + current + "，不释放视图");
-        Fragment fragment = getPagerCurrentFragment();
-        if (fragment == this) {
-            return;
-        }
-
-        super.onMovedToScrapHeap(view);
 	}
 
 	/**
@@ -156,8 +145,9 @@ public abstract class ATimelineFragment extends AWeiboRefreshListFragment<Status
 	public void refreshUI() {
         // 如果当前的Pager显示的不是当前的Fragment，就不刷新
         Fragment fragment = getPagerCurrentFragment();
-        if (fragment != null && fragment != this)
+        if (fragment != null && fragment != this) {
             return;
+        }
 
 		super.refreshUI();
 	}
@@ -185,12 +175,12 @@ public abstract class ATimelineFragment extends AWeiboRefreshListFragment<Status
 	}
 
 	@Override
-	protected boolean releaseView(View view) {
-		TimelinePicsView picsView = (TimelinePicsView) view.findViewById(R.id.layPicturs);
+	protected boolean releaseImageView(View container) {
+		TimelinePicsView picsView = (TimelinePicsView) container.findViewById(R.id.layPicturs);
 		if (picsView != null)
 			picsView.release();
 
-		return super.releaseView(view);
+		return super.releaseImageView(container);
 	}
 
 	@Override

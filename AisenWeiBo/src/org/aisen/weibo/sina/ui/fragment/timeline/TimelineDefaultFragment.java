@@ -11,7 +11,6 @@ import com.m.ui.fragment.AStripTabsFragment;
 
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
-import org.aisen.weibo.sina.support.bean.TimelineGroupBean;
 import org.sina.android.SinaSDK;
 import org.sina.android.bean.StatusContents;
 
@@ -26,7 +25,7 @@ import java.lang.reflect.Method;
  */
 public class TimelineDefaultFragment extends ATimelineFragment implements AStripTabsFragment.IStripTabInitData {
 
-	public static ABaseFragment newInstance(TimelineGroupBean groupBean) {
+	public static ABaseFragment newInstance(AStripTabsFragment.StripTabItem groupBean) {
 		TimelineDefaultFragment fragment = new TimelineDefaultFragment();
 		
 		Bundle args = new Bundle();

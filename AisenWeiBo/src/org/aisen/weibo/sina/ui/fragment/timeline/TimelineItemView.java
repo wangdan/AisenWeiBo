@@ -23,7 +23,8 @@ import org.aisen.weibo.sina.support.bean.LikeBean;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
 import org.aisen.weibo.sina.ui.fragment.basic.BizFragment;
-import org.aisen.weibo.sina.ui.fragment.cmt.TimelineCmtsFragment;
+import org.aisen.weibo.sina.ui.fragment.comment.TimelineCommentFragment;
+import org.aisen.weibo.sina.ui.fragment.mention.MentionTimelineFragment;
 import org.aisen.weibo.sina.ui.widget.AisenTextView;
 import org.aisen.weibo.sina.ui.widget.TimelinePicsView;
 import org.sina.android.bean.Group;
@@ -238,7 +239,7 @@ public class TimelineItemView extends ABaseAdapter.AbstractItemView<StatusConten
 
         // pictures
         StatusContent s = data.getRetweeted_status() != null ? data.getRetweeted_status() : data;
-        if (AppSettings.isPicNone() && !(fragment instanceof TimelineCmtsFragment)) {
+        if (AppSettings.isPicNone() && !(fragment instanceof TimelineCommentFragment)) {
             layPicturs.setVisibility(View.GONE);
             if (s.getPic_urls() != null && s.getPic_urls().length > 0) {
                 txtPics.setText(String.format("%dPics", s.getPic_urls().length));
@@ -342,7 +343,7 @@ public class TimelineItemView extends ABaseAdapter.AbstractItemView<StatusConten
             menuList.add(timelineMenuArr[1]);
             if (status.getUser() != null && status.getUser().getIdstr().equals(AppContext.getUser().getIdstr()))
                 menuList.add(timelineMenuArr[6]);
-            if (fragment instanceof TimelineMentionFragment)
+            if (fragment instanceof MentionTimelineFragment)
                 menuList.add(timelineMenuArr[7]);
 
             final String[] menus = new String[menuList.size()];

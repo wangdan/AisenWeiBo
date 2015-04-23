@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.m.component.bitmaploader.core.LruMemoryCache;
@@ -12,6 +14,7 @@ import com.m.component.sqlite.extra.Extra;
 import com.m.component.sqlite.utils.FieldUtils;
 import com.m.network.task.TaskException;
 import com.m.network.task.WorkTask;
+import com.m.support.textspan.ClickableTextViewMentionLinkOnTouchListener;
 import com.m.ui.fragment.ABaseFragment;
 
 import org.aisen.weibo.sina.R;
@@ -240,5 +243,22 @@ public class BizFragment extends ABaseFragment {
     public void remindSetCount(final RemindType remindType) {
 
     }
+
+    /* 设置有@用户、话题的onTouch事件 */
+    public void bindOnTouchListener(TextView textView) {
+        textView.setClickable(false);
+        textView.setOnTouchListener(onTouchListener);
+    }
+
+    private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
+
+        ClickableTextViewMentionLinkOnTouchListener listener = new ClickableTextViewMentionLinkOnTouchListener();
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            return listener.onTouch(v, event);
+
+        }
+    };
 
 }

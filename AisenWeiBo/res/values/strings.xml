@@ -7,11 +7,12 @@
 
     <!--菜单管理-->
     <string name="menu_add_account">添加账号</string>
+    <string name="menu_delete">删除</string>
 
     <!-- 标题 -->
     <string name="timeline_all">全部微博</string>
     <string name="timeline_bilateral">互相关注</string>
-    <string name="timeline_tome">发给我的</string>
+    <string name="timeline_tome">朋友圈</string>
 
     <!-- 账号管理 -->
     <string name="title_acount">账号管理</string>
@@ -129,6 +130,7 @@
     <string name="disable_status">没有更多微博了</string>
     <!--Loading-->
     <string name="loading_status">正在加载%d条微博</string>
+    <string name="loading_cmts">正在加载%d条评论</string>
     <!-- Empty -->
     <string name="empty_status">没有微博</string>
     <string name="empty_cmts">没有评论</string>
@@ -198,6 +200,15 @@
     <string name="publish_clip_faild">剪切板内容不是图片链接</string>
     <string name="dm_pic_notexist">图片不存在</string>
 
+    <!-- 提及 -->
+    <string name="mention_status">微博</string>
+    <string name="mention_cmt">评论</string>
+
+    <!-- 评论 -->
+    <string name="error_cmts">该用户不存在</string>
+    <string name="cmts_to_me">我收到的</string>
+    <string name="cmts_by_me">我发出的</string>
+
     <string-array name="timeline_menus">
         <item>原微博</item>
         <item>复制</item>
@@ -209,4 +220,11 @@
         <item>屏蔽</item>
         <item>围观</item>
     </string-array>
+
+    <string-array name="cmt_menus">
+        <item>@string/copy</item>
+        <item>@string/repost</item>
+        <item>@string/menu_delete</item>
+    </string-array>
+
 </resources>

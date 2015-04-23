@@ -25,6 +25,8 @@ import org.aisen.weibo.sina.support.bean.MenuBean;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.ui.fragment.basic.MenuFragment;
 import org.aisen.weibo.sina.ui.fragment.basic.MenuGenerator;
+import org.aisen.weibo.sina.ui.fragment.comment.CommentTabsFragment;
+import org.aisen.weibo.sina.ui.fragment.mention.MentionTabsFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineTabsFragment;
 
 /**
@@ -189,6 +191,14 @@ public class MainActivity extends BaseActivity {
         // 微博首页
         case 1:
             fragment = TimelineTabsFragment.newInstance();
+            break;
+        // 提及
+        case 2:
+            fragment = MentionTabsFragment.newInstance();
+            break;
+        // 评论
+        case 3:
+            fragment = CommentTabsFragment.newInstance();
             break;
         }
 
