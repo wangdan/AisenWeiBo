@@ -7,6 +7,7 @@ import android.widget.ListView;
 import com.m.network.http.Params;
 import com.m.network.task.TaskException;
 import com.m.ui.fragment.ABaseFragment;
+import com.m.ui.fragment.ARefreshFragment;
 import com.m.ui.fragment.AStripTabsFragment;
 
 import org.aisen.weibo.sina.base.AppContext;
@@ -32,6 +33,13 @@ public class MentionTimelineFragment extends ATimelineFragment {
         fragment.setArguments(args);
 
         return fragment;
+    }
+
+    @Override
+    protected void configRefresh(RefreshConfig config) {
+        super.configRefresh(config);
+
+        config.saveLastPositionKey = null;
     }
 
     @Override

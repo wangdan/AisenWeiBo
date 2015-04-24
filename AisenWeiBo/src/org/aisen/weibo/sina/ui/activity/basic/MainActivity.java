@@ -217,7 +217,6 @@ public class MainActivity extends BaseActivity {
         lastSelectedMenu = menu;
         menuFragment.setSelectedMenu(menu);
 
-
         return false;
     }
 

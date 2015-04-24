@@ -81,8 +81,18 @@ public class TimelineDefaultFragment extends ATimelineFragment implements AStrip
 				
 				params.addParameter("count", String.valueOf(AppSettings.getTimelineCount()));
 
+                long time = System.currentTimeMillis();
 				Method method = SinaSDK.class.getMethod(getGroup().getType(), new Class[] { Params.class });
 				StatusContents beans = (StatusContents) method.invoke(SinaSDK.getInstance(AppContext.getToken(), getTaskCacheMode(this)), params);
+
+                // 如果是缓存，延迟一点返回，防止有点点卡顿
+                if (beans.isCache() && System.currentTimeMillis() - time < 100) {
+                    try {
+                        Thread.sleep(150);
+                    } catch (Exception e) {
+
+                    }
+                }
 
 				return beans;
 			} catch (Exception e) {

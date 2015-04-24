@@ -311,4 +311,62 @@ public class AppSettings {
         return prefs.getBoolean("pLargePhoto", true);
     }
 
+    /**
+     * 如果是获取历史数据，则历史数据的时间大于这个时间，将缓存刷新
+     *
+     * @return
+     */
+    public static int getRefreshInterval() {
+        if (isDebug())
+            return 30 * 1000;
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
+        int value = Integer.parseInt(prefs.getString("pCacheValidity", "1"));
+
+        switch (value) {
+            case 0:
+                return 30 * 1000;
+            case 1:
+                return 2 * 60 * 60 * 1000;
+            case 2:
+                return 6 * 60 * 60 * 1000;
+            case 3:
+                return 12 * 60 * 60 * 1000;
+            case 4:
+                return Integer.MAX_VALUE;
+//		case 1:
+//			return 1 * 60 * 60 * 1000;
+//		case 2:
+//			return 4 * 60 * 60 * 1000;
+//		case 3:
+//			return 8 * 60 * 60 * 1000;
+            default:
+                return 1 * 60 * 60 * 1000;
+        }
+    }
+
+    /**
+     * 开发者测试模式
+     *
+     * @return
+     */
+    public static boolean isDebug() {
+        // 自动刷新时间间隔为30秒
+        // 屏幕旋转
+        // 打开音效
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
+        return prefs.getBoolean("pDebug", false);
+    }
+
+    /**
+     * 关闭缓存
+     *
+     * @return
+     */
+    public static boolean isDisableCache() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
+        return prefs.getBoolean("pDisableCache", false);
+    }
+
 }

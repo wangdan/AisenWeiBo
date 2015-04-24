@@ -9,5 +9,5 @@
     <org.aisen.weibo.sina.ui.widget.FlatButton
         android:id="@+id/layoutReload" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/comm_v_margin"
         android:gravity="center" android:paddingBottom="3.0dip" android:paddingLeft="10.0dip" android:paddingRight="10.0dip" android:paddingTop="3.0dip"
-        android:text="@string/comm_reload_hint" android:textColor="@color/comm_btn_link" android:textSize="18sp" android:textStyle="italic"/>
+        android:text="@string/comm_reload_hint" android:textColor="?attr/colorPrimary" android:textSize="18sp" android:textStyle="italic"/>
 </LinearLayout>

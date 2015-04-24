@@ -50,6 +50,11 @@ public class TimelineTabsFragment extends AAutoReleaseStripTabsFragment<AStripTa
     }
 
     @Override
+    protected int delayGenerateTabs() {
+        return 230;
+    }
+
+    @Override
     protected String configLastPositionKey() {
         return AisenUtils.getUserKey("Timeline", loggedIn);
     }

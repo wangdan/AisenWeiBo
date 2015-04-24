@@ -85,8 +85,18 @@ public class TimelineGroupsFragment extends ATimelineFragment implements AStripT
 
             boolean offline = getArguments() != null ? getArguments().getBoolean("offline") : false;
 
+            long time = System.currentTimeMillis();
 			StatusContents beans = offline ? SinaSDK.getInstance(AppContext.getToken(), getTaskCacheMode(this)).offlineFriendshipGroupsTimeline(params)
                                            : SinaSDK.getInstance(AppContext.getToken(), getTaskCacheMode(this)).friendshipGroupsTimeline(params);
+
+            // 如果是缓存，延迟一点返回，防止有点点卡顿
+            if (beans.isCache() && System.currentTimeMillis() - time < 100) {
+                try {
+                    Thread.sleep(150);
+                } catch (Exception e) {
+
+                }
+            }
 
 			return beans;
 		}
