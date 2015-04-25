@@ -329,7 +329,7 @@
 				<value>true</value>
 			</extra>
 			<extra type="cache_utility">
-				<value>org.aisen.weibo.sina.support.cache.CommentCache_v2Utility</value>
+				<value>org.aisen.weibo.sina.support.cache.CommentCacheUtility</value>
 			</extra>
 		</extras>
 	</setting>
@@ -342,7 +342,7 @@
 				<value>true</value>
 			</extra>
 			<extra type="cache_utility">
-				<value>org.aisen.weibo.sina.support.cache.CommentCache_v2Utility</value>
+				<value>org.aisen.weibo.sina.support.cache.CommentCacheUtility</value>
 			</extra>
 		</extras>
 	</setting>
@@ -355,7 +355,7 @@
 				<value>true</value>
 			</extra>
 			<extra type="cache_utility">
-				<value>org.aisen.weibo.sina.support.cache.CommentCache_v2Utility</value>
+				<value>org.aisen.weibo.sina.support.cache.CommentCacheUtility</value>
 			</extra>
 		</extras>
 	</setting>

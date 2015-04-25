@@ -209,6 +209,21 @@
     <string name="cmts_to_me">我收到的</string>
     <string name="cmts_by_me">我发出的</string>
 
+    <!-- 草稿箱 -->
+    <string name="title_draft">草稿箱</string>
+    <string name="draft_type_status">新微博</string>
+    <string name="draft_type_create_cmt">评论微博</string>
+    <string name="draft_type_reply_cmt">回复评论</string>
+    <string name="draft_type_repost_status">转发微博</string>
+    <string name="draft_timing_expired">定时发布时间已过期</string>
+    <string name="draft_timing_hint">[定时发布：%s]</string>
+    <string name="draft_del_draft_remind">请选中要删除的草稿</string>
+    <string name="draft_date_format">MM月dd日 HH时mm分</string>
+    <string name="draft_del_confirm">确定删除选中的草稿吗？</string>
+    <string name="draft_del_draft_loading">正在删除草稿</string>
+    <string name="draft_del_draft_hint">成功删除草稿</string>
+    <string name="empty_draft">没有草稿</string>
+
     <string-array name="timeline_menus">
         <item>原微博</item>
         <item>复制</item>

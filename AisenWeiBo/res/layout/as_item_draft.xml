@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/container" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginBottom="4dip" android:layout_marginLeft="8dip"
+        android:layout_marginRight="8dip" android:layout_marginTop="4dip"
+        android:background="?attr/bg_timline_item" android:minHeight="70dip"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/item_padding" android:paddingRight="@dimen/item_padding" android:paddingTop="@dimen/item_padding">
+
+        <LinearLayout
+            android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtType" style="@style/TextSubhead" android:layout_width="0dip"
+                android:layout_height="wrap_content" android:layout_marginBottom="@dimen/comm_v_gap" android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/txtTiming" style="@style/TextSubhead" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:layout_marginBottom="@dimen/comm_v_gap"/>
+        </LinearLayout>
+
+        <org.aisen.weibo.sina.ui.widget.AisenTextView
+            android:id="@+id/txtContent" style="@style/TextBody" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:ellipsize="end" android:lineSpacingExtra="4dip" android:maxLines="3"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:gravity="center_vertical" android:paddingRight="6dip">
+
+            <TextView
+                android:id="@+id/txtError" style="@style/TextSubhead" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_msg_error" android:drawablePadding="4dip"
+                android:textColor="@color/comm_red" android:visibility="gone"/>
+
+            <View
+                android:layout_width="0dip" android:layout_height="wrap_content" android:layout_weight="1"/>
+
+            <LinearLayout
+                android:id="@+id/btnDel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="@dimen/comm_h_gap"
+                android:background="?attr/selectableItemBackground" android:clickable="true" android:gravity="center">
+
+                <ImageView
+                    android:layout_width="40dip" android:layout_height="40dip" android:padding="8dip"
+                    android:src="@drawable/ic_delete_dark"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnResend" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground" android:clickable="true" android:gravity="center">
+
+                <ImageView
+                    android:layout_width="40dip" android:layout_height="40dip" android:padding="4dip"
+                    android:src="@drawable/ic_action_send_now_light"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
