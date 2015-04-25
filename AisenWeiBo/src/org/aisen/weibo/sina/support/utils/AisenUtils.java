@@ -359,4 +359,19 @@ public class AisenUtils {
         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, AppSettings.getTextSize());
     }
 
+    public static int getStrLength(String content) {
+        int length = 0;
+        int tempLength = 0;
+        for (int i = 0; i < content.length(); i++) {
+            String temp = content.charAt(i) + "";
+            if (temp.getBytes().length == 3) {
+                length++;
+            } else {
+                tempLength++;
+            }
+        }
+        length += tempLength / 2 + ((tempLength % 2) == 0 ? 0 : 1);
+        return length;
+    }
+
 }

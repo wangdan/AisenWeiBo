@@ -8,6 +8,10 @@
     <!--菜单管理-->
     <string name="menu_add_account">添加账号</string>
     <string name="menu_delete">删除</string>
+    <string name="group_all_visiable">所有人可见</string>
+    <string name="group_selected_visiable">分组可见</string>
+    <string name="publish_timing">定时发布</string>
+    <string name="cancel_timing">取消定时</string>
 
     <!-- 标题 -->
     <string name="timeline_all">全部微博</string>
@@ -224,6 +228,10 @@
     <string name="draft_del_draft_hint">成功删除草稿</string>
     <string name="empty_draft">没有草稿</string>
 
+    <!-- 发布微博为空 -->
+    <string name="error_none_status">还没有写内容</string>
+    <string name="error_none_comment">还没有写评论内容</string>
+
     <string-array name="timeline_menus">
         <item>原微博</item>
         <item>复制</item>
@@ -240,6 +248,23 @@
         <item>@string/copy</item>
         <item>@string/repost</item>
         <item>@string/menu_delete</item>
+    </string-array>
+
+    <string-array name="publish_pic_edit">
+        <item>重新选择</item>
+        <item>删除</item>
+    </string-array>
+
+    <string-array name="chatPicChoose">
+        <item>相册</item>
+        <item>拍照</item>
+    </string-array>
+
+    <string-array name="publish_pic">
+        <item>相册</item>
+        <item>拍照</item>
+        <item>刚拍的照片</item>
+        <item>剪切板链接</item>
     </string-array>
 
 </resources>

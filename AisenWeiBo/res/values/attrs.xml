@@ -10,6 +10,10 @@
     <attr name="text_title" format="reference|color"/>
     <attr name="text_subhead" format="reference|color"/>
     <attr name="text_body" format="reference|color"/>
+    <!--timeline的分割线-->
     <attr name="divider_timeline_item" format="reference|color"/>
+    <!--timeline的背景-->
     <attr name="bg_timline_item" format="reference"/>
+    <!--左侧菜单的Header的高度-->
+    <attr name="menu_header_height" format="dimension"/>
 </resources>

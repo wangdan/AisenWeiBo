@@ -4,11 +4,14 @@
         <item name="android:selectableItemBackground">@drawable/selector_list_holo</item>
 
         <!--Translucent system bars-->
-        <item name="android:windowTranslucentNavigation" >true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowBackground">?attr/theme_color</item>
-
-        <item name="fits_windows">true</item>
+    </style>
+    <style name="AppTheme.Main">
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="fits_windows">false</item>
+        <item name="menu_header_height">180dip</item>
     </style>
 </resources>

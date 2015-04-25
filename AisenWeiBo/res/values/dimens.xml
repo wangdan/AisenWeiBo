@@ -18,6 +18,10 @@
     <!-- timeline padding -->
     <dimen name="item_padding">10dip</dimen>
     <dimen name="item_margin">5dip</dimen>
+
+    <dimen name="swipe_refresh_progress_bar_start_margin">-40dp</dimen>
+    <dimen name="swipe_refresh_progress_bar_end_margin">16dp</dimen>
+
     <!--字体大小-->
     <dimen name="sp_12">12sp</dimen>
     <dimen name="sp_13">13sp</dimen>

@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="AppBaseTheme" parent="BaseTheme.Light">
+        <item name="android:navigationBarColor">?attr/colorPrimary</item>
+
+        <!--Translucent system bars-->
+        <!--<item name="android:windowTranslucentNavigation" >true</item>-->
+        <!--<item name="android:windowTranslucentStatus">true</item>-->
+        <!--<item name="android:windowContentOverlay">@null</item>-->
+        <!--<item name="android:windowBackground">?attr/theme_color</item>-->
+    </style>
+    <style name="AppTheme.Main">
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowTranslucentNavigation" >false</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="fits_windows">false</item>
+        <item name="menu_header_height">180dip</item>
     </style>
 </resources>

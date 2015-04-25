@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="@dimen/date_picker_component_width"
+    android:layout_height="wrap_content"
+    style="?android:attr/buttonBarStyle">
+
+    <Button
+        android:textSize="@dimen/done_label_size"
+        android:textColor="?attr/colorPrimary"
+        android:id="@id/done"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dip"
+        android:text="@string/done_label"
+        style="?android:attr/buttonBarButtonStyle" />
+</LinearLayout>

@@ -3,12 +3,11 @@ package org.aisen.weibo.sina.ui.fragment.mention;
 import android.app.Fragment;
 import android.os.Bundle;
 
-import com.m.ui.fragment.AAutoReleaseStripTabsFragment;
 import com.m.ui.fragment.ABaseFragment;
-import com.m.ui.fragment.AStripTabsFragment;
 
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
+import org.aisen.weibo.sina.ui.fragment.basic.AMainStripTabsFragment;
 
 import java.util.ArrayList;
 
@@ -17,7 +16,7 @@ import java.util.ArrayList;
  *
  * Created by wangdan on 15/4/22.
  */
-public class MentionTabsFragment extends AAutoReleaseStripTabsFragment<AStripTabsFragment.StripTabItem> {
+public class MentionTabsFragment extends AMainStripTabsFragment {
 
     public static ABaseFragment newInstance() {
         MentionTabsFragment fragment = new MentionTabsFragment();

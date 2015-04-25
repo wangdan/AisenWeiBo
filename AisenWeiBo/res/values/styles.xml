@@ -17,6 +17,13 @@
     </style>
 
 
+    <style name="hintText">
+        <item name="android:textColor">@drawable/hint</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
 
     <style name="TextTitle">
         <item name="android:textColor">?attr/text_title</item>

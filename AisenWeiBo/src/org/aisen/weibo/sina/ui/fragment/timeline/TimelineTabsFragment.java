@@ -10,6 +10,7 @@ import com.m.ui.fragment.AStripTabsFragment;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.ui.fragment.basic.AMainStripTabsFragment;
 import org.sina.android.bean.Group;
 import org.sina.android.bean.Groups;
 import org.sina.android.bean.WeiBoUser;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
  *
  * Created by wangdan on 15/4/14.
  */
-public class TimelineTabsFragment extends AAutoReleaseStripTabsFragment<AStripTabsFragment.StripTabItem> {
+public class TimelineTabsFragment extends AMainStripTabsFragment {
 
     public static ABaseFragment newInstance() {
         return new TimelineTabsFragment();

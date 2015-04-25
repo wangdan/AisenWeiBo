@@ -2,11 +2,11 @@ package org.aisen.weibo.sina.ui.fragment.comment;
 
 import android.app.Fragment;
 
-import com.m.ui.fragment.AAutoReleaseStripTabsFragment;
 import com.m.ui.fragment.ABaseFragment;
 import com.m.ui.fragment.AStripTabsFragment;
 
 import org.aisen.weibo.sina.R;
+import org.aisen.weibo.sina.ui.fragment.basic.AMainStripTabsFragment;
 
 import java.util.ArrayList;
 
@@ -15,14 +15,14 @@ import java.util.ArrayList;
  *
  * Created by wangdan on 15/4/23.
  */
-public class CommentTabsFragment extends AAutoReleaseStripTabsFragment<AStripTabsFragment.StripTabItem> {
+public class CommentTabsFragment extends AMainStripTabsFragment {
 
     public static ABaseFragment newInstance() {
         return new CommentTabsFragment();
     }
 
     @Override
-    protected ArrayList<StripTabItem> generateTabs() {
+    protected ArrayList<AStripTabsFragment.StripTabItem> generateTabs() {
         ArrayList<StripTabItem> beans = new ArrayList<StripTabItem>();
 
         beans.add(new StripTabItem("200", getString(R.string.cmts_to_me)));

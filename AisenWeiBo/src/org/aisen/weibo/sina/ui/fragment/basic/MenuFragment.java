@@ -6,10 +6,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 
 import com.m.common.utils.ActivityHelper;
 import com.m.common.utils.Logger;
+import com.m.common.utils.SystemBarUtils;
 import com.m.component.bitmaploader.BitmapLoader;
 import com.m.component.bitmaploader.core.ImageConfig;
 import com.m.network.task.TaskException;
@@ -86,6 +89,14 @@ public class MenuFragment extends AListFragment<MenuBean, ArrayList<MenuBean>> {
     @Override
     public void setInitRefreshView(AbsListView refreshView) {
         profileHeader = View.inflate(getActivity(), R.layout.as_lay_leftmenu, null);
+
+        if (Build.VERSION.SDK_INT >= 19) {
+            ViewGroup rootProfile = (ViewGroup) profileHeader.findViewById(R.id.layProfile);
+            rootProfile.setPadding(rootProfile.getPaddingLeft(),
+                                    SystemBarUtils.getStatusBarHeight(getActivity()),
+                                    rootProfile.getPaddingRight(),
+                                    rootProfile.getPaddingBottom());
+        }
 
         View btnAccounts = profileHeader.findViewById(R.id.btnAccount);
         btnAccounts.setOnClickListener(accountSwitchOnClickListener);

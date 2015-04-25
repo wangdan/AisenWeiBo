@@ -1,21 +1,29 @@
 package org.aisen.weibo.sina.ui.activity.basic;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.m.common.context.GlobalContext;
 import com.m.common.utils.ActivityHelper;
+import com.m.common.utils.SystemBarUtils;
 import com.m.support.inject.ViewInject;
 import com.m.ui.activity.basic.BaseActivity;
 import com.m.ui.fragment.ABaseFragment;
+import com.m.ui.fragment.AStripTabsFragment;
 import com.melnykov.fab.FloatingActionButton;
 
 import org.aisen.weibo.sina.R;
@@ -23,6 +31,7 @@ import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.support.bean.MenuBean;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
 import org.aisen.weibo.sina.ui.fragment.basic.MenuFragment;
 import org.aisen.weibo.sina.ui.fragment.basic.MenuGenerator;
 import org.aisen.weibo.sina.ui.fragment.comment.CommentTabsFragment;
@@ -70,6 +79,22 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.as_ui_main);
 
+        if (Build.VERSION.SDK_INT >= 19) {
+            ViewGroup drawerRoot = (ViewGroup) findViewById(R.id.layDrawerRoot);
+            drawerRoot.setPadding(drawerRoot.getPaddingLeft(),
+                                    SystemBarUtils.getStatusBarHeight(this),
+                                    drawerRoot.getPaddingRight(),
+                                    drawerRoot.getBottom());
+        }
+        if (Build.VERSION.SDK_INT == 19) {
+            ViewGroup rootMain = (ViewGroup) findViewById(R.id.layMainRoot);
+            rootMain.setPadding(rootMain.getPaddingLeft(),
+                                    rootMain.getPaddingTop(),
+                                    rootMain.getPaddingRight(),
+                                    rootMain.getBottom() + SystemBarUtils.getNavigationBarHeight(this));
+        }
+
+        mToolbar = getToolbar();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
 
@@ -81,7 +106,8 @@ public class MainActivity extends BaseActivity {
 
                 invalidateOptionsMenu();
 
-                btnFab.show(true);
+                if (isToolbarShown())
+                    btnFab.show(true);
             }
 
             public void onDrawerOpened(View drawerView) {
@@ -187,6 +213,8 @@ public class MainActivity extends BaseActivity {
         int type = Integer.parseInt(menu.getType());
 
         ABaseFragment fragment = null;
+        mStripView = null;
+        mToolbar.setTranslationY(0);
 
         switch (type) {
         // 微博首页
@@ -212,7 +240,6 @@ public class MainActivity extends BaseActivity {
 
         getSupportActionBar().setSubtitle(null);
         getSupportActionBar().setTitle(menu.getTitleRes());
-
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
 //		ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out,
@@ -264,7 +291,7 @@ public class MainActivity extends BaseActivity {
     }
 
     void newPublish(View v) {
-//        PublishActivity.publishStatus(this, null);
+        PublishActivity.publishStatus(this, null);
     }
 
     private boolean canFinish = false;
@@ -309,6 +336,102 @@ public class MainActivity extends BaseActivity {
             setMDestory(true);
             return super.onBackClick();
         }
+    }
+
+    private Toolbar mToolbar;
+    private View mStripView;
+
+    private boolean isToolbarShown() {
+        return mToolbar != null && mToolbar.getTranslationY() >= 0;
+    }
+
+    public void hideToolbar() {
+        if (isToolbarShown()) {
+            toggleToolbarShown(false);
+        }
+    }
+
+    public void showToolbar() {
+        if (!isToolbarShown()) {
+            toggleToolbarShown(true);
+        }
+    }
+
+    private AnimatorSet animatorSet;
+    public void toggleToolbarShown(boolean shown) {
+        if (mStripView == null) {
+            Fragment fragment = getFragmentManager().findFragmentByTag(FRAGMENT_TAG);
+            if (fragment != null && fragment instanceof AStripTabsFragment) {
+                mStripView = ((AStripTabsFragment) fragment).getSlidingTabLayout();
+            }
+        }
+
+        if (mToolbar == null)
+            return;
+
+        if (animatorSet != null && animatorSet.isRunning())
+            return;
+
+        if (isToolbarShown() && shown)
+            return;
+        else if (!isToolbarShown() && !shown)
+            return;
+
+        if (!btnFab.isVisible() && shown) {
+            btnFab.show(true);
+        }
+        else if (btnFab.isVisible() && !shown) {
+            btnFab.hide(true);
+        }
+
+        PropertyValuesHolder toolBarHolder = null;
+        if (shown) {
+            toolBarHolder = PropertyValuesHolder.ofFloat("translationY", -1 * mToolbar.getHeight(), 0);
+        }
+        else {
+            toolBarHolder = PropertyValuesHolder.ofFloat("translationY", 0, -1 * mToolbar.getHeight());
+        }
+        ObjectAnimator toolbarObjectAnim = ObjectAnimator.ofPropertyValuesHolder(mToolbar, toolBarHolder);
+        toolbarObjectAnim.setDuration(150);
+
+        ObjectAnimator stripObjectAnim = null;
+        if (mStripView != null) {
+            PropertyValuesHolder stripHolder = null;
+            if (shown) {
+                stripHolder = PropertyValuesHolder.ofFloat("translationY", -1 * mStripView.getHeight(), 0);
+            }
+            else {
+                stripHolder = PropertyValuesHolder.ofFloat("translationY", 0, -1 * mStripView.getHeight());
+            }
+            stripObjectAnim = ObjectAnimator.ofPropertyValuesHolder(mStripView, stripHolder);
+            stripObjectAnim.setDuration(150);
+        }
+
+        AnimatorSet animSet = new AnimatorSet();
+        animatorSet = animSet;
+        if (shown) {
+            if (stripObjectAnim != null) {
+//                animSet.playSequentially(toolbarObjectAnim, stripObjectAnim);
+                animSet.play(toolbarObjectAnim);
+                stripObjectAnim.setStartDelay(100);
+                animSet.play(stripObjectAnim);
+            }
+            else {
+                animSet.play(toolbarObjectAnim);
+            }
+        }
+        else {
+            if (stripObjectAnim != null) {
+//                animSet.playSequentially(stripObjectAnim, toolbarObjectAnim);
+                animSet.play(stripObjectAnim);
+                toolbarObjectAnim.setStartDelay(100);
+                animSet.play(toolbarObjectAnim);
+            }
+            else {
+                animSet.play(toolbarObjectAnim);
+            }
+        }
+        animSet.start();
     }
 
 }

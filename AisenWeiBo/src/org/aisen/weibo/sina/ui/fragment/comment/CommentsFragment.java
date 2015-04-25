@@ -15,12 +15,12 @@ import com.m.support.paging.IPaging;
 import com.m.ui.fragment.ABaseFragment;
 import com.m.ui.fragment.ARefreshFragment;
 import com.m.ui.fragment.AStripTabsFragment;
-import com.m.ui.fragment.ASwipeRefreshListFragment;
 
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.support.paging.CommentsPagingProcessor;
+import org.aisen.weibo.sina.ui.fragment.basic.AWeiboRefreshListFragment;
 import org.aisen.weibo.sina.ui.fragment.basic.BizFragment;
 import org.sina.android.SinaSDK;
 import org.sina.android.bean.StatusComment;
@@ -35,7 +35,7 @@ import java.util.List;
  * @author wangdan
  *
  */
-public class CommentsFragment extends ASwipeRefreshListFragment<StatusComment, StatusComments>
+public class CommentsFragment extends AWeiboRefreshListFragment<StatusComment, StatusComments>
 										implements OnItemClickListener, OnItemLongClickListener {
 
 	public static ABaseFragment newInstance(AStripTabsFragment.StripTabItem bean) {

@@ -43,6 +43,20 @@
                   android:screenOrientation="portrait" android:theme="@style/AppTheme.Main"/>
         <!-- 公共界面 -->
         <activity android:name="com.m.component.container.FragmentContainerActivity" android:screenOrientation="portrait"/>
+        <!-- 发布微博、转发微博、评论、回复评论、意见反馈、分享 -->
+        <activity android:name="org.aisen.weibo.sina.ui.activity.publish.PublishActivity" android:launchMode="singleTop" android:screenOrientation="portrait"
+                  android:windowSoftInputMode="stateVisible|adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="image/*"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
+        </activity>
 
         <!-- 发布服务 -->
         <service android:name="org.aisen.weibo.sina.sys.service.PublishService"/>

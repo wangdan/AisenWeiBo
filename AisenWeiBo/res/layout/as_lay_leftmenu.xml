@@ -3,10 +3,11 @@
                 android:orientation="horizontal" android:paddingBottom="8dip">
 
     <ImageView
-        android:id="@+id/imgCover" android:layout_width="match_parent" android:layout_height="160dip" android:scaleType="centerCrop"/>
+        android:id="@+id/imgCover" android:layout_width="match_parent" android:layout_height="?attr/menu_header_height" android:scaleType="centerCrop"/>
 
     <RelativeLayout
-        android:layout_width="match_parent" android:layout_height="160dip" android:background="@drawable/bg_menu_profile">
+        android:id="@+id/layProfile"
+        android:layout_width="match_parent" android:layout_height="?attr/menu_header_height" android:background="@drawable/bg_menu_profile">
 
         <com.m.ui.widget.CircleImageView
             android:id="@+id/imgPhoto" android:layout_width="80dip" android:layout_height="80dip" android:layout_marginLeft="16dip"

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent" android:gravity="center">
+
+    <ImageView android:id="@+id/imgEmotion" android:layout_width="32dip" android:layout_height="32dip"
+        android:scaleType="fitCenter" android:padding="0dip"/>
+    
+</LinearLayout>

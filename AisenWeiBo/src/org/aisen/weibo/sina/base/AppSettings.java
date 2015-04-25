@@ -369,4 +369,24 @@ public class AppSettings {
         return prefs.getBoolean("pDisableCache", false);
     }
 
+    /**
+     * 撤销发布
+     *
+     * @return
+     */
+    public static boolean isSendDelay() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
+        return prefs.getBoolean("pSendDelay", false);
+    }
+
+    /**
+     * 分享照片时旋转90度
+     *
+     * @return
+     */
+    public static boolean isRotatePic() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
+        return prefs.getBoolean("pRotatePic", false);
+    }
+
 }
