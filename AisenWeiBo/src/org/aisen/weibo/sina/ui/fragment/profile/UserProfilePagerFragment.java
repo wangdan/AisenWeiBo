@@ -3,6 +3,7 @@ package org.aisen.weibo.sina.ui.fragment.profile;
 import android.app.Activity;
 import android.app.Fragment;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,15 +13,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.m.common.utils.SystemBarUtils;
 import com.m.component.bitmaploader.BitmapLoader;
 import com.m.component.bitmaploader.core.ImageConfig;
 import com.m.component.bitmaploader.display.DefaultDisplayer;
-import com.m.component.container.FragmentArgs;
-import com.m.component.container.FragmentContainerActivity;
 import com.m.network.task.TaskException;
 import com.m.network.task.WorkTask;
 import com.m.support.inject.ViewInject;
@@ -36,6 +38,7 @@ import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.db.AccountDB;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
+import org.aisen.weibo.sina.ui.activity.profile.UserProfileActivity;
 import org.aisen.weibo.sina.ui.fragment.basic.BizFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineFavoritesFragment;
 import org.aisen.weibo.sina.ui.widget.ProfileScrollView;
@@ -65,12 +68,7 @@ public class UserProfilePagerFragment extends AStripTabsFragment<AStripTabsFragm
                                                        BizFragment.OnDestoryFollowerCallback {
 
     public static void launch(Activity from, WeiBoUser user) {
-        FragmentArgs args = new FragmentArgs();
-        args.add("user", user);
-        args.add("launch", true);
-        args.add("index", 1);
-
-        FragmentContainerActivity.launch(from, UserProfilePagerFragment.class, args);
+        UserProfileActivity.launch(from, user);
     }
 
     public static ABaseFragment newInstance() {
@@ -125,7 +123,6 @@ public class UserProfilePagerFragment extends AStripTabsFragment<AStripTabsFragm
     @ViewInject(id = R.id.txtDesc)
     TextView txtDesc;
 
-
     private WeiBoUser mUserBean;
     private FriendshipShow mFriendship;
 
@@ -136,6 +133,10 @@ public class UserProfilePagerFragment extends AStripTabsFragment<AStripTabsFragm
 
     public int setActivityContentView() {
         return R.layout.as_ui_profile_pager_activity;
+    }
+
+    public int setTheme() {
+        return R.style.AppTheme_Profile;
     }
 
     @Override
@@ -151,6 +152,10 @@ public class UserProfilePagerFragment extends AStripTabsFragment<AStripTabsFragm
         super.layoutInit(inflater, savedInstanceSate);
 
         rootScrolView.setUser(mUserBean);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+
+        }
 
         if (savedInstanceSate == null)
             new RefreshProfileTask().execute();

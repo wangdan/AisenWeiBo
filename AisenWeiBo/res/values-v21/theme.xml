@@ -11,9 +11,12 @@
     </style>
     <style name="AppTheme.Main">
         <item name="android:windowIsTranslucent">false</item>
-        <item name="android:windowTranslucentNavigation" >false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
         <item name="android:windowTranslucentStatus">true</item>
-        <item name="fits_windows">false</item>
         <item name="menu_header_height">180dip</item>
+    </style>
+    <style name="AppTheme.Profile">
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 </resources>

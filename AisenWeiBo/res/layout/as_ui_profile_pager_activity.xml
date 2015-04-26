@@ -7,7 +7,7 @@
         android:layout_height="match_parent"/>
 
     <RelativeLayout
-        android:layout_width="match_parent" android:layout_height="?attr/actionBarSize">
+        android:layout_width="match_parent" android:layout_height="wrap_content">
 
         <View
             android:layout_width="0dip" android:layout_height="?attr/actionBarSize"
@@ -18,6 +18,6 @@
             android:layout_height="?attr/actionBarSize" android:alpha="0"/>
 
         <include
-            layout="@layout/comm_lay_toolbar" android:layout_width="match_parent" android:layout_height="match_parent"/>
+            layout="@layout/comm_lay_toolbar" android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"/>
     </RelativeLayout>
 </RelativeLayout>

@@ -2,6 +2,7 @@ package org.aisen.weibo.sina.ui.widget;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
@@ -12,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import com.m.common.utils.Logger;
+import com.m.common.utils.SystemBarUtils;
 import com.m.common.utils.Utils;
 import com.m.ui.activity.basic.BaseActivity;
 
@@ -82,13 +84,17 @@ public class ProfileScrollView extends ScrollView {
             activity.findViewById(R.id.layDesc).setBackgroundColor(themeColor);
 
             action_size = activity.getResources().getDimensionPixelSize(R.dimen.abc_action_bar_default_height_material);
+            int statusBar = 0;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                statusBar = SystemBarUtils.getStatusBarHeight(activity);
+            }
 
             Logger.d(TAG, String.format("topview height = %d, stripView height = %d, toolbar height = %d",
                     child.getChildAt(0).getHeight(), layTabStrip.getHeight(), action_size));
 
             viewPager.setLayoutParams(new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
-                    getHeight() - layTabStrip.getHeight() - action_size));
+                    getHeight() - layTabStrip.getHeight() - action_size - statusBar));
         }
     }
 

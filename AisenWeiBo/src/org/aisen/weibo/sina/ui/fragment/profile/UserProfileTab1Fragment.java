@@ -228,7 +228,7 @@ public class UserProfileTab1Fragment extends ABaseFragment
         setGroupList();
 
         // 设置Pager的菜单显示
-        Fragment fragment = getActivity().getFragmentManager().findFragmentByTag("Fragment");
+        Fragment fragment = getActivity().getFragmentManager().findFragmentByTag(FragmentContainerActivity.FRAGMENT_TAG);
         ((UserProfilePagerFragment) fragment).setFriendshipShow(mFriendship);
     }
 
@@ -243,7 +243,7 @@ public class UserProfileTab1Fragment extends ABaseFragment
         setProfile();
 
         // 设置Pager的菜单显示
-        Fragment fragment = getActivity().getFragmentManager().findFragmentByTag("Fragment");
+        Fragment fragment = getActivity().getFragmentManager().findFragmentByTag(FragmentContainerActivity.FRAGMENT_TAG);
         ((UserProfilePagerFragment) fragment).setFriendshipShow(mFriendship);
     }
 
@@ -253,7 +253,7 @@ public class UserProfileTab1Fragment extends ABaseFragment
             mFriendship.getTarget().setFollowing(false);
 
         // 设置Pager的菜单显示
-        Fragment fragment = getActivity().getFragmentManager().findFragmentByTag("Fragment");
+        Fragment fragment = getActivity().getFragmentManager().findFragmentByTag(FragmentContainerActivity.FRAGMENT_TAG);
         ((UserProfilePagerFragment) fragment).setFriendshipShow(mFriendship);
     }
 

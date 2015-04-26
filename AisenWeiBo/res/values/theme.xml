@@ -10,7 +10,6 @@
         <item name="flat_text">@drawable/md_btn_selector</item>
 
         <item name="theme_background">#dcdee3</item>
-        <item name="fits_windows">true</item>
 
         <item name="text_title">@color/text_100</item>
         <item name="text_subhead">@color/text_54</item>
@@ -34,6 +33,11 @@
         <item name="android:windowIsTranslucent">false</item>
         <item name="menu_header_height">160dip</item>
     </style>
+
+    <style name="AppTheme.Profile">
+
+    </style>
+
     <style name="AppTheme.Splash">
         <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowBackground">?attr/theme_background</item>

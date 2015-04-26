@@ -58,7 +58,8 @@
             </intent-filter>
         </activity>
         <!-- 用户信息、搜索 -->
-        <activity android:name="org.aisen.weibo.sina.ui.activity.profile.UserProfileActivity" android:screenOrientation="portrait">
+        <activity android:name="org.aisen.weibo.sina.ui.activity.profile.UserProfileActivity" android:screenOrientation="portrait"
+                  android:theme="@style/AppTheme.Profile">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <action android:name="android.intent.action.VIEW"/>

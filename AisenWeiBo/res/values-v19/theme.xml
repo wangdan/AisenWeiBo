@@ -9,11 +9,9 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowBackground">?attr/theme_color</item>
 
-        <item name="fits_windows">false</item>
     </style>
     <style name="AppTheme.Main">
         <item name="android:windowIsTranslucent">false</item>
-        <item name="fits_windows">false</item>
         <item name="menu_header_height">180dip</item>
     </style>
 </resources>

@@ -6,7 +6,7 @@
     <attr name="theme_background" format="reference|color"/>
     <!--flat样式的TextView-->
     <attr name="flat_text" format="reference|color"/>
-    <attr name="fits_windows" format="boolean"/>
+    <!--<attr name="fits_windows" format="boolean"/>-->
     <attr name="text_title" format="reference|color"/>
     <attr name="text_subhead" format="reference|color"/>
     <attr name="text_body" format="reference|color"/>
