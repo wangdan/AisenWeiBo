@@ -10,6 +10,7 @@ import com.m.ui.fragment.ABaseFragment;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineItemView;
+import org.aisen.weibo.sina.ui.fragment.timeline.TimelineRepostFragment;
 import org.sina.android.bean.StatusContent;
 
 /**
@@ -40,6 +41,15 @@ public class CommentsHeaderView extends TimelineItemView {
     @ViewInject(id = R.id.layReStatusContainer)
     View layReStatusContainer;
 
+    @ViewInject(id = R.id.txtReAttribute)
+    TextView txtReAttribute;
+    @ViewInject(id = R.id.txtReComment)
+    TextView txtReComment;
+    @ViewInject(id = R.id.txtReRepost)
+    TextView txtReRepost;
+    @ViewInject(id = R.id.layReStatusBar)
+    View layReStatusBar;
+
     private static final String ATTRIBUTE_FORMAT = "%s个赞";
     private static final String COMMENT_FORMAT = "%s条评论";
     private static final String REPOST_FORMAT = "%s人转发了该条微博";
@@ -53,6 +63,17 @@ public class CommentsHeaderView extends TimelineItemView {
     public void bindingData(View convertView, final StatusContent data) {
         super.bindingData(convertView, data);
 
+        if (fragment instanceof TimelineCommentFragment) {
+            if (data.getRetweeted_status() != null) {
+                setRepostClickListener(txtRepost, data);
+                if (data.getRetweeted_status().getUser() != null)
+                    setRepostClickListener(txtReRepost, data.getRetweeted_status());
+            }
+            else {
+                setRepostClickListener(txtReRepost, data);
+            }
+        }
+
         if (data.getRetweeted_status() != null && data.getRetweeted_status().getUser() != null) {
             layReStatusContainer.setOnClickListener(new View.OnClickListener() {
 
@@ -65,13 +86,36 @@ public class CommentsHeaderView extends TimelineItemView {
         }
 
         // 有转发微博
-        if (hasStatusBar(data)) {
-            setTextCount(txtAttribute, data.getAttitudes_count(), ATTRIBUTE_FORMAT);
-            setTextCount(txtComment, data.getComments_count(), COMMENT_FORMAT);
-            setTextCount(txtRepost, data.getReposts_count(), REPOST_FORMAT);
+        if (data.getRetweeted_status() != null) {
+            if (hasStatusBar(data)) {
+                setTextCount(txtAttribute, data.getAttitudes_count(), ATTRIBUTE_FORMAT);
+                setTextCount(txtComment, data.getComments_count(), COMMENT_FORMAT);
+                setTextCount(txtRepost, data.getReposts_count(), REPOST_FORMAT);
+            }
+            else {
+                layStatusBar.setVisibility(View.GONE);
+            }
+
+            if (hasStatusBar(data.getRetweeted_status())) {
+                setTextCount(txtReAttribute, data.getRetweeted_status().getAttitudes_count(), ATTRIBUTE_FORMAT);
+                setTextCount(txtReComment, data.getRetweeted_status().getComments_count(), COMMENT_FORMAT);
+                setTextCount(txtReRepost, data.getRetweeted_status().getReposts_count(), REPOST_FORMAT);
+            }
+            else {
+                layReStatusBar.setVisibility(View.GONE);
+            }
         }
         else {
             layStatusBar.setVisibility(View.GONE);
+
+            if (hasStatusBar(data)) {
+                setTextCount(txtReAttribute, data.getAttitudes_count(), ATTRIBUTE_FORMAT);
+                setTextCount(txtReComment, data.getComments_count(), COMMENT_FORMAT);
+                setTextCount(txtReRepost, data.getReposts_count(), REPOST_FORMAT);
+            }
+            else {
+                layReStatusBar.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -80,7 +124,7 @@ public class CommentsHeaderView extends TimelineItemView {
 
             @Override
             public void onClick(View v) {
-//                TimelineRepostActivity.launch(fragment, status);
+                TimelineRepostFragment.launch(fragment.getActivity(), status);
             }
 
         });

@@ -136,6 +136,31 @@
         <TextView
             android:id="@+id/txtPics" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="24sp"/>
 
+        <LinearLayout
+            android:id="@+id/layReStatusBar" android:layout_width="match_parent"
+            android:layout_height="48dip" android:gravity="center_vertical"
+            android:orientation="horizontal" android:paddingTop="8dip">
+
+            <TextView
+                android:id="@+id/txtReAttribute"
+                style="@style/TextSubhead" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginRight="8dip"
+                android:text="100"/>
+
+            <TextView
+                android:id="@+id/txtReComment"
+                style="@style/TextSubhead" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="100"/>
+
+            <View
+                android:layout_width="0dip" android:layout_height="wrap_content" android:layout_weight="1"/>
+
+            <org.aisen.weibo.sina.ui.widget.FlatButton
+                android:id="@+id/txtReRepost" style="@style/TextSubhead"
+                android:layout_width="wrap_content" android:layout_height="match_parent"
+                android:clickable="true" android:gravity="center_vertical" android:paddingLeft="8dip" android:text="100"
+                android:visibility="gone"/>
+        </LinearLayout>
     </LinearLayout>
 
     <ImageView

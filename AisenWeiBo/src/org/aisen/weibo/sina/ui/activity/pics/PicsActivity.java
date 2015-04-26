@@ -5,12 +5,14 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.ViewGroup;
 
 import com.m.common.utils.KeyGenerator;
+import com.m.common.utils.SystemBarUtils;
 import com.m.support.adapter.FragmentPagerAdapter;
 import com.m.support.inject.ViewInject;
 import com.m.ui.activity.basic.BaseActivity;
@@ -31,6 +33,8 @@ public class PicsActivity extends BaseActivity implements OnPageChangeListener {
 	
 	@ViewInject(id = R.id.viewPager)
     ViewPager viewPager;
+    @ViewInject(id = R.id.layToolbar)
+    ViewGroup layToolbar;
 	
 	private StatusContent mBean;
 	private int index;
@@ -57,6 +61,13 @@ public class PicsActivity extends BaseActivity implements OnPageChangeListener {
             getSupportActionBar().setTitle(String.format("%d/%d", 1, 1));
 
         getToolbar().setBackgroundColor(Color.TRANSPARENT);
+
+        if (Build.VERSION.SDK_INT >= 19) {
+            layToolbar.setPadding(layToolbar.getPaddingLeft(),
+                                        layToolbar.getPaddingTop() + SystemBarUtils.getStatusBarHeight(this),
+                                        layToolbar.getPaddingRight(),
+                                        layToolbar.getPaddingBottom());
+        }
 	}
 	
 	@Override

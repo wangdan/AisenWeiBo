@@ -25,6 +25,10 @@
     <View
         android:layout_width="match_parent" android:layout_height="150dip" android:background="@drawable/top_profile"/>
 
-    <include
-        layout="@layout/comm_lay_toolbar" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+    <LinearLayout android:id="@+id/layToolbar"
+        android:layout_width="match_parent" android:layout_height="wrap_content">
+
+        <include
+            layout="@layout/comm_lay_toolbar" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+    </LinearLayout>
 </RelativeLayout>
