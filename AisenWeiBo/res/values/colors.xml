@@ -16,6 +16,8 @@
     <color name="divider">#ebeef4</color>
     <color name="edit_hint">#ff808080</color>
 
+    <color name="search_text_color">#ffa3a3a3</color>
+
     <color name="gplus_color_1">#3e802f</color>
     <color name="gplus_color_2">#f4b400</color>
     <color name="gplus_color_3">#427fed</color>

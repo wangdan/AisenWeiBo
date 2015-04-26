@@ -15,6 +15,7 @@ import org.aisen.weibo.sina.ui.fragment.mention.MentionCommentsFragment;
 import org.aisen.weibo.sina.ui.fragment.mention.MentionTimelineFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineDefaultFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineGroupsFragment;
+import org.aisen.weibo.sina.ui.widget.MainListView;
 
 import java.io.Serializable;
 
@@ -53,6 +54,8 @@ public abstract class AWeiboRefreshListFragment<T extends Serializable, Ts exten
             setPadding(findViewById(R.id.layoutEmpty));
             setPadding(findViewById(R.id.layoutLoadFailed));
             setPadding(findViewById(R.id.layoutLoading));
+
+            ((MainListView) getRefreshView()).setFragment(this);
         }
     }
 

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@id/layoutContent" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout" android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ListView
+                android:id="@+id/listView" android:layout_width="fill_parent" android:layout_height="fill_parent" android:cacheColorHint="#00000000"
+                android:clipChildren="false" android:clipToPadding="false" android:divider="@null" android:dividerHeight="0dip"
+                android:fadingEdge="none" android:fastScrollEnabled="false" android:footerDividersEnabled="false"
+                android:headerDividersEnabled="false" android:listSelector="?attr/selectableItemBackground" android:smoothScrollbar="true"/>
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </RelativeLayout>
+
+    <include
+        android:id="@+id/layoutLoading1" layout="@layout/comm_lay_loading" android:layout_width="fill_parent" android:layout_height="fill_parent" android:visibility="gone"/>
+
+    <include
+        android:id="@id/layoutLoadFailed" layout="@layout/comm_lay_loadfailed" android:layout_width="match_parent" android:layout_height="match_parent"
+        android:visibility="gone"/>
+
+    <include
+        android:id="@id/layoutEmpty" layout="@layout/comm_lay_emptyview" android:layout_width="match_parent" android:layout_height="match_parent" android:visibility="gone"/>
+
+    <FrameLayout
+        android:id="@+id/laySearchSuggest" android:layout_width="match_parent" android:layout_height="match_parent" android:visibility="gone"/>
+</RelativeLayout>

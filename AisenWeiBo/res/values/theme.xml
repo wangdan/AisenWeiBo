@@ -11,6 +11,8 @@
 
         <item name="theme_background">#dcdee3</item>
 
+        <item name="fits_windows">false</item>
+
         <item name="text_title">@color/text_100</item>
         <item name="text_subhead">@color/text_54</item>
         <item name="text_body">@color/text_80</item>

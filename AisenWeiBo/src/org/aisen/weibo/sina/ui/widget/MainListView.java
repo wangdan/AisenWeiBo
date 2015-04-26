@@ -13,6 +13,7 @@ import android.widget.ListView;
 import com.m.common.utils.Utils;
 import com.m.ui.activity.basic.BaseActivity;
 import com.m.ui.fragment.AStripTabsFragment;
+import com.m.ui.fragment.ASwipeRefreshListFragment;
 
 import org.aisen.weibo.sina.ui.activity.basic.MainActivity;
 
@@ -30,6 +31,8 @@ public class MainListView extends ListView implements OnScrollListener {
     private Toolbar mToolbar;
     private View mStripView;// slidingTabs
     private MainActivity mMainActivity;
+
+    private ASwipeRefreshListFragment mFragment;
 	
 	private List<OnScrollListener> onScrollListeners = new ArrayList<OnScrollListener>();
 
@@ -47,7 +50,11 @@ public class MainListView extends ListView implements OnScrollListener {
 		super(context);
 		init();
 	}
-	
+
+    public void setFragment(ASwipeRefreshListFragment fragment) {
+        this.mFragment = fragment;
+    }
+
 	private void init() {
         if (getContext() instanceof MainActivity) {
             mMainActivity = (MainActivity) getContext();
@@ -74,7 +81,7 @@ public class MainListView extends ListView implements OnScrollListener {
     private void toggleToolbarShown(boolean shown) {
         lastTop = 0;
 
-        if (mMainActivity != null)
+        if (mMainActivity != null && mFragment != null && !mFragment.isRefreshing())
             mMainActivity.toggleToolbarShown(shown);
     }
 

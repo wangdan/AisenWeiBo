@@ -14,6 +14,7 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -39,6 +40,7 @@ import com.m.common.utils.ActivityHelper;
 import com.m.common.utils.BitmapUtil;
 import com.m.common.utils.FileUtils;
 import com.m.common.utils.Logger;
+import com.m.common.utils.SystemBarUtils;
 import com.m.common.utils.SystemUtils;
 import com.m.common.utils.Utils;
 import com.m.component.bitmaploader.BitmapLoader;
@@ -530,14 +532,18 @@ public abstract class APublishFragment extends ABaseFragment
             transitioner.setDuration(0);
         }
 
+        int statusBarHeight = SystemBarUtils.getStatusBarHeight(getActivity());
 		emotionHeight = SystemUtils.getKeyboardHeight(getActivity());
+        if (Build.VERSION.SDK_INT >= 19) {
+            emotionHeight += statusBarHeight;
+        }
 
         SystemUtils.hideSoftInput(editContent);
         layEmotion.getLayoutParams().height = emotionHeight;
         layEmotion.setVisibility(View.VISIBLE);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-        lockContainerHeight(SystemUtils.getAppContentHeight(getActivity()));
+        lockContainerHeight(SystemUtils.getAppContentHeight(getActivity()) - statusBarHeight);
 	}
 
 	 private void lockContainerHeight(int paramInt) {

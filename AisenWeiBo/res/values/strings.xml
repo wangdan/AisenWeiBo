@@ -157,6 +157,7 @@
     <string name="empty_account">没有授权账号</string>
     <string name="empty_search_users">没有搜索到相关用户信息</string>
     <string name="empty_search_topics">没有搜索到相关微博信息</string>
+    <string name="empty_mention_suggestion">没有搜索到相关好友信息</string>
 
     <!-- AisenUtil -->
     <string name="msg_now">刚刚</string>
@@ -315,6 +316,35 @@
     <string name="biz_fav_remove_faild">取消收藏失败</string>
     <string name="biz_destory_follower_loading">正在解除Ta对你的关注</string>
 
+    <!-- 朋友圈 -->
+    <string name="followers">粉丝</string>
+    <string name="friends">关注</string>
+    <string name="bilateral">互粉</string>
+    <string name="friendship_my_friends">Ta的关注</string>
+    <string name="friendship_my_followers">Ta的粉丝</string>
+    <string name="friendship_my_bilateral">Ta的互粉</string>
+    <string name="empty_friends">没有关注</string>
+    <string name="empty_bilateral">没有互粉</string>
+    <string name="empty_followers">没有粉丝</string>
+
+    <!-- 搜索 -->
+    <string name="title_search">搜索</string>
+    <string name="search_search_user">用户</string>
+    <string name="search_search_status">微博</string>
+    <string name="search_clear_search_remind">确定清空历史记录吗？</string>
+    <string name="hint_topics">话题关键字</string>
+    <string name="hint_user_name">用户名称</string>
+    <string name="title_search_user">用户搜索</string>
+    <string name="search_search_remind">搜索提示</string>
+    <string name="search_search_fuck">根据新浪微博开放平台政策，搜索用户的范围是：v用户、粉丝500以上的达人、粉丝600以上的普通用户</string>
+    <string name="search_hint_ac">用户名称或话题微博</string>
+
+
+    <!-- 提及 -->
+    <string name="mention_all">所有人</string>
+    <string name="mention_friends">关注人的</string>
+    <string name="mention_self_status">原创微博</string>
+    <string name="metion_search_hint">名称或者备注</string>
 
     <string-array name="timeline_menus">
         <item>原微博</item>
