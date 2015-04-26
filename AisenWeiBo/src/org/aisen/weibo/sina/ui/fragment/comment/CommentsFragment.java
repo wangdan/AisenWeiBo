@@ -73,6 +73,16 @@ public class CommentsFragment extends AWeiboRefreshListFragment<StatusComment, S
     }
 
     @Override
+    protected String loadDisabledLabel() {
+        return getString(R.string.disable_comments);
+    }
+
+    @Override
+    protected String loadingLabel() {
+        return String.format(getString(R.string.loading_cmts), AppSettings.getCommentCount());
+    }
+
+    @Override
 	protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
 		super.layoutInit(inflater, savedInstanceSate);
 
@@ -101,7 +111,7 @@ public class CommentsFragment extends AWeiboRefreshListFragment<StatusComment, S
 
 	@Override
 	protected AbstractItemView<StatusComment> newItemView() {
-		return new TimelineCommentItemView(this);
+		return new CommentItemView(this);
 	}
 
 	@Override
@@ -141,13 +151,11 @@ public class CommentsFragment extends AWeiboRefreshListFragment<StatusComment, S
 			super.onSuccess(result);
 			
 			if (AppContext.getUnreadCount() != null && AppContext.getUnreadCount().getCmt() > 0) {
-				// fuck sina
-				AppContext.getUnreadCount().setCmt(0);
-				
 				if (getActivity() == null)
 					return;
-				
-				requestDataDelay(AppSettings.REQUEST_DATA_DELAY);
+
+                if (result.isCache())
+				    requestDataDelay(AppSettings.REQUEST_DATA_DELAY);
 				
 				BizFragment.getBizFragment(CommentsFragment.this).remindSetCount(BizFragment.RemindType.cmt);
 			}

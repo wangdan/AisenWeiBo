@@ -87,7 +87,9 @@ public class MenuFragment extends AListFragment<MenuBean, ArrayList<MenuBean>> {
     }
 
     @Override
-    public void setInitRefreshView(AbsListView refreshView) {
+    public void setInitRefreshView(AbsListView refreshView, Bundle savedInstanceSate) {
+        super.setInitRefreshView(refreshView, savedInstanceSate);
+
         profileHeader = View.inflate(getActivity(), R.layout.as_lay_leftmenu, null);
 
         if (Build.VERSION.SDK_INT >= 19) {

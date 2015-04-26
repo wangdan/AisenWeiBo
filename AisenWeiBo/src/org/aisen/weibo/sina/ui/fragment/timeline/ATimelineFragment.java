@@ -26,6 +26,7 @@ import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.ui.activity.basic.MainActivity;
 import org.aisen.weibo.sina.ui.fragment.basic.AWeiboRefreshListFragment;
 import org.aisen.weibo.sina.ui.fragment.basic.BizFragment;
+import org.aisen.weibo.sina.ui.fragment.comment.TimelineCommentFragment;
 import org.aisen.weibo.sina.ui.widget.TimelinePicsView;
 import org.sina.android.bean.StatusContent;
 import org.sina.android.bean.StatusContents;
@@ -105,7 +106,7 @@ public abstract class ATimelineFragment extends AWeiboRefreshListFragment<Status
 		if (getAdapterItems().size() > 0 && position >= index) {
 			StatusContent status = getAdapterItems().get(position - index);
 
-//			TimelineCommentsFragment.launch(this, status);
+            TimelineCommentFragment.launch(getActivity(), status);
 		}
 	}
 	

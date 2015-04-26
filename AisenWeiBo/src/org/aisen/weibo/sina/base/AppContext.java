@@ -4,6 +4,7 @@ import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.db.AccountDB;
 import org.aisen.weibo.sina.sys.service.UnreadService;
 import org.aisen.weibo.sina.ui.fragment.basic.BizFragment;
+import org.sina.android.bean.AccessToken;
 import org.sina.android.bean.Groups;
 import org.sina.android.bean.Token;
 import org.sina.android.bean.UnreadCount;
@@ -17,6 +18,8 @@ public class AppContext {
     private static AccountBean accountBean;// 当前登录的用户信息
 
     private static UnreadCount unreadCount;
+
+    private static AccessToken advancedToken;
 
     public static boolean isLogedin() {
         return accountBean != null;
@@ -105,4 +108,7 @@ public class AppContext {
         return AppContext.unreadCount;
     }
 
+    public static AccessToken getAdvancedToken() {
+        return advancedToken;
+    }
 }

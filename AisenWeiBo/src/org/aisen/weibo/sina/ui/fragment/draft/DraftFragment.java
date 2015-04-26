@@ -61,8 +61,8 @@ public class DraftFragment extends AListFragment<PublishBean, ArrayList<PublishB
     }
 
     @Override
-    protected void setInitRefreshView(AbsListView refreshView) {
-        super.setInitRefreshView(refreshView);
+    protected void setInitRefreshView(AbsListView refreshView, Bundle savedInstanceSate) {
+        super.setInitRefreshView(refreshView, savedInstanceSate);
 
         setPadding(refreshView);
         setPadding(findViewById(R.id.layoutEmpty));

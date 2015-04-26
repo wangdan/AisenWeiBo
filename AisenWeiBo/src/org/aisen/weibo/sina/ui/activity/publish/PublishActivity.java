@@ -17,6 +17,7 @@ import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.support.bean.PublishBean;
 import org.aisen.weibo.sina.support.bean.PublishType;
+import org.aisen.weibo.sina.ui.activity.basic.AisenActivityHelper;
 import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
 import org.aisen.weibo.sina.ui.fragment.publish.APublishFragment;
 import org.aisen.weibo.sina.ui.fragment.publish.PublishCommentReplyFragment;
@@ -39,7 +40,7 @@ import org.sina.android.bean.WeiBoUser;
  * @author wangdan
  *
  */
-public class PublishActivity extends BaseActivity {
+public class PublishActivity extends BaseActivity implements AisenActivityHelper.EnableSwipeback {
 
 	/**
 	 * 发布微博
@@ -300,5 +301,10 @@ public class PublishActivity extends BaseActivity {
 				.add(R.id.fragmentContainer, PublishStatusFragment.newInstance(bean), "PublishFragment").commit();
 		}
 	}
-	
+
+    @Override
+    public boolean canSwipe() {
+        return false;
+    }
+
 }

@@ -15,6 +15,8 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/floatingbtn" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/datetimepicker" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/photoview" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/swipeback" isTestSource="false" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 21 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

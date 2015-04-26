@@ -389,4 +389,22 @@ public class AppSettings {
         return prefs.getBoolean("pRotatePic", false);
     }
 
+    public static String getImageSavePath() {
+        return ActivityHelper.getShareData("org.aisen.weibo.sina.Images", "Images");
+    }
+
+    public static void setImageSavePath(String path) {
+        ActivityHelper.putShareData("org.aisen.weibo.sina.Images", path);
+    }
+
+    /**
+     * 手势返回方向设置
+     *
+     * @return
+     */
+    public static int getSwipebackEdgeMode() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
+        return Integer.parseInt(prefs.getString("pSwipebackEdgeMode", "0"));
+    }
+
 }

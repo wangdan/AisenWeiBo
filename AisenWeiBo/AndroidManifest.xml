@@ -57,6 +57,17 @@
                 <data android:mimeType="text/plain"/>
             </intent-filter>
         </activity>
+        <!-- 用户信息、搜索 -->
+        <activity android:name="org.aisen.weibo.sina.ui.activity.profile.UserProfileActivity" android:screenOrientation="portrait">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.intent.action.VIEW"/>
+                <data android:scheme="org.aisen.weibo.sina.userinfo"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.activity.profile.WeiboClientActivity"/>
+        <!-- 图片详情 -->
+        <activity android:name="org.aisen.weibo.sina.ui.activity.pics.PicsActivity" android:screenOrientation="user"/>
 
         <!-- 发布服务 -->
         <service android:name="org.aisen.weibo.sina.sys.service.PublishService"/>

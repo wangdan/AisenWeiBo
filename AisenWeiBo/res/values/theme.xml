@@ -18,6 +18,8 @@
 
         <item name="divider_timeline_item">@color/divider</item>
         <item name="bg_timline_item">@drawable/timeline_publish_single_normal</item>
+
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 
     <style name="AppBaseTheme" parent="BaseTheme.Light">

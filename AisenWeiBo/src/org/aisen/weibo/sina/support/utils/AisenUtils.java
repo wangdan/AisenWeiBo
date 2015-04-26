@@ -1,12 +1,13 @@
 package org.aisen.weibo.sina.support.utils;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.os.Build;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
@@ -14,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.m.common.context.GlobalContext;
 import com.m.common.setting.SettingUtility;
 import com.m.common.utils.DateUtils;
@@ -22,11 +22,15 @@ import com.m.common.utils.FileUtils;
 import com.m.common.utils.Logger;
 import com.m.common.utils.SystemUtils;
 import com.m.common.utils.Utils;
+import com.m.common.utils.ViewUtils;
 import com.m.component.bitmaploader.core.BitmapDecoder;
 import com.m.ui.fragment.ABaseFragment;
+import com.m.ui.fragment.ARefreshFragment;
 
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
+import org.aisen.weibo.sina.ui.fragment.basic.BizFragment;
+import org.sina.android.bean.StatusComment;
 import org.sina.android.bean.StatusContent;
 import org.sina.android.bean.WeiBoUser;
 
@@ -372,6 +376,79 @@ public class AisenUtils {
         }
         length += tempLength / 2 + ((tempLength % 2) == 0 ? 0 : 1);
         return length;
+    }
+
+    public static void commentMenuSelected(final ABaseFragment fragment, String selectedItem, final StatusComment comment) {
+        final String[] commentMenuArr = GlobalContext.getInstance().getResources().getStringArray(R.array.cmt_menus);
+
+        try {
+            int position = 0;
+            for (int i = 0; i < commentMenuArr.length; i++) {
+                if (commentMenuArr[i].equals(selectedItem)) {
+                    position = i;
+                    break;
+                }
+            }
+
+            switch (position) {
+                // 复制
+                case 0:
+                    AisenUtils.copyToClipboard(comment.getText());
+
+                    ViewUtils.showMessage(R.string.msg_text_copyed);
+                    break;
+                // 转发
+                case 1:
+                    BizFragment.getBizFragment(fragment).commentRepost(comment);
+                    break;
+                // 删除
+                case 2:
+                    new AlertDialogWrapper.Builder(fragment.getActivity()).setMessage(R.string.msg_del_cmt_remind)
+                            .setNegativeButton(R.string.cancel, null)
+                            .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    BizFragment.getBizFragment(fragment).commentDestory(comment, new BizFragment.OnCommentDestoryCallback() {
+
+                                        @SuppressWarnings("unchecked")
+                                        @Override
+                                        public void onCommentDestory(StatusComment commnet) {
+                                            if (fragment instanceof ARefreshFragment) {
+                                                @SuppressWarnings("rawtypes")
+                                                ARefreshFragment aRefreshFragment = ((ARefreshFragment) fragment);
+                                                for (Object so : aRefreshFragment.getAdapterItems()) {
+                                                    StatusComment s = (StatusComment) so;
+                                                    if (s.getId().equals(commnet.getId())) {
+                                                        aRefreshFragment.getAdapterItems().remove(s);
+                                                        aRefreshFragment.notifyDataSetChanged();
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+                            })
+                            .show();
+                    break;
+                // 评论
+                case 3:
+                    BizFragment.getBizFragment(fragment).replyComment(comment.getStatus(), comment);
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void copyToClipboard(String text) {
+        // 得到剪贴板管理器
+        try {
+            ClipboardManager cmb = (ClipboardManager) GlobalContext.getInstance().getSystemService(Context.CLIPBOARD_SERVICE);
+            cmb.setPrimaryClip(ClipData.newPlainText(null, text.trim()));
+        } catch (Exception e) {
+        }
     }
 
 }

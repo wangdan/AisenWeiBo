@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/create" android:title="@string/profile_friendship_create" app:showAsAction="always"/>
+    <item
+        android:id="@+id/destory" android:title="@string/profile_friendship_destory" app:showAsAction="always"/>
+    <item
+        android:id="@+id/followDestory" android:title="@string/profile_follower_destory" app:showAsAction="never"/>
+</menu>

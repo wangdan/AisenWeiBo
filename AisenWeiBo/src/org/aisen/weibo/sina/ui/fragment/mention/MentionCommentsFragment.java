@@ -20,7 +20,7 @@ import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.support.paging.CommentsPagingProcessor;
 import org.aisen.weibo.sina.ui.fragment.basic.AWeiboRefreshListFragment;
 import org.aisen.weibo.sina.ui.fragment.basic.BizFragment;
-import org.aisen.weibo.sina.ui.fragment.comment.TimelineCommentItemView;
+import org.aisen.weibo.sina.ui.fragment.comment.CommentItemView;
 import org.sina.android.SinaSDK;
 import org.sina.android.bean.StatusComment;
 import org.sina.android.bean.StatusComments;
@@ -57,7 +57,12 @@ public class MentionCommentsFragment extends AWeiboRefreshListFragment<StatusCom
     }
 
     @Override
-    protected String loadMoreBtnLabel() {
+    protected String loadDisabledLabel() {
+        return getString(R.string.disable_comments);
+    }
+
+    @Override
+    protected String loadingLabel() {
         return String.format(getString(R.string.loading_cmts), AppSettings.getCommentCount());
     }
 
@@ -105,7 +110,7 @@ public class MentionCommentsFragment extends AWeiboRefreshListFragment<StatusCom
 
     @Override
     protected ABaseAdapter.AbstractItemView<StatusComment> newItemView() {
-        return new TimelineCommentItemView(this);
+        return new CommentItemView(this);
     }
 
     @Override

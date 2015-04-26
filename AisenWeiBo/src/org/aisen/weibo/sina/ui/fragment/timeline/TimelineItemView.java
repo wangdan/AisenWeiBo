@@ -42,7 +42,7 @@ import java.util.Map;
 public class TimelineItemView extends ABaseAdapter.AbstractItemView<StatusContent>
                 implements View.OnClickListener, BizFragment.OnLikeCallback {
 
-    ABaseFragment fragment;
+    protected ABaseFragment fragment;
     private BizFragment bizFragment;
 
     private boolean showRetweeted;
@@ -93,11 +93,11 @@ public class TimelineItemView extends ABaseAdapter.AbstractItemView<StatusConten
     @ViewInject(id = R.id.btnRepost)
     View btnRepost;
     @ViewInject(id = R.id.txtRepost)
-    TextView txtRepost;
+    protected TextView txtRepost;
     @ViewInject(id = R.id.btnCmt)
     View btnComment;
     @ViewInject(id = R.id.txtComment)
-    TextView txtComment;
+    protected TextView txtComment;
 
     @ViewInject(id = R.id.txtContent)
     AisenTextView txtContent;

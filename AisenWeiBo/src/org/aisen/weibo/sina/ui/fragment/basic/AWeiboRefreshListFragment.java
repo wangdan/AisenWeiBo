@@ -35,8 +35,8 @@ public abstract class AWeiboRefreshListFragment<T extends Serializable, Ts exten
     }
 
     @Override
-    protected void setInitRefreshList(ListView listView, SwipeRefreshLayout swipeRefreshLayout, Bundle savedInstanceState) {
-        super.setInitRefreshList(listView, swipeRefreshLayout, savedInstanceState);
+    protected void setInitSwipeRefresh(ListView listView, SwipeRefreshLayout swipeRefreshLayout, Bundle savedInstanceState) {
+        super.setInitSwipeRefresh(listView, swipeRefreshLayout, savedInstanceState);
 
         if (isInMain()) {
             int toolbarHeight = getResources().getDimensionPixelSize(R.dimen.abc_action_bar_default_height_material);

@@ -12,11 +12,23 @@
     <string name="group_selected_visiable">分组可见</string>
     <string name="publish_timing">定时发布</string>
     <string name="cancel_timing">取消定时</string>
+    <string name="profile_friendship_create">关注</string>
+    <string name="profile_friendship_destory">取消关注</string>
+    <string name="profile_follower_destory">移除粉丝</string>
+    <string name="refresh">刷新</string>
+    <string name="save_pic">保存</string>
+    <string name="share">分享</string>
+    <string name="copy_url">复制链接</string>
+    <string name="orig_pic">原图</string>
+    <string name="download_again">重新下载</string>
 
     <!-- 标题 -->
     <string name="timeline_all">全部微博</string>
     <string name="timeline_bilateral">互相关注</string>
     <string name="timeline_tome">朋友圈</string>
+
+    <!-- 我的收藏 -->
+    <string name="myfav_title">我的收藏</string>
 
     <!-- 账号管理 -->
     <string name="title_acount">账号管理</string>
@@ -49,6 +61,9 @@
     <string name="account_remind">账号、密码仅存本地，用于授权页面、微博网页版辅助登录，不是黑魔法授权噢，亲！\n\n如有疑问，请联系我 : wangd.info@gmail.com</string>
     <string name="account_pwd_hint">密码</string>
     <string name="account_username_hint">邮箱/手机号</string>
+    <string name="account_fillaccount_loading">处理中</string>
+    <string name="account_fillaccount_faild">填充失败，烦请手动输入账号密码</string>
+    <string name="webclient_login">填充账号</string>
 
     <!-- 公共 -->
     <string name="copy">复制</string>
@@ -132,6 +147,7 @@
 
     <!--no more-->
     <string name="disable_status">没有更多微博了</string>
+    <string name="disable_comments">没有更多评论了</string>
     <!--Loading-->
     <string name="loading_status">正在加载%d条微博</string>
     <string name="loading_cmts">正在加载%d条评论</string>
@@ -209,9 +225,12 @@
     <string name="mention_cmt">评论</string>
 
     <!-- 评论 -->
+    <string name="cmts_add">评论</string>
     <string name="error_cmts">该用户不存在</string>
     <string name="cmts_to_me">我收到的</string>
     <string name="cmts_by_me">我发出的</string>
+    <string name="cmts_title">微博评论</string>
+    <string name="cmts_repost_title">微博转发</string>
 
     <!-- 草稿箱 -->
     <string name="title_draft">草稿箱</string>
@@ -232,6 +251,71 @@
     <string name="error_none_status">还没有写内容</string>
     <string name="error_none_comment">还没有写评论内容</string>
 
+    <!-- 用户资料 -->
+    <string name="msg_load_profile">正在获取用户信息</string>
+    <string name="title_user_profile">用户信息</string>
+    <string name="title_user_photos">微博配图</string>
+    <string name="profile_des_hint">简介：%s</string>
+    <string name="profile_des_hint02">简介</string>
+    <string name="profile_des_none">此处应有简介。</string>
+    <string name="profile_ver_reason">微博认证：%s</string>
+    <string name="profile_ver_reason_hint">微博认证</string>
+    <string name="profile_location_hint">所在地</string>
+    <string name="profile_remark_hint">备注</string>
+    <string name="profile_remark">备注：%s</string>
+    <string name="profile_remark_none">备注：未设置</string>
+    <string name="profile_remark_none02">未设置</string>
+    <string name="profile_group_none">未设置</string>
+    <string name="profile_group_hint">分组：%s</string>
+    <string name="profile_group_update_loading">正在更新分组信息</string>
+    <string name="profile_add_to_group">添加到分组[%s]</string>
+    <string name="profile_group_remvoe_friend">从分组[%s]中移除</string>
+    <string name="profile_edit_group_faild">编辑分组失败</string>
+    <string name="profile_edit_group_success">编辑分组成功</string>
+    <string name="profile_fuck_sina">因为新浪微博开放平台政策原因，获取用户的粉丝、关注、微博等数据存在问题，目前正在申请核实。正常后，不会再有这个提示</string>
+    <string name="profile_profile_status">微博</string>
+    <string name="profile_photos">相册</string>
+    <string name="profile_group_setting">选择分组</string>
+    <string name="profile_all_timeline">全部微博</string>
+    <string name="profile_photos_empty">没有微博配图</string>
+    <string name="profile_photos_remind">当前是移动网络，相册界面可能会消耗比较多的流量，继续流量吗？</string>
+    <string name="profile_refresh_loading">正在刷新用户信息</string>
+    <string name="profile_followers">%s 粉丝</string>
+    <string name="profile_friends">%s 关注</string>
+    <string name="profile_tab1">关于</string>
+    <string name="profile_tab2">微博</string>
+    <string name="profile_tab3">原创</string>
+    <string name="profile_tab4">相册</string>
+    <string name="profile_tab5">收藏</string>
+
+    <!-- 查看图片 -->
+    <string name="title_pic">查看图片</string>
+    <string name="msg_save_pic_success">图片已保存至%s文件夹</string>
+    <string name="msg_save_pic_faild">图片未下载完或者已删除</string>
+    <string name="msg_save_orig_faild">下载原图失败</string>
+    <string name="error_pic_load_faild">获取失败</string>
+    <string name="msg_save_pic_loading">正在保存</string>
+    <string name="error_pic_load_faild_1">图片加载失败\n点击屏幕刷新</string>
+
+    <!-- BizFragment -->
+    <string name="biz_destory_friend">取消对Ta的关注吗？</string>
+    <string name="biz_create_friendship">正在添加关注</string>
+    <string name="biz_destory_friendship">正在取消关注</string>
+    <string name="biz_remark_hint">备注信息</string>
+    <string name="biz_remark_update">更新好友备注</string>
+    <string name="biz_remark_loading">正在更新备注信息</string>
+    <string name="title_destory_friend">移除粉丝</string>
+    <string name="biz_destory_follower">Ta是你的粉丝，将解除Ta对你的关注</string>
+    <string name="biz_delete_cmt_loading">正在删除评论</string>
+    <string name="biz_delete_status_loading">正在删除微博</string>
+    <string name="biz_add_fav">正在添加收藏</string>
+    <string name="biz_fav_success">成功收藏</string>
+    <string name="biz_remove_fav">正在取消收藏</string>
+    <string name="biz_fav_removed">已取消收藏</string>
+    <string name="biz_fav_remove_faild">取消收藏失败</string>
+    <string name="biz_destory_follower_loading">正在解除Ta对你的关注</string>
+
+
     <string-array name="timeline_menus">
         <item>原微博</item>
         <item>复制</item>
@@ -248,6 +332,7 @@
         <item>@string/copy</item>
         <item>@string/repost</item>
         <item>@string/menu_delete</item>
+        <item>@string/cmts_add</item>
     </string-array>
 
     <string-array name="publish_pic_edit">

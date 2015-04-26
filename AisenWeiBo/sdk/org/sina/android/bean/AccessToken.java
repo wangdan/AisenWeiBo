@@ -6,6 +6,8 @@ public class AccessToken extends Token implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
+    private String source;
+
 	private String verifier;
 
 	private String uid;
@@ -61,4 +63,12 @@ public class AccessToken extends Token implements Serializable{
 
 		return buffer.toString();
 	}
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
 }

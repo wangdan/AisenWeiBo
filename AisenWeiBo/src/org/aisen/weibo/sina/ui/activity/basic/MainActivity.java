@@ -42,7 +42,7 @@ import org.aisen.weibo.sina.ui.fragment.timeline.TimelineTabsFragment;
 /**
  * Created by wangdan on 15/4/12.
  */
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements AisenActivityHelper.EnableSwipeback {
 
     private static final String ACTION_LOGIN = "org.aisen.sina.weibo.ACTION_LOGIN";
     private static final String ACTION_NOTIFICATION = "org.aisen.sina.weibo.ACTION_NOTIFICATION";
@@ -432,6 +432,11 @@ public class MainActivity extends BaseActivity {
             }
         }
         animSet.start();
+    }
+
+    @Override
+    public boolean canSwipe() {
+        return false;
     }
 
 }

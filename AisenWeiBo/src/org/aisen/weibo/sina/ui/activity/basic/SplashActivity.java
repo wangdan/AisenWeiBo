@@ -15,7 +15,7 @@ import java.util.TimerTask;
 /**
  * 欢迎页
  */
-public class SplashActivity extends BaseActivity {
+public class SplashActivity extends BaseActivity implements AisenActivityHelper.EnableSwipeback {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +54,11 @@ public class SplashActivity extends BaseActivity {
     private void toAccount() {
         AccountFragment.launch(this);
         finish();
+    }
+
+    @Override
+    public boolean canSwipe() {
+        return false;
     }
 
 }
