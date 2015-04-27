@@ -69,6 +69,34 @@
         <activity android:name=".ui.activity.profile.WeiboClientActivity"/>
         <!-- 图片详情 -->
         <activity android:name="org.aisen.weibo.sina.ui.activity.pics.PicsActivity" android:screenOrientation="user"/>
+        <!-- 浏览器 -->
+        <activity android:name="org.aisen.weibo.sina.ui.activity.basic.BrowserActivity">
+            <!-- <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <data android:host="e.weibo.com"
+                      android:scheme="http"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <data android:host="weibo.com"
+                      android:scheme="http"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <data android:host="t.cn"
+                      android:scheme="http"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter> -->
+            <!-- 默认浏览器 -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <data android:scheme="aisen"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
 
         <!-- 发布服务 -->
         <service android:name="org.aisen.weibo.sina.sys.service.PublishService"/>

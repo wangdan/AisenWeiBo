@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.m.common.context.GlobalContext;
+import com.m.common.setting.SettingUtility;
 import com.m.common.utils.ActivityHelper;
 import com.m.common.utils.SystemUtils;
 
@@ -405,6 +406,14 @@ public class AppSettings {
     public static int getSwipebackEdgeMode() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
         return Integer.parseInt(prefs.getString("pSwipebackEdgeMode", "0"));
+    }
+
+    public static String getThemeColor() {
+        return SettingUtility.getPermanentSettingAsStr("com.m.Theme_color", "");
+    }
+
+    public static void setThemeColor(String color) {
+        SettingUtility.setPermanentSetting("com.m.Theme_color", color);
     }
 
 }

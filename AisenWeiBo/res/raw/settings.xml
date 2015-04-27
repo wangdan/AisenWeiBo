@@ -110,7 +110,7 @@
 	
 	<setting type="about_url">
 		<des>关于</des>
-		<value>http://aisenyuedu.duapp.com/?page_id=18</value>
+		<value>https://www.github.com/wangdan/AisenWeibo/</value>
 	</setting>
 	
 	<setting type="help_url">

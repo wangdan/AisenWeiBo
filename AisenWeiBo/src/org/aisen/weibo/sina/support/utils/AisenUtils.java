@@ -1,13 +1,16 @@
 package org.aisen.weibo.sina.support.utils;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
@@ -449,6 +452,14 @@ public class AisenUtils {
             cmb.setPrimaryClip(ClipData.newPlainText(null, text.trim()));
         } catch (Exception e) {
         }
+    }
+
+    public static void launchBrowser(Activity from, String url) {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        Uri content_url = Uri.parse(url);
+        intent.setData(content_url);
+        from.startActivity(intent);
     }
 
 }

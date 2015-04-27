@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<changelog bulletedList="true">
+
+    <!-- It is a template file for changelog.xml -->
+
+    <!-- Library uses res/raw/changelog.xml file.
+        If you want to use a custom file you can specify
+        chg:changeLogFileResourceId="@raw/custom_changelog"
+        in your View component in layout file -->
+
+
+    <changelogversion versionName="1.0" changeDate="Aug 26,2013">
+        <changelogtext>Initial release.</changelogtext>
+    </changelogversion>
+
+    <changelogversion versionName="0.9" changeDate="Aug 11,2013">
+        <changelogtext>[b]New![/b] Add new attrs to customize header and row layout</changelogtext>
+        <changelogtext>Fixed log while parsing</changelogtext>
+        <changelogtext>Add support for html text markup as [b]bold[/b] and [i]italic[/i] </changelogtext>
+        <changelogtext>Add bullet point in list. You can customize character with strings.xml and behavior in xml changelog file</changelogtext>
+        <changelogtext>Support for customized xml filename</changelogtext>
+    </changelogversion>
+
+    <changelogversion versionName="0.8" changeDate="Aug 10,2013">
+        <changelogtext>Parse process in AsyncTask</changelogtext>
+        <changelogtext>xml resources in res/raw folder</changelogtext>
+        <changelogtext>Adapter created by ListView</changelogtext>
+    </changelogversion>
+
+    <changelogversion versionName="0.7" changeDate="Aug 5,2013">
+        <changelogtext>Demo module added</changelogtext>
+        <changelogtext>Add bulletpoint in xml</changelogtext>
+    </changelogversion>
+
+</changelog>

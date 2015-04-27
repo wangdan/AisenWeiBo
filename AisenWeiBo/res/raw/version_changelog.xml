@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<changelog bulletedList="true">
+
+    <!-- It is a template file for changelog.xml -->
+
+    <!-- Library uses res/raw/changelog.xml file.
+        If you want to use a custom file you can specify
+        chg:changeLogFileResourceId="@raw/custom_changelog"
+        in your View component in layout file -->
+
+    <changelogversion versionName="5.0.1" changeDate="2015-04">
+        <changelogtext>修复手动登录网页版微博时不能点赞的bug.</changelogtext>
+        <changelogtext>修复双击操作栏不能刷新的问题.</changelogtext>
+        <changelogtext>新增默认加载原图(流量会暴增，建议牛逼的WIFI才开启).</changelogtext>
+        <changelogtext>修改为抽屉菜单全屏.</changelogtext>
+        <changelogtext>更新相册列表的刷新控件.</changelogtext>
+        <changelogtext>更新相册选择器(预留为下版本多图上传准备).</changelogtext>
+    </changelogversion>
+
+    <changelogversion versionName="5.0.0" changeDate="2015-03">
+        <changelogtext>适配Material Design主题.</changelogtext>
+        <changelogtext>新增点赞功能，是真的点赞哦.</changelogtext>
+        <changelogtext>新增全屏浏览微博.</changelogtext>
+        <changelogtext>保留分组标签栏，新增右侧抽屉快速切换分组.</changelogtext>
+        <changelogtext>优化了内存消耗、网络流量、页面流畅度等方面的性能.</changelogtext>
+        <changelogtext>优化图片加载、展示方式，推荐WIFI阅读体验.</changelogtext>
+    </changelogversion>
+
+	<changelogversion versionName="3.2.7" changeDate="2014-12">
+	    <changelogtext>修复点意见反馈无效的BUG.</changelogtext>
+	    <changelogtext>修复默认分组不显示全部微博、发给我的、互相关注的BUG.</changelogtext>
+	    <changelogtext>修复未读消息清零的BUG.</changelogtext>
+	    <changelogtext>首页如果停留菜单不是微博首页，按返回按键，先退回微博首页再退出程序.</changelogtext>
+	</changelogversion>
+
+	<changelogversion versionName="3.2.6" changeDate="2014-11">
+	    <changelogtext>新增笑cry、最右表情.</changelogtext>
+	    <changelogtext>新增私信.</changelogtext>
+	    <changelogtext>新增热门微博.</changelogtext>
+	    <changelogtext>新增微博头条.</changelogtext>
+	    <changelogtext>更新热门话题.</changelogtext>
+	    <changelogtext>新增查看用户详细资料功能.</changelogtext>
+	    <changelogtext>新增微博未读提示，缓存的默认有效时间修改为24h</changelogtext>
+	    <changelogtext>新增色盘，可以自定义主题颜色.</changelogtext>
+	    <changelogtext>新增图片gif提示.</changelogtext>
+	    <changelogtext>字体大小修改为数字形式.</changelogtext>
+	    <changelogtext>修改分组标签栏为右侧分组抽屉列表.</changelogtext>
+	    <changelogtext>新增无图模式.</changelogtext>
+	</changelogversion>
+	
+	<changelogversion versionName="3.2.5" changeDate="2014-11">
+	    <changelogtext>分组编辑后总是弹框提示的BUG.</changelogtext>
+	    <changelogtext>发布消息后没有提示失败的错误消息.</changelogtext>
+	    <changelogtext>紧急修复登录后打开程序总是崩溃的错误.</changelogtext>
+	</changelogversion>
+
+	<changelogversion versionName="3.2.1-3.2.3" changeDate="2014-11">
+	    <changelogtext>新增喵喵、doge、草泥马三个表情.</changelogtext>
+	    <changelogtext>新增热门话题模块.</changelogtext>
+	    <changelogtext>新增主题切换动画.</changelogtext>
+	    <changelogtext>新增查看相册(微博配图).</changelogtext>
+	    <changelogtext>新增界面手势返回.</changelogtext>
+	    <changelogtext>调整卡片大小.</changelogtext>
+	    <changelogtext>去掉了大图片展示，很少有人用.</changelogtext>
+	    <changelogtext>不再支持桌面背景，请使用壁纸设置</changelogtext>
+	    <changelogtext>修改为4.4以上系统强制开启Translucent Modes.</changelogtext>
+	    <changelogtext>修改查看图片不自动旋转，根据系统设置旋转.</changelogtext>
+	    <changelogtext>修改图片缓存设置，不再显示在相册中.</changelogtext>
+	    <changelogtext>修复列表重影的BUG，强制开启硬件加速.</changelogtext>
+	    <changelogtext>修复不能查看用户微博的BUG.</changelogtext>
+	    <changelogtext>修复两个雪人表情的BUG.</changelogtext>
+	    <changelogtext>修复4.0系统不兼容的BUG.</changelogtext>
+	</changelogversion>
+
+	<changelogversion versionName="3.2.0" changeDate="2014-10">
+	    <changelogtext>新增主题设置功能，19种颜色主题供君选择.</changelogtext>
+	    <changelogtext>新增程序背景可使用桌面壁纸功能.</changelogtext>
+	    <changelogtext>新增程序背景可自定义壁纸功能.</changelogtext>
+	    <changelogtext>新增列表加载动画.</changelogtext>
+	    <changelogtext>新增多组表情.</changelogtext>
+	    <changelogtext>完全更新UI，列表采用Card形式.</changelogtext>
+	    <changelogtext>修复若干BUG.</changelogtext>
+	</changelogversion>
+
+	<changelogversion versionName="3.1.7" changeDate="2014-10">
+	    <changelogtext>代码正式开源.</changelogtext>
+	    <changelogtext>微博、用户搜索界面默认不再弹出输入法.</changelogtext>
+	    <changelogtext>修复多账号授权导致崩溃的BUG.</changelogtext>
+	    <changelogtext>修复获取提及微博时没有更新未读消息的BUG.</changelogtext>
+	    <changelogtext>修复若干其他BUG.</changelogtext>
+	    <changelogtext>新增多语言支持(中文简体、中文繁体).</changelogtext>
+		<changelogtext>新增多种主流刷新控件，再次重构AisenForAndroid框架.</changelogtext>
+	    <changelogtext>优化缓存策略.</changelogtext>
+	</changelogversion>
+
+	<changelogversion versionName="3.1.6" changeDate="2014-09">
+	    <changelogtext>新增账号授权过期提示.</changelogtext>
+	    <changelogtext>新增微博刷新音效反馈.</changelogtext>
+	    <changelogtext>新增好友分组增删改查、排序等编辑功能.</changelogtext>
+	    <changelogtext>新增个人资料页面分组编辑弹出框时，添加设置链接按钮.</changelogtext>
+	    <changelogtext>新增列表置顶同时刷新列表功能.</changelogtext>
+	    <changelogtext>新增列表图片智能、9宫格排版设置.</changelogtext>
+	    <changelogtext>新增首页微博列表自动刷新功能，默认关闭，因为当前刷新控件操作体验存在比较大的问题.</changelogtext>
+	    <changelogtext>修复评论界面图片加载为黑色的BUG.</changelogtext>
+	    <changelogtext>修复用户关系没有保存缓存的BUG.</changelogtext>
+	    <changelogtext>修复好友分组界面魅族手机意外崩溃的BUG.</changelogtext>
+	    <changelogtext>修复草稿箱的发布内容数据超过140限制，再次发布时没有显示错误提示的BUG.</changelogtext>
+	</changelogversion>
+	
+	<changelogversion versionName="3.1.5" changeDate="2014-09">
+	    <changelogtext>新增微博搜索、用户搜索功能.</changelogtext>
+	    <changelogtext>新增默认分组是否显示设置选项.</changelogtext>
+	    <changelogtext>新增双击操作栏空闲区域返回列表顶端的功能.</changelogtext>
+	    <changelogtext>修复帮助、关于界面按返回键没有返回Web浏览历史的BUG.</changelogtext>
+	    <changelogtext>修复魅族手机退出程序崩溃的BUG.</changelogtext>
+	    <changelogtext>修复没有账号登录时分享导致崩溃的BUG.</changelogtext>
+	    <changelogtext>修复GALAXY S4部分图片不能加载的BUG.</changelogtext>
+	    <changelogtext>修复移除菜单不能在9100上显示的BUG.</changelogtext>
+	    <changelogtext>修复因为首页耗时的状态保存导致UI阻塞大约3秒的大BUG.</changelogtext>
+	    <changelogtext>优化图片加载，列表刷新更流畅.</changelogtext>
+	</changelogversion>
+	    
+	<changelogversion versionName="3.1.3" changeDate="2014-08">
+	    <changelogtext>新增屏蔽微博功能，可以屏蔽某条微博后续对我的@提及的提醒.</changelogtext>
+	    <changelogtext>新增分享功能，可以分享图片或者图片链接.</changelogtext>
+	    <changelogtext>新增查看收藏微博的菜单.</changelogtext>
+	    <changelogtext>新增新版本更新提示功能.</changelogtext>
+	    <changelogtext>修复因为快速频繁切换用户导致数据串掉的BUG.</changelogtext>
+	    <changelogtext>修复移除粉丝没有dismiss加载框的BUG.</changelogtext>
+	    <changelogtext>修复加载小图时显示为黑块的BUG.</changelogtext>
+	    <changelogtext>修复分享图片时不能分享GIF图片的BUG.</changelogtext>
+	</changelogversion>
+	
+	<changelogversion versionName="3.1.2" changeDate="2014-08">
+        <changelogtext>新增分组排序管理.</changelogtext>
+        <changelogtext>新增发布消息时，副标题显示当前授权用户名称.</changelogtext>
+        <changelogtext>新增加载图片连接网络状态时，显示一个Loading条.</changelogtext>
+        <changelogtext>新增首页的微博、评论页面增加刷新菜单，刷新重置列表数据.</changelogtext>
+        <changelogtext>修复Android L机型发布微博分组可见时，分组弹出框超出屏幕界限的BUG.</changelogtext>
+        <changelogtext>修复切换用户时，未读消息没有提醒的BUG.</changelogtext>
+        <changelogtext>修复切换用户时，未清理通知栏的BUG.</changelogtext>
+        <changelogtext>修复评论详情删除微博时导致Crash的BUG.</changelogtext>
+	</changelogversion>
+
+    <changelogversion versionName="3.1.1" changeDate="2014-08">
+        <changelogtext>新增首页多账号切换.</changelogtext>
+        <changelogtext>新增用户搜索.</changelogtext>
+        <changelogtext>新增分组微博，修改为Pager左右切换.</changelogtext>
+		<changelogtext>新增抽屉菜单.</changelogtext>
+	    <changelogtext>优化DB，防止事务锁死导致读取数据阻塞.</changelogtext>
+        <changelogtext>优化缓存管理，多用户缓存独立，缓存DB从Sdcard挪到默认目录.</changelogtext>
+        <changelogtext>优化图片加载管理，保证一张图片只开销一个线程，流量珍贵不浪费.</changelogtext>
+        <changelogtext>优化线程池，优化线程调度以及网络开销。</changelogtext>
+	    <changelogtext>整体项目重构优化.</changelogtext>        
+    </changelogversion>
+    
+</changelog>

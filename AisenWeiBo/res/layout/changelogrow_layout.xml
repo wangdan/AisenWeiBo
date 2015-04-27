@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/chg_row"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_marginLeft="12dp"
+              android:orientation="vertical" >
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/listPreferredItemHeightSmall"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+
+        <!-- ChangeLog Row [Bullet Point] You have to use the id="chg_textbullet" -->
+        <TextView
+                android:id="@+id/chg_textbullet"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:layout_marginRight="2dp"
+                android:layout_marginLeft="12dp"
+                android:textAppearance="@android:style/TextAppearance.Small"
+                android:text="@string/changelog_row_bulletpoint"
+                />
+
+
+        <!-- ChangeLog Row [Text] You have to use the id="chg_text" -->
+       <TextView
+                android:id="@+id/chg_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="5dp"
+                android:minHeight="@dimen/listPreferredItemHeightSmall"
+                android:textAppearance="@android:style/TextAppearance.Small"
+                />
+    </LinearLayout>
+
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:background="@color/chglib_background_default_divider_color" />
+
+</LinearLayout>

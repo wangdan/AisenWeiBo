@@ -10,10 +10,13 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -37,6 +40,9 @@ import org.aisen.weibo.sina.ui.fragment.basic.MenuGenerator;
 import org.aisen.weibo.sina.ui.fragment.comment.CommentTabsFragment;
 import org.aisen.weibo.sina.ui.fragment.draft.DraftFragment;
 import org.aisen.weibo.sina.ui.fragment.mention.MentionTabsFragment;
+import org.aisen.weibo.sina.ui.fragment.settings.AboutWebFragment;
+import org.aisen.weibo.sina.ui.fragment.settings.SettingsPagerFragment;
+import org.aisen.weibo.sina.ui.fragment.timeline.GroupSortFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineTabsFragment;
 
 /**
@@ -159,6 +165,14 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (lastSelectedMenu != null)
+            outState.putSerializable("menu", lastSelectedMenu);
+    }
+
+    @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
 
@@ -167,9 +181,9 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
 
         String action = intent.getAction();
 
-        lastSelectedMenu = null;
-
         MenuBean menuBean = MenuGenerator.generateMenu(getActionType(action));
+
+        lastSelectedMenu = menuBean;
 
         onMenuSelected(menuBean, true, null);
 
@@ -229,6 +243,12 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
         case 3:
             fragment = CommentTabsFragment.newInstance();
             break;
+            // 设置
+        case 5:
+            closeDrawer();
+
+            SettingsPagerFragment.launch(this);
+            return true;
         // 草稿箱
         case 6:
             fragment = DraftFragment.newInstance();
@@ -432,6 +452,67 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
             }
         }
         animSet.start();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+
+//        SubMenu subMenu = menu.addSubMenu(R.id.mainMenus, 333, 1, getString(R.string.main_search));
+//        subMenu.setIcon(R.drawable.ic_menu_search);
+//        subMenu.set
+//        for (int i = 0; i < AppContext.getGroups().getLists().size(); i++) {
+//            Group group = AppContext.getGroups().getLists().get(i);
+//            subMenu.add(100, i, i, group.getName());
+//        }
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.friendGroups).setVisible(false);
+
+        // 显示的是首页
+        if (lastSelectedMenu != null) {
+            if (lastSelectedMenu.getType().equals("1"))
+                menu.findItem(R.id.friendGroups).setVisible(true);
+        }
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (mDrawerToggle != null && mDrawerToggle.onOptionsItemSelected(item))
+            return true;
+
+        if (android.R.id.home == item.getItemId()) {
+            if (mDrawerLayout.isDrawerVisible(GravityCompat.START))
+                mDrawerLayout.closeDrawers();
+            else
+                mDrawerLayout.openDrawer(GravityCompat.START);
+
+            return true;
+        }
+
+        // 关于
+        if (item.getItemId() == R.id.about)
+            AboutWebFragment.launchAbout(this);
+            // 意见反馈
+        else if (item.getItemId() == R.id.feedback)
+            PublishActivity.publishFeedback(this);
+            // 好友分组
+        else if (item.getItemId() == R.id.friendGroups)
+            GroupSortFragment.lanuch(this);
+            // 搜索用户或者微博
+//        else if (item.getItemId() == R.id.search)
+//            SearchActivity.launch(this);
+            // 退出
+        else if (item.getItemId() == R.id.exitapp)
+            finish();
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

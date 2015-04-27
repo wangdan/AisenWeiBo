@@ -21,6 +21,11 @@
     <string name="copy_url">复制链接</string>
     <string name="orig_pic">原图</string>
     <string name="download_again">重新下载</string>
+    <string name="main_feedback">意见反馈</string>
+    <string name="timeline_groups">好友分组</string>
+    <string name="main_search">微博用户搜索</string>
+    <string name="exitapp">退出</string>
+    <string name="group_add">新增分组</string>
 
     <!-- 标题 -->
     <string name="timeline_all">全部微博</string>
@@ -86,6 +91,7 @@
     <string name="update_success">更新成功</string>
     <string name="update_faild">更新失败</string>
     <string name="processing">正在处理</string>
+    <string name="to_browser">浏览器打开</string>
 
     <!-- 发布通知 -->
     <string name="notifer_from_aisen">来自Aisen</string>
@@ -248,6 +254,23 @@
     <string name="draft_del_draft_hint">成功删除草稿</string>
     <string name="empty_draft">没有草稿</string>
 
+    <!-- 好友分组 -->
+    <string name="title_groups">好友分组</string>
+    <string name="group_sort_cancel_remind">取消分组排序吗？</string>
+    <string name="group_group_name_hint">分组名称</string>
+    <string name="group_create_group">新建分组</string>
+    <string name="group_create_group_hint">分组名称不能为空</string>
+    <string name="group_update_group_name">更新分组名称</string>
+    <string name="group_del_group_title">删除</string>
+    <string name="group_del_group_confirm">确定删除吗？</string>
+    <string name="title_edit_group">编辑</string>
+    <string name="group_update_group_loading">正在更新分组名称</string>
+    <string name="group_create_group_loading">正在新增分组</string>
+    <string name="group_del_group_loading">正在删除分组</string>
+    <string name="group_del_group_faild">删除\"%s\"分组失败</string>
+    <string name="group_del_group_update">正在删除\"%s\"分组</string>
+    <string name="group_sort_group_loading">正在更新分组排序</string>
+
     <!-- 发布微博为空 -->
     <string name="error_none_status">还没有写内容</string>
     <string name="error_none_comment">还没有写评论内容</string>
@@ -339,12 +362,133 @@
     <string name="search_search_fuck">根据新浪微博开放平台政策，搜索用户的范围是：v用户、粉丝500以上的达人、粉丝600以上的普通用户</string>
     <string name="search_hint_ac">用户名称或话题微博</string>
 
+    <!-- 帮助设置 -->
+    <string name="title_about">关于</string>
+    <string name="title_help">帮助</string>
+    <string name="title_opensource">开源协议</string>
+    <string name="settings_about_feedback">意见反馈</string>
+    <string name="settings_about_feedback_summary">告诉我您的想法和建议</string>
+    <string name="settings_about">关于</string>
+    <string name="settings_opensource">开源协议</string>
+    <string name="category_developer">开发者选项</string>
+    <string name="settings_about_debug">Debug模式</string>
+    <string name="settings_about_debug_summary">设置Debug模式后，所有相关设置选项都为测试缺省设置</string>
+    <string name="settings_about_screen_rotate">屏幕旋转</string>
+    <string name="settings_cache_disable">禁用缓存</string>
+    <string name="settings_network_delay">网络请求延迟10s</string>
+    <string name="settings_cache_disable_summary">禁用微博、评论缓存</string>
+    <string name="settings_dt_cache_validdate">设置缓存有效时间</string>
+    <string name="settings_cache_validdate">缓存数据有效时间</string>
+    <string name="settings_crash_log">Crash日志上传</string>
+    <string name="settings_crash_log_summary">Wifi时自动上传程序崩溃日志，建议开启，帮助我们定位BUG优化程序</string>
+    <string name="settings_version_update">检查更新</string>
+
+    <!-- 高级设置 -->
+    <string name="title_advanced">高级设置</string>
+    <string name="title_ad_common">通用设置</string>
+    <string name="title_ad_habit">操作习惯</string>
+    <string name="title_rom_adaptive">系统适配</string>
 
     <!-- 提及 -->
     <string name="mention_all">所有人</string>
     <string name="mention_friends">关注人的</string>
     <string name="mention_self_status">原创微博</string>
     <string name="metion_search_hint">名称或者备注</string>
+
+    <!-- 程序设置 -->
+    <string name="title_settings">设置</string>
+    <string name="settings_account_sumary">%d个授权账号</string>
+    <string name="category_def">常规设置</string>
+    <string name="settings_basic">基本设置</string>
+    <string name="settings_feedback">操作反馈</string>
+    <string name="settings_diy">主题设置</string>
+    <string name="settings_habit">偏好设置</string>
+    <string name="settings_notify">通知中心</string>
+    <string name="settings_flow">流量控制</string>
+    <string name="settings_offline">离线设置</string>
+    <string name="category_advanced">高级设置</string>
+    <string name="settings_more_advanced">更多高级设置</string>
+    <string name="settings_manage_account">账号管理</string>
+    <string name="settings_publish_delay">内容延迟发布</string>
+    <string name="settings_publish_delay_summary">延迟5秒发布微博、评论，可点击撤销</string>
+    <string name="settings_pic_rotate">旋转照片</string>
+    <string name="settings_pic_rotate_summary">拍摄照片分享时将照片旋转90度</string>
+    <string name="settings_share_aisen">推荐给好友</string>
+    <string name="settings_grade">给我好评</string>
+    <string name="settings_inner_browser">使用内置浏览器</string>
+    <string name="settings_app_resident">应用常驻内存</string>
+
+    <!-- 基本设置 -->
+    <string name="settings_basic_history_remind">%d条历史数据</string>
+    <string name="settings_dir_hint">文件夹名称</string>
+    <string name="settings_modify_picpath_title">修改图片保存路径</string>
+    <string name="settings_clear">清理</string>
+    <string name="settings_clear_history_remind">将删除掉所有的@历史记录？</string>
+    <string name="category_color_theme_item">主题</string>
+    <string name="category_read">阅读</string>
+    <string name="settings_text_size">字体大小</string>
+    <string name="settings_md_colors">Metrail Design Colors</string>
+    <string name="settings_custom_colors">自定义</string>
+    <string name="settings_remark">显示备注名</string>
+    <string name="settings_load_origpic">默认加载原图</string>
+    <string name="settings_load_origpic_summary">建议牛逼的WIFI环境开启</string>
+    <string name="category_operation">操作反馈</string>
+    <string name="settings_list_auto_update">列表自动刷新</string>
+    <string name="settings_list_auto_update_summary">缓存数据有效期失效后</string>
+    <string name="settings_swipeback_edgemode">手势返回</string>
+    <string name="settings_dt_swipeback_edgemode">设置手势方向</string>
+    <string name="settings_vibrate">震动反馈</string>
+    <string name="settings_vibrate_summary">内容发送成功后震动反馈</string>
+    <string name="category_other">其他</string>
+    <string name="settings_pic_path">图片保存路径</string>
+    <string name="settings_mention_history">清理@好友历史记录</string>
+
+    <!-- 通知设置 -->
+    <string name="title_notification">通知中心</string>
+    <string name="title_notification_enable">开启通知提醒</string>
+    <string name="settings_open">开启</string>
+    <string name="settings_close">关闭</string>
+    <string name="category_general">常规设置</string>
+    <string name="settings_dt_notify_interval">消息间隔</string>
+    <string name="settings_bother">夜间免打扰</string>
+    <string name="settings_bother_summary">凌晨1点-早上8点关闭通知提醒</string>
+    <string name="category_notify_type">通知类型</string>
+    <string name="settings_status_mention">\@我的微博</string>
+    <string name="settings_cmt_mention">\@我的评论</string>
+    <string name="settings_followers_notify">粉丝</string>
+    <string name="settings_cmt_notify">评论</string>
+    <string name="settings_dm_notify">私信</string>
+    <string name="category_notify_feedback">提醒方式</string>
+    <string name="settings_notify_sound">声音提醒</string>
+    <string name="settings_notify_virate">振动提醒</string>
+    <string name="settings_notify_led">LED提醒</string>
+
+    <!-- 流量控制设置 -->
+    <string name="title_flowsetting">流量控制</string>
+    <string name="settings_pic_upload_auto">WIFI时原图、移动网络时小于700Kb上传</string>
+    <string name="settings_pic_upload_gif">gif原图上传</string>
+    <string name="settings_clear_cache">清理缓存</string>
+    <string name="settings_dt_pic_upload">图片上传质量</string>
+    <string name="settings_photo">显示高清头像</string>
+    <string name="settings_pic_none">开启列表无图模式</string>
+    <string name="settings_pic_mode">图片加载模式</string>
+    <string name="settings_dt_status_count">微博每次加载数量</string>
+    <string name="settings_dt_cmt_count">评论每次加载数量</string>
+
+    <!-- 版本信息设置 -->
+    <string name="settings_version_detail">版本信息</string>
+    <string name="settings_version_p">版本信息</string>
+    <string name="settings_version_summary" formatted="false">当前版本: %s, 最新版本: %s</string>
+    <string name="settings_error_market">无法打开应用市场</string>
+    <string name="settings_current_version">当前版本: %s</string>
+
+    <string-array name="pCacheValidity">
+        <item>30秒</item>
+        <item>2小时</item>
+        <item>6小时</item>
+        <item>12小时</item>
+        <item>永久</item>
+    </string-array>
 
     <string-array name="timeline_menus">
         <item>原微博</item>
@@ -356,6 +500,33 @@
         <item>删除</item>
         <item>屏蔽</item>
         <item>围观</item>
+    </string-array>
+
+    <string-array name="txtSizeNum">
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+    </string-array>
+
+    <string-array name="txtUpload">
+        <item>自动</item>
+        <item>原图</item>
+        <item>高 (小于700Kb)</item>
+        <item>中 (小于300Kb)</item>
+        <item>低 (小于100Kb)</item>
+    </string-array>
+
+    <string-array name="txtUnread">
+        <item>1分钟</item>
+        <item>5分钟</item>
+        <item>15分钟</item>
+        <item>1小时</item>
     </string-array>
 
     <string-array name="cmt_menus">
@@ -375,11 +546,44 @@
         <item>拍照</item>
     </string-array>
 
+    <string-array name="settingsPager">
+        <!--<item>主题</item>-->
+        <item>基本</item>
+        <item>高级</item>
+        <item>其他</item>
+    </string-array>
+
     <string-array name="publish_pic">
         <item>相册</item>
         <item>拍照</item>
         <item>刚拍的照片</item>
         <item>剪切板链接</item>
+    </string-array>
+
+    <string-array name="swipebackEdgeMode">
+        <item>向左</item>
+        <item>向右</item>
+        <!--<item>全部</item>-->
+    </string-array>
+
+    <string-array name="picMode">
+        <item>小图</item>
+        <item>大图</item>
+        <item>自动</item>
+    </string-array>
+
+    <string-array name="timelineCount">
+        <item>20条</item>
+        <item>50条</item>
+        <item>100条</item>
+        <!-- <item>自动</item> -->
+    </string-array>
+
+    <string-array name="commentCount">
+        <item>20条</item>
+        <item>50条</item>
+        <item>100条</item>
+        <!-- <item>自动</item> -->
     </string-array>
 
 </resources>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical"
+    android:paddingBottom="4dip" android:paddingLeft="8dip" android:paddingRight="8dip" android:paddingTop="4dip">
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent" android:layout_height="60dip"
+        android:gravity="center_vertical" android:orientation="horizontal"
+        android:paddingRight="@dimen/comm_h_margin">
+
+        <ImageView
+            android:id="@+id/drag_handle" android:layout_width="45dip" android:layout_height="45dip"
+            android:layout_marginRight="16dip" android:padding="8dip"
+            android:src="@drawable/ic_action_move_light"/>
+
+        <TextView
+            android:id="@+id/txtName" style="@style/TextBody" android:layout_width="0dip" android:layout_height="wrap_content"
+            android:layout_weight="1" android:gravity="center_vertical"
+            android:text="分组名称"
+            />
+
+        <TextView
+            android:id="@+id/txtCounter" style="@style/TextSubhead" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginLeft="16dip" android:gravity="center_vertical"
+            android:text="60人" android:textColor="@color/text_54"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

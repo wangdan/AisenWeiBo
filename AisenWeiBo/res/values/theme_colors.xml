@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- ActionBarStyle -->
+	<string-array name="actionbarBgColors">
+	    <item>#ffe51c23</item>
+	    <item>#ffe91e63</item>
+	    <item>#ff9c27b0</item>
+	    <item>#ff673ab7</item>
+	    <item>#ff3f51b5</item>
+	    <item>#ff5677fc</item>
+	    <item>#FF3F9FE0</item>
+	    <item>#ff00bcd4</item>
+	    <item>#ff009688</item>
+	    <item>#ff259b24</item>
+	    <item>#ff8bc34a</item>
+	    <item>#ffcddc39</item>
+	    <item>#ffffc107</item>
+	    <item>#FFF4842D</item>
+	    <item>#ffff5722</item>
+	    <item>#ff795548</item>
+	    <item>#FF666666</item>
+	    <item>#ff607d8b</item>
+	    <item>#ff353535</item>
+	</string-array>
+
+    <string-array name="metrail_design_colors">
+        <item>#f44336</item>
+        <item>#e91e63</item>
+        <item>#9c27b0</item>
+        <item>#673ab7</item>
+        <item>#3f51b5</item>
+        <item>#2196f3</item>
+        <item>#03a9f4</item>
+        <item>#00bcd4</item>
+        <item>#009688</item>
+        <item>#4caf50</item>
+        <item>#8bc34a</item>
+        <item>#cddc39</item>
+        <item>#ffeb3b</item>
+        <item>#ffc107</item>
+        <item>#ff9800</item>
+        <item>#ff5722</item>
+        <item>#795548</item>
+        <item>#9e9e9e</item>
+        <item>#607d8b</item>
+    </string-array>
+	<string-array name="metrail_design_colors_">
+	    <item>#259499</item>
+	    <item>#467f8e</item>
+	    <item>#456067</item>
+	    <item>#ff4444</item>
+	    <item>#f68d22</item>
+	    
+	    <item>#5fb336</item>
+	    <item>#3b5998</item>
+	    <item>#8467d7</item>
+	    <item>#7d053f</item>
+	    <item>#f660ab</item>
+	    
+	    <item>#8b0000</item>
+	    <item>#f75d59</item>
+	    <item>#e77471</item>
+	    <item>#b38481</item>
+	    <item>#736f6e</item>
+	    
+	    <item>#7f462c</item>
+	    <item>#fdd017</item>
+	    <item>#f29d00</item>
+	    <item>#b8860b</item>
+	    <item>#a69b4e</item>
+	    
+	    <item>#95b83f</item>
+	    <item>#41af1b</item>
+	    <item>#617c58</item>
+	    <item>#4e9258</item>
+	    <item>#306754</item>
+	    
+	    <item>#717d7d</item>
+	    <item>#3a99ab</item>
+	    <item>#4ab7d9</item>
+	    <item>#566d7e</item>
+	    <item>#1e90ff</item>
+	    
+	    <item>#5e5a80</item>
+	    <item>#9e7bff</item>
+	    <item>#b048b5</item>
+	    <item>#7e587e</item>
+	    <item>#f778a1</item>
+	    
+	    <item>#817679</item>
+	    <item>#c48189</item>
+	    <item>#222222</item>
+	    <item>#000000</item>
+
+        <item>#009688</item>
+	</string-array>
+	
+</resources>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+ 	
+    <!-- <Preference android:key="pFeedback" android:title="@string/settings_about_feedback" 
+	 	    android:summary="@string/settings_about_feedback_summary" /> -->
+
+	<Preference android:key="pAbout" android:title="@string/settings_about" />
+ 	
+ 	<!--<Preference android:key="pHelp" android:title="@string/settings_help" />-->
+ 	
+	<Preference android:key="pAppFeedback" android:title="@string/settings_about_feedback" 
+ 	    android:summary="@string/settings_about_feedback_summary" />
+	 	
+ 	<Preference android:key="pGrade" android:title="@string/settings_grade" />
+	 	
+ 	<Preference android:key="pVersion" android:title="@string/settings_version_update" />
+	 	
+ 	<PreferenceCategory android:title="@string/category_developer">
+	 	<Preference android:key="pGithub" android:title="Github" android:summary="github.com/wangdan/AisenWeiBo" />
+ 		
+ 		<Preference android:key="pOpensource" android:title="@string/settings_opensource" android:summary="Licensed under the Apache License, Version 3.0" />
+ 	    
+ 	    <CheckBoxPreference android:key="pDebug" android:title="@string/settings_about_debug" android:defaultValue="false"
+ 	        android:summary="@string/settings_about_debug_summary" />
+ 	    
+ 	    <CheckBoxPreference android:key="pScreenRotate" android:title="@string/settings_about_screen_rotate" android:defaultValue="false" />
+ 	    
+ 	    <CheckBoxPreference android:key="pNetworkDelay" android:title="@string/settings_network_delay" android:defaultValue="false" />
+ 	    
+ 	    <CheckBoxPreference android:key="pDisableCache" android:title="@string/settings_cache_disable" android:defaultValue="false"
+ 	        android:summary="@string/settings_cache_disable_summary" />
+ 	    
+ 	    <org.aisen.weibo.sina.ui.widget.AisenListPreference android:key="pCacheValidity" android:entries="@array/pCacheValidity" android:entryValues="@array/prefValues"
+			android:dialogTitle="@string/settings_dt_cache_validdate" android:title="@string/settings_cache_validdate" android:defaultValue="1" />
+ 	    
+ 	    <CheckBoxPreference android:key="pCrashLog" android:title="@string/settings_crash_log" android:defaultValue="true"
+            android:summary="@string/settings_crash_log_summary" />
+ 	    
+ 	</PreferenceCategory>
+ 	
+</PreferenceScreen>

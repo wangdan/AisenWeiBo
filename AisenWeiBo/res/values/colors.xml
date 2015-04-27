@@ -25,6 +25,8 @@
 
     <color name="bg_emotion">#ff313740</color>
 
+    <color name="chglib_background_default_divider_color">#DADADC</color>
+
     <integer-array name="gplus_colors">
         <item>@color/gplus_color_1</item>
         <item>@color/gplus_color_2</item>

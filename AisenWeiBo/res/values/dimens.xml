@@ -26,6 +26,8 @@
     <dimen name="normal_gif_webview_margin_left">40dp</dimen>
     <dimen name="normal_gif_webview_margin_right">40dp</dimen>
 
+    <dimen name="listPreferredItemHeightSmall">48dp</dimen>
+
     <!--字体大小-->
     <dimen name="sp_12">12sp</dimen>
     <dimen name="sp_13">13sp</dimen>
