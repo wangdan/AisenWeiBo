@@ -408,6 +408,16 @@ public class AppSettings {
         return Integer.parseInt(prefs.getString("pSwipebackEdgeMode", "0"));
     }
 
+    /**
+     * 首页fab按钮功能
+     *
+     * @return
+     */
+    public static int getFabBtnType() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
+        return Integer.parseInt(prefs.getString("pFabType", "0"));
+    }
+
     public static String getThemeColor() {
         return SettingUtility.getPermanentSettingAsStr("com.m.Theme_color", "");
     }

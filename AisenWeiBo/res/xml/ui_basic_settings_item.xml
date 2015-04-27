@@ -33,10 +33,13 @@
     <PreferenceCategory android:title="@string/category_operation">
 		<org.aisen.weibo.sina.ui.widget.AisenListPreference android:key="pSwipebackEdgeMode" android:entries="@array/swipebackEdgeMode" android:entryValues="@array/prefValues"
 			android:dialogTitle="@string/settings_dt_swipeback_edgemode" android:title="@string/settings_swipeback_edgemode" android:defaultValue="0" />
-		
-		<CheckBoxPreference android:key="pAutoRefresh" android:title="@string/settings_list_auto_update"
-		    android:defaultValue="true" android:summary="@string/settings_list_auto_update_summary" />
-	 	
+
+        <org.aisen.weibo.sina.ui.widget.AisenListPreference android:key="pFabType" android:entries="@array/fabTypes" android:entryValues="@array/prefValues"
+                                                            android:dialogTitle="@string/settings_fab_type" android:title="@string/settings_fab_type" android:defaultValue="0" />
+
+        <CheckBoxPreference android:key="pAutoRefresh" android:title="@string/settings_list_auto_update"
+                            android:defaultValue="true" android:summary="@string/settings_list_auto_update_summary" />
+
 	 	<!-- <org.aisen.weibo.sina.ui.widget.AisenListPreference android:key="pRefreshViewType" android:entries="@array/pRefreshViewType" android:entryValues="@array/prefValues"
 			android:dialogTitle="@string/settings_dt_list_widget" android:title="@string/settings_list_widget" android:defaultValue="0" /> -->
 

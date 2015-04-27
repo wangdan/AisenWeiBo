@@ -1,11 +1,12 @@
 package org.aisen.weibo.sina.ui.fragment.settings;
 
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 
+import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.GravityEnum;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.m.common.context.GlobalContext;
 import com.m.common.utils.DateUtils;
 import com.m.common.utils.Logger;
@@ -13,6 +14,8 @@ import com.m.common.utils.SystemUtils;
 import com.m.network.task.TaskException;
 import com.m.network.task.WorkTask;
 import com.m.ui.fragment.ABaseFragment;
+
+import org.aisen.weibo.sina.R;
 
 import java.io.File;
 import java.text.DecimalFormat;
@@ -27,7 +30,8 @@ public class CacheClearFragment extends ABaseFragment implements OnPreferenceCli
 
 	private static final int RETAIN_TIME = 2 * 24 * 60 * 60 * 1000;
 	private Preference clearCachePref;
-	private ProgressDialog mProgressDialog;
+//	private ProgressDialog mProgressDialog;
+    private MaterialDialog materialDialog;
 	private long cacheSize = 0;
 	private String cachePath;
 	
@@ -48,23 +52,23 @@ public class CacheClearFragment extends ABaseFragment implements OnPreferenceCli
 	@Override
 	public boolean onPreferenceClick(Preference preference) {
 		if (clearCachePref.getKey().equals(preference.getKey())) {
-			new AlertDialog.Builder(getActivity()).setTitle("清理建议")
+			new AlertDialogWrapper.Builder(getActivity()).setTitle("清理建议")
 								.setMessage("【确定】将清理掉SD卡中所有的图片缓存，建议保留近期缓存节省流量开销")
-								.setNegativeButton("取消", null)
-								.setNeutralButton("确定", new DialogInterface.OnClickListener() {
-									
-									@Override
-									public void onClick(DialogInterface dialog, int which) {
-										clearCache(true);
-									}
-								})
-								.setPositiveButton("保留最新", new DialogInterface.OnClickListener() {
-									
-									@Override
-									public void onClick(DialogInterface dialog, int which) {
-										clearCache(false);
-									}
-								})
+								.setNeutralButton("取消", null)
+								.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        clearCache(true);
+                                    }
+                                })
+								.setNegativeButton("保留最新", new DialogInterface.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        clearCache(false);
+                                    }
+                                })
 								.show();
 		}
 		return true;
@@ -117,40 +121,42 @@ public class CacheClearFragment extends ABaseFragment implements OnPreferenceCli
 			protected void onProgressUpdate(String... values) {
 				super.onProgressUpdate(values);
 				
-				if (values != null && values.length > 0) {
+				if (values != null && values.length > 0 && materialDialog != null && getActivity() != null) {
 					int value = Integer.parseInt(values[0]);
-					
-					mProgressDialog.incrementProgressBy(value / 1024);
+
+
+                    materialDialog.incrementProgress(value / 1024);
+//                    if (value * 1.0f / 1024 / 1024 > 1)
+//                        materialDialog.setContent(String.format("%s M", new DecimalFormat("#.00").format(value * 1.0d / 1024 / 1024)));
+//                    else
+//                        materialDialog.setContent(String.format("%d Kb", value / 1024));
 				}
 			}
 			
 			protected void onFinished() {
-				if (mProgressDialog != null && mProgressDialog.isShowing())
-					mProgressDialog.dismiss();
+                if (materialDialog != null && materialDialog.isShowing())
+                    materialDialog.dismiss();
 			};
 			
 		}.execute();
-		mProgressDialog = new ProgressDialog(getActivity());
-		mProgressDialog.setIconAttribute(android.R.attr.alertDialogIcon);
-        mProgressDialog.setTitle("缓存清理中");
-        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        mProgressDialog.setMax(((int) (cacheSize / 1024)));
-        mProgressDialog.setCanceledOnTouchOutside(false);
-        mProgressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-			
-			@Override
-			public void onDismiss(DialogInterface arg0) {
-				task.cancel(true);
-				
-				calculateCacheFileSize();
-			}
-		});
-        mProgressDialog.setButton(DialogInterface.BUTTON_POSITIVE ,"取消", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
-				task.cancel(true);
-			}
-        });
-        mProgressDialog.show();
+
+        materialDialog = new MaterialDialog.Builder(getActivity())
+                                    .title(R.string.settings_cache_clear)
+//                                    .content(R.string.please_wait)
+                                    .contentGravity(GravityEnum.CENTER)
+                                    .dismissListener(new DialogInterface.OnDismissListener() {
+
+                                        @Override
+                                        public void onDismiss(DialogInterface dialog) {
+                                            task.cancel(true);
+
+                                            calculateCacheFileSize();
+                                        }
+
+                                    })
+                                    .positiveText(R.string.cancel)
+                                    .progress(false, ((int) (cacheSize / 1024)), true)
+                                    .show();
 	}
 	
 	private void calculateCacheFileSize() {

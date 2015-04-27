@@ -11,6 +11,7 @@
     <changelogversion versionName="5.0.1" changeDate="2015-04">
         <changelogtext>修复手动登录网页版微博时不能点赞的bug.</changelogtext>
         <changelogtext>修复双击操作栏不能刷新的问题.</changelogtext>
+        <changelogtext>新增Fab按钮功能设置.</changelogtext>
         <changelogtext>新增默认加载原图(流量会暴增，建议牛逼的WIFI才开启).</changelogtext>
         <changelogtext>修改为抽屉菜单全屏.</changelogtext>
         <changelogtext>更新相册列表的刷新控件.</changelogtext>

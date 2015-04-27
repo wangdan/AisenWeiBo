@@ -36,8 +36,8 @@ public class TimelineDefaultFragment extends ATimelineFragment implements AStrip
 	}
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
+    protected void onSaveDatas(Bundle outState) {
+//        super.onSaveDatas(outState);
     }
 
     @Override

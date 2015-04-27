@@ -1,7 +1,6 @@
 package org.aisen.weibo.sina.ui.fragment.timeline;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,10 +11,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.m.common.utils.ActivityHelper;
 import com.m.common.utils.ViewUtils;
 import com.m.component.container.FragmentContainerActivity;
@@ -30,7 +29,6 @@ import com.mobeta.android.dslv.DragSortListView;
 
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
-import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.db.AccountDB;
 import org.aisen.weibo.sina.support.utils.BaiduAnalyzeUtils;
@@ -84,7 +82,7 @@ public class GroupSortFragment extends ADragSortFragment<Group, Groups> {
 
         final Group group = getAdapterItems().get(position);
 
-        new AlertDialog.Builder(getActivity()).setTitle(group.getName())
+        new AlertDialogWrapper.Builder(getActivity()).setTitle(group.getName())
                                             .setItems(items, new DialogInterface.OnClickListener() {
 
                                                 @Override
@@ -159,7 +157,7 @@ public class GroupSortFragment extends ADragSortFragment<Group, Groups> {
 		if (!TextUtils.isEmpty(group))
 			editRemark.setText(group);
 		editRemark.setSelection(editRemark.getText().toString().length());
-		new AlertDialog.Builder(getActivity()).setTitle(R.string.group_create_group)
+		new AlertDialogWrapper.Builder(getActivity()).setTitle(R.string.group_create_group)
 							.setView(entryView)
 							.setNegativeButton(R.string.cancel, null)
 							.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
@@ -192,7 +190,7 @@ public class GroupSortFragment extends ADragSortFragment<Group, Groups> {
 		if (!TextUtils.isEmpty(rename))
 			editRemark.setText(rename);
 		editRemark.setSelection(editRemark.getText().toString().length());
-		new AlertDialog.Builder(getActivity()).setTitle(R.string.group_update_group_name)
+		new AlertDialogWrapper.Builder(getActivity()).setTitle(R.string.group_update_group_name)
 							.setView(entryView)
 							.setNegativeButton(R.string.cancel, null)
 							.setPositiveButton(R.string.update, new DialogInterface.OnClickListener() {
@@ -218,7 +216,7 @@ public class GroupSortFragment extends ADragSortFragment<Group, Groups> {
 	 * @param group
 	 */
 	private void destoryGroup(final Group group) {
-        new AlertDialog.Builder(getActivity())
+        new AlertDialogWrapper.Builder(getActivity())
                                 .setTitle(group.getName())
                                 .setMessage(R.string.group_del_group_confirm)
                                 .setNegativeButton(R.string.cancel, null)

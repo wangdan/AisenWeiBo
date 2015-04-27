@@ -9,18 +9,22 @@
         <!--app:showAsAction="always" android:orderInCategory="1"/>-->
 
         <item
-            android:id="@+id/friendGroups" android:orderInCategory="2" android:title="@string/timeline_groups"
+            android:id="@+id/publish" android:orderInCategory="2" android:title="@string/publish"
+            app:showAsAction="never" android:icon="@drawable/ic_menu_edit_white" />
+
+        <item
+            android:id="@+id/friendGroups" android:orderInCategory="3" android:title="@string/timeline_groups"
             app:showAsAction="never"/>
 
         <item
-            android:id="@+id/feedback" android:orderInCategory="3" android:showAsAction="never"
+            android:id="@+id/feedback" android:orderInCategory="4" android:showAsAction="never"
             android:title="@string/main_feedback"/>
 
         <item
-            android:id="@+id/about" android:orderInCategory="4" android:showAsAction="never" android:title="@string/title_about"/>
+            android:id="@+id/about" android:orderInCategory="5" android:showAsAction="never" android:title="@string/title_about"/>
 
         <item
-            android:id="@+id/exitapp" android:orderInCategory="5" android:showAsAction="never" android:title="@string/exitapp"/>
+            android:id="@+id/exitapp" android:orderInCategory="6" android:showAsAction="never" android:title="@string/exitapp"/>
     </group>
 
     <!--<group-->

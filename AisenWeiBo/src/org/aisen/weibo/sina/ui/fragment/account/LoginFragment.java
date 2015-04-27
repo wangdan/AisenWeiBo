@@ -1,7 +1,6 @@
 package org.aisen.weibo.sina.ui.fragment.account;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +17,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
 
+import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.m.common.context.GlobalContext;
 import com.m.common.setting.SettingUtility;
 import com.m.common.utils.FileUtils;
@@ -343,7 +343,7 @@ public class LoginFragment extends ABaseFragment {
             super.onFailure(exception);
 
             if ("21324".equals(exception.getCode()) && getActivity() != null) {
-                new AlertDialog.Builder(getActivity()).setTitle(R.string.remind)
+                new AlertDialogWrapper.Builder(getActivity()).setTitle(R.string.remind)
                         .setMessage(R.string.account_illegal_app)
                         .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
 

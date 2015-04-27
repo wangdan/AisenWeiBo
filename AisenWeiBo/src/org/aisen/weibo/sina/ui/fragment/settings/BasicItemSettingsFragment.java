@@ -52,6 +52,7 @@ import java.io.File;
 
 	private CheckBoxPreference pAutoRefresh;// 列表自动刷新
 	private ListPreference pSwipebackEdgeMode;// 手势返回方向
+    private ListPreference pFabType;// 首页fab按钮功能
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -103,6 +104,11 @@ import java.io.File;
 		pSwipebackEdgeMode.setOnPreferenceChangeListener(this);
 		value = Integer.parseInt(prefs.getString("pSwipebackEdgeMode", "0"));
 		setListSetting(value, R.array.swipebackEdgeMode, pSwipebackEdgeMode);
+
+        pFabType = (ListPreference) findPreference("pFabType");
+        pFabType.setOnPreferenceChangeListener(this);
+        value = Integer.parseInt(prefs.getString("pFabType", "0"));
+        setListSetting(value, R.array.fabTypes, pFabType);
 	}
 	
 	@Override
@@ -154,6 +160,9 @@ import java.io.File;
 				
 			}, 500);
 		}
+        else if ("pFabType".equals(preference.getKey())) {
+            setListSetting(Integer.parseInt(newValue.toString()), R.array.fabTypes, pFabType);
+        }
 		return true;
 	}
 	

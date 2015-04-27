@@ -26,6 +26,7 @@ import com.m.common.utils.SystemBarUtils;
 import com.m.support.inject.ViewInject;
 import com.m.ui.activity.basic.BaseActivity;
 import com.m.ui.fragment.ABaseFragment;
+import com.m.ui.fragment.ARefreshFragment;
 import com.m.ui.fragment.AStripTabsFragment;
 import com.melnykov.fab.FloatingActionButton;
 
@@ -77,8 +78,10 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
 
     private MenuFragment menuFragment;
 
-    @ViewInject(id = R.id.fab, click = "newPublish")
+    @ViewInject(id = R.id.fab, click = "fabBtnCLicked")
     private FloatingActionButton btnFab;
+
+    private int fabType = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,8 +163,12 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
             if (lastSelectedMenu.getType().equals("1"))
                 onMenuSelected(lastSelectedMenu, true, null);
         }
-
 //        registerHideableHeaderView(getToolbar());
+
+        // 更新FAB的颜色
+        btnFab.setColorNormal(AisenUtils.getThemeColor(this));
+        btnFab.setColorPressed(AisenUtils.getThemeColor(this));
+        btnFab.setColorRipple(AisenUtils.getThemeColor(this));
     }
 
     @Override
@@ -269,6 +276,8 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
         lastSelectedMenu = menu;
         menuFragment.setSelectedMenu(menu);
 
+        setFabType();
+
         return false;
     }
 
@@ -294,10 +303,28 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
         if (!AppContext.isLogedin())
             finish();
 
-        // 更新FAB的颜色
-        btnFab.setColorNormal(AisenUtils.getThemeColor(this));
-        btnFab.setColorPressed(AisenUtils.getThemeColor(this));
-        btnFab.setColorRipple(AisenUtils.getThemeColor(this));
+        setFabType();
+    }
+
+    private void setFabType() {
+        if (fabType != AppSettings.getFabBtnType()) {
+            fabType = AppSettings.getFabBtnType();
+            invalidateOptionsMenu();
+            if (fabType == 0) {
+                btnFab.setImageResource(R.drawable.ic_menu_edit_white);
+            }
+            else {
+                btnFab.setImageResource(R.drawable.ic_refresh_light);
+            }
+        }
+        btnFab.setVisibility(canFragmentRefresh() ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    private boolean canFragmentRefresh() {
+        int menu = Integer.parseInt(lastSelectedMenu.getType());
+
+        return menu == 1 || menu == 2 ||
+                menu == 3;
     }
 
     @Override
@@ -310,8 +337,19 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
         }
     }
 
-    void newPublish(View v) {
-        PublishActivity.publishStatus(this, null);
+    void fabBtnCLicked(View v) {
+        if (AppSettings.getFabBtnType() == 0) {
+            PublishActivity.publishStatus(this, null);
+        }
+        else {
+            Fragment fragment = getFragmentManager().findFragmentByTag(FRAGMENT_TAG);
+            if (fragment != null && fragment instanceof AStripTabsFragment) {
+                fragment = ((AStripTabsFragment) fragment).getCurrentFragment();
+                if (fragment != null && fragment instanceof ARefreshFragment) {
+                    ((ARefreshFragment) fragment).setRefreshingRequestData();
+                }
+            }
+        }
     }
 
     private boolean canFinish = false;
@@ -473,6 +511,8 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
     public boolean onPrepareOptionsMenu(Menu menu) {
         menu.findItem(R.id.friendGroups).setVisible(false);
 
+        menu.findItem(R.id.publish).setVisible(AppSettings.getFabBtnType() == 1);
+
         // 显示的是首页
         if (lastSelectedMenu != null) {
             if (lastSelectedMenu.getType().equals("1"))
@@ -508,9 +548,12 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
             // 搜索用户或者微博
 //        else if (item.getItemId() == R.id.search)
 //            SearchActivity.launch(this);
-            // 退出
+        // 退出
         else if (item.getItemId() == R.id.exitapp)
             finish();
+        // 新微博
+        else if (item.getItemId() == R.id.publish)
+            PublishActivity.publishStatus(this, null);
 
         return super.onOptionsItemSelected(item);
     }

@@ -26,6 +26,7 @@
     <string name="main_search">微博用户搜索</string>
     <string name="exitapp">退出</string>
     <string name="group_add">新增分组</string>
+    <string name="publish">写微薄</string>
 
     <!-- 标题 -->
     <string name="timeline_all">全部微博</string>
@@ -92,6 +93,7 @@
     <string name="update_faild">更新失败</string>
     <string name="processing">正在处理</string>
     <string name="to_browser">浏览器打开</string>
+    <string name="please_wait">请稍等</string>
 
     <!-- 发布通知 -->
     <string name="notifer_from_aisen">来自Aisen</string>
@@ -442,6 +444,7 @@
     <string name="category_other">其他</string>
     <string name="settings_pic_path">图片保存路径</string>
     <string name="settings_mention_history">清理@好友历史记录</string>
+    <string name="settings_fab_type">首页Fab按钮功能</string>
 
     <!-- 通知设置 -->
     <string name="title_notification">通知中心</string>
@@ -474,6 +477,7 @@
     <string name="settings_pic_mode">图片加载模式</string>
     <string name="settings_dt_status_count">微博每次加载数量</string>
     <string name="settings_dt_cmt_count">评论每次加载数量</string>
+    <string name="settings_cache_clear">清理中</string>
 
     <!-- 版本信息设置 -->
     <string name="settings_version_detail">版本信息</string>
@@ -563,6 +567,12 @@
     <string-array name="swipebackEdgeMode">
         <item>向左</item>
         <item>向右</item>
+        <!--<item>全部</item>-->
+    </string-array>
+
+    <string-array name="fabTypes">
+        <item>发微博</item>
+        <item>刷新</item>
         <!--<item>全部</item>-->
     </string-array>
 
