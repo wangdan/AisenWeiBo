@@ -38,8 +38,8 @@ public class TimelineGroupsFragment extends ATimelineFragment implements AStripT
 	}
 
     @Override
-    protected void onSaveDatas(Bundle outState) {
-//        super.onSaveDatas(outState);
+    public void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
     }
 
     @Override

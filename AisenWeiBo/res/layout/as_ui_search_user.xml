@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <android.support.v7.widget.SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:layout_marginBottom="@dimen/comm_h_gap" android:layout_marginLeft="@dimen/comm_h_gap"
+        android:layout_marginRight="@dimen/comm_h_gap" android:layout_marginTop="@dimen/comm_v_gap"/>
+
+    <RelativeLayout
+        android:id="@id/layoutContent" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical"
+        android:visibility="gone">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout" android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ListView
+                android:id="@id/listView"
+                android:layout_width="fill_parent" android:layout_height="fill_parent" android:cacheColorHint="#00000000" android:clipChildren="false"
+                android:clipToPadding="false" android:divider="@null" android:dividerHeight="0dip" android:fadingEdge="none" android:fastScrollEnabled="false"
+                android:footerDividersEnabled="true" android:headerDividersEnabled="false"
+                android:listSelector="?attr/selectableItemBackground" android:smoothScrollbar="true"/>
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@id/layoutEmpty"
+        android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center_horizontal"
+        android:orientation="vertical" android:paddingTop="@dimen/comm_v_margin">
+
+        <TextView android:id="@+id/txtEmpty"
+            style="@style/TextSubhead" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_marginLeft="20dip" android:layout_marginRight="20dip"
+            android:lineSpacingExtra="10dip" android:text="@string/search_search_fuck"/>
+    </LinearLayout>
+
+</LinearLayout>

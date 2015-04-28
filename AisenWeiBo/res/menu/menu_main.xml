@@ -4,9 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <group
         android:id="@+id/mainMenus" android:orderInCategory="100">
-        <!--<item-->
-        <!--android:id="@+id/search" android:icon="@drawable/ic_menu_search" android:title="@string/main_search"-->
-        <!--app:showAsAction="always" android:orderInCategory="1"/>-->
+        <item
+        android:id="@+id/search" android:icon="@drawable/ic_menu_search" android:title="@string/main_search"
+        app:showAsAction="always" android:orderInCategory="1">
+            <menu >
+                <item android:id="@+id/search_user" android:title="@string/search_user"/>
+                <item android:id="@+id/search_status" android:title="@string/search_status"/>
+            </menu>
+        </item>
 
         <item
             android:id="@+id/publish" android:orderInCategory="2" android:title="@string/publish"

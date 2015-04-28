@@ -23,7 +23,9 @@
     <string name="download_again">重新下载</string>
     <string name="main_feedback">意见反馈</string>
     <string name="timeline_groups">好友分组</string>
-    <string name="main_search">微博用户搜索</string>
+    <string name="main_search">搜索</string>
+    <string name="search_user">搜人</string>
+    <string name="search_status">搜微博</string>
     <string name="exitapp">退出</string>
     <string name="group_add">新增分组</string>
     <string name="publish">写微薄</string>
@@ -354,12 +356,17 @@
 
     <!-- 搜索 -->
     <string name="title_search">搜索</string>
+    <string name="title_search_user">搜索用户</string>
+    <string name="title_search_status">搜索微博</string>
+    <string name="search_user_hint">昵称</string>
+    <string name="search_user_remark">用户昵称</string>
     <string name="search_search_user">用户</string>
     <string name="search_search_status">微博</string>
     <string name="search_clear_search_remind">确定清空历史记录吗？</string>
     <string name="hint_topics">话题关键字</string>
+    <string name="searh_topic_empty">没有相关微博</string>
     <string name="hint_user_name">用户名称</string>
-    <string name="title_search_user">用户搜索</string>
+    <!--<string name="title_search_user">用户搜索</string>-->
     <string name="search_search_remind">搜索提示</string>
     <string name="search_search_fuck">根据新浪微博开放平台政策，搜索用户的范围是：v用户、粉丝500以上的达人、粉丝600以上的普通用户</string>
     <string name="search_hint_ac">用户名称或话题微博</string>
@@ -429,7 +436,7 @@
     <string name="category_color_theme_item">主题</string>
     <string name="category_read">阅读</string>
     <string name="settings_text_size">字体大小</string>
-    <string name="settings_md_colors">Metrail Design Colors</string>
+    <string name="settings_md_colors">Material Design Colors</string>
     <string name="settings_custom_colors">自定义</string>
     <string name="settings_remark">显示备注名</string>
     <string name="settings_load_origpic">默认加载原图</string>

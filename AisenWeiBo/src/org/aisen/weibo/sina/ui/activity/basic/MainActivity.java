@@ -41,6 +41,8 @@ import org.aisen.weibo.sina.ui.fragment.basic.MenuGenerator;
 import org.aisen.weibo.sina.ui.fragment.comment.CommentTabsFragment;
 import org.aisen.weibo.sina.ui.fragment.draft.DraftFragment;
 import org.aisen.weibo.sina.ui.fragment.mention.MentionTabsFragment;
+import org.aisen.weibo.sina.ui.fragment.search.SearchTopicsFragment;
+import org.aisen.weibo.sina.ui.fragment.search.SearchUserFragment;
 import org.aisen.weibo.sina.ui.fragment.settings.AboutWebFragment;
 import org.aisen.weibo.sina.ui.fragment.settings.SettingsPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.GroupSortFragment;
@@ -496,14 +498,6 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-//        SubMenu subMenu = menu.addSubMenu(R.id.mainMenus, 333, 1, getString(R.string.main_search));
-//        subMenu.setIcon(R.drawable.ic_menu_search);
-//        subMenu.set
-//        for (int i = 0; i < AppContext.getGroups().getLists().size(); i++) {
-//            Group group = AppContext.getGroups().getLists().get(i);
-//            subMenu.add(100, i, i, group.getName());
-//        }
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -554,6 +548,12 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
         // 新微博
         else if (item.getItemId() == R.id.publish)
             PublishActivity.publishStatus(this, null);
+        // 搜人
+        else if (item.getItemId() == R.id.search_user)
+            SearchUserFragment.launch(this);
+        // 搜微博
+        else if (item.getItemId() == R.id.search_status)
+            SearchTopicsFragment.launch(this);
 
         return super.onOptionsItemSelected(item);
     }
