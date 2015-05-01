@@ -3,14 +3,15 @@ package org.aisen.weibo.sina.ui.fragment.basic;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.m.common.utils.Utils;
 import com.m.ui.fragment.ASwipeRefreshListFragment;
 
 import org.aisen.weibo.sina.R;
+import org.aisen.weibo.sina.ui.activity.basic.MainActivity;
 import org.aisen.weibo.sina.ui.fragment.comment.CommentsFragment;
+import org.aisen.weibo.sina.ui.fragment.friendship.AFriendshipFragment;
 import org.aisen.weibo.sina.ui.fragment.mention.MentionCommentsFragment;
 import org.aisen.weibo.sina.ui.fragment.mention.MentionTimelineFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineDefaultFragment;
@@ -72,11 +73,14 @@ public abstract class AWeiboRefreshListFragment<T extends Serializable, Ts exten
     }
 
     private boolean isInMain() {
-        return this instanceof TimelineDefaultFragment||
+        boolean isMainFragment = this instanceof TimelineDefaultFragment||
                 this instanceof TimelineGroupsFragment ||
                 this instanceof MentionCommentsFragment ||
                 this instanceof MentionTimelineFragment ||
-                this instanceof CommentsFragment;
+                this instanceof CommentsFragment ||
+                this instanceof AFriendshipFragment;
+
+        return isMainFragment && getActivity() instanceof MainActivity;
     }
 
 }

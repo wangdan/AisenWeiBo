@@ -6,6 +6,7 @@ import android.view.View;
 import com.m.ui.activity.basic.BaseActivityHelper;
 
 import org.aisen.weibo.sina.base.AppSettings;
+import org.aisen.weibo.sina.support.utils.ThemeUtils;
 import org.aisen.weibo.sina.ui.widget.swipeback.SwipeBackActivityBase;
 import org.aisen.weibo.sina.ui.widget.swipeback.SwipeBackActivityHelper;
 import org.aisen.weibo.sina.ui.widget.swipeback.SwipeBackLayout;
@@ -116,6 +117,11 @@ public class AisenActivityHelper extends BaseActivityHelper implements SwipeBack
                     break;
             }
         }
+    }
+
+    @Override
+    protected int configTheme() {
+        return ThemeUtils.themeArr[AppSettings.getThemeColor()][0];
     }
 
     public interface EnableSwipeback {

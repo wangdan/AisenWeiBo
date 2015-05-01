@@ -5,7 +5,7 @@
 
         <Preference android:key="pTheme" android:title="@string/settings_md_colors" />
 
-        <Preference android:key="pThemeCustom" android:title="@string/settings_custom_colors" />
+        <!--<Preference android:key="pThemeCustom" android:title="@string/settings_custom_colors" />-->
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_read">

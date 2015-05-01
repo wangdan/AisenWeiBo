@@ -35,11 +35,13 @@ import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.support.bean.MenuBean;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.support.utils.ThemeUtils;
 import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
 import org.aisen.weibo.sina.ui.fragment.basic.MenuFragment;
 import org.aisen.weibo.sina.ui.fragment.basic.MenuGenerator;
 import org.aisen.weibo.sina.ui.fragment.comment.CommentTabsFragment;
 import org.aisen.weibo.sina.ui.fragment.draft.DraftFragment;
+import org.aisen.weibo.sina.ui.fragment.friendship.FriendshipTabsFragment;
 import org.aisen.weibo.sina.ui.fragment.mention.MentionTabsFragment;
 import org.aisen.weibo.sina.ui.fragment.search.SearchTopicsFragment;
 import org.aisen.weibo.sina.ui.fragment.search.SearchUserFragment;
@@ -174,6 +176,11 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
     }
 
     @Override
+    protected int configTheme() {
+        return ThemeUtils.themeArr[AppSettings.getThemeColor()][1];
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
@@ -252,7 +259,11 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
         case 3:
             fragment = CommentTabsFragment.newInstance();
             break;
-            // 设置
+        // 朋友关系
+        case 4:
+            fragment = FriendshipTabsFragment.newInstance();
+            break;
+        // 设置
         case 5:
             closeDrawer();
 

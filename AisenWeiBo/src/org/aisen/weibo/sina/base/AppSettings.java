@@ -9,6 +9,7 @@ import com.m.common.utils.ActivityHelper;
 import com.m.common.utils.SystemUtils;
 
 import org.aisen.weibo.sina.R;
+import org.aisen.weibo.sina.support.utils.ThemeUtils;
 
 /**
  * Created by wangdan on 15/4/12.
@@ -418,12 +419,12 @@ public class AppSettings {
         return Integer.parseInt(prefs.getString("pFabType", "0"));
     }
 
-    public static String getThemeColor() {
-        return SettingUtility.getPermanentSettingAsStr("com.m.Theme_color", "");
+    public static int getThemeColor() {
+        return ActivityHelper.getIntShareData("Theme_index", 8);
     }
 
-    public static void setThemeColor(String color) {
-        SettingUtility.setPermanentSetting("com.m.Theme_color", color);
+    public static void setThemeColor(int theme) {
+        ActivityHelper.putIntShareData("Theme_index", theme);
     }
 
 }

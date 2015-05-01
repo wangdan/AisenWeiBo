@@ -23,6 +23,8 @@
     <color name="gplus_color_3">#427fed</color>
     <color name="gplus_color_4">#b23424</color>
 
+    <color name="bg_followers_counter">#ff5656</color>
+
     <color name="bg_emotion">#ff313740</color>
 
     <color name="chglib_background_default_divider_color">#DADADC</color>

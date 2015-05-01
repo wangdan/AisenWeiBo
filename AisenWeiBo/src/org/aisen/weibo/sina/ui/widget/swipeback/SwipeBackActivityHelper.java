@@ -23,7 +23,8 @@ public class SwipeBackActivityHelper {
 	@SuppressWarnings("deprecation")
 	public void onActivityCreate() {
 		mActivity.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-		mActivity.getWindow().getDecorView().setBackgroundDrawable(null);
+        // 这行代码在5.0会让主题失效
+//		mActivity.getWindow().getDecorView().setBackgroundDrawable(null);
 		mSwipeBackLayout = (SwipeBackLayout) LayoutInflater.from(mActivity).inflate(R.layout.as_swipeback_layout, null);
 		mSwipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {
 			@Override

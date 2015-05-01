@@ -18,4 +18,21 @@ verified_type的字段：
 
 http://blog.sina.com.cn/s/blog_64165bf5010180hw.html
 
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string-array name="bm_tails">
+		<item>Weico.Android</item>
+		<item>微格iPhone客户端</item>
+		<item>随享iPhone</item>
+		<item>Weico.iPhone</item>
+		<item>WeicoPro</item>
+	</string-array>
+	<string-array name="bm_keys">
+		<item>211160679|63b64d531b98c2dbff2443816f274dd3</item>
+		<item>2027761570|5042214816d14b2d9e8ae8255f96180d</item>
+		<item>31024382|25c3e6b5763653d1e5b280884b45c51f</item>
+		<item>82966982|72d4545a28a46a6f329c4f2b1e949e6a</item>
+		<item>2323547071|16ed80cc77fea11f7f7e96eca178ada3</item>
+	</string-array>
+</resources>
 

@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.m.ui.activity.basic.BaseActivity;
-
 public class BasePreferenceFragment extends PreferenceFragment {
 
 	@Override
@@ -27,5 +25,5 @@ public class BasePreferenceFragment extends PreferenceFragment {
 		
 		listPreference.setSummary(valueTitleArr[value]);
 	}
-	
+
 }

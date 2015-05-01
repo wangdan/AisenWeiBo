@@ -14,6 +14,12 @@
             android:layout_marginTop="16dip" android:src="@drawable/ic_launcher" app:border_color="@color/comm_white"
             app:border_width="2dp"/>
 
+        <TextView
+            android:id="@+id/txtFollowersNewHint" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_alignRight="@id/imgPhoto" android:layout_alignTop="@id/imgPhoto" android:background="@drawable/menu_followers_counter" android:gravity="center"
+            android:minWidth="18dip" android:text="10"
+            android:textColor="@color/comm_white" android:textSize="12sp"/>
+
         <LinearLayout
             android:id="@+id/btnAccount" android:layout_width="match_parent" android:layout_height="35dip"
             android:layout_alignParentBottom="true" android:layout_marginBottom="8dip"

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 
 import com.m.common.utils.ActivityHelper;
-import com.m.common.utils.Logger;
 import com.m.component.container.FragmentArgs;
 import com.m.component.container.FragmentContainerActivity;
 import com.m.ui.activity.basic.BaseActivity;
@@ -14,8 +13,7 @@ import com.m.ui.fragment.AStripTabsFragment;
 
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
-import org.aisen.weibo.sina.support.utils.BaiduAnalyzeUtils;
-import org.aisen.weibo.sina.ui.widget.AisenTextView;
+import org.aisen.weibo.sina.support.utils.ThemeUtils;
 
 import java.util.ArrayList;
 
@@ -33,6 +31,8 @@ public class SettingsPagerFragment extends AStripTabsFragment<AStripTabsFragment
 
 		FragmentContainerActivity.launch(from, SettingsPagerFragment.class, args);
 	}
+
+    private int theme = AppSettings.getThemeColor();
 
     @Override
 	protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
@@ -85,28 +85,5 @@ public class SettingsPagerFragment extends AStripTabsFragment<AStripTabsFragment
 
         ActivityHelper.putIntShareData("org.aisen.weibo.sina.Setting_pager", position);
     }
-
-    // 设置主题颜色
-	public static void setThemeColor(Activity owner, String color) {
-//		Logger.w(color);
-//    	AppSettings.setThemeColor(color);
-//
-//    	SettingsPagerFragment settingsFragment = (SettingsPagerFragment) owner.getFragmentManager()
-//    															.findFragmentByTag(FragmentContainerActivity.FRAGMENT_TAG);
-//    	settingsFragment.setTabStrip();
-//
-//		BaseActivity activity = (BaseActivity) owner;
-//		WallpaperViewGroup wallpaper = (WallpaperViewGroup) activity.getRootView();
-//		wallpaper.setWallpaper();
-//
-//		try {
-//			AisenTextView.stringMemoryCache.evictAll();
-//		} catch (Exception e) {
-//		}
-//
-//		BaiduAnalyzeUtils.onEvent("themecolor_setting", SystemUtility.getVersionName(owner));
-
-
-	}
 
 }

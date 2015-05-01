@@ -13,13 +13,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.m.common.utils.SystemBarUtils;
 import com.m.component.bitmaploader.BitmapLoader;
 import com.m.component.bitmaploader.core.ImageConfig;
 import com.m.component.bitmaploader.display.DefaultDisplayer;
@@ -40,6 +37,7 @@ import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
 import org.aisen.weibo.sina.ui.activity.profile.UserProfileActivity;
 import org.aisen.weibo.sina.ui.fragment.basic.BizFragment;
+import org.aisen.weibo.sina.ui.fragment.friendship.FriendshipTabsFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineFavoritesFragment;
 import org.aisen.weibo.sina.ui.widget.ProfileScrollView;
 import org.sina.android.SinaSDK;
@@ -278,11 +276,11 @@ public class UserProfilePagerFragment extends AStripTabsFragment<AStripTabsFragm
     public void onClick(View v) {
         // 关注
         if (v.getId() == R.id.txtFriendsCounter) {
-//            FriendshipPagerProxy.launch(getActivity(), mUserBean, 0);
+            FriendshipTabsFragment.launch(getActivity(), mUserBean, 0);
         }
         // 粉丝
         else if (v.getId() == R.id.txtFollowersCounter) {
-//            FriendshipPagerProxy.launch(getActivity(), mUserBean, 1);
+            FriendshipTabsFragment.launch(getActivity(), mUserBean, 1);
         }
     }
 

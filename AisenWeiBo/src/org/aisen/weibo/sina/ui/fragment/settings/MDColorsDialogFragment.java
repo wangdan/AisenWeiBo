@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -16,10 +14,12 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.m.ui.activity.basic.BaseActivity;
 import com.m.ui.widget.CircleImageView;
 
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
+import org.aisen.weibo.sina.support.utils.ThemeUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,8 +41,6 @@ public class MDColorsDialogFragment extends DialogFragment implements OnItemClic
     	MDColorsDialogFragment dialogFragment = new MDColorsDialogFragment();
     	dialogFragment.show(context.getFragmentManager(), "DMColorsDialogFragment");
 	}
-	
-	private String[] colors;
 	
 	private Map<String, ColorDrawable> colorMap = new HashMap<String, ColorDrawable>();
 	
@@ -66,12 +64,12 @@ public class MDColorsDialogFragment extends DialogFragment implements OnItemClic
 
 		@Override
 		public int getCount() {
-			return getColors().length;
+			return ThemeUtils.themeColorArr.length;
 		}
 
 		@Override
 		public Object getItem(int position) {
-			return getColors()[position];
+			return ThemeUtils.themeColorArr[position];
 		}
 
 		@Override
@@ -84,37 +82,35 @@ public class MDColorsDialogFragment extends DialogFragment implements OnItemClic
 			if (convertView == null)
 				convertView = View.inflate(getActivity(), R.layout.as_item_mdcolors, null);
 
-			String color = getColors()[position];
-			if (!colorMap.containsKey(color))
-				colorMap.put(color, new ColorDrawable(Color.parseColor(color)));
-			
+			if (!colorMap.containsKey(String.valueOf(position)))
+				colorMap.put(String.valueOf(position), new ColorDrawable(getResources().getColor(ThemeUtils.themeColorArr[position])));
+
 			CircleImageView imgColor = (CircleImageView) convertView.findViewById(R.id.imgColor);
-			ColorDrawable colorDrawable = colorMap.get(color);
+			ColorDrawable colorDrawable = colorMap.get(String.valueOf(position));
 			imgColor.setImageDrawable(colorDrawable);
 			
 			View imgSelected = convertView.findViewById(R.id.imgSelected);
-			imgSelected.setVisibility(!TextUtils.isEmpty(AppSettings.getThemeColor()) &&
-											AppSettings.getThemeColor().indexOf(getColors()[position]) != -1 ? View.VISIBLE : View.GONE);
+			imgSelected.setVisibility(AppSettings.getThemeColor() == position ? View.VISIBLE : View.GONE);
 			
 			return convertView;
 		}
 		
 	}
 	
-	String[] getColors() {
-		if (colors == null)
-			colors = getResources().getStringArray(R.array.metrail_design_colors);
-		
-		return colors;
-	}
-
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		String color = getColors()[position];
+        if (position == AppSettings.getThemeColor()) {
+            dismiss();
 
-        AppSettings.setThemeColor(color);
+            return;
+        }
+
+        AppSettings.setThemeColor(position);
 
     	dismiss();
+
+        if (getActivity() instanceof BaseActivity)
+            ((BaseActivity) getActivity()).reload();
 	}
 	
 }

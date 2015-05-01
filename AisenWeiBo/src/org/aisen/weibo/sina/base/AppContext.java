@@ -111,4 +111,8 @@ public class AppContext {
     public static AccessToken getAdvancedToken() {
         return advancedToken;
     }
+
+    public static void setAdvancedToken(AccessToken token) {
+        advancedToken = token;
+    }
 }

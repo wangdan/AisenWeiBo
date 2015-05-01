@@ -41,6 +41,8 @@ import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
 import org.aisen.weibo.sina.sys.service.UnreadService;
 import org.aisen.weibo.sina.ui.activity.basic.MainActivity;
 import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
+import org.sina.android.SinaSDK;
+import org.sina.android.bean.Groups;
 import org.sina.android.bean.WeiBoUser;
 
 import java.util.ArrayList;
@@ -71,6 +73,8 @@ public class MenuFragment extends AListFragment<MenuBean, ArrayList<MenuBean>> {
 
     private View profileHeader;
 
+    TextView txtFollowersNewHint;
+
     @Override
     protected int inflateContentView() {
         return R.layout.as_ui_menu;
@@ -87,17 +91,19 @@ public class MenuFragment extends AListFragment<MenuBean, ArrayList<MenuBean>> {
     }
 
     @Override
-    public void setInitRefreshView(AbsListView refreshView, Bundle savedInstanceSate) {
+    protected void setInitRefreshView(AbsListView refreshView, Bundle savedInstanceSate) {
         super.setInitRefreshView(refreshView, savedInstanceSate);
 
         profileHeader = View.inflate(getActivity(), R.layout.as_lay_leftmenu, null);
 
+        txtFollowersNewHint = (TextView) profileHeader.findViewById(R.id.txtFollowersNewHint);
+
         if (Build.VERSION.SDK_INT >= 19) {
             ViewGroup rootProfile = (ViewGroup) profileHeader.findViewById(R.id.layProfile);
             rootProfile.setPadding(rootProfile.getPaddingLeft(),
-                                    SystemBarUtils.getStatusBarHeight(getActivity()),
-                                    rootProfile.getPaddingRight(),
-                                    rootProfile.getPaddingBottom());
+                    SystemBarUtils.getStatusBarHeight(getActivity()),
+                    rootProfile.getPaddingRight(),
+                    rootProfile.getPaddingBottom());
         }
 
         View btnAccounts = profileHeader.findViewById(R.id.btnAccount);
@@ -112,9 +118,7 @@ public class MenuFragment extends AListFragment<MenuBean, ArrayList<MenuBean>> {
     protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
         super.layoutInit(inflater, savedInstanceSate);
 
-        getListView().setOnItemClickListener(this);
-
-        setItems(MenuGenerator.generateMenus());
+        addItems(MenuGenerator.generateMenus());
 
         if (savedInstanceSate == null) {
             int index = getListView().getHeaderViewsCount();
@@ -186,8 +190,15 @@ public class MenuFragment extends AListFragment<MenuBean, ArrayList<MenuBean>> {
 
         getAdapter().notifyDataSetChanged();
 
+        setUnreadFollowers();
+
         if (AppContext.isLogedin())
             new RefreshDraftTask().execute();
+
+        long refresh = 3 * 60 * 60 * 1000;
+        refresh = 30 * 1000;
+        if (mRefreshTask == null || System.currentTimeMillis() - mRefreshTask.time >= refresh)
+            new RefreshTask().execute();
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(UnreadService.ACTION_UNREAD_CHANGED);
@@ -208,7 +219,7 @@ public class MenuFragment extends AListFragment<MenuBean, ArrayList<MenuBean>> {
         public void onReceive(Context context, Intent intent) {
             if (intent != null && !TextUtils.isEmpty(intent.getAction())) {
                 if (UnreadService.ACTION_UNREAD_CHANGED.equals(intent.getAction())) {
-                    getAdapter().notifyDataSetChanged();
+                    setUnreadFollowers();
                 }
                 else if (PublishManager.ACTION_PUBLISH_CHANNGED.equals(intent.getAction())) {
                     new RefreshDraftTask().execute();
@@ -287,7 +298,12 @@ public class MenuFragment extends AListFragment<MenuBean, ArrayList<MenuBean>> {
         @Override
         public void onClick(View v) {
             if (v.getId() == R.id.imgPhoto) {
-//                UserProfileFragment.launch(getActivity(), AppContext.getUser());
+//                if (txtFollowersNewHint != null && txtFollowersNewHint.getVisibility() == View.VISIBLE) {
+                onMenuClicked(MenuGenerator.generateMenu("4"), v);
+                ((MainActivity) getActivity()).closeDrawer();
+//            }
+//                else
+//                    UserProfilePagerFragment.launch(getActivity(), AppContext.getUser());;
             }
         }
     };
@@ -431,5 +447,51 @@ public class MenuFragment extends AListFragment<MenuBean, ArrayList<MenuBean>> {
 
         }
     };
+
+    // 设置未读粉丝提醒
+    private void setUnreadFollowers() {
+        TextView txtFollowersNewHint = (TextView) profileHeader.findViewById(R.id.txtFollowersNewHint);
+        if (AppContext.getUnreadCount() == null || AppContext.getUnreadCount().getFollower() == 0) {
+            txtFollowersNewHint.setVisibility(View.GONE);
+        }
+        else {
+            txtFollowersNewHint.setVisibility(View.VISIBLE);
+            txtFollowersNewHint.setText(String.valueOf(AppContext.getUnreadCount().getFollower()));
+        }
+
+    }
+
+    RefreshTask mRefreshTask;
+    class RefreshTask extends WorkTask<Void, Void, Boolean> {
+
+        long time = System.currentTimeMillis();
+
+        RefreshTask() {
+            mRefreshTask = this;
+        }
+
+        @Override
+        public Boolean workInBackground(Void... params) throws TaskException {
+            Logger.d("刷新用户信息");
+
+            WeiBoUser mUser = SinaSDK.getInstance(AppContext.getToken()).userShow(AppContext.getUser().getIdstr(), null);
+            Groups groups = SinaSDK.getInstance(AppContext.getToken()).friendshipGroups();
+
+            AppContext.refresh(mUser, groups);
+
+
+            return true;
+        }
+
+        @Override
+        protected void onSuccess(Boolean aBoolean) {
+            super.onSuccess(aBoolean);
+
+            setAccountItem();
+
+            getAdapter().notifyDataSetChanged();
+        }
+
+    }
 
 }

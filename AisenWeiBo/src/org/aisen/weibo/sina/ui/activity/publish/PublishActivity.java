@@ -15,8 +15,10 @@ import com.m.ui.fragment.ABaseFragment;
 
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
+import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.support.bean.PublishBean;
 import org.aisen.weibo.sina.support.bean.PublishType;
+import org.aisen.weibo.sina.support.utils.ThemeUtils;
 import org.aisen.weibo.sina.ui.activity.basic.AisenActivityHelper;
 import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
 import org.aisen.weibo.sina.ui.fragment.publish.APublishFragment;
@@ -305,6 +307,11 @@ public class PublishActivity extends BaseActivity implements AisenActivityHelper
     @Override
     public boolean canSwipe() {
         return false;
+    }
+
+    @Override
+    protected int configTheme() {
+        return ThemeUtils.themeArr[AppSettings.getThemeColor()][0];
     }
 
 }

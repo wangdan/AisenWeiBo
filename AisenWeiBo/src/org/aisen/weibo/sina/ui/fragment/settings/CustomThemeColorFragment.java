@@ -12,7 +12,6 @@ import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.m.common.utils.Utils;
 
 import org.aisen.weibo.sina.R;
-import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.ui.widget.ColorPicker;
 
 /**
@@ -51,7 +50,7 @@ public class CustomThemeColorFragment extends DialogFragment {
 				                    	int selected = mColorPicker.getColor();
 				                    	String color = String.format("#%X", selected);
 
-                                        AppSettings.setThemeColor(color);
+//                                        AppSettings.setThemeColor(color);
 
 				                        dialog.dismiss();
 				                        
@@ -62,5 +61,5 @@ public class CustomThemeColorFragment extends DialogFragment {
 				        )
 				        .create();
 	}
-	
+
 }

@@ -151,5 +151,10 @@ public class PicsActivity extends BaseActivity implements OnPageChangeListener {
 		
         getSupportActionBar().setTitle(String.format("%d/%d", index + 1, size()));
 	}
-	
+
+    @Override
+    protected int configTheme() {
+        return R.style.AppTheme_Pics;
+    }
+
 }

@@ -14,5 +14,7 @@
     <style name="AppTheme.Main">
         <item name="android:windowIsTranslucent">false</item>
         <item name="menu_header_height">180dip</item>
+        <item name="fits_windows">false</item>
+        <item name="android:windowBackground">?attr/theme_color</item>
     </style>
 </resources>

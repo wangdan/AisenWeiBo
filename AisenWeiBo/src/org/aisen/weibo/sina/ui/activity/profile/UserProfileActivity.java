@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.m.common.utils.ActivityHelper;
 import com.m.common.utils.SystemBarUtils;
 import com.m.common.utils.ViewUtils;
 import com.m.component.container.FragmentContainerActivity;
@@ -21,6 +22,9 @@ import com.m.ui.activity.basic.BaseActivity;
 
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
+import org.aisen.weibo.sina.base.AppSettings;
+import org.aisen.weibo.sina.support.utils.ThemeUtils;
+import org.aisen.weibo.sina.ui.activity.basic.AisenActivityHelper;
 import org.aisen.weibo.sina.ui.fragment.profile.UserProfilePagerFragment;
 import org.sina.android.SinaSDK;
 import org.sina.android.bean.AccessToken;
@@ -33,7 +37,7 @@ import org.sina.android.bean.WeiBoUser;
  * @author wangdan
  *
  */
-public class UserProfileActivity extends BaseActivity {
+public class UserProfileActivity extends BaseActivity implements AisenActivityHelper.EnableSwipeback {
 
 	public static void launch(Activity from, String screenName) {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("org.aisen.weibo.sina.userinfo://@%s", screenName)));
@@ -202,5 +206,15 @@ public class UserProfileActivity extends BaseActivity {
 		}
 		
 	}
-	
+
+    @Override
+    protected int configTheme() {
+        return ThemeUtils.themeArr[AppSettings.getThemeColor()][2];
+    }
+
+    @Override
+    public boolean canSwipe() {
+        return true;
+    }
+
 }

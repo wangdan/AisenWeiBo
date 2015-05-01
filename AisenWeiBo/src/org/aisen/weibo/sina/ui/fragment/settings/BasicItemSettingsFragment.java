@@ -29,7 +29,6 @@ import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.support.db.FriendMentionDB;
 import org.aisen.weibo.sina.ui.activity.basic.AisenActivityHelper;
-import org.aisen.weibo.sina.ui.widget.AisenTextView;
 
 import java.io.File;
 
@@ -53,7 +52,7 @@ import java.io.File;
 	private CheckBoxPreference pAutoRefresh;// 列表自动刷新
 	private ListPreference pSwipebackEdgeMode;// 手势返回方向
     private ListPreference pFabType;// 首页fab按钮功能
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -66,7 +65,7 @@ import java.io.File;
         // 主题
         pTheme = (Preference) findPreference("pTheme");
         pTheme.setOnPreferenceClickListener(this);
-        findPreference("pThemeCustom").setOnPreferenceClickListener(this);
+//        findPreference("pThemeCustom").setOnPreferenceClickListener(this);
 
 		pFastScrollBar = (CheckBoxPreference) findPreference("pFastScrollBar");
 		if (pFastScrollBar != null)
@@ -246,5 +245,5 @@ import java.io.File;
 	}
 	
 	Handler mHandler = new Handler();
-	
+
 }

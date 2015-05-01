@@ -19,8 +19,9 @@ import com.m.support.inject.ViewInject;
 import com.m.ui.activity.basic.BaseActivity;
 
 import org.aisen.weibo.sina.R;
+import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
-import org.aisen.weibo.sina.support.utils.BaiduAnalyzeUtils;
+import org.aisen.weibo.sina.support.utils.ThemeUtils;
 
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
@@ -39,7 +40,6 @@ public class BrowserActivity extends BaseActivity {
 	WebView mWebView;
 	@ViewInject(id = R.id.progress)
     SmoothProgressBar progressbar;
-
 
 	@SuppressLint("SetJavaScriptEnabled") @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -158,63 +158,15 @@ public class BrowserActivity extends BaseActivity {
 	}
 
 	@Override
-	protected void onResume() {
-		super.onResume();
-
-		BaiduAnalyzeUtils.onPageStart("浏览器");
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-
-		BaiduAnalyzeUtils.onPageEnd("浏览器");
-	}
-
-//	class GetStatusByIdTask extends WorkTask<String, Void, StatusContent> {
-//
-//		@Override
-//		protected void onPrepare() {
-//			super.onPrepare();
-//
-//			ViewUtils.createNormalProgressDialog(BrowserActivity.this, "正在获取微博信息").show();
-//		}
-//
-//		@Override
-//		public StatusContent workInBackground(String... params) throws TaskException {
-//			Logger.d(TAG, "微博链接--->" + params[0]);
-//
-//			return SinaSDK.getInstance(AppContext.getToken()).statusesShow(params[0]);
-//		}
-//
-//		@Override
-//		protected void onSuccess(StatusContent result) {
-//			super.onSuccess(result);
-//
-//			TimelineCommentsActivity.launch(BrowserActivity.this, result, TimelineCommentsActivity.Type.cmt);
-//		}
-//
-//		@Override
-//		protected void onFinished() {
-//			super.onFinished();
-//
-//			ViewUtils.dismissNormalProgressDialog();
-//		}
-//
-//		@Override
-//		protected void onFailure(TaskException exception) {
-//			super.onFailure(exception);
-//
-//			askAgain(getParams()[0]);
-//		}
-//
-//	}
-
-	@Override
 	public void onDestroy() {
 		super.onDestroy();
 
 		mWebView.destroy();
 	}
+
+    @Override
+    protected int configTheme() {
+        return ThemeUtils.themeArr[AppSettings.getThemeColor()][0];
+    }
 
 }
