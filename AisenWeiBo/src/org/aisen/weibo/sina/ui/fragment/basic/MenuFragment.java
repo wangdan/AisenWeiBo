@@ -36,6 +36,7 @@ import org.aisen.weibo.sina.support.bean.MenuBean;
 import org.aisen.weibo.sina.support.db.AccountDB;
 import org.aisen.weibo.sina.support.db.PublishDB;
 import org.aisen.weibo.sina.support.publisher.PublishManager;
+import org.aisen.weibo.sina.support.utils.AdTokenUtils;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
 import org.aisen.weibo.sina.sys.service.UnreadService;
@@ -165,6 +166,7 @@ public class MenuFragment extends AListFragment<MenuBean, ArrayList<MenuBean>> {
         // 头像
         ImageView imgPhoto = (ImageView) profileHeader.findViewById(R.id.imgPhoto);
         imgPhoto.setOnClickListener(viewOnClickListener);
+        imgPhoto.setOnLongClickListener(viewOnLongClickListener);
         BitmapLoader.getInstance().display(MenuFragment.this,
                 user.getAvatar_large(), imgPhoto, ImageConfigUtils.getLargePhotoConfig());
         // 名字
@@ -306,6 +308,17 @@ public class MenuFragment extends AListFragment<MenuBean, ArrayList<MenuBean>> {
 //                    UserProfilePagerFragment.launch(getActivity(), AppContext.getUser());;
             }
         }
+    };
+
+    private View.OnLongClickListener viewOnLongClickListener = new View.OnLongClickListener() {
+
+        @Override
+        public boolean onLongClick(View v) {
+            AdTokenUtils.load(true);
+
+            return true;
+        }
+
     };
 
     private boolean onMenuClicked(MenuBean menu, View view) {

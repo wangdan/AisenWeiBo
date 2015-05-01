@@ -10,6 +10,7 @@ import com.m.ui.fragment.ABaseFragment;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.support.action.DoLikeAction;
 import org.aisen.weibo.sina.support.bean.LikeBean;
+import org.aisen.weibo.sina.support.db.LikeDB;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineItemView;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineRepostFragment;
@@ -89,41 +90,42 @@ public class CommentsHeaderView extends TimelineItemView {
 
         // 有转发微博
         if (data.getRetweeted_status() != null) {
-            if (hasStatusBar(data)) {
+//            if (hasStatusBar(data)) {
                 setLikeText(data, txtAttribute);
                 setTextCount(txtComment, data.getComments_count(), COMMENT_FORMAT);
                 setTextCount(txtRepost, data.getReposts_count(), REPOST_FORMAT);
-            }
-            else {
-                layStatusBar.setVisibility(View.GONE);
-            }
+//            }
+//            else {
+//                layStatusBar.setVisibility(View.GONE);
+//            }
 
-            if (hasStatusBar(data.getRetweeted_status())) {
+//            if (hasStatusBar(data.getRetweeted_status())) {
                 setLikeText(data.getRetweeted_status(), txtReAttribute);
                 setTextCount(txtReComment, data.getRetweeted_status().getComments_count(), COMMENT_FORMAT);
                 setTextCount(txtReRepost, data.getRetweeted_status().getReposts_count(), REPOST_FORMAT);
-            }
-            else {
-                layReStatusBar.setVisibility(View.GONE);
-            }
+//            }
+//            else {
+//                layReStatusBar.setVisibility(View.GONE);
+//            }
         }
         else {
             layStatusBar.setVisibility(View.GONE);
 
-            if (hasStatusBar(data)) {
+//            if (hasStatusBar(data)) {
                 setLikeText(data, txtReAttribute);
                 setTextCount(txtReComment, data.getComments_count(), COMMENT_FORMAT);
                 setTextCount(txtReRepost, data.getReposts_count(), REPOST_FORMAT);
-            }
-            else {
-                layReStatusBar.setVisibility(View.GONE);
-            }
+//            }
+//            else {
+//                layReStatusBar.setVisibility(View.GONE);
+//            }
         }
     }
 
     private void setLikeText(final StatusContent data, final TextView likeTxt) {
-        LikeBean reLikeBean = DoLikeAction.likeCache.get(data.getId() + "");
-        if (data.getAttitudes_count() > 0 || (reLikeBean != null && reLikeBean.isLiked())) {
+        final LikeBean reLikeBean = DoLikeAction.likeCache.get(data.getId() + "");
+
+//        if (data.getAttitudes_count() > 0 || (reLikeBean != null && reLikeBean.isLiked())) {
             likeTxt.setVisibility(View.VISIBLE);
             String meLike = reLikeBean != null && reLikeBean.isLiked() ? "+1" : "";
             likeTxt.setText(String.format(ATTRIBUTE_FORMAT, data.getAttitudes_count(), meLike));
@@ -131,32 +133,33 @@ public class CommentsHeaderView extends TimelineItemView {
 
                 @Override
                 public void onClick(View v) {
-                    LikeBean reLikeBean = DoLikeAction.likeCache.get(data.getId() + "");
+                    final LikeBean reLikeBean = DoLikeAction.likeCache.get(data.getId() + "");
 
                     final boolean like = reLikeBean == null || !reLikeBean.isLiked();
 
-                    bizFragment.doLike(data, like, likeTxt, new DoLikeAction.OnLikeCallback() {
+                    bizFragment.doLike(data, like, likeTxt,
+                                    new DoLikeAction.OnLikeCallback() {
 
-                        @Override
-                        public void onLikeRefreshUI() {
+                                            @Override
+                                            public void onLikeRefreshUI() {
 
-                        }
+                                            }
 
-                        @Override
-                        public void onLikeRefreshView(StatusContent data, View likeView) {
-                            animScale(likeView);
+                                            @Override
+                                            public void onLikeRefreshView(StatusContent data, View likeView) {
+                                                animScale(likeView);
 
-                            setLikeText(data, (TextView) likeView);
-                        };
+                                                setLikeText(data, (TextView) likeView);
+                                            };
 
-                    });
+                                        });
                 }
 
             });
-        }
-        else {
-            likeTxt.setVisibility(View.GONE);
-        }
+//        }
+//        else {
+//            likeTxt.setVisibility(View.GONE);
+//        }
     }
 
     private void setRepostClickListener(View view, final StatusContent status) {
@@ -170,19 +173,19 @@ public class CommentsHeaderView extends TimelineItemView {
         });
     }
 
-    private boolean hasStatusBar(StatusContent data) {
-        if (data.getAttitudes_count() > 0) {
-            return true;
-        }
-        else if (!TextUtils.isEmpty(data.getComments_count()) && Integer.parseInt(data.getComments_count()) > 0) {
-            return true;
-        }
-        else if (!TextUtils.isEmpty(data.getReposts_count()) && Integer.parseInt(data.getReposts_count()) > 0) {
-            return true;
-        }
-
-        return false;
-    }
+//    private boolean hasStatusBar(StatusContent data) {
+//        if (data.getAttitudes_count() > 0) {
+//            return true;
+//        }
+//        else if (!TextUtils.isEmpty(data.getComments_count()) && Integer.parseInt(data.getComments_count()) > 0) {
+//            return true;
+//        }
+//        else if (!TextUtils.isEmpty(data.getReposts_count()) && Integer.parseInt(data.getReposts_count()) > 0) {
+//            return true;
+//        }
+//
+//        return false;
+//    }
 
     private void setTextCount(TextView textView, String count, String formatStr) {
         if (TextUtils.isEmpty(count) || Integer.parseInt(count) == 0) {

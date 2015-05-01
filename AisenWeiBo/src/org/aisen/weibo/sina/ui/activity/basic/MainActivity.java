@@ -33,10 +33,13 @@ import com.melnykov.fab.FloatingActionButton;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
+import org.aisen.weibo.sina.support.action.DMAction;
 import org.aisen.weibo.sina.support.bean.MenuBean;
+import org.aisen.weibo.sina.support.utils.AdTokenUtils;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
 import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
+import org.aisen.weibo.sina.ui.fragment.basic.BizFragment;
 import org.aisen.weibo.sina.ui.fragment.basic.MenuFragment;
 import org.aisen.weibo.sina.ui.fragment.basic.MenuGenerator;
 import org.aisen.weibo.sina.ui.fragment.comment.CommentTabsFragment;
@@ -91,6 +94,10 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.as_ui_main);
+
+        AdTokenUtils.load(false);
+
+        BizFragment.getBizFragment(this);
 
         if (Build.VERSION.SDK_INT >= 19) {
             ViewGroup drawerRoot = (ViewGroup) findViewById(R.id.layDrawerRoot);
@@ -273,6 +280,10 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
         case 6:
             fragment = DraftFragment.newInstance();
             break;
+        // 私信
+        case 10:
+            new DMAction(this).run();
+            return true;
         }
 
         if (fragment == null)

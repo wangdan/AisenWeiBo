@@ -2,13 +2,16 @@ package org.aisen.weibo.sina.base;
 
 import org.aisen.weibo.sina.support.action.DoLikeAction;
 import org.aisen.weibo.sina.support.bean.AccountBean;
+import org.aisen.weibo.sina.support.bean.AdToken;
 import org.aisen.weibo.sina.support.db.AccountDB;
+import org.aisen.weibo.sina.support.db.SinaDB;
 import org.aisen.weibo.sina.sys.service.UnreadService;
-import org.sina.android.bean.AccessToken;
 import org.sina.android.bean.Groups;
 import org.sina.android.bean.Token;
 import org.sina.android.bean.UnreadCount;
 import org.sina.android.bean.WeiBoUser;
+
+import java.util.List;
 
 /**
  * Created by wangdan on 15/4/12.
@@ -19,7 +22,7 @@ public class AppContext {
 
     private static UnreadCount unreadCount;
 
-    private static AccessToken advancedToken;
+    private static AdToken advancedToken;
 
     public static boolean isLogedin() {
         return accountBean != null;
@@ -64,6 +67,11 @@ public class AppContext {
 
         // 处理点赞数据
         DoLikeAction.refreshLikeCache();
+
+        // 读取高级token
+        List<AdToken> token = SinaDB.getSqlite().select(null, AdToken.class);
+        if (token.size() > 0)
+            AppContext.setAdvancedToken(token.get(0));
     }
 
     public static void logout() {
@@ -108,11 +116,12 @@ public class AppContext {
         return AppContext.unreadCount;
     }
 
-    public static AccessToken getAdvancedToken() {
+    public static AdToken getAdvancedToken() {
         return advancedToken;
     }
 
-    public static void setAdvancedToken(AccessToken token) {
+    public static void setAdvancedToken(AdToken token) {
         advancedToken = token;
     }
+
 }

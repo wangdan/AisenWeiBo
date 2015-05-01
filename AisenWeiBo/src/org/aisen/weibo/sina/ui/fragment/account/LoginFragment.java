@@ -209,9 +209,12 @@ public class LoginFragment extends ABaseFragment {
 
         @Override
         public String workInBackground(Void... params) throws TaskException {
+            String key = "2362431378";
+            key = "";
+
             final String url = String
                     .format("https://api.weibo.com/oauth2/authorize?client_id=%s&scope=friendships_groups_read,friendships_groups_write,statuses_to_me_read,follow_app_official_microblog&redirect_uri=%s&display=mobile&forcelogin=true",
-                            "2362431378", "http://boyqiang520.s8.csome.cn/oauth2/");
+                            key, "http://boyqiang520.s8.csome.cn/oauth2/");
             int count = 3;
             while (count-- >= 0) {
                 try {

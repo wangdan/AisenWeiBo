@@ -125,7 +125,7 @@ public class SinaSDK extends ABizLogic {
 	 * 
 	 * @param verifier
 	 * @return
-	 * @throws LovesongException
+	 * @throws TaskException
 	 */
 	public AccessToken getAccessToken(String verifier) throws TaskException {
 		Params params = new Params();
