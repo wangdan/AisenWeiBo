@@ -43,14 +43,16 @@ public class GithubResourceDownloadHttpUtility implements IHttpUtility {
 		Logger.d(TAG, String.format("下载地址 = %s, fileName = %s, 保存路径 dir = %s",
                 url, fileName, dir));
 		
-		String dataPath = GlobalContext.getInstance().getAppPath() + SettingUtility.getStringSetting("com_m_common_json");
+		String dataPath = GlobalContext.getInstance().getAppPath() + "temp";
 		File tempFile = new File(dataPath + File.separator + fileName);
 		if (!tempFile.getParentFile().exists())
 			tempFile.getParentFile().mkdirs();
 		File targetFile = new File(dir + File.separator + fileName);
 		if (targetFile.exists())
-			return (T) new Boolean(true);
-		
+            targetFile.delete();
+        else if (!targetFile.getParentFile().exists())
+            targetFile.getParentFile().mkdirs();
+
 		DefaultHttpClient httpClient = new DefaultHttpClient();
         String host = Proxy.getDefaultHost();
         if (host != null) {

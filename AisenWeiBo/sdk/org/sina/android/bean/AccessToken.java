@@ -1,12 +1,12 @@
 package org.sina.android.bean;
 
+import com.m.component.sqlite.annotation.PrimaryKey;
+
 import java.io.Serializable;
 
 public class AccessToken extends Token implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-
-    private String source;
 
 	private String verifier;
 
@@ -14,8 +14,15 @@ public class AccessToken extends Token implements Serializable{
 	
 	private String access_token;
 
-	private String expires_in = "0";
-	
+	private long expires_in;
+
+    @PrimaryKey(column = "appKey")
+    private String appKey;
+
+    private String appScreet;
+
+    private long create_at = System.currentTimeMillis();
+
 	public String getVerifier() {
 		return verifier;
 	}
@@ -46,29 +53,39 @@ public class AccessToken extends Token implements Serializable{
 		setToken(access_token);
 	}
 
-	public String getExpires_in() {
-		return expires_in;
-	}
-
-	public void setExpires_in(String expires_in) {
-		this.expires_in = expires_in;
-	}
-
-	@Override
-	public String toString() {
-		StringBuffer buffer = new StringBuffer();
-
-		buffer.append("oautUid=").append(uid).append("\n");
-		buffer.append("oauthVerifier=").append(verifier).append("\n");
-
-		return buffer.toString();
-	}
-
-    public String getSource() {
-        return source;
+    public long getExpires_in() {
+        return expires_in;
     }
 
-    public void setSource(String source) {
-        this.source = source;
+    public void setExpires_in(long expires_in) {
+        this.expires_in = expires_in;
+    }
+
+    public long getCreate_at() {
+        return create_at;
+    }
+
+    public void setCreate_at(long create_at) {
+        this.create_at = create_at;
+    }
+
+    public boolean isExpired() {
+        return System.currentTimeMillis() - create_at >= expires_in * 1000;
+    }
+
+    public String getAppKey() {
+        return appKey;
+    }
+
+    public void setAppKey(String appKey) {
+        this.appKey = appKey;
+    }
+
+    public String getAppScreet() {
+        return appScreet;
+    }
+
+    public void setAppScreet(String appScreet) {
+        this.appScreet = appScreet;
     }
 }

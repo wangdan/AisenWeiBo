@@ -1,7 +1,6 @@
 package org.aisen.weibo.sina.ui.fragment.account;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -17,12 +16,12 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.m.common.context.GlobalContext;
 import com.m.common.setting.SettingUtility;
 import com.m.common.utils.FileUtils;
 import com.m.common.utils.Logger;
 import com.m.common.utils.ViewUtils;
+import com.m.component.container.FragmentArgs;
 import com.m.component.container.FragmentContainerActivity;
 import com.m.network.http.Params;
 import com.m.network.http.ParamsUtil;
@@ -33,16 +32,10 @@ import com.m.ui.activity.basic.BaseActivity;
 import com.m.ui.fragment.ABaseFragment;
 
 import org.aisen.weibo.sina.R;
-import org.aisen.weibo.sina.base.AppContext;
-import org.aisen.weibo.sina.support.bean.AccountBean;
-import org.aisen.weibo.sina.support.db.AccountDB;
-import org.aisen.weibo.sina.support.utils.BaiduAnalyzeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.sina.android.SinaSDK;
 import org.sina.android.bean.AccessToken;
-import org.sina.android.bean.Groups;
-import org.sina.android.bean.WeiBoUser;
 
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
@@ -51,10 +44,14 @@ import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
  *
  * Created by wangdan on 15-1-28.
  */
-public class LoginFragment extends ABaseFragment {
+public class WeicoLoginFragment extends ABaseFragment {
 
-    public static void launch(ABaseFragment from, int requestCode) {
-        FragmentContainerActivity.launchForResult(from, LoginFragment.class, null, requestCode);
+    public static void launch(BaseActivity from, String account, String password, int requestCode) {
+        FragmentArgs args = new FragmentArgs();
+        args.add("account", account);
+        args.add("password", password);
+
+        FragmentContainerActivity.launchForResult(from, WeicoLoginFragment.class, args, requestCode);
     }
 
     public static final String TAG = "Login";
@@ -72,10 +69,10 @@ public class LoginFragment extends ABaseFragment {
     @ViewInject(id = R.id.layInput)
     View layInput;
 
-    private String mAccount;
-    private String mPassword;
-
     private AccountTask accountTask;
+
+    String mAccount;
+    String mPassword;
 
     @Override
     protected int inflateContentView() {
@@ -132,7 +129,7 @@ public class LoginFragment extends ABaseFragment {
                     }
 
                     // 是否授权成功
-                    if (accountTask == null && webView.getUrl() != null && webView.getUrl().startsWith(SettingUtility.getStringSetting("callback_url"))) {
+                    if (accountTask == null && webView.getUrl() != null && webView.getUrl().startsWith(SettingUtility.getStringSetting("weico_callback"))) {
                         Params params = ParamsUtil.deCodeUrl(webView.getUrl());
                         String code = params.getParameter("code");
 
@@ -146,7 +143,7 @@ public class LoginFragment extends ABaseFragment {
                     }
                 }
 
-                if (webView.getUrl() != null && webView.getUrl().startsWith(SettingUtility.getStringSetting("callback_url"))) {
+                if (webView.getUrl() != null && webView.getUrl().startsWith(SettingUtility.getStringSetting("weico_callback"))) {
                     webView.setVisibility(View.GONE);
                 }
                 super.onProgressChanged(view, newProgress);
@@ -154,6 +151,13 @@ public class LoginFragment extends ABaseFragment {
 
         });
 
+        if (getArguments() != null) {
+            mAccount = getArguments().getString("account");
+            mPassword = getArguments().getString("password");
+
+            editAccount.setText(mAccount);
+            editPassword.setText(mPassword);
+        }
     }
 
     final class LoginJavaScriptInterface {
@@ -164,8 +168,6 @@ public class LoginFragment extends ABaseFragment {
 
         @JavascriptInterface
         public void setAccount(String account, String password) {
-            mAccount = account;
-            mPassword = password;
         }
 
     }
@@ -187,8 +189,8 @@ public class LoginFragment extends ABaseFragment {
     }
 
     private void doLogin() {
-        mAccount = editAccount.getText().toString();
-        mPassword = editPassword.getText().toString();
+        String mAccount = editAccount.getText().toString();
+        String mPassword = editPassword.getText().toString();
 
         if (TextUtils.isEmpty(mAccount) || TextUtils.isEmpty(mPassword)) {
             showMessage(R.string.account_invalid_input);
@@ -209,9 +211,12 @@ public class LoginFragment extends ABaseFragment {
 
         @Override
         public String workInBackground(Void... params) throws TaskException {
+            String key = SettingUtility.getStringSetting("weico_key");
+            String callback = SettingUtility.getStringSetting("weico_callback");
+
             final String url = String
                     .format("https://api.weibo.com/oauth2/authorize?client_id=%s&scope=friendships_groups_read,friendships_groups_write,statuses_to_me_read,follow_app_official_microblog&redirect_uri=%s&display=mobile&forcelogin=true",
-                            "2362431378", "http://boyqiang520.s8.csome.cn/oauth2/");
+                            key, callback);
             int count = 3;
             while (count-- >= 0) {
                 try {
@@ -264,7 +269,7 @@ public class LoginFragment extends ABaseFragment {
      * @author wangdan
      *
      */
-    class AccountTask extends WorkTask<String, Integer, WeiBoUser> {
+    class AccountTask extends WorkTask<String, Integer, AccessToken> {
 
         @Override
         protected void onPrepare() {
@@ -282,83 +287,27 @@ public class LoginFragment extends ABaseFragment {
         }
 
         @Override
-        public WeiBoUser workInBackground(String... params) throws TaskException {
-            // 1、请求授权
-            AccessToken accessToken = SinaSDK.getInstance(null).getAccessToken(params[0]);
-            AccountBean account = new AccountBean();
-            account.set_token(accessToken.getToken());
-            account.setSecret(accessToken.getSecret());
+        public AccessToken workInBackground(String... params) throws TaskException {
+            AccessToken accessToken = SinaSDK.getInstance(null).getWeicoAccessToken(params[0]);
+            accessToken.setCreate_at(System.currentTimeMillis());
+            accessToken.setAppKey(SettingUtility.getStringSetting("weico_key"));
+            accessToken.setAppScreet(SettingUtility.getStringSetting("weico_screet"));
 
-            // 2、加载用户信息
-            publishProgress(R.string.account_load_userinfo);
-            WeiBoUser user = SinaSDK.getInstance(accessToken).userShow(accessToken.getUid(), null);
-
-            // 3、加载分组信息
-            publishProgress(R.string.account_load_groups);
-            Groups groups = SinaSDK.getInstance(accessToken).friendshipGroups();
-
-            // 4、更新新账户到DB
-            account.setUser(user);
-            account.setGroups(groups);
-            account.setAccount(mAccount);
-            account.setPassword(mPassword);
-            account.setUserId(user.getIdstr());
-            // 2014-09-18 移除了所有账户信息，包括LoggedIn，所以需要调用AccountFragment.login()
-            AccountDB.remove(account.getUserId());
-            AccountDB.newAccount(account);
-
-            if (AppContext.isLogedin() &&
-                    // 2014-09-18 仅更新登录用户数据
-                    AppContext.getUser().getIdstr().equals(user.getIdstr())) {
-                AccountFragment.login(account, false);
-            }
-
-            if (getActivity() != null) {
-                Intent data = new Intent();
-                data.putExtra("token", accessToken);
-                getActivity().setResult(Activity.RESULT_OK, data);
-            }
-
-
-            return user;
+            return accessToken;
         }
 
         @Override
-        protected void onSuccess(WeiBoUser result) {
+        protected void onSuccess(AccessToken result) {
             super.onSuccess(result);
 
             Logger.d(TAG, "授权成功");
 
-            BaiduAnalyzeUtils.onEvent("add_account", "添加授权账号");
-
-            showMessage(R.string.account_auth_success);
-
             if (getActivity() != null) {
+                Intent data = new Intent();
+                data.putExtra("token", result);
+                getActivity().setResult(Activity.RESULT_OK, data);
+
                 getActivity().finish();
-            }
-        }
-
-        @Override
-        protected void onFailure(TaskException exception) {
-            super.onFailure(exception);
-
-            if ("21324".equals(exception.getCode()) && getActivity() != null) {
-                new AlertDialogWrapper.Builder(getActivity()).setTitle(R.string.remind)
-                        .setMessage(R.string.account_illegal_app)
-                        .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                getActivity().finish();
-                            }
-                        })
-                        .show();
-            }
-            else {
-                showMessage(exception.getMessage());
-
-                if (getActivity() != null)
-                    requestData();
             }
         }
 

@@ -168,7 +168,7 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
 
         if (requestCode == 1000 && resultCode == Activity.RESULT_OK) {
             AccessToken token = (AccessToken) data.getSerializableExtra("token");
-            String days = String.valueOf(TimeUnit.SECONDS.toDays(Long.parseLong(token.getExpires_in())));
+            String days = String.valueOf(TimeUnit.SECONDS.toDays(token.getExpires_in()));
             new AlertDialogWrapper.Builder(getActivity())
                                     .setTitle(R.string.remind)
                                     .setMessage(String.format(getString(R.string.account_newaccount_remind), days))

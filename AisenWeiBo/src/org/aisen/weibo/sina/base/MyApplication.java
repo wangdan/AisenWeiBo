@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 
 import com.m.common.context.GlobalContext;
+import com.m.common.setting.SettingUtility;
 import com.m.common.utils.DateUtils;
 import com.m.common.utils.Logger;
 import com.m.component.bitmaploader.BitmapLoader;
@@ -35,6 +36,7 @@ public class MyApplication extends GlobalContext {
         TaskException.config(new SinaErrorMsgUtil());
         // 设置登录账户
         AccountBean accountBean = AccountDB.getLogedinAccount();
+        SettingUtility.addSettings("meizt_actions");
         if (accountBean != null)
             AppContext.login(accountBean);
         // 检查表情

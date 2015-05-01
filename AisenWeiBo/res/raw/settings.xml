@@ -128,4 +128,16 @@
 		<value>org.aisen.weibo.sina.ui.activity.basic.AisenActivityHelper</value>
 	</setting>
 
+    <setting type="weico_key">
+        <value>211160679</value>
+    </setting>
+
+    <setting type="weico_screet">
+        <value>63b64d531b98c2dbff2443816f274dd3</value>
+    </setting>
+
+    <setting type="weico_callback">
+        <value>http://oauth.weico.cc</value>
+    </setting>
+
 </app-settings>

@@ -11,6 +11,7 @@ import android.webkit.WebView;
 
 import com.alibaba.fastjson.JSON;
 import com.m.common.context.GlobalContext;
+import com.m.common.setting.SettingUtility;
 import com.m.common.utils.Consts;
 import com.m.network.biz.ABizLogic;
 import com.m.network.http.HttpConfig;
@@ -137,6 +138,17 @@ public class SinaSDK extends ABizLogic {
 
 		return doPost(getHttpConfig(), getSetting("access_token"), configParams(params), AccessToken.class, null);
 	}
+
+    public AccessToken getWeicoAccessToken(String verifier) throws TaskException {
+        Params params = new Params();
+        params.addParameter("code", verifier);
+        params.addParameter("client_id", SettingUtility.getStringSetting("weico_key"));
+        params.addParameter("client_secret", SettingUtility.getStringSetting("weico_screet"));
+        params.addParameter("grant_type", "authorization_code");
+        params.addParameter("redirect_uri", SettingUtility.getStringSetting("weico_callback"));
+
+        return doPost(getHttpConfig(), getSetting("access_token"), configParams(params), AccessToken.class, null);
+    }
 	
 	/**
 	 * 查询用户access_token的授权相关信息，包括授权时间，过期时间和scope权限

@@ -3,14 +3,16 @@ package org.aisen.weibo.sina.support.utils;
 import com.alibaba.fastjson.JSON;
 import com.m.common.context.GlobalContext;
 import com.m.common.utils.FileUtils;
+import com.m.common.utils.Logger;
 import com.m.common.utils.ViewUtils;
 import com.m.network.task.TaskException;
 import com.m.network.task.WorkTask;
 
 import org.aisen.weibo.sina.base.AppContext;
-import org.aisen.weibo.sina.support.bean.AdToken;
 import org.aisen.weibo.sina.support.biz.BaseBizlogic;
+import org.aisen.weibo.sina.support.biz.GithubResourceDownloadHttpUtility;
 import org.aisen.weibo.sina.support.db.SinaDB;
+import org.sina.android.bean.AccessToken;
 import org.sina.android.bean.TokenInfo;
 
 import java.io.File;
@@ -20,33 +22,34 @@ import java.io.File;
  */
 public class AdTokenUtils {
 
-    public static void load(boolean showMsg) {
-        AdToken token = AppContext.getAdvancedToken();
-        if (token != null) {
-            long validSecond = Long.parseLong(token.getCreate_at()) + Long.parseLong(token.getExpire_in());
-            if (System.currentTimeMillis() > validSecond * 1000) {
-                new LoadAdTokenTask().execute(showMsg);
-            }
-        } else {
-            new LoadAdTokenTask().execute(showMsg);
+    public static void load() {
+        new LoadAdTokenTask(true).execute();
+    }
+
+    public static void loadIfExpired() {
+        AccessToken token = AppContext.getAdvancedToken();
+        if (token == null || token.isExpired()) {
+            new LoadAdTokenTask(false).execute();
         }
     }
 
     static class LoadAdTokenTask extends WorkTask<Boolean, Void, Boolean> {
 
         String path;
+        boolean showMsg;
 
-        LoadAdTokenTask() {
+        LoadAdTokenTask(boolean showMsg) {
 
-            path = GlobalContext.getInstance().getDataPath() + File.separator + "token.json";
+            this.showMsg = showMsg;
+            path = GlobalContext.getInstance().getDataPath();
         }
 
         @Override
         protected void onPrepare() {
             super.onPrepare();
 
-            if (getParams()[0])
-                ViewUtils.showMessage("开始获取高级token");
+            if (showMsg)
+                ViewUtils.showMessage("开始设置");
         }
 
         @Override
@@ -60,18 +63,19 @@ public class AdTokenUtils {
 
             if (aBoolean) {
                 try {
-                    String json = FileUtils.readFileToString(new File(path));
-                    AdToken token = JSON.parseObject(json, AdToken.class);
+                    String json = new String(FileUtils.readFileToBytes(new File(path + "ad_token.json")), "utf-8");
+                    Logger.d(GithubResourceDownloadHttpUtility.TAG, json + "");
+                    AccessToken token = JSON.parseObject(json, AccessToken.class);
                     AppContext.setAdvancedToken(token);
 
-                    SinaDB.getSqlite().deleteAll(null, TokenInfo.class);
+                    SinaDB.getSqlite().deleteAll(null, AccessToken.class);
                     SinaDB.getSqlite().insert(null, token);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-            if (getParams()[0])
-                ViewUtils.showMessage(aBoolean ? "成功获取高级token" : "获取高级token失败");
+            if (showMsg)
+                ViewUtils.showMessage(aBoolean ? "成功设置" : "设置失败");
         }
 
     }

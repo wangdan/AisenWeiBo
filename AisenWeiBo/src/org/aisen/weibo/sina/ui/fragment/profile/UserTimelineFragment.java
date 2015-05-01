@@ -165,7 +165,7 @@ public class UserTimelineFragment extends ATimelineFragment
                     token.setToken(accessToken.getToken());
                     token.setSecret(accessToken.getSecret());
 
-                    params.addParameter("source", accessToken.getSource());
+                    params.addParameter("source", accessToken.getAppKey());
                 }
             }
             if (token == null)

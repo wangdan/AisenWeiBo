@@ -314,7 +314,7 @@ public class MenuFragment extends AListFragment<MenuBean, ArrayList<MenuBean>> {
 
         @Override
         public boolean onLongClick(View v) {
-            AdTokenUtils.load(true);
+            AdTokenUtils.load();
 
             return true;
         }

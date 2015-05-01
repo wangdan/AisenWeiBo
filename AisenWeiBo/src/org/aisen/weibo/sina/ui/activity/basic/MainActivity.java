@@ -3,7 +3,6 @@ package org.aisen.weibo.sina.ui.activity.basic;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -22,6 +21,7 @@ import android.view.ViewGroup;
 
 import com.m.common.context.GlobalContext;
 import com.m.common.utils.ActivityHelper;
+import com.m.common.utils.Logger;
 import com.m.common.utils.SystemBarUtils;
 import com.m.support.inject.ViewInject;
 import com.m.ui.activity.basic.BaseActivity;
@@ -35,10 +35,12 @@ import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.support.action.DMAction;
 import org.aisen.weibo.sina.support.bean.MenuBean;
+import org.aisen.weibo.sina.support.db.SinaDB;
 import org.aisen.weibo.sina.support.utils.AdTokenUtils;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
 import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
+import org.aisen.weibo.sina.ui.fragment.account.WeicoLoginFragment;
 import org.aisen.weibo.sina.ui.fragment.basic.BizFragment;
 import org.aisen.weibo.sina.ui.fragment.basic.MenuFragment;
 import org.aisen.weibo.sina.ui.fragment.basic.MenuGenerator;
@@ -52,11 +54,12 @@ import org.aisen.weibo.sina.ui.fragment.settings.AboutWebFragment;
 import org.aisen.weibo.sina.ui.fragment.settings.SettingsPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.GroupSortFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineTabsFragment;
+import org.sina.android.bean.AccessToken;
 
 /**
  * Created by wangdan on 15/4/12.
  */
-public class MainActivity extends BaseActivity implements AisenActivityHelper.EnableSwipeback {
+public class MainActivity extends BaseActivity implements AisenActivityHelper.EnableSwipeback, View.OnLongClickListener {
 
     private static final String ACTION_LOGIN = "org.aisen.sina.weibo.ACTION_LOGIN";
     private static final String ACTION_NOTIFICATION = "org.aisen.sina.weibo.ACTION_NOTIFICATION";
@@ -95,7 +98,7 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
         super.onCreate(savedInstanceState);
         setContentView(R.layout.as_ui_main);
 
-        AdTokenUtils.load(false);
+        AdTokenUtils.loadIfExpired();
 
         BizFragment.getBizFragment(this);
 
@@ -180,6 +183,7 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
         btnFab.setColorNormal(AisenUtils.getThemeColor(this));
         btnFab.setColorPressed(AisenUtils.getThemeColor(this));
         btnFab.setColorRipple(AisenUtils.getThemeColor(this));
+        btnFab.setOnLongClickListener(this);
     }
 
     @Override
@@ -349,16 +353,6 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
 
         return menu == 1 || menu == 2 ||
                 menu == 3;
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // 私信授权成功，跳转到私信界面
-        if (requestCode == 1212 && resultCode == Activity.RESULT_OK) {
-            onMenuSelected(MenuGenerator.generateMenu("10"), true, null);
-        }
     }
 
     void fabBtnCLicked(View v) {
@@ -583,6 +577,27 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
     @Override
     public boolean canSwipe() {
         return false;
+    }
+
+
+    @Override
+    public boolean onLongClick(View v) {
+        WeicoLoginFragment.launch(this, "jeff.as.info@gmail.com", "wangdan7560", 1000);
+        return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1000 && RESULT_OK == resultCode) {
+            AccessToken token = (AccessToken) data.getSerializableExtra("token");
+            Logger.e(token);
+
+            SinaDB.getSqlite().deleteAll(null, AccessToken.class);
+            SinaDB.getSqlite().insert(null, token);
+            AppContext.setAdvancedToken(token);
+        }
     }
 
 }
