@@ -7,6 +7,7 @@ import com.m.common.context.GlobalContext;
 import com.m.common.utils.Logger;
 import com.m.network.biz.ABizLogic;
 import com.m.network.http.HttpConfig;
+import com.m.network.http.IHttpUtility;
 import com.m.network.http.Params;
 import com.m.network.task.TaskException;
 
@@ -28,7 +29,12 @@ public class BaseBizlogic extends ABizLogic {
 		return httpConfig;
 	}
 
-	private BaseBizlogic() {
+    @Override
+    protected IHttpUtility configHttpUtility() {
+        return super.configHttpUtility();
+    }
+
+    private BaseBizlogic() {
 
 	}
 	

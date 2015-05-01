@@ -27,12 +27,20 @@ import com.m.common.utils.SystemUtils;
 import com.m.common.utils.Utils;
 import com.m.common.utils.ViewUtils;
 import com.m.component.bitmaploader.core.BitmapDecoder;
+import com.m.network.task.TaskException;
+import com.m.network.task.WorkTask;
 import com.m.ui.fragment.ABaseFragment;
 import com.m.ui.fragment.ARefreshFragment;
 
 import org.aisen.weibo.sina.R;
+import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
+import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
 import org.aisen.weibo.sina.ui.fragment.basic.BizFragment;
+import org.aisen.weibo.sina.ui.fragment.comment.TimelineCommentFragment;
+import org.aisen.weibo.sina.ui.fragment.timeline.ATimelineFragment;
+import org.sina.android.SinaSDK;
+import org.sina.android.bean.GroupSortResult;
 import org.sina.android.bean.StatusComment;
 import org.sina.android.bean.StatusContent;
 import org.sina.android.bean.WeiBoUser;
@@ -340,7 +348,161 @@ public class AisenUtils {
     }
 
     public static void timelineMenuSelected(final ABaseFragment fragment, String selectedItem, final StatusContent status) {
+        final String[] timelineMenuArr = GlobalContext.getInstance().getResources().getStringArray(R.array.timeline_menus);
 
+        try {
+            int position = 0;
+            for (int i = 0; i < timelineMenuArr.length; i++) {
+                if (timelineMenuArr[i].equals(selectedItem)) {
+                    position = i;
+                    break;
+                }
+            }
+
+            switch (position) {
+                // 原微博
+                case 0:
+                    TimelineCommentFragment.launch(fragment.getActivity(), status.getRetweeted_status());
+                    break;
+                // 复制
+                case 1:
+                    AisenUtils.copyToClipboard(status.getText());
+
+                    ViewUtils.showMessage(R.string.msg_text_copyed);
+                    break;
+                // 转发
+                case 2:
+                    BizFragment.getBizFragment(fragment).statusRepost(status);
+                    break;
+                // 评论
+                case 3:
+                    BizFragment.getBizFragment(fragment).commentCreate(status);
+                    break;
+                // 收藏
+                case 4:
+                    BizFragment.getBizFragment(fragment).favorityCreate(status.getId() + "", null);
+                    break;
+                // 取消收藏
+                case 5:
+                    BizFragment.getBizFragment(fragment).favorityDestory(status.getId() + "", null);
+                    break;
+                // 删除微博
+                case 6:
+                    deleteStatus(fragment, status);
+                    break;
+                // 屏蔽微博
+                case 7:
+                    shieldStatus(fragment, status);
+                    break;
+                // 围观
+                case 8:
+                    PublishActivity.publishStatusRepostAndWeiguan(fragment.getActivity(), null, status);
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void deleteStatus(final ABaseFragment fragment, final StatusContent status) {
+        new AlertDialogWrapper.Builder(fragment.getActivity())
+                .setMessage(R.string.msg_del_status_remind)
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        BizFragment.getBizFragment(fragment).statusDestory(status.getId() + "", new BizFragment.OnStatusDestoryCallback() {
+
+                            @SuppressWarnings({ "rawtypes" })
+                            @Override
+                            public void onStatusDestory(StatusContent status) {
+                                if (fragment instanceof ATimelineFragment) {
+                                    ARefreshFragment aRefreshFragment = ((ARefreshFragment) fragment);
+                                    for (Object so : aRefreshFragment.getAdapterItems()) {
+                                        StatusContent s = (StatusContent) so;
+                                        if (String.valueOf(s.getId()).equals(String.valueOf(status.getId()))) {
+                                            aRefreshFragment.getAdapterItems().remove(s);
+                                            aRefreshFragment.notifyDataSetChanged();
+                                            break;
+                                        }
+                                    }
+                                }
+                                else {
+                                    if (fragment.getActivity() != null && fragment instanceof TimelineCommentFragment) {
+                                        Intent data = new Intent();
+                                        data.putExtra("status", status.getId());
+
+                                        fragment.getActivity().setResult(Activity.RESULT_OK, data);
+                                        fragment.getActivity().finish();
+                                    }
+                                    ViewUtils.showMessage(R.string.delete_success);
+                                }
+                            }
+
+                            @Override
+                            public boolean onFaild(TaskException e) {
+                                ViewUtils.showMessage(R.string.delete_faild);
+
+                                return true;
+                            }
+                        });
+                    }
+                })
+                .show();
+    }
+
+    private static void shieldStatus(final ABaseFragment fragment, final StatusContent status) {
+        new AlertDialogWrapper.Builder(fragment.getActivity())
+                .setMessage(R.string.msg_shield_remind)
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        new WorkTask<Void, Void, GroupSortResult>() {
+
+                            @Override
+                            protected void onPrepare() {
+                                super.onPrepare();
+
+                                Resources res = GlobalContext.getInstance().getResources();
+                                ViewUtils.createProgressDialog(fragment.getActivity(), res.getString(R.string.processing)).show();
+                            };
+
+                            @Override
+                            protected void onFinished() {
+                                super.onFinished();
+
+                                ViewUtils.dismissProgressDialog();
+                            };
+
+                            @Override
+                            protected void onFailure(TaskException exception) {
+                                super.onFailure(exception);
+
+                                ViewUtils.showMessage(exception.getMessage());
+                            };
+
+                            @Override
+                            protected void onSuccess(GroupSortResult result) {
+                                super.onSuccess(result);
+
+                                if ("true".equals(result.getResult()))
+                                    ViewUtils.showMessage(R.string.msg_shield_success);
+                                else
+                                    ViewUtils.showMessage(R.string.msg_shield_faild);
+                            };
+
+                            @Override
+                            public GroupSortResult workInBackground(Void... params) throws TaskException {
+                                return SinaSDK.getInstance(AppContext.getToken()).statusMentionsShield(status.getId() + "");
+                            }
+
+                        }.execute();
+                    }
+                })
+                .show();
     }
 
     public static String getCommentText(String text) {

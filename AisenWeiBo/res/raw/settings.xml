@@ -62,7 +62,7 @@
 	</setting>
 	
 	<setting type="http">
-	    <value>com.m.support.network.http.DefHttpUtility</value>
+	    <value>com.m.network.http.DefHttpUtility</value>
 	</setting>
 
 	<setting type="cache_validtime">

@@ -117,7 +117,7 @@ public class StatusContent extends PhotoBean implements Serializable {
     /**
      * 表态数
      */
-    private String attitudes_count;
+    private int attitudes_count;
     
     public String getCreated_at() {
         return created_at;
@@ -271,11 +271,11 @@ public class StatusContent extends PhotoBean implements Serializable {
         this.group_get_time = group_get_time;
     }
 
-    public String getAttitudes_count() {
+    public int getAttitudes_count() {
         return attitudes_count;
     }
 
-    public void setAttitudes_count(String attitudes_count) {
+    public void setAttitudes_count(int attitudes_count) {
         this.attitudes_count = attitudes_count;
     }
 

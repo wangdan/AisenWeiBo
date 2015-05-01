@@ -44,6 +44,11 @@ public class SinaErrorMsgUtil implements IExceptionDeclare {
 	public static TaskException transToException(String responseStr) {
 		Logger.w(responseStr);
 
+        if (!TextUtils.isEmpty(responseStr)) {
+            if (responseStr.indexOf("that page doesn’t exist!") != -1)
+                return new TaskException("", "渣浪TMD的神经病，请稍后重试...");
+        }
+
 		String code = null;
         String msg = null;
 

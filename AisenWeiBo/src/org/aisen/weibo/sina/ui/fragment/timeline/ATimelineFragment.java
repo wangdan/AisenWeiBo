@@ -25,7 +25,6 @@ import org.aisen.weibo.sina.support.paging.TimelinePagingProcessor;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.ui.activity.basic.MainActivity;
 import org.aisen.weibo.sina.ui.fragment.basic.AWeiboRefreshListFragment;
-import org.aisen.weibo.sina.ui.fragment.basic.BizFragment;
 import org.aisen.weibo.sina.ui.fragment.comment.TimelineCommentFragment;
 import org.aisen.weibo.sina.ui.widget.TimelinePicsView;
 import org.sina.android.bean.StatusContent;
@@ -42,7 +41,7 @@ import java.util.List;
  * 
  */
 public abstract class ATimelineFragment extends AWeiboRefreshListFragment<StatusContent, StatusContents>
-											implements OnItemLongClickListener, BizFragment.OnLikeCallback {
+											implements OnItemLongClickListener{
 
     static final String TAG = "ARefresh-Timeline";
 
@@ -225,11 +224,6 @@ public abstract class ATimelineFragment extends AWeiboRefreshListFragment<Status
 
 		return super.onToolbarDoubleClick();
 	}
-
-    @Override
-    public void onLikeRefreshUI() {
-        refreshUI();
-    }
 
     public abstract class TimelineTask extends PagingTask<Void, Void, StatusContents> {
 

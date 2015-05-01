@@ -10,7 +10,9 @@ import com.m.component.bitmaploader.BitmapLoader;
 import com.m.network.task.TaskException;
 import com.m.network.task.WorkTask;
 
+import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.bean.PublishBean;
+import org.aisen.weibo.sina.support.db.AccountDB;
 import org.aisen.weibo.sina.support.db.EmotionsDB;
 import org.aisen.weibo.sina.support.db.PublishDB;
 import org.aisen.weibo.sina.sys.receiver.TimingBroadcastReceiver;
@@ -31,6 +33,10 @@ public class MyApplication extends GlobalContext {
 		BitmapLoader.newInstance(this, getImagePath());
         // 配置异常处理类
         TaskException.config(new SinaErrorMsgUtil());
+        // 设置登录账户
+        AccountBean accountBean = AccountDB.getLogedinAccount();
+        if (accountBean != null)
+            AppContext.login(accountBean);
         // 检查表情
         try {
             EmotionsDB.checkEmotions();

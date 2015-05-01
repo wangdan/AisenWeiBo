@@ -83,9 +83,8 @@ public class CommentCacheUtility implements ICacheUtility {
             boolean clear = false;
 			// 刷新
 			if (!TextUtils.isEmpty(params.getParameter("since_id"))) {
-                // 如果刷新的微博数据与分页大小小于3个，或者大于10
                 int diff = Math.abs(cmts.getComments().size() - AppSettings.getCommentCount());
-                clear = diff <= 3 || diff > 10;
+                clear = diff <= 3;
 			}
 			// 加载更多
 			else if (!TextUtils.isEmpty(params.getParameter("max_id"))) {

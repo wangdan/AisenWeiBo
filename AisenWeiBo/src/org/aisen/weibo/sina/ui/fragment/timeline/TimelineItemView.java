@@ -7,6 +7,8 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,10 +17,12 @@ import com.m.component.bitmaploader.BitmapLoader;
 import com.m.support.adapter.ABaseAdapter;
 import com.m.support.inject.ViewInject;
 import com.m.ui.fragment.ABaseFragment;
+import com.m.ui.fragment.ARefreshFragment;
 
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
+import org.aisen.weibo.sina.support.action.DoLikeAction;
 import org.aisen.weibo.sina.support.bean.LikeBean;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
@@ -40,10 +44,10 @@ import java.util.Map;
  * Created by wangdan on 15/4/15.
  */
 public class TimelineItemView extends ABaseAdapter.AbstractItemView<StatusContent>
-                implements View.OnClickListener, BizFragment.OnLikeCallback {
+                implements View.OnClickListener, DoLikeAction.OnLikeCallback {
 
     protected ABaseFragment fragment;
-    private BizFragment bizFragment;
+    protected BizFragment bizFragment;
 
     private boolean showRetweeted;
     private StatusContent reStatus;
@@ -188,13 +192,13 @@ public class TimelineItemView extends ABaseAdapter.AbstractItemView<StatusConten
             btnComment.setTag(data);
             btnComment.setOnClickListener(this);
         }
-        LikeBean likeBean = BizFragment.likeCache.get(data.getId() + "");
+        LikeBean likeBean = DoLikeAction.likeCache.get(data.getId() + "");
         if (btnLike != null) {
             btnLike.setTag(data);
             btnLike.setOnClickListener(this);
 
-            if (!TextUtils.isEmpty(data.getAttitudes_count()))
-                txtLike.setText(data.getAttitudes_count());
+            if (data.getAttitudes_count() > 0)
+                txtLike.setText(data.getAttitudes_count() + "");
             else
                 txtLike.setText("");
             imgLike.setSelected(likeBean != null && likeBean.isLiked());
@@ -303,29 +307,28 @@ public class TimelineItemView extends ABaseAdapter.AbstractItemView<StatusConten
         // 查看转发微博信息
         if (v.getId() == R.id.layRe) {
             StatusContent reContent = (StatusContent) v.getTag();
-
-//            TimelineCommentsActivity.launch(fragment, reContent, TimelineCommentsActivity.Type.cmt);
+            TimelineRepostFragment.launch(fragment.getActivity(), reContent);
         }
         // 转发
         else if (v.getId() == R.id.btnRepost) {
             StatusContent status = (StatusContent) v.getTag();
-//            BizFragment.getBizFragment(fragment).statusRepost(status);
+            BizFragment.getBizFragment(fragment).statusRepost(status);
         }
         // 评论
         else if (v.getId() == R.id.btnCmt) {
             StatusContent status = (StatusContent) v.getTag();
-//            BizFragment.getBizFragment(fragment).commentCreate(status);
+            BizFragment.getBizFragment(fragment).commentCreate(status);
         }
         // 点赞
         else if (v.getId() == R.id.btnLike) {
             StatusContent status = (StatusContent) v.getTag();
 
-            LikeBean likeBean = BizFragment.likeCache.get(status.getId() + "");
+            LikeBean likeBean = DoLikeAction.likeCache.get(status.getId() + "");
             boolean like = likeBean == null || !likeBean.isLiked();
 
             v.findViewById(R.id.imgLike).setSelected(like);
 
-            BizFragment.getBizFragment(fragment).doLike(status, like, this);
+            BizFragment.getBizFragment(fragment).doLike(status, like, v, this);
         }
         // 溢出菜单
         else if (v.getId() == R.id.btnMenus) {
@@ -365,8 +368,39 @@ public class TimelineItemView extends ABaseAdapter.AbstractItemView<StatusConten
 
     @Override
     public void onLikeRefreshUI() {
-        if (fragment != null && fragment instanceof BizFragment.OnLikeCallback)
-            ((BizFragment.OnLikeCallback) fragment).onLikeRefreshUI();
+        if (fragment != null && fragment instanceof ARefreshFragment)
+            ((ARefreshFragment) fragment).refreshUI();
+    }
+
+    @Override
+    public void onLikeRefreshView(StatusContent data, final View likeView) {
+        if (fragment.getActivity() == null)
+            return;
+
+        if (likeView.getTag() == data) {
+            animScale(likeView);
+        }
+    }
+
+    protected void animScale(final View likeView) {
+        ScaleAnimation scaleAnimation = new ScaleAnimation(1.0f, 1.5f, 1.0f, 1.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        scaleAnimation.setDuration(200);
+        scaleAnimation.setFillAfter(true);
+        scaleAnimation.start();
+        likeView.startAnimation(scaleAnimation);
+        likeView.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                ScaleAnimation scaleAnimation = new ScaleAnimation(1.5f, 1.0f, 1.5f, 1.0f,
+                        Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                scaleAnimation.setDuration(200);
+                scaleAnimation.setFillAfter(true);
+                likeView.startAnimation(scaleAnimation);
+            }
+
+        }, 200);
     }
 
 }

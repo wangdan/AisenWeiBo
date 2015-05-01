@@ -201,7 +201,12 @@ public class WeiboClientActivity extends BaseActivity implements PhotoChoice.Pho
 //        cookieManager.setCookie(DM_URL, cookie);
 //        CookieSyncManager.getInstance().sync();
 
-        mWebView.loadUrl(mUrl);
+        if (askForAuth) {
+            fillAccount();
+        }
+        else {
+            mWebView.loadUrl(mUrl);
+        }
     }
 
     @Override
@@ -308,6 +313,7 @@ public class WeiboClientActivity extends BaseActivity implements PhotoChoice.Pho
 
         // 刷新到DB
         AccountDB.newAccount(AppContext.getAccount());
+        AccountDB.setLogedinAccount(AppContext.getAccount());
 
         if (askForAuth) {
             setResult(Activity.RESULT_OK);

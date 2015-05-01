@@ -1,9 +1,9 @@
 package org.aisen.weibo.sina.base;
 
+import org.aisen.weibo.sina.support.action.DoLikeAction;
 import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.db.AccountDB;
 import org.aisen.weibo.sina.sys.service.UnreadService;
-import org.aisen.weibo.sina.ui.fragment.basic.BizFragment;
 import org.sina.android.bean.AccessToken;
 import org.sina.android.bean.Groups;
 import org.sina.android.bean.Token;
@@ -63,7 +63,7 @@ public class AppContext {
         MyApplication.refreshPublishAlarm();
 
         // 处理点赞数据
-        BizFragment.refreshLikeCache();
+        DoLikeAction.refreshLikeCache();
     }
 
     public static void logout() {

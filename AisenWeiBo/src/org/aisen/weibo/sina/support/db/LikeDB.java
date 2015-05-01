@@ -11,6 +11,10 @@ import org.aisen.weibo.sina.support.bean.LikeBean;
  */
 public class LikeDB {
 
+    public static LikeBean get(String statusId) {
+        return SinaDB.getSqlite().selectById(new Extra(AppContext.getUser().getIdstr(), null), LikeBean.class, statusId);
+    }
+
     public static void insert(LikeBean likeBean) {
         SinaDB.getSqlite().insert(new Extra(AppContext.getUser().getId(), null), likeBean);
     }

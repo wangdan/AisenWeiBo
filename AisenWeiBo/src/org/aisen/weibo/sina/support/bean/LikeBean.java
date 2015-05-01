@@ -1,15 +1,14 @@
 package org.aisen.weibo.sina.support.bean;
 
 import com.m.component.sqlite.annotation.AutoIncrementPrimaryKey;
+import com.m.component.sqlite.annotation.PrimaryKey;
 
 /**
  * Created by wangdan on 15-3-6.
  */
 public class LikeBean {
 
-	@AutoIncrementPrimaryKey(column = "id")
-	private int id;
-	
+    @PrimaryKey(column = "statusId")
     private String statusId;
 
     private boolean liked;
@@ -29,13 +28,4 @@ public class LikeBean {
     public void setLiked(boolean liked) {
         this.liked = liked;
     }
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-    
 }
