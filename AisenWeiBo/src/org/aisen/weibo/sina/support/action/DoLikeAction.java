@@ -136,7 +136,7 @@ public class DoLikeAction extends IAction {
                 return;
 
             // 未登录，或者登录失效
-            if ("-100".equalsIgnoreCase(exception.getMessage())) {
+            if ("-100".equalsIgnoreCase(exception.getCode())) {
 
                 ((WebLoginAction) getParent()).doAction();
             }

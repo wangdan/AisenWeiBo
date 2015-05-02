@@ -1,6 +1,7 @@
 package org.aisen.weibo.sina.support.utils;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -13,6 +14,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.TypedValue;
+import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -50,6 +52,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -642,6 +645,33 @@ public class AisenUtils {
                 return thumbImage;
             default:
                 return thumbImage;
+        }
+    }
+
+    public static void onMenuClicked(ABaseFragment fragment, int menuId, StatusContent status) {
+        switch (menuId) {
+        case R.id.comment:
+            BizFragment.getBizFragment(fragment).commentCreate(status);
+            break;
+        case R.id.repost:
+            BizFragment.getBizFragment(fragment).statusRepost(status);
+            break;
+        case R.id.fav:
+            BizFragment.getBizFragment(fragment).favorityCreate(status.getId() + "", null);
+            break;
+        case R.id.fav_destory:
+            BizFragment.getBizFragment(fragment).favorityDestory(status.getId() + "", null);
+            break;
+        case R.id.copy:
+            copyToClipboard(status.getText());
+            ViewUtils.showMessage(R.string.msg_text_copyed);
+            break;
+        case R.id.delete:
+            deleteStatus(fragment, status);
+            break;
+        case R.id.weiguan:
+            PublishActivity.publishStatusRepostAndWeiguan(fragment.getActivity(), null, status);
+            break;
         }
     }
 

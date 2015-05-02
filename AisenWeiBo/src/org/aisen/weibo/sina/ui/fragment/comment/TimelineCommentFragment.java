@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -17,15 +20,18 @@ import com.m.component.container.FragmentContainerActivity;
 import com.m.network.http.Params;
 import com.m.network.task.TaskException;
 import com.m.support.adapter.ABaseAdapter;
+import com.m.support.inject.ViewInject;
 import com.m.support.paging.IPaging;
 import com.m.ui.activity.basic.BaseActivity;
 import com.m.ui.fragment.ASwipeRefreshListFragment;
+import com.melnykov.fab.FloatingActionButton;
 
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.support.paging.CommentsPagingProcessor;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.support.utils.FabBtnUtils;
 import org.sina.android.SinaSDK;
 import org.sina.android.bean.StatusComment;
 import org.sina.android.bean.StatusComments;
@@ -47,6 +53,9 @@ public class TimelineCommentFragment extends ASwipeRefreshListFragment<StatusCom
 
         FragmentContainerActivity.launch(from, TimelineCommentFragment.class, args);
     }
+
+    @ViewInject(id = R.id.fab, click = "onFabBtnClicked")
+    FloatingActionButton fab;
 
     private StatusContent mStatusContent;
 
@@ -72,6 +81,10 @@ public class TimelineCommentFragment extends ASwipeRefreshListFragment<StatusCom
         BaseActivity baseActivity = (BaseActivity) getActivity();
         baseActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         baseActivity.setTitle(R.string.cmts_title);
+
+        setHasOptionsMenu(true);
+
+        FabBtnUtils.setFabBtn(getActivity(), fab, R.drawable.ic_reply, getRefreshView());
     }
 
     @Override
@@ -233,6 +246,28 @@ public class TimelineCommentFragment extends ASwipeRefreshListFragment<StatusCom
         requestDataDelay(200);
 
         return true;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_cmts, menu);
+        menu.removeItem(R.id.comment);
+        if (mStatusContent.getUser() == null ||
+                !mStatusContent.getUser().getIdstr().equalsIgnoreCase(AppContext.getUser().getIdstr()))
+            menu.removeItem(R.id.delete);
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        AisenUtils.onMenuClicked(this, item.getItemId(), mStatusContent);
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    void onFabBtnClicked(View v) {
+        AisenUtils.onMenuClicked(this, R.id.comment, mStatusContent);
     }
 
 }

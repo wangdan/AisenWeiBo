@@ -106,6 +106,8 @@ public class BaseBizlogic extends ABizLogic {
 
                 if (body.indexOf("http://passport.weibo.cn/sso/crossdomain") != -1)
                     throw new TaskException("-100", "未登录");
+                else if (body.indexOf("<html") != -1)
+                    throw new TaskException("-100", "未登录");
 
                 LikeResultBean likeBean = JSON.parseObject(body, LikeResultBean.class);
                 if (likeBean.getOk() == 1) {

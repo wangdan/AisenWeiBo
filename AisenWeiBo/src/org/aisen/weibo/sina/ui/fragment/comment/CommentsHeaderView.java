@@ -121,6 +121,7 @@ public class CommentsHeaderView extends TimelineItemView {
     private void setLikeText(final StatusContent data, final TextView likeTxt) {
         final LikeBean reLikeBean = DoLikeAction.likeCache.get(data.getId() + "");
 
+            likeTxt.setTag(data);
 //        if (data.getAttitudes_count() > 0 || (reLikeBean != null && reLikeBean.isLiked())) {
             likeTxt.setVisibility(View.VISIBLE);
             String meLike = reLikeBean != null && reLikeBean.isLiked() ? "+1" : "";

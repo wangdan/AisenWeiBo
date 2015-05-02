@@ -30,6 +30,14 @@
     <string name="group_add">新增分组</string>
     <string name="publish">写微薄</string>
 
+    <string name="timeline_cmt">评论</string>
+    <string name="timeline_repost">转发</string>
+    <string name="timeline_fav">收藏</string>
+    <string name="timeline_fav_destory">取消收藏</string>
+    <string name="timeline_shielding">屏蔽</string>
+    <string name="timeline_weiguan">围观</string>
+    <string name="timeline_copy">复制</string>
+
     <!-- 标题 -->
     <string name="timeline_all">全部微博</string>
     <string name="timeline_bilateral">互相关注</string>

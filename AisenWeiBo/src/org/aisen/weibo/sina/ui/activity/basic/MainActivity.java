@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.m.common.context.GlobalContext;
 import com.m.common.utils.ActivityHelper;
@@ -92,12 +93,11 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
     private FloatingActionButton btnFab;
 
     private int fabType = -1;
-    private int fabPosition = AppSettings.getFabBtnPosition();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(fabPosition == 0 ? R.layout.as_ui_main_fableft : R.layout.as_ui_main);
+        setContentView(R.layout.as_ui_main);
 
         AdTokenUtils.loadIfExpired();
 
@@ -330,12 +330,6 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
     protected void onResume() {
         super.onResume();
 
-        if (fabPosition != AppSettings.getFabBtnPosition()) {
-            reload();
-
-            return;
-        }
-
         if (!AppContext.isLogedin())
             finish();
 
@@ -354,6 +348,13 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
             }
         }
         btnFab.setVisibility(canFragmentRefresh() ? View.VISIBLE : View.INVISIBLE);
+
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) btnFab.getLayoutParams();
+        params.gravity = Gravity.BOTTOM;
+        if (AppSettings.getFabBtnPosition() == 0)
+            params.gravity |= Gravity.LEFT;
+        else
+            params.gravity |= Gravity.RIGHT;
     }
 
     private boolean canFragmentRefresh() {
