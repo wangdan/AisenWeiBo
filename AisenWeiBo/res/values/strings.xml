@@ -230,6 +230,7 @@
     <string name="publish_clip_empty">剪切板没有内容</string>
     <string name="publish_clip_faild">剪切板内容不是图片链接</string>
     <string name="dm_pic_notexist">图片不存在</string>
+    <string name="title_mobile_photos">手机相册</string>
 
     <!-- 提及 -->
     <string name="mention_status">微博</string>

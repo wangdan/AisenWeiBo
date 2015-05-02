@@ -68,6 +68,7 @@ import org.aisen.weibo.sina.support.db.EmotionsDB;
 import org.aisen.weibo.sina.support.db.PublishDB;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.sys.service.PublishService;
+import org.aisen.weibo.sina.ui.fragment.pics.PicturePickFragment;
 import org.aisen.weibo.sina.ui.fragment.publish.EmotionFragment.OnEmotionSelectedListener;
 import org.sina.android.bean.WeiBoUser;
 
@@ -223,7 +224,7 @@ public abstract class APublishFragment extends ABaseFragment
 			config.setLoadfaildRes(R.drawable.bg_timeline_loading);
 			config.setLoadingRes(R.drawable.bg_timeline_loading);
 			config.setMaxWidth(SystemUtils.getScreenWidth());
-			config.setMaxHeight(SystemUtils.getScreenHeight());
+			config.setMaxHeight(SystemUtils.getScreenHeight() / 2);
 			config.setBitmapCompress(TimelineBitmapCompress.class);
 			config.setProgress(new PublishDownloadProcess());
 			
@@ -451,7 +452,7 @@ public abstract class APublishFragment extends ABaseFragment
 //										photoChoice.start(APublishFragment.this, 0);
                                         String[] images = getPublishBean().getPics();
                                         images = null;// 这里只选中一个图片，不设置默认图片
-//                                        PicturePickFragment.launch(APublishFragment.this, 1, images, 3333);
+                                        PicturePickFragment.launch(APublishFragment.this, 1, images, 3333);
 										break;
 									// 拍照
 									case 1:
@@ -710,6 +711,8 @@ public abstract class APublishFragment extends ABaseFragment
 			getPublishBean().setExtras(extraParams);
 		}
         String[] pics = getPublishBean().getPics();
+        // TODO 现在只支持一个图
+        pics = null;
         if (pics != null) {
             List<String> list = new ArrayList<String>();
             for (String pic : pics) {
