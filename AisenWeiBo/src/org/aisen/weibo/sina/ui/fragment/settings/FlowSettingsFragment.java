@@ -16,7 +16,6 @@ import com.m.ui.activity.basic.BaseActivity;
 
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
-import org.aisen.weibo.sina.support.utils.BaiduAnalyzeUtils;
 
 /**
  * 流量控制
@@ -66,15 +65,6 @@ public class FlowSettingsFragment extends BasePreferenceFragment
 			pUploadSetting.setSummary(summary);
 		}
 
-		// 缓存清理
-		Preference pClearCache = (Preference) findPreference("pClearCache");
-		CacheClearFragment clearFragment = (CacheClearFragment) getActivity().getFragmentManager().findFragmentByTag("CacheClearFragment");
-		if (clearFragment == null) {
-			clearFragment = new CacheClearFragment();
-			getActivity().getFragmentManager().beginTransaction().add(clearFragment, "CacheClearFragment").commit();
-		}
-		clearFragment.setPreference(pClearCache, GlobalContext.getInstance().getImagePath());
-		
 		pNonePic = (CheckBoxPreference) findPreference("pNonePic");
 		pNonePic.setOnPreferenceChangeListener(this);
 		
@@ -133,20 +123,6 @@ public class FlowSettingsFragment extends BasePreferenceFragment
 			pPicMode.setEnabled(!Boolean.parseBoolean(newValue.toString()));
 		}
 		return true;
-	}
-	
-	@Override
-	public void onResume() {
-		super.onResume();
-		
-		BaiduAnalyzeUtils.onPageStart("流量控制设置");
-	}
-	
-	@Override
-	public void onPause() {
-		super.onPause();
-		
-		BaiduAnalyzeUtils.onPageEnd("流量控制设置");
 	}
 
 }

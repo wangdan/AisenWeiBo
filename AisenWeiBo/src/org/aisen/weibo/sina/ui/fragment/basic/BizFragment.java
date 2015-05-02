@@ -30,6 +30,7 @@ import org.aisen.weibo.sina.support.publisher.Notifier;
 import org.aisen.weibo.sina.sys.service.UnreadService;
 import org.aisen.weibo.sina.ui.activity.basic.MainActivity;
 import org.aisen.weibo.sina.ui.activity.pics.PicsActivity;
+import org.aisen.weibo.sina.ui.activity.profile.UserProfileActivity;
 import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
 import org.aisen.weibo.sina.ui.fragment.profile.UserProfilePagerFragment;
 import org.sina.android.SinaSDK;
@@ -707,9 +708,13 @@ public class BizFragment extends ABaseFragment {
                 intent.setAction("org.aisen.weibo.sina.FAV_DESTORY");
                 intent.putExtra("statusId", result.getStatus().getId());
                 // 如果是评论页面，就设置回执
-                getActivity().setResult(Activity.RESULT_OK, intent);
-                // 加入是收藏列表界面，发出广播更新它
-                GlobalContext.getInstance().sendBroadcast(intent);
+                if (getActivity() instanceof UserProfileActivity) {
+                    // 加入是收藏列表界面，发出广播更新它
+                    GlobalContext.getInstance().sendBroadcast(intent);
+                }
+                else {
+                    getActivity().setResult(Activity.RESULT_OK, intent);
+                }
 
                 ViewUtils.showMessage(R.string.biz_fav_removed);
 

@@ -17,6 +17,7 @@ import com.m.support.paging.IPaging;
 import com.m.support.paging.PageIndexPaging;
 import com.m.ui.activity.basic.BaseActivity;
 import com.m.ui.fragment.ABaseFragment;
+import com.m.ui.fragment.ARefreshFragment;
 import com.m.ui.fragment.AStripTabsFragment;
 
 import org.aisen.weibo.sina.R;
@@ -72,14 +73,30 @@ public class TimelineFavoritesFragment extends ATimelineFragment
     }
 
     private boolean launch = false;
-    
+
     @Override
-    protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
-    	super.layoutInit(inflater, savedInstanceSate);
+    protected int inflateContentView() {
+        return R.layout.as_ui_favorities;
+    }
+
+    @Override
+    protected void configRefresh(RefreshConfig config) {
+        super.configRefresh(config);
+
+        config.saveLastPositionKey = null;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceSate) {
+        super.onCreate(savedInstanceSate);
 
         launch = savedInstanceSate == null ? getArguments().getBoolean("launch", false)
                                            : savedInstanceSate.getBoolean("launch");
+    }
 
+    @Override
+    protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
+    	super.layoutInit(inflater, savedInstanceSate);
         if (launch) {
             BaseActivity activity = (BaseActivity) getActivity();
             activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -175,8 +192,9 @@ public class TimelineFavoritesFragment extends ATimelineFragment
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			if (intent != null && "org.aisen.weibo.sina.FAV_DESTORY".equals(intent.getAction())) {
-				String statusId = intent.getStringExtra("statusId");
+			if (intent != null && "org.aisen.weibo.sina.FAV_DESTORY".equalsIgnoreCase(intent.getAction())
+                    && intent.getExtras() != null) {
+				String statusId = intent.getExtras().getString("statusId");
 				
 				destoryFav(statusId);
 			}

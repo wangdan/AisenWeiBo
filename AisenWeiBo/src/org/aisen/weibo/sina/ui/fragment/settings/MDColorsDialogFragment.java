@@ -14,6 +14,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.m.common.utils.ViewUtils;
 import com.m.ui.activity.basic.BaseActivity;
 import com.m.ui.widget.CircleImageView;
 
@@ -30,7 +31,8 @@ import java.util.Map;
  * @author wangdan
  *
  */
-public class MDColorsDialogFragment extends DialogFragment implements OnItemClickListener {
+public class MDColorsDialogFragment extends DialogFragment
+                                        implements OnItemClickListener, AdapterView.OnItemLongClickListener {
 
 	public static void launch(Activity context) {
 		Fragment fragment = context.getFragmentManager().findFragmentByTag("DMColorsDialogFragment");
@@ -53,6 +55,7 @@ public class MDColorsDialogFragment extends DialogFragment implements OnItemClic
 		GridView gridView = (GridView) view.findViewById(R.id.grid);
 		gridView.setAdapter(new MDColorsAdapter());
 		gridView.setOnItemClickListener(this);
+        gridView.setOnItemLongClickListener(this);
 		
 		return new AlertDialogWrapper.Builder(getActivity())
                                             .setView(view)
@@ -112,5 +115,11 @@ public class MDColorsDialogFragment extends DialogFragment implements OnItemClic
         if (getActivity() instanceof BaseActivity)
             ((BaseActivity) getActivity()).reload();
 	}
-	
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        ViewUtils.showMessage(getResources().getStringArray(R.array.mdColorNames)[position]);
+
+        return true;
+    }
 }

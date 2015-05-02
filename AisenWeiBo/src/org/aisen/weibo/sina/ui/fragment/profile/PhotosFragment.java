@@ -26,7 +26,6 @@ import com.m.ui.fragment.ASwipyRefreshGridLayout;
 
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
-import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.support.bean.PhotoBean;
 import org.aisen.weibo.sina.support.bean.PhotosBean;
 import org.aisen.weibo.sina.support.compress.TimelineThumbBitmapCompress;
@@ -183,7 +182,7 @@ public class PhotosFragment extends ASwipyRefreshGridLayout<PhotoBean, PhotosBea
 
             params.addParameter("screen_name", mUser.getScreen_name());
 
-            params.addParameter("count", String.valueOf(AppSettings.getTimelineCount()));
+            params.addParameter("count", "100");
             // 相册
             params.addParameter("feature", "2");
 

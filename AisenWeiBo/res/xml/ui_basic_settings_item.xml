@@ -78,6 +78,8 @@
 
         <Preference
             android:key="pClearRecentMention" android:title="@string/settings_mention_history"/>
+
+        <Preference android:key="pClearCache" android:title="@string/settings_clear_cache" />
     </PreferenceCategory>
 
 </PreferenceScreen>

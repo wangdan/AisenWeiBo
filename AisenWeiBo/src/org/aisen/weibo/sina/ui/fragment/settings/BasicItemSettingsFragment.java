@@ -66,6 +66,7 @@ import java.io.File;
         // 主题
         pTheme = (Preference) findPreference("pTheme");
         pTheme.setOnPreferenceClickListener(this);
+        pTheme.setSummary(getResources().getStringArray(R.array.mdColorNames)[AppSettings.getThemeColor()]);
 //        findPreference("pThemeCustom").setOnPreferenceClickListener(this);
 
 		pFastScrollBar = (CheckBoxPreference) findPreference("pFastScrollBar");
@@ -114,6 +115,15 @@ import java.io.File;
         pFabPosition.setOnPreferenceChangeListener(this);
         value = Integer.parseInt(prefs.getString("pFabPosition", "1"));
         setListSetting(value, R.array.fabPosition, pFabPosition);
+
+        // 缓存清理
+        Preference pClearCache = (Preference) findPreference("pClearCache");
+        CacheClearFragment clearFragment = (CacheClearFragment) getActivity().getFragmentManager().findFragmentByTag("CacheClearFragment");
+        if (clearFragment == null) {
+            clearFragment = new CacheClearFragment();
+            getActivity().getFragmentManager().beginTransaction().add(clearFragment, "CacheClearFragment").commit();
+        }
+        clearFragment.setPreference(pClearCache, GlobalContext.getInstance().getImagePath());
 	}
 	
 	@Override

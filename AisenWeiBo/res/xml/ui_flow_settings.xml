@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <Preference android:key="pClearCache" android:title="@string/settings_clear_cache" />
-    
     <org.aisen.weibo.sina.ui.widget.AisenListPreference android:key="pUploadSetting" android:entries="@array/txtUpload" android:entryValues="@array/prefValues"
 		android:dialogTitle="@string/settings_dt_pic_upload" android:title="@string/settings_dt_pic_upload" android:defaultValue="0" />
 
-    
     <CheckBoxPreference android:key="pLargePhoto" android:title="@string/settings_photo" android:defaultValue="true"/>
  
     <CheckBoxPreference android:key="pNonePic" android:title="@string/settings_pic_none" android:defaultValue="false"/>
