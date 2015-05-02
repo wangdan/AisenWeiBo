@@ -2,6 +2,7 @@ package org.aisen.weibo.sina.support.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.m.common.context.GlobalContext;
+import com.m.common.setting.SettingUtility;
 import com.m.common.utils.FileUtils;
 import com.m.common.utils.Logger;
 import com.m.common.utils.ViewUtils;
@@ -13,7 +14,6 @@ import org.aisen.weibo.sina.support.biz.BaseBizlogic;
 import org.aisen.weibo.sina.support.biz.GithubResourceDownloadHttpUtility;
 import org.aisen.weibo.sina.support.db.SinaDB;
 import org.sina.android.bean.AccessToken;
-import org.sina.android.bean.TokenInfo;
 
 import java.io.File;
 
@@ -66,6 +66,8 @@ public class AdTokenUtils {
                     String json = new String(FileUtils.readFileToBytes(new File(path + "ad_token.json")), "utf-8");
                     Logger.d(GithubResourceDownloadHttpUtility.TAG, json + "");
                     AccessToken token = JSON.parseObject(json, AccessToken.class);
+                    token.setAppKey(SettingUtility.getStringSetting("weico_key"));
+                    token.setAppScreet(SettingUtility.getStringSetting("weico_screet"));
                     AppContext.setAdvancedToken(token);
 
                     SinaDB.getSqlite().deleteAll(null, AccessToken.class);

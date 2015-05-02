@@ -92,11 +92,12 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
     private FloatingActionButton btnFab;
 
     private int fabType = -1;
+    private int fabPosition = AppSettings.getFabBtnPosition();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.as_ui_main);
+        setContentView(fabPosition == 0 ? R.layout.as_ui_main_fableft : R.layout.as_ui_main);
 
         AdTokenUtils.loadIfExpired();
 
@@ -328,6 +329,13 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
     @Override
     protected void onResume() {
         super.onResume();
+
+        if (fabPosition != AppSettings.getFabBtnPosition()) {
+            reload();
+
+            return;
+        }
+
         if (!AppContext.isLogedin())
             finish();
 

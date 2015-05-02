@@ -52,6 +52,7 @@ import java.io.File;
 	private CheckBoxPreference pAutoRefresh;// 列表自动刷新
 	private ListPreference pSwipebackEdgeMode;// 手势返回方向
     private ListPreference pFabType;// 首页fab按钮功能
+    private ListPreference pFabPosition;// 首页fab按钮位置
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -108,6 +109,11 @@ import java.io.File;
         pFabType.setOnPreferenceChangeListener(this);
         value = Integer.parseInt(prefs.getString("pFabType", "0"));
         setListSetting(value, R.array.fabTypes, pFabType);
+
+        pFabPosition = (ListPreference) findPreference("pFabPosition");
+        pFabPosition.setOnPreferenceChangeListener(this);
+        value = Integer.parseInt(prefs.getString("pFabPosition", "1"));
+        setListSetting(value, R.array.fabPosition, pFabPosition);
 	}
 	
 	@Override
@@ -161,6 +167,9 @@ import java.io.File;
 		}
         else if ("pFabType".equals(preference.getKey())) {
             setListSetting(Integer.parseInt(newValue.toString()), R.array.fabTypes, pFabType);
+        }
+        else if ("pFabPosition".equals(preference.getKey())) {
+            setListSetting(Integer.parseInt(newValue.toString()), R.array.fabPosition, pFabPosition);
         }
 		return true;
 	}

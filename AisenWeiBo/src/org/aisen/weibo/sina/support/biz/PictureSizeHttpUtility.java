@@ -4,12 +4,14 @@ import android.net.Proxy;
 
 import com.m.common.setting.Setting;
 import com.m.common.utils.Logger;
+import com.m.common.utils.SystemUtils;
 import com.m.network.http.HttpConfig;
 import com.m.network.http.IHttpUtility;
 import com.m.network.http.Params;
 import com.m.network.task.TaskException;
 
 import org.aisen.weibo.sina.support.bean.PictureSize;
+import org.aisen.weibo.sina.support.db.SinaDB;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -28,6 +30,9 @@ public class PictureSizeHttpUtility implements IHttpUtility {
 
     @Override
     public <T> T doGet(HttpConfig config, Setting action, Params params, Class<T> responseCls) throws TaskException {
+        if (SystemUtils.getNetworkType() == SystemUtils.NetWorkType.none)
+            return null;
+
         String url = params.getParameter("path");
 
         PictureSize size = new PictureSize();
@@ -45,6 +50,7 @@ public class PictureSizeHttpUtility implements IHttpUtility {
                 Header lengthHeader = response.getLastHeader("Content-Length");
                 if (lengthHeader != null) {
                     size.setSize(Long.parseLong(lengthHeader.getValue()));
+                    SinaDB.getSqlite().insert(null, size);
                     Logger.d(TAG, String.format("图片大小 %s", String.valueOf(size.getSize())));
                 }
                 get.abort();

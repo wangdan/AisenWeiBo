@@ -42,6 +42,7 @@ import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
 import org.aisen.weibo.sina.sys.service.UnreadService;
 import org.aisen.weibo.sina.ui.activity.basic.MainActivity;
 import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
+import org.aisen.weibo.sina.ui.fragment.profile.UserProfilePagerFragment;
 import org.sina.android.SinaSDK;
 import org.sina.android.bean.Groups;
 import org.sina.android.bean.WeiBoUser;
@@ -300,12 +301,13 @@ public class MenuFragment extends AListFragment<MenuBean, ArrayList<MenuBean>> {
         @Override
         public void onClick(View v) {
             if (v.getId() == R.id.imgPhoto) {
-//                if (txtFollowersNewHint != null && txtFollowersNewHint.getVisibility() == View.VISIBLE) {
-                onMenuClicked(MenuGenerator.generateMenu("4"), v);
-                ((MainActivity) getActivity()).closeDrawer();
-//            }
-//                else
-//                    UserProfilePagerFragment.launch(getActivity(), AppContext.getUser());;
+                if (txtFollowersNewHint != null && txtFollowersNewHint.getVisibility() == View.VISIBLE) {
+                    onMenuClicked(MenuGenerator.generateMenu("4"), v);
+                    ((MainActivity) getActivity()).closeDrawer();
+                }
+                else {
+                    UserProfilePagerFragment.launch(getActivity(), AppContext.getUser());;
+                }
             }
         }
     };

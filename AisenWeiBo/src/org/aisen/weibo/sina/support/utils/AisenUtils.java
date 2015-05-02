@@ -624,4 +624,25 @@ public class AisenUtils {
         from.startActivity(intent);
     }
 
+    public static String getStatusMulImage(String thumbImage) {
+        switch (AppSettings.getPictureMode()) {
+            // MODE_AUTO
+            case 2:
+                if (SystemUtils.getNetworkType() == SystemUtils.NetWorkType.wifi)
+                    return thumbImage.replace("thumbnail", "bmiddle");
+
+                return thumbImage;
+            // MODE_ALWAYS_ORIG
+            case 1:
+                return thumbImage.replace("thumbnail", "bmiddle");
+            case 3:
+                return thumbImage.replace("thumbnail", "bmiddle");
+            // MODE_ALWAYS_THUMB
+            case 0:
+                return thumbImage;
+            default:
+                return thumbImage;
+        }
+    }
+
 }

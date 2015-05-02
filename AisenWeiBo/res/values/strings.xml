@@ -452,7 +452,8 @@
     <string name="category_other">其他</string>
     <string name="settings_pic_path">图片保存路径</string>
     <string name="settings_mention_history">清理@好友历史记录</string>
-    <string name="settings_fab_type">首页Fab按钮功能</string>
+    <string name="settings_fab_type">Fab按钮功能</string>
+    <string name="settings_fab_position">Fab按钮位置</string>
 
     <!-- 通知设置 -->
     <string name="title_notification">通知中心</string>
@@ -587,6 +588,11 @@
     <string-array name="fabTypes">
         <item>发微博</item>
         <item>刷新</item>
+    </string-array>
+
+    <string-array name="fabPosition">
+        <item>左侧</item>
+        <item>右侧</item>
         <!--<item>全部</item>-->
     </string-array>
 

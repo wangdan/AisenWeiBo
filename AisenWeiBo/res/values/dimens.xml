@@ -22,6 +22,9 @@
     <dimen name="swipe_refresh_progress_bar_start_margin">-40dp</dimen>
     <dimen name="swipe_refresh_progress_bar_end_margin">16dp</dimen>
 
+    <!-- 相册间隙 -->
+    <dimen name="gap_photo">3dip</dimen>
+
     <!-- picture预览 -->
     <dimen name="normal_gif_webview_margin_left">40dp</dimen>
     <dimen name="normal_gif_webview_margin_right">40dp</dimen>

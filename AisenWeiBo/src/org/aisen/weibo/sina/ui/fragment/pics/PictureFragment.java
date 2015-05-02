@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.graphics.Rect;
 import android.opengl.GLES10;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
@@ -17,12 +18,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ImageView;
 
 import com.m.common.utils.BitmapUtil;
 import com.m.common.utils.BitmapUtil.BitmapType;
 import com.m.common.utils.FileUtils;
+import com.m.common.utils.SystemBarUtils;
 import com.m.common.utils.SystemUtils;
 import com.m.common.utils.Utils;
 import com.m.common.utils.ViewUtils;
@@ -82,6 +85,8 @@ import uk.co.senab.photoview.PhotoView;
     PictureProgressView progressView;
 	@ViewInject(id = R.id.progress)
     SmoothProgressBar progressBar;
+    @ViewInject(id = R.id.layProgress)
+    ViewGroup layProgress;
 	
 	private PicUrls image;
 
@@ -104,6 +109,10 @@ import uk.co.senab.photoview.PhotoView;
 		progressBar.setIndeterminate(true);
 
         origFile = BitmapLoader.getInstance().getCacheFile(getOrigImage());
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            layProgress.setPadding(0, SystemBarUtils.getStatusBarHeight(getActivity()), 0, 0);
+        }
 
 		loadPicture(viewFailure);
 		

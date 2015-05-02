@@ -203,7 +203,7 @@ public class AppSettings {
 //        if (true) return 5;
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
-        int index = Integer.parseInt(prefs.getString("pTimelineCount", "3"));
+        int index = Integer.parseInt(prefs.getString("pTimelineCount", "0"));
 
         int count = countArr[0];
         if (index == 3) {
@@ -417,6 +417,16 @@ public class AppSettings {
     public static int getFabBtnType() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
         return Integer.parseInt(prefs.getString("pFabType", "0"));
+    }
+
+    /**
+     * 首页fab按钮位置
+     *
+     * @return
+     */
+    public static int getFabBtnPosition() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
+        return Integer.parseInt(prefs.getString("pFabPosition", "1"));
     }
 
     public static int getThemeColor() {

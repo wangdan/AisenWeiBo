@@ -67,11 +67,6 @@ public class AppContext {
 
         // 处理点赞数据
         DoLikeAction.refreshLikeCache();
-
-        // 读取高级token
-        List<AccessToken> token = SinaDB.getSqlite().select(null, AccessToken.class);
-        if (token.size() > 0)
-            AppContext.setAdvancedToken(token.get(0));
     }
 
     public static void logout() {
