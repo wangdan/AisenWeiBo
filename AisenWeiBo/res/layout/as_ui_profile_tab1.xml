@@ -2,13 +2,14 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical" android:padding="8dip">
+    android:orientation="vertical" android:paddingBottom="16dip"
+    android:paddingLeft="16dip" android:paddingRight="16dip" android:paddingTop="8dip">
 
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dip">
+        >
 
         <LinearLayout
             android:layout_width="match_parent" android:layout_height="wrap_content"

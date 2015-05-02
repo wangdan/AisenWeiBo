@@ -24,6 +24,7 @@ import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.support.paging.TimelinePagingProcessor;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.ui.activity.basic.MainActivity;
+import org.aisen.weibo.sina.ui.activity.profile.UserProfileActivity;
 import org.aisen.weibo.sina.ui.fragment.basic.AWeiboRefreshListFragment;
 import org.aisen.weibo.sina.ui.fragment.comment.TimelineCommentFragment;
 import org.aisen.weibo.sina.ui.widget.TimelinePicsView;
@@ -163,6 +164,9 @@ public abstract class ATimelineFragment extends AWeiboRefreshListFragment<Status
         }
         // 其他页面
         else if (getActivity() instanceof FragmentContainerActivity) {
+            aFragment = getActivity().getFragmentManager().findFragmentByTag(FragmentContainerActivity.FRAGMENT_TAG);
+        }
+        else if (getActivity() instanceof UserProfileActivity) {
             aFragment = getActivity().getFragmentManager().findFragmentByTag(FragmentContainerActivity.FRAGMENT_TAG);
         }
 

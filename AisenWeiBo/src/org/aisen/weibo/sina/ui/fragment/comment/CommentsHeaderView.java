@@ -31,10 +31,6 @@ public class CommentsHeaderView extends TimelineItemView {
         super(fragment, reStatue, showRetweeted);
     }
 
-    public CommentsHeaderView() {
-
-    }
-
     @ViewInject(id = R.id.layStatusBar)
     View layStatusBar;
     @ViewInject(id = R.id.txtAttribute)

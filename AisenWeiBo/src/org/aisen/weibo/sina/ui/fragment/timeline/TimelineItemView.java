@@ -69,7 +69,7 @@ public class TimelineItemView extends ABaseAdapter.AbstractItemView<StatusConten
         this.showRetweeted = showRetweeted;
     }
 
-    public TimelineItemView() {
+    private TimelineItemView() {
         vPadding = GlobalContext.getInstance().getResources().getDimensionPixelSize(R.dimen.comm_v_gap);
         if (AppContext.getGroups() != null && (groupMap == null || groupMap.size() != AppContext.getGroups().getLists().size())) {
             groupMap = new HashMap<String, String>();
@@ -289,14 +289,19 @@ public class TimelineItemView extends ABaseAdapter.AbstractItemView<StatusConten
     private void setUserInfo(WeiBoUser user, TextView txtName, ImageView imgPhoto, ImageView imgVerified) {
         if (user != null) {
             txtName.setText(AisenUtils.getUserScreenName(user));
-            BitmapLoader.getInstance().display(fragment, AisenUtils.getUserPhoto(user), imgPhoto, ImageConfigUtils.getLargePhotoConfig());
-            bizFragment.userShow(imgPhoto, user);
+
+            if (imgPhoto != null) {
+                BitmapLoader.getInstance().display(fragment, AisenUtils.getUserPhoto(user), imgPhoto, ImageConfigUtils.getLargePhotoConfig());
+                bizFragment.userShow(imgPhoto, user);
+            }
 
             AisenUtils.setImageVerified(imgVerified, user);
         }
         else {
-            imgPhoto.setImageDrawable(new ColorDrawable(Color.GRAY));
-            bizFragment.userShow(imgPhoto, null);
+            if (imgPhoto != null) {
+                imgPhoto.setImageDrawable(new ColorDrawable(Color.GRAY));
+                bizFragment.userShow(imgPhoto, null);
+            }
 
             imgVerified.setVisibility(View.GONE);
         }

@@ -30,8 +30,12 @@ public abstract class AWeiboRefreshListFragment<T extends Serializable, Ts exten
 
     @Override
     protected int inflateContentView() {
-        if (isInMain())
+        if (this instanceof AFriendshipFragment) {
+            return R.layout.as_ui_friendship;
+        }
+        else if (isInMain()) {
             return R.layout.as_ui_main_swipelist;
+        }
 
         return super.inflateContentView();
     }

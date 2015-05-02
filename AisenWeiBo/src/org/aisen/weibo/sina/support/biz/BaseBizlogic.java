@@ -12,6 +12,7 @@ import com.m.network.http.Params;
 import com.m.network.task.TaskException;
 
 import org.aisen.weibo.sina.support.bean.LikeResultBean;
+import org.aisen.weibo.sina.support.bean.PictureSize;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
@@ -23,7 +24,7 @@ public class BaseBizlogic extends ABizLogic {
 	@Override
 	protected HttpConfig configHttpConfig() {
 		HttpConfig httpConfig = new HttpConfig();
-		httpConfig.baseUrl = getSetting("meizt_base_url").getValue();
+//		httpConfig.baseUrl = getSetting("meizt_base_url").getValue();
 		httpConfig.contentType = "application/x-www-form-urlencoded";
 		httpConfig.cookie = String.format("pck=%s;", GlobalContext.getInstance().getPackageName().replace(".", "_"));
 		return httpConfig;
@@ -125,6 +126,13 @@ public class BaseBizlogic extends ABizLogic {
         }
 
         throw new TaskException(TaskException.TaskError.timeout.toString());
+    }
+
+    public PictureSize getPictureSize(String url) throws TaskException {
+        Params params = new Params();
+        params.addParameter("path", url);
+
+        return doGet(getSetting("getPictureSize"), params, PictureSize.class);
     }
 
 }

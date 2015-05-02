@@ -84,7 +84,7 @@ public class UserProfilePagerFragment extends AStripTabsFragment<AStripTabsFragm
 
         Bundle args = new Bundle();
         args.putSerializable("user", searchResult);
-        args.putInt("index", 1);
+        args.putInt(SET_INDEX, 1);
         fragment.setArguments(args);
 
         return fragment;
@@ -131,10 +131,6 @@ public class UserProfilePagerFragment extends AStripTabsFragment<AStripTabsFragm
 
     public int setActivityContentView() {
         return R.layout.as_ui_profile_pager_activity;
-    }
-
-    public int setTheme() {
-        return R.style.AppTheme_Profile;
     }
 
     @Override
@@ -206,7 +202,7 @@ public class UserProfilePagerFragment extends AStripTabsFragment<AStripTabsFragm
             return UserProfileTab1Fragment.newInstance(mUserBean);
         // 用户微博
         case 2:
-            return UserTimelineFragment.newInstance(mUserBean, null);
+            return UserTimelineFragment.newInstance(mUserBean, "0");
         // 用户原创微博
         case 3:
             return UserTimelineFragment.newInstance(mUserBean, "1");

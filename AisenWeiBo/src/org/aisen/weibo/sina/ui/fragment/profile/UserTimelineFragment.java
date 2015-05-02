@@ -2,14 +2,21 @@ package org.aisen.weibo.sina.ui.fragment.profile;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.m.component.container.FragmentArgs;
 import com.m.component.container.FragmentContainerActivity;
 import com.m.network.http.Params;
 import com.m.network.task.TaskException;
+import com.m.support.adapter.ABaseAdapter;
 import com.m.ui.activity.basic.BaseActivity;
 import com.m.ui.fragment.AStripTabsFragment;
 
@@ -53,9 +60,25 @@ public class UserTimelineFragment extends ATimelineFragment
         FragmentContainerActivity.launch(from, UserTimelineFragment.class, args);
     }
 
+    private View headerView;
+
     private boolean launch;
     private WeiBoUser mUser;
     private String feature;
+
+    @Override
+    public void onCreate(Bundle savedInstanceSate) {
+        super.onCreate(savedInstanceSate);
+
+        mUser = savedInstanceSate == null ? (WeiBoUser) getArguments().getSerializable("user")
+                                          : (WeiBoUser) savedInstanceSate.getSerializable("user");
+        launch = savedInstanceSate == null ? getArguments().getBoolean("launch", false)
+                                           : savedInstanceSate.getBoolean("launch");
+        feature = savedInstanceSate == null ? getArguments().getString("feature", null)
+                                            : savedInstanceSate.getString("feature", null);
+        if (feature == null)
+            feature = "0";
+    }
 
     @Override
     protected int inflateContentView() {
@@ -66,19 +89,70 @@ public class UserTimelineFragment extends ATimelineFragment
     protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
         super.layoutInit(inflater, savedInstanceSate);
 
-        mUser = savedInstanceSate == null ? (WeiBoUser) getArguments().getSerializable("user")
-                                          : (WeiBoUser) savedInstanceSate.getSerializable("user");
-        launch = savedInstanceSate == null ? getArguments().getBoolean("launch", false)
-                                           : savedInstanceSate.getBoolean("launch");
-        feature = savedInstanceSate == null ? getArguments().getString("feature", null)
-                                            : savedInstanceSate.getString("feature", null);
-
         if (launch) {
             BaseActivity activity = (BaseActivity) getActivity();
             activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             activity.getSupportActionBar().setTitle(mUser.getScreen_name());
         }
     }
+
+    @Override
+    protected void setInitSwipeRefresh(ListView listView, SwipeRefreshLayout swipeRefreshLayout, Bundle savedInstanceState) {
+        super.setInitSwipeRefresh(listView, swipeRefreshLayout, savedInstanceState);
+
+        headerView = View.inflate(getActivity(), R.layout.as_header_user_timeline, null);
+        headerView.setOnClickListener(showFeatureDialogListener);
+
+        listView.addHeaderView(headerView);
+
+        setHeaderView();
+    }
+
+    private void setHeaderView() {
+        TextView txtView = (TextView) headerView.findViewById(R.id.txtName);
+        String[] titles = getResources().getStringArray(R.array.user_headers);
+        txtView.setText(titles[Integer.parseInt(feature)]);
+    }
+
+    View.OnClickListener showFeatureDialogListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            if (isRefreshing())
+                return;
+
+            String[] titles = getResources().getStringArray(R.array.user_headers);
+
+            new AlertDialogWrapper.Builder(getActivity())
+                                    .setTitle(R.string.profile_feature_dialog)
+                                    .setNegativeButton(R.string.cancel, null)
+                                    .setSingleChoiceItems(titles, Integer.parseInt(feature), new DialogInterface.OnClickListener() {
+
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if (Integer.parseInt(feature) == which) {
+                                                dialog.dismiss();
+
+                                                return;
+                                            }
+
+                                            feature = String.valueOf(which);
+
+                                            // 清理线程状态，可以加载缓存
+                                            cleatTaskCount("TimelineTask");
+
+                                            setHeaderView();
+
+                                            requestDataDelay(200);
+
+                                            dialog.dismiss();
+                                        }
+
+                                    })
+                                    .show();
+        }
+
+    };
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -88,6 +162,11 @@ public class UserTimelineFragment extends ATimelineFragment
             outState.putString("feature", feature);
         outState.putBoolean("launch", launch);
         outState.putSerializable("user", mUser);
+    }
+
+    @Override
+    protected ABaseAdapter.AbstractItemView<StatusContent> newItemView() {
+        return new UserTimelineItemView(this, true);
     }
 
     @Override
@@ -142,22 +221,22 @@ public class UserTimelineFragment extends ATimelineFragment
 			    params.addParameter("feature", feature);
 
             // 不管user_id字段传值什么，都返回登录用户的微博
-            if (AppContext.getUser().getIdstr().equals(mUser.getIdstr())) {
-                params.addParameter("user_id", mUser.getIdstr());
-            }
-            else {
+//            if (AppContext.getUser().getIdstr().equals(mUser.getIdstr())) {
+//                params.addParameter("user_id", mUser.getIdstr());
+//            }
+//            else {
                 params.addParameter("screen_name", mUser.getScreen_name());
-            }
+//            }
 
             params.addParameter("count", String.valueOf(AppSettings.getTimelineCount()));
 
             Token token = null;
             // 是当前登录用户
-            if (params.containsKey("user_id") && params.getParameter("user_id").equals(AppContext.getUser().getIdstr())) {
-            }
-            else if (params.containsKey("screen_name") && params.getParameter("screen_name").equals(AppContext.getUser().getScreen_name())) {
-            }
-            else {
+//            if (params.containsKey("user_id") && params.getParameter("user_id").equals(AppContext.getUser().getIdstr())) {
+//            }
+//            else if (params.containsKey("screen_name") && params.getParameter("screen_name").equals(AppContext.getUser().getScreen_name())) {
+//            }
+//            else {
                 if (AppContext.getAdvancedToken() != null) {
                     AccessToken accessToken = AppContext.getAdvancedToken();
 
@@ -167,7 +246,7 @@ public class UserTimelineFragment extends ATimelineFragment
 
                     params.addParameter("source", accessToken.getAppKey());
                 }
-            }
+//            }
             if (token == null)
                 token = AppContext.getToken();
             StatusContents statusContents = SinaSDK.getInstance(token, getTaskCacheMode(this)).statusesUserTimeLine(params);

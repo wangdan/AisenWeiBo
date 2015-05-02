@@ -42,7 +42,10 @@ public class TimelineCacheUtility implements ICacheUtility {
 			key = action.getDescription() + ":" + action.getValue();
 		
 //		key += AppContext.getUser().getIdstr();
-		
+
+        if (params.containsKey("feature"))
+            key += params.getParameter("feature");
+
 		return KeyGenerator.generateMD5(key);
 	}
 	
@@ -57,11 +60,11 @@ public class TimelineCacheUtility implements ICacheUtility {
 		
 		// 如果是用户微博，只返回用户的微博
 		if (action.getValue().equals("statuses/user_timeline.json")) {
-			if (params.containsKey("feature")) {
-				return null;
-			}
+//			if (params.containsKey("feature")) {
+//				return null;
+//			}
 			// 是当前登录用户
-			else if (params.containsKey("user_id") && params.getParameter("user_id").equals(AppContext.getUser().getIdstr())) {
+			if (params.containsKey("user_id") && params.getParameter("user_id").equals(AppContext.getUser().getIdstr())) {
 			}
 			else if (params.containsKey("screen_name") && params.getParameter("screen_name").equals(AppContext.getUser().getScreen_name())) {
 			}
@@ -96,11 +99,11 @@ public class TimelineCacheUtility implements ICacheUtility {
 	public void addCacheData(Setting action, Params params, Object responseObj) {
 		// 如果是用户微博
 		if (action.getValue().equals("statuses/user_timeline.json")) {
-			if (params.containsKey("feature")) {
-				return;
-			}
+//			if (params.containsKey("feature")) {
+//				return;
+//			}
 			// 是当前登录用户
-			else if (params.containsKey("user_id") && params.getParameter("user_id").equals(AppContext.getUser().getIdstr())) {
+			if (params.containsKey("user_id") && params.getParameter("user_id").equals(AppContext.getUser().getIdstr())) {
 			}
 			else if (params.containsKey("screen_name") && params.getParameter("screen_name").equals(AppContext.getUser().getScreen_name())) {
 			}

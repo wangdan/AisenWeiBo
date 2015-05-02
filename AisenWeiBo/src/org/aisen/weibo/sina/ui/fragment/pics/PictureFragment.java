@@ -20,7 +20,6 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
 
-import com.m.common.utils.ActivityHelper;
 import com.m.common.utils.BitmapUtil;
 import com.m.common.utils.BitmapUtil.BitmapType;
 import com.m.common.utils.FileUtils;
@@ -38,11 +37,15 @@ import com.m.ui.fragment.ABaseFragment;
 
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
+import org.aisen.weibo.sina.support.bean.PictureSize;
+import org.aisen.weibo.sina.support.biz.BaseBizlogic;
+import org.aisen.weibo.sina.support.db.SinaDB;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.ui.widget.PictureProgressView;
 import org.sina.android.bean.PicUrls;
 
 import java.io.File;
+import java.text.DecimalFormat;
 
 import javax.microedition.khronos.opengles.GL10;
 import javax.microedition.khronos.opengles.GL11;
@@ -83,6 +86,8 @@ import uk.co.senab.photoview.PhotoView;
 	private PicUrls image;
 
     private File origFile = null;
+
+    private PictureSize pictureSize;
 
 	@Override
 	protected int inflateContentView() {
@@ -139,6 +144,9 @@ import uk.co.senab.photoview.PhotoView;
             config.setId("Picture");
 
             url = getImage();
+            pictureSize = SinaDB.getSqlite().selectById(null, PictureSize.class, getOrigImage());
+            if (pictureSize == null)
+                new LoadPictureSizeTask().execute();
         }
         if (!file.exists()) {
 			progressBar.setVisibility(View.VISIBLE);			
@@ -432,7 +440,18 @@ import uk.co.senab.photoview.PhotoView;
                 origItem.setTitle(String.format("%s(%s", getString(R.string.orig_pic), progressed) + "%)");
             }
             else {
-                origItem.setTitle(R.string.orig_pic);
+                if (pictureSize != null) {
+                    String sizeStr;
+                    if (pictureSize.getSize() * 1.0f / 1024 / 1024 > 1)
+                        sizeStr = String.format("%s M", new DecimalFormat("#.00").format(pictureSize.getSize() * 1.0d / 1024 / 1024));
+                    else
+                        sizeStr = String.format("%d Kb", pictureSize.getSize() / 1024);
+                    origItem.setTitle(getString(R.string.orig_pic) +
+                            String.format("(%s)", sizeStr));
+                }
+                else {
+                    origItem.setTitle(R.string.orig_pic);
+                }
             }
         }
 
@@ -614,6 +633,24 @@ import uk.co.senab.photoview.PhotoView;
             getActivity().invalidateOptionsMenu();
         }
 
+    }
+
+    class LoadPictureSizeTask extends WorkTask<Void, Void, PictureSize> {
+
+        @Override
+        public PictureSize workInBackground(Void... params) throws TaskException {
+            PictureSize size = BaseBizlogic.newInstance().getPictureSize(getOrigImage());
+            return size;
+        }
+
+        @Override
+        protected void onSuccess(PictureSize pictureSize) {
+            super.onSuccess(pictureSize);
+
+            if (getActivity() != null)
+                getActivity().invalidateOptionsMenu();
+            PictureFragment.this.pictureSize = pictureSize;
+        }
     }
 
 }

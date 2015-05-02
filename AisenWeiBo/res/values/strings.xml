@@ -315,6 +315,7 @@
     <string name="profile_tab3">原创</string>
     <string name="profile_tab4">相册</string>
     <string name="profile_tab5">收藏</string>
+    <string name="profile_feature_dialog">微博类型</string>
 
     <!-- 查看图片 -->
     <string name="title_pic">查看图片</string>
@@ -492,6 +493,12 @@
     <string name="settings_version_summary" formatted="false">当前版本: %s, 最新版本: %s</string>
     <string name="settings_error_market">无法打开应用市场</string>
     <string name="settings_current_version">当前版本: %s</string>
+
+    <string-array name="user_headers">
+        <item>全部</item>
+        <item>原创</item>
+        <item>图片</item>
+    </string-array>
 
     <string-array name="pCacheValidity">
         <item>30秒</item>

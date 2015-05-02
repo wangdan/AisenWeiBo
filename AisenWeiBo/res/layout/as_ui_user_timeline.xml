@@ -1,25 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent">
-    <!-- 2014-08-25 解决点刷新微博菜单时没有出现ActionBar的Loading条的BUG -->
-    <RelativeLayout
-        android:layout_width="0dip" android:layout_height="0dip">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent"
+                android:background="@color/comm_white">
 
-        <include
-            android:id="@id/layoutLoading" layout="@layout/comm_lay_loading" android:layout_width="fill_parent" android:layout_height="fill_parent" android:visibility="gone"/>
-    </RelativeLayout>
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout" android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@id/layContent" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
-
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefreshLayout" android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ListView
-                android:id="@id/listView" android:layout_width="fill_parent" android:layout_height="fill_parent" android:cacheColorHint="#00000000"
-                android:clipChildren="false" android:clipToPadding="false" android:divider="@null" android:dividerHeight="0dip" android:fadingEdge="none"
-                android:fastScrollEnabled="false" android:footerDividersEnabled="true"
-                android:headerDividersEnabled="false" android:smoothScrollbar="true"/>
-        </android.support.v4.widget.SwipeRefreshLayout>
-    </RelativeLayout>
+        <ListView
+            android:id="@id/listView" android:layout_width="fill_parent" android:layout_height="fill_parent" android:cacheColorHint="#00000000"
+            android:divider="?attr/theme_background" android:dividerHeight="16dip" android:fadingEdge="none" android:fastScrollEnabled="false"
+            android:footerDividersEnabled="false" android:headerDividersEnabled="true"
+            android:listSelector="?attr/selectableItemBackground" android:smoothScrollbar="true"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </RelativeLayout>

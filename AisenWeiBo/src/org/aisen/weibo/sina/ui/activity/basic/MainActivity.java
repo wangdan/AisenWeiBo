@@ -352,7 +352,7 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
         int menu = Integer.parseInt(lastSelectedMenu.getType());
 
         return menu == 1 || menu == 2 ||
-                menu == 3;
+                menu == 3 || menu == 4;
     }
 
     void fabBtnCLicked(View v) {
@@ -582,7 +582,13 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
 
     @Override
     public boolean onLongClick(View v) {
-        WeicoLoginFragment.launch(this, "jeff.as.info@gmail.com", "wangdan7560", 1000);
+        String username = "";
+        String password = "";
+
+        username = AppContext.getAccount().getAccount();
+        password = AppContext.getAccount().getPassword();
+
+        WeicoLoginFragment.launch(this, username, password, 1000);
         return true;
     }
 
