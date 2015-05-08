@@ -19,10 +19,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.m.common.context.GlobalContext;
+import com.m.common.setting.SettingUtility;
 import com.m.common.utils.ActivityHelper;
+import com.m.common.utils.HprofUtils;
 import com.m.common.utils.Logger;
+import com.m.common.utils.SdcardUtils;
 import com.m.common.utils.SystemBarUtils;
 import com.m.support.inject.ViewInject;
 import com.m.ui.activity.basic.BaseActivity;
@@ -39,6 +43,7 @@ import org.aisen.weibo.sina.support.bean.MenuBean;
 import org.aisen.weibo.sina.support.db.SinaDB;
 import org.aisen.weibo.sina.support.utils.AdTokenUtils;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.support.utils.OfflineUtils;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
 import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
 import org.aisen.weibo.sina.ui.fragment.account.WeicoLoginFragment;
@@ -57,15 +62,17 @@ import org.aisen.weibo.sina.ui.fragment.timeline.GroupSortFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineTabsFragment;
 import org.sina.android.bean.AccessToken;
 
+import java.io.File;
+
 /**
  * Created by wangdan on 15/4/12.
  */
 public class MainActivity extends BaseActivity implements AisenActivityHelper.EnableSwipeback, View.OnLongClickListener {
 
-    private static final String ACTION_LOGIN = "org.aisen.sina.weibo.ACTION_LOGIN";
-    private static final String ACTION_NOTIFICATION = "org.aisen.sina.weibo.ACTION_NOTIFICATION";
-    private static final String ACTION_NOTIFICATION_MS = "org.aisen.sina.weibo.ACTION_NOTIFICATION_MS";
-    private static final String ACTION_NOTIFICATION_MC = "org.aisen.sina.weibo.ACTION_NOTIFICATION_MC";
+    public static final String ACTION_LOGIN = "org.aisen.sina.weibo.ACTION_LOGIN";
+    public static final String ACTION_NOTIFICATION = "org.aisen.sina.weibo.ACTION_NOTIFICATION";
+    public static final String ACTION_NOTIFICATION_MS = "org.aisen.sina.weibo.ACTION_NOTIFICATION_MS";
+    public static final String ACTION_NOTIFICATION_MC = "org.aisen.sina.weibo.ACTION_NOTIFICATION_MC";
 
     public static final String FRAGMENT_TAG = "MainFragment";
 
@@ -163,7 +170,7 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
 
         if (savedInstanceState == null) {
             String action = getIntent() != null ? getIntent().getAction() : null;
-            String type = getActionType(action);
+            String type = getActionType(getIntent(), action);
 
             menuFragment = MenuFragment.newInstance(type);
             getFragmentManager().beginTransaction().add(R.id.menu_frame, menuFragment, "MenuFragment").commit();
@@ -178,7 +185,6 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
             if (lastSelectedMenu.getType().equals("1"))
                 onMenuSelected(lastSelectedMenu, true, null);
         }
-//        registerHideableHeaderView(getToolbar());
 
         // 更新FAB的颜色
         btnFab.setColorNormal(AisenUtils.getThemeColor(this));
@@ -209,7 +215,7 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
 
         String action = intent.getAction();
 
-        MenuBean menuBean = MenuGenerator.generateMenu(getActionType(action));
+        MenuBean menuBean = MenuGenerator.generateMenu(getActionType(intent, action));
 
         lastSelectedMenu = menuBean;
 
@@ -224,14 +230,14 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
             closeDrawer();
     }
 
-    private String getActionType(String action) {
+    private String getActionType(Intent intent, String action) {
         String type = null;
         // 处理点击Notification时，设置显示菜单
         if (ACTION_LOGIN.equals(action)) {
             type = "1";
         }
         else if (ACTION_NOTIFICATION.equals(action)) {
-            type = getIntent().getStringExtra("type");
+            type = intent.getStringExtra("type");
         }
         else if (ACTION_NOTIFICATION_MS.equals(action)) {
             ActivityHelper.putShareData("showMensitonType", "showMentionStatus");
@@ -255,7 +261,14 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
         int type = Integer.parseInt(menu.getType());
 
         ABaseFragment fragment = null;
+        if (mStripView != null)
+            mStripView.clearAnimation();
         mStripView = null;
+        if (animatorSet != null) {
+            animatorSet.removeAllListeners();
+            animatorSet.end();
+            animatorSet = null;
+        }
         mToolbar.setTranslationY(0);
 
         switch (type) {
@@ -532,6 +545,12 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
 
         menu.findItem(R.id.publish).setVisible(AppSettings.getFabBtnType() == 1);
 
+        menu.findItem(R.id.about).setVisible(false);
+        menu.findItem(R.id.feedback).setVisible(false);
+
+        // 离线功能暂时没空维护，先屏蔽
+        menu.findItem(R.id.toggle_offline).setVisible(false);
+
         // 显示的是首页
         if (lastSelectedMenu != null) {
             if (lastSelectedMenu.getType().equals("1"))
@@ -579,6 +598,9 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
         // 搜微博
         else if (item.getItemId() == R.id.search_status)
             SearchTopicsFragment.launch(this);
+        // 开始离线
+        else if (item.getItemId() == R.id.toggle_offline)
+            OfflineUtils.toggleOffline(this);
 
         return super.onOptionsItemSelected(item);
     }
@@ -597,6 +619,10 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
         username = AppContext.getAccount().getAccount();
         password = AppContext.getAccount().getPassword();
 
+        String path = SdcardUtils.getSdcardPath() + File.separator + "aisenweibo" + File.separator;
+        path = path + "hprof" + File.separator;
+        HprofUtils.dumpHprof(path);
+
         WeicoLoginFragment.launch(this, username, password, 1000);
         return true;
     }
@@ -606,6 +632,8 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 1000 && RESULT_OK == resultCode) {
+            showMessage(R.string.weico_success);
+
             AccessToken token = (AccessToken) data.getSerializableExtra("token");
             Logger.e(token);
 

@@ -110,6 +110,8 @@
 
         <!-- 发布服务 -->
         <service android:name="org.aisen.weibo.sina.sys.service.PublishService"/>
+        <!-- 离线服务 -->
+        <service android:name="org.aisen.weibo.sina.sys.service.OfflineService"/>
         <!-- 未读消息服务 -->
         <service android:name="org.aisen.weibo.sina.sys.service.UnreadService" android:exported="true">
             <intent-filter>

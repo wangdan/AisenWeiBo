@@ -33,6 +33,7 @@ import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.support.db.EmotionsDB;
 
+import java.lang.ref.WeakReference;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -135,7 +136,7 @@ public class AisenTextView extends TextView {
 			Logger.v(TAG, "开启线程，开始加载spannable数据");
 			
 			super.setText(text);
-			emotionTask = new EmotionTask();
+			emotionTask = new EmotionTask(this);
 			emotionTask.executeOnExecutor(THREAD_POOL_EXECUTOR);
 		}
 		
@@ -143,14 +144,24 @@ public class AisenTextView extends TextView {
 		setOnTouchListener(onTouchListener);
 	}
 	
-	class EmotionTask extends WorkTask<Void, SpannableString, Boolean> {
+	static class EmotionTask extends WorkTask<Void, SpannableString, Boolean> {
+
+        WeakReference<TextView> textViewRef;
+
+        EmotionTask(TextView textView) {
+            textViewRef = new WeakReference<TextView>(textView);
+        }
 
 		@Override
 		public Boolean workInBackground(Void... params) throws TaskException {
-			if (TextUtils.isEmpty(getText()))
+            TextView textView = textViewRef.get();
+            if (textView == null)
+                return false;
+
+			if (TextUtils.isEmpty(textView.getText()))
 				return false;
 			
-			SpannableString spannableString = SpannableString.valueOf(getText());
+			SpannableString spannableString = SpannableString.valueOf(textView.getText());
 			Matcher localMatcher = Pattern.compile("\\[(\\S+?)\\]").matcher(spannableString);
 			while (localMatcher.find()) {
 				if (isCancelled())
@@ -232,10 +243,14 @@ public class AisenTextView extends TextView {
 		@Override
 		protected void onProgressUpdate(SpannableString... values) {
 			super.onProgressUpdate(values);
+
+            TextView textView = textViewRef.get();
+            if (textView == null)
+                return;
 			
 			try {
 				if (values != null && values.length > 0)
-					setText(values[0]);
+					textView.setText(values[0]);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

@@ -36,3 +36,5 @@ http://blog.sina.com.cn/s/blog_64165bf5010180hw.html
 	</string-array>
 </resources>
 
+https://open.weibo.cn/oauth2/authorize?client_id=211160679&response_type=token&redirect_uri=http://oauth.weico.cc&packagename=com.eico.weico&display=mobile
+

@@ -243,10 +243,10 @@ public class SinaSDK extends ABizLogic {
 	 * @return
 	 */
 	public StatusContents friendshipGroupsTimeline(Params params) throws TaskException {
-		if (!params.containsKey("count"))
-			params.addParameter("count", getPageCount(getSetting("friendshipGroupsTimeline")));
+        if (!params.containsKey("count"))
+            params.addParameter("count", getPageCount(getSetting("friendshipGroupsTimeline")));
 
-		return doGet(getSetting("friendshipGroupsTimeline"), configParams(params), StatusContents.class);
+        return doGet(getSetting("friendshipGroupsTimeline"), configParams(params), StatusContents.class);
 	}
 
     public StatusContents offlineFriendshipGroupsTimeline(Params params) throws TaskException {

@@ -273,7 +273,7 @@ public class PublishManager extends Handler implements PublishQueue.PublishQueue
 			super.onFailure(exception);
 			if (bean != null) {
 				// 响应成功，就让他发成功
-				if ("socketTimeout".equals(exception.getCode())) {
+				if (TaskException.TaskError.socketTimeout.toString().equalsIgnoreCase(exception.getCode())) {
 					onSuccess(null);
 				}
 				else {

@@ -194,7 +194,7 @@ public class CommentItemView extends ABaseAdapter.AbstractItemView<StatusComment
     public void onClick(View v) {
         if (v.getId() == R.id.layStatus) {
             final StatusContent status = (StatusContent) v.getTag();
-//            TimelineCommentsActivity.launch(fragment, status, TimelineCommentsActivity.Type.cmt);
+            TimelineCommentFragment.launch(fragment.getActivity(), status);
         }
         else if (v.getId() == R.id.btnMenus) {
             final String[] commentMenuArr = GlobalContext.getInstance().getResources().getStringArray(R.array.cmt_menus);
@@ -204,7 +204,6 @@ public class CommentItemView extends ABaseAdapter.AbstractItemView<StatusComment
 
             List<String> menuList = new ArrayList<String>();
             // 转发
-//			if (fragment instanceof TimelineCommentsFragment)
             if (comment.getStatus() != null &&
                     (comment.getUser() != null && !comment.getUser().getIdstr().equals(AppContext.getUser().getIdstr())))
                 menuList.add(commentMenuArr[1]);
@@ -225,7 +224,7 @@ public class CommentItemView extends ABaseAdapter.AbstractItemView<StatusComment
 
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-//                                                AisenUtils.commentMenuSelected(fragment, menus[which], comment);
+                                                AisenUtils.commentMenuSelected(fragment, menus[which], comment);
                                             }
                                         });
         }

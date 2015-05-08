@@ -60,7 +60,7 @@ public abstract class ATimelineFragment extends AWeiboRefreshListFragment<Status
 		super.onCreate(savedInstanceSate);
 	}
 
-	@Override
+    @Override
 	protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
 		super.layoutInit(inflater, savedInstanceSate);
 		

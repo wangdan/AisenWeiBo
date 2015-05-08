@@ -180,24 +180,36 @@ public class PhotosFragment extends ASwipyRefreshGridLayout<PhotoBean, PhotosBea
             if (mode == ARefreshFragment.RefreshMode.update && !TextUtils.isEmpty(nextPage))
                 params.addParameter("max_id", nextPage);
 
-            params.addParameter("screen_name", mUser.getScreen_name());
+            if (AppContext.getUser().getIdstr().equals(mUser.getIdstr())) {
+                params.addParameter("user_id", mUser.getIdstr());
+            }
+            else {
+                params.addParameter("screen_name", mUser.getScreen_name());
+            }
 
             params.addParameter("count", "100");
             // 相册
             params.addParameter("feature", "2");
 
             Token token = null;
-
-            if (AppContext.getAdvancedToken() != null) {
-                AccessToken accessToken = AppContext.getAdvancedToken();
-
-                token = new Token();
-                token.setToken(accessToken.getToken());
-                token.setSecret(accessToken.getSecret());
-
-                params.addParameter("source", accessToken.getAppKey());
+            // 是当前登录用户
+            if (AisenUtils.isLoggedUser(mUser)) {
+                if (AppContext.getAccount().getAdvancedToken() != null) {
+                    token = AppContext.getAdvancedToken();
+                    params.addParameter("source", AppContext.getAdvancedToken().getAppKey());
+                }
             }
+            else {
+                if (AppContext.getAdvancedToken() != null) {
+                    AccessToken accessToken = AppContext.getAdvancedToken();
 
+                    token = new Token();
+                    token.setToken(accessToken.getToken());
+                    token.setSecret(accessToken.getSecret());
+
+                    params.addParameter("source", accessToken.getAppKey());
+                }
+            }
             if (token == null)
                 token = AppContext.getToken();
 
@@ -214,7 +226,7 @@ public class PhotosFragment extends ASwipyRefreshGridLayout<PhotoBean, PhotosBea
             PhotosBean photos = new PhotosBean();
             photos.setCache(statuses.isCache());
             photos.setExpired(statuses.expired());
-            photos.setNoMore(statuses.getStatuses().size() < 3);
+            photos.setNoMore(statuses.getStatuses().size() == 3);
             photos.setList(new ArrayList<PhotoBean>());
 
             for (StatusContent status : statusList) {

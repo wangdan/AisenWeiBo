@@ -3,14 +3,16 @@ package org.aisen.weibo.sina.ui.fragment.timeline;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 
-import com.m.ui.fragment.AAutoReleaseStripTabsFragment;
+import com.m.common.utils.ActivityHelper;
 import com.m.ui.fragment.ABaseFragment;
 import com.m.ui.fragment.AStripTabsFragment;
 
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.ui.activity.basic.MainActivity;
 import org.aisen.weibo.sina.ui.fragment.basic.AMainStripTabsFragment;
+import org.aisen.weibo.sina.ui.fragment.basic.MenuGenerator;
 import org.sina.android.bean.Group;
 import org.sina.android.bean.Groups;
 import org.sina.android.bean.WeiBoUser;
@@ -35,15 +37,15 @@ public class TimelineTabsFragment extends AMainStripTabsFragment {
         loggedIn = AppContext.getUser();
 
         // 2014-8-30 解决因为状态保存而导致的耗时阻塞
-        if (savedInstanceSate != null) {
-            ArrayList<AStripTabsFragment.StripTabItem> mChanneList = generateTabs();
-            for (int i = 0; i < mChanneList.size(); i++) {
-                ABaseFragment fragment = (ABaseFragment) getActivity().getFragmentManager()
-                        .findFragmentByTag(makeFragmentName(i));
-                if (fragment != null)
-                    getActivity().getFragmentManager().beginTransaction().remove(fragment).commit();
-            }
-        }
+//        if (savedInstanceSate != null) {
+//            ArrayList<AStripTabsFragment.StripTabItem> mChanneList = generateTabs();
+//            for (int i = 0; i < mChanneList.size(); i++) {
+//                ABaseFragment fragment = (ABaseFragment) getActivity().getFragmentManager()
+//                        .findFragmentByTag(makeFragmentName(i));
+//                if (fragment != null)
+//                    getActivity().getFragmentManager().beginTransaction().remove(fragment).commit();
+//            }
+//        }
 
         super.layoutInit(inflater, null);
 
@@ -52,7 +54,7 @@ public class TimelineTabsFragment extends AMainStripTabsFragment {
 
     @Override
     protected int delayGenerateTabs() {
-        return 230;
+        return 230;// 230
     }
 
     @Override
@@ -62,7 +64,7 @@ public class TimelineTabsFragment extends AMainStripTabsFragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-//		super.onSaveInstanceState(outState);
+		super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -105,10 +107,54 @@ public class TimelineTabsFragment extends AMainStripTabsFragment {
         return TimelineGroupsFragment.newInstance(bean);
     }
 
-//    private void replaceSelfInActivity() {
-//        getActivity().getFragmentManager().beginTransaction()
-//                .replace(R.id.content_frame, newInstance(), "MainFragment")
-//                .commit();
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (isGroupsChanged()) {
+            setGroupChanged(false);
+
+            ((MainActivity) getActivity()).onMenuSelected(MenuGenerator.generateMenu("1"), true, null);
+        }
+
+//        IntentFilter filter = new IntentFilter();
+//        filter.addAction(OfflineService.ACTION_STATUS_OFFLINE);
+//        getActivity().registerReceiver(mReceiver, filter);
+    }
+
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//
+//        getActivity().unregisterReceiver(mReceiver);
 //    }
+
+    public static void setGroupChanged(boolean changed) {
+        ActivityHelper.putBooleanShareData("TimelineGroupsChanged", changed);
+    }
+
+    public static boolean isGroupsChanged() {
+        return ActivityHelper.getBooleanShareData("TimelineGroupsChanged", false);
+    }
+
+//    OfflineService.OfflineBroadcastReceiver mReceiver = new OfflineService.OfflineBroadcastReceiver() {
+//
+//        @Override
+//        protected void onReceiveStatusOfflined(String groupId) {
+//            ArrayList<AStripTabsFragment.StripTabItem> items = generateTabs();
+//            for (int i = 0; i < items.size(); i++) {
+//                if (items.get(i).getType().equalsIgnoreCase(groupId)) {
+//                    ABaseFragment fragment = (ABaseFragment) getActivity().getFragmentManager()
+//                            .findFragmentByTag(makeFragmentName(i));
+//                    if (fragment != null && fragment instanceof TimelineGroupsFragment) {
+//                        ((TimelineGroupsFragment) fragment).resetDatas();
+//                        Logger.d("重置分组" + items.get(i).getTitle() + "的数据");
+//                    }
+//                    break;
+//                }
+//            }
+//        }
+//
+//    };
 
 }

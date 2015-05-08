@@ -103,7 +103,8 @@ public class PublishNotifier extends Notifier {
 
 		Intent intent = new Intent(context, MainActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		intent.setAction("showDraft");
+		intent.setAction(MainActivity.ACTION_NOTIFICATION);
+        intent.putExtra("type", "6");
 		
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 		

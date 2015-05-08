@@ -452,6 +452,8 @@ public class GroupSortFragment extends ADragSortFragment<Group, Groups> {
 			if (getActivity() == null)
 				return;
 
+            TimelineTabsFragment.setGroupChanged(true);
+
 			getActivity().invalidateOptionsMenu();
 			getAdapter().notifyDataSetChanged();
 

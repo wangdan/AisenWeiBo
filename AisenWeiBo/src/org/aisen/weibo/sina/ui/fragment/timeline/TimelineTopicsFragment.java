@@ -79,6 +79,9 @@ public class TimelineTopicsFragment extends ATimelineFragment {
 			StatusContents statuses = SinaSDK.getInstance(AppContext.getToken()).searchTopics(nextPage, query, "30");
 			if (statuses != null && statuses.getStatuses().size() > 0) {
 				for (StatusContent status : statuses.getStatuses()) {
+                    if (status.getRetweeted_status() != null)
+                        status = status.getRetweeted_status();
+
 					if (!TextUtils.isEmpty(status.getThumbnail_pic())) {
 						status.setPic_urls(new PicUrls[1]);
 						PicUrls picUrls = new PicUrls();

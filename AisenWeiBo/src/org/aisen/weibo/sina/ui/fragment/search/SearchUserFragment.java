@@ -7,6 +7,7 @@ import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,6 +20,8 @@ import com.m.ui.fragment.ASwipeRefreshListFragment;
 
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
+import org.aisen.weibo.sina.ui.activity.profile.UserProfileActivity;
+import org.aisen.weibo.sina.ui.fragment.profile.UserTimelineFragment;
 import org.sina.android.SinaSDK;
 import org.sina.android.bean.SuggestionsUser;
 
@@ -76,6 +79,11 @@ public class SearchUserFragment extends ASwipeRefreshListFragment<SuggestionsUse
             }
 
         });
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        UserProfileActivity.launch(getActivity(), getAdapterItems().get(position).getScreen_name());
     }
 
     Handler mHandler = new Handler();
@@ -174,4 +182,10 @@ public class SearchUserFragment extends ASwipeRefreshListFragment<SuggestionsUse
 
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        searchView.clearFocus();
+    }
 }

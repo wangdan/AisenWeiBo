@@ -9,6 +9,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
+import com.m.common.utils.Logger;
 import com.m.network.task.TaskException;
 import com.m.support.adapter.ABaseAdapter.AbstractItemView;
 import com.m.support.paging.IPaging;
@@ -47,12 +48,23 @@ public class CommentsFragment extends AWeiboRefreshListFragment<StatusComment, S
 		
 		return fragment;
 	}
+
+    static int count = 0;
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+
+        Logger.e("CommentsFragment, " + --count);
+    }
 	
 	private AStripTabsFragment.StripTabItem mBean;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Logger.e("CommentsFragment, " + ++count);
 
         mBean = savedInstanceState == null ? (AStripTabsFragment.StripTabItem) getArguments().getSerializable("bean")
                                            : (AStripTabsFragment.StripTabItem) savedInstanceState.getSerializable("bean");
@@ -94,8 +106,8 @@ public class CommentsFragment extends AWeiboRefreshListFragment<StatusComment, S
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		ListView listView = (ListView) getRefreshView();
 		position -= listView.getHeaderViewsCount();
-//		if (position >= 0 && position < getAdapter().getCount())
-//			BizFragment.getBizFragment(this).replyComment(null, getAdapterItems().get(position));
+		if (position >= 0 && position < getAdapter().getCount())
+			BizFragment.getBizFragment(this).replyComment(null, getAdapterItems().get(position));
 	}
 	
 	@Override

@@ -2,10 +2,12 @@ package org.sina.android.bean;
 
 import com.m.network.biz.IResult;
 
+import org.aisen.weibo.sina.sys.service.OfflineService;
+
 import java.io.Serializable;
 import java.util.List;
 
-public class StatusComments implements Serializable, IResult {
+public class StatusComments implements Serializable, IResult, OfflineService.OfflineLength {
 
 	private static final long serialVersionUID = 2420923134169920046L;
 	
@@ -16,6 +18,8 @@ public class StatusComments implements Serializable, IResult {
 	private boolean _expired;
 	
 	private boolean _noMore;
+
+    private long length;
 	
 	public StatusComments() {
 
@@ -64,4 +68,12 @@ public class StatusComments implements Serializable, IResult {
 		return null;
 	}
 
+    public long getLength() {
+        return length;
+    }
+
+    @Override
+    public void setLength(long length) {
+        this.length = length;
+    }
 }

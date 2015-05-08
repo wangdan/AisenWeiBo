@@ -6,12 +6,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Browser;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.m.common.utils.ActivityHelper;
 import com.m.common.utils.SystemBarUtils;
 import com.m.common.utils.ViewUtils;
 import com.m.component.container.FragmentContainerActivity;
@@ -176,7 +176,10 @@ public class UserProfileActivity extends BaseActivity implements AisenActivityHe
 		protected void onFailure(TaskException exception) {
 			super.onFailure(exception);
 			
-			showMessage(exception.getMessage());
+//			showMessage(exception.getMessage());
+
+            if (!TextUtils.isEmpty(exception.getMessage()))
+                txtLoadFailed.setText(exception.getMessage());
 			
 			layoutContent.setVisibility(View.GONE);
 			layoutLoadFailed.setVisibility(View.VISIBLE);

@@ -2,7 +2,9 @@ package org.aisen.weibo.sina.ui.fragment.timeline;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.widget.ListView;
 
+import com.m.common.utils.Logger;
 import com.m.network.http.Params;
 import com.m.network.task.TaskException;
 import com.m.ui.fragment.ABaseFragment;
@@ -36,6 +38,19 @@ public class TimelineGroupsFragment extends ATimelineFragment implements AStripT
 		
 		return fragment;
 	}
+
+    static int count = 0;
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+
+        Logger.e("TimelineGroupsFragment, " + --count);
+    }
+
+    public TimelineGroupsFragment() {
+        Logger.e("TimelineGroupsFragment, " + ++count);
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -102,5 +117,19 @@ public class TimelineGroupsFragment extends ATimelineFragment implements AStripT
 		}
 
 	}
+
+    public void resetDatas() {
+        cleatTaskCount("TimelineTask");
+
+        if (getRefreshView() instanceof ListView) {
+            ListView listView = (ListView) getRefreshView();
+            listView.setSelectionFromTop(0, 0);
+        }
+
+        putLastReadPosition(0);
+        putLastReadTop(0);
+
+        new FriendsGroupTimelineTask(RefreshMode.reset).execute();
+    }
 	
 }

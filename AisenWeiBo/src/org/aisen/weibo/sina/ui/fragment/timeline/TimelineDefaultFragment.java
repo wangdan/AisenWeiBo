@@ -3,6 +3,7 @@ package org.aisen.weibo.sina.ui.fragment.timeline;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.m.common.utils.Logger;
 import com.m.network.http.Params;
 import com.m.network.task.TaskException;
 import com.m.ui.fragment.ABaseFragment;
@@ -34,6 +35,19 @@ public class TimelineDefaultFragment extends ATimelineFragment implements AStrip
 		
 		return fragment;
 	}
+
+    static int count = 0;
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+
+        Logger.e("TimelineDefaultFragment, " + --count);
+    }
+
+    public TimelineDefaultFragment() {
+        Logger.e("TimelineDefaultFragment, " + ++count);
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

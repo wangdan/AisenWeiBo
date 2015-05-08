@@ -120,7 +120,7 @@ public class MenuFragment extends AListFragment<MenuBean, ArrayList<MenuBean>> {
     protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
         super.layoutInit(inflater, savedInstanceSate);
 
-        addItems(MenuGenerator.generateMenus());
+        setItems(MenuGenerator.generateMenus());
 
         if (savedInstanceSate == null) {
             int index = getListView().getHeaderViewsCount();

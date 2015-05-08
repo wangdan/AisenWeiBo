@@ -23,6 +23,7 @@ import com.m.ui.fragment.AStripTabsFragment;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
+import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.ui.fragment.timeline.ATimelineFragment;
 import org.sina.android.SinaSDK;
 import org.sina.android.bean.AccessToken;
@@ -221,22 +222,24 @@ public class UserTimelineFragment extends ATimelineFragment
 			    params.addParameter("feature", feature);
 
             // 不管user_id字段传值什么，都返回登录用户的微博
-//            if (AppContext.getUser().getIdstr().equals(mUser.getIdstr())) {
-//                params.addParameter("user_id", mUser.getIdstr());
-//            }
-//            else {
+            if (AppContext.getUser().getIdstr().equals(mUser.getIdstr())) {
+                params.addParameter("user_id", mUser.getIdstr());
+            }
+            else {
                 params.addParameter("screen_name", mUser.getScreen_name());
-//            }
+            }
 
             params.addParameter("count", String.valueOf(AppSettings.getTimelineCount()));
 
             Token token = null;
             // 是当前登录用户
-//            if (params.containsKey("user_id") && params.getParameter("user_id").equals(AppContext.getUser().getIdstr())) {
-//            }
-//            else if (params.containsKey("screen_name") && params.getParameter("screen_name").equals(AppContext.getUser().getScreen_name())) {
-//            }
-//            else {
+            if (AisenUtils.isLoggedUser(mUser)) {
+                if (AppContext.getAccount().getAdvancedToken() != null) {
+                    token = AppContext.getAdvancedToken();
+                    params.addParameter("source", AppContext.getAdvancedToken().getAppKey());
+                }
+            }
+            else {
                 if (AppContext.getAdvancedToken() != null) {
                     AccessToken accessToken = AppContext.getAdvancedToken();
 
@@ -246,9 +249,10 @@ public class UserTimelineFragment extends ATimelineFragment
 
                     params.addParameter("source", accessToken.getAppKey());
                 }
-//            }
+            }
             if (token == null)
                 token = AppContext.getToken();
+
             StatusContents statusContents = SinaSDK.getInstance(token, getTaskCacheMode(this)).statusesUserTimeLine(params);
 
             if (statusContents != null && statusContents.getStatuses() != null && statusContents.getStatuses().size() > 0) {

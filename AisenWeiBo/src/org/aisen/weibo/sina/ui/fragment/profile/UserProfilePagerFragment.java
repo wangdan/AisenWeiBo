@@ -24,6 +24,7 @@ import com.m.network.task.TaskException;
 import com.m.network.task.WorkTask;
 import com.m.support.inject.ViewInject;
 import com.m.ui.activity.basic.BaseActivity;
+import com.m.ui.fragment.AAutoReleaseStripTabsFragment;
 import com.m.ui.fragment.ABaseFragment;
 import com.m.ui.fragment.ARefreshFragment;
 import com.m.ui.fragment.AStripTabsFragment;
@@ -58,7 +59,7 @@ import java.util.Set;
  *
  * Created by wangdan on 15-2-10.
  */
-public class UserProfilePagerFragment extends AStripTabsFragment<AStripTabsFragment.StripTabItem>
+public class UserProfilePagerFragment extends AAutoReleaseStripTabsFragment<AStripTabsFragment.StripTabItem>
                                             implements View.OnClickListener,
                                                        SwipeRefreshLayout.OnRefreshListener,
                                                        BizFragment.OnCreateFriendshipCallback,
@@ -135,10 +136,10 @@ public class UserProfilePagerFragment extends AStripTabsFragment<AStripTabsFragm
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
         mUserBean = savedInstanceState == null ? (WeiBoUser) getArguments().getSerializable("user")
                                               : (WeiBoUser) savedInstanceState.getSerializable("user");
+
+        super.onCreate(savedInstanceState);
     }
 
     @Override

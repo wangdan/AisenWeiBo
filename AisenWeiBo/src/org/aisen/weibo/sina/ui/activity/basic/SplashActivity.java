@@ -43,7 +43,7 @@ public class SplashActivity extends BaseActivity implements AisenActivityHelper.
                toMain();
             }
 
-        }, 1500);
+        }, 500);
     }
 
     private void toMain() {

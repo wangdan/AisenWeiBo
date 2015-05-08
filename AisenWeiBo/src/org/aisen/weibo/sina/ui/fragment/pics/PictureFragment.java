@@ -37,6 +37,7 @@ import com.m.network.task.TaskException;
 import com.m.network.task.WorkTask;
 import com.m.support.inject.ViewInject;
 import com.m.ui.fragment.ABaseFragment;
+import com.m.ui.fragment.AStripTabsFragment;
 
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
@@ -44,6 +45,8 @@ import org.aisen.weibo.sina.support.bean.PictureSize;
 import org.aisen.weibo.sina.support.biz.BaseBizlogic;
 import org.aisen.weibo.sina.support.db.SinaDB;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.ui.activity.pics.PhotosActivity;
+import org.aisen.weibo.sina.ui.activity.pics.PicsActivity;
 import org.aisen.weibo.sina.ui.widget.PictureProgressView;
 import org.sina.android.bean.PicUrls;
 
@@ -63,7 +66,7 @@ import uk.co.senab.photoview.PhotoView;
  *
  * @date 2014年9月18日
  */
-@SuppressLint("SdCardPath") public class PictureFragment extends ABaseFragment {
+@SuppressLint("SdCardPath") public class PictureFragment extends ABaseFragment implements AStripTabsFragment.IStripTabInitData {
 
 	public static ABaseFragment newInstance(PicUrls url) {
 		PictureFragment fragment = new PictureFragment();
@@ -94,6 +97,12 @@ import uk.co.senab.photoview.PhotoView;
 
     private PictureSize pictureSize;
 
+    public enum PictureStatus {
+        wait, downloading, success, faild
+    }
+
+    private PictureStatus mStatus;
+
 	@Override
 	protected int inflateContentView() {
 		return R.layout.as_ui_picture;
@@ -102,7 +111,9 @@ import uk.co.senab.photoview.PhotoView;
 	@Override
 	protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
 		super.layoutInit(inflater, savedInstanceSate);
-		
+
+        mStatus = PictureStatus.wait;
+
 		image = savedInstanceSate == null ? (PicUrls) getArguments().getSerializable("url")
 										  : (PicUrls) savedInstanceSate.getSerializable("url");
 		
@@ -160,6 +171,20 @@ import uk.co.senab.photoview.PhotoView;
         if (!file.exists()) {
 			progressBar.setVisibility(View.VISIBLE);			
 			progressView.setVisibility(View.VISIBLE);
+
+            // 如果网络不是WIFI，且原图和中图都没缓存，那么只加载当前看的那个图片
+            if (SystemUtils.NetWorkType.wifi != SystemUtils.getNetworkType()) {
+                if (getActivity() instanceof PicsActivity) {
+                    PicsActivity picsActivity = (PicsActivity) getActivity();
+                    if (!picsActivity.getCurrent().getThumbnail_pic().equalsIgnoreCase(image.getThumbnail_pic()))
+                        return;
+                }
+                else if (getActivity() instanceof PhotosActivity) {
+                    PhotosActivity picsActivity = (PhotosActivity) getActivity();
+                    if (!picsActivity.getCurrent().getThumbnail_pic().equalsIgnoreCase(image.getThumbnail_pic()))
+                        return;
+                }
+            }
 		}
 		
 		viewFailure.setVisibility(View.GONE);
@@ -195,18 +220,22 @@ import uk.co.senab.photoview.PhotoView;
 
 		@Override
 		public void prepareDownload(String url) {
-
+            mStatus = PictureStatus.downloading;
 		}
 
 		@Override
 		public void finishedDownload(byte[] bytes) {
 			onDownloadPicture(bytes, file);
+
+            mStatus = PictureStatus.success;
 		}
 
 		@Override
 		public void downloadFailed(Exception e) {
 			if (getActivity() == null)
 				return;
+
+            mStatus = PictureStatus.faild;
 			
 			progressView.setVisibility(View.INVISIBLE);
 			
@@ -506,7 +535,7 @@ import uk.co.senab.photoview.PhotoView;
 		
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	private void downloadImage() {
 		new WorkTask<Void, Void, String>() {
 
@@ -659,6 +688,13 @@ import uk.co.senab.photoview.PhotoView;
             if (getActivity() != null)
                 getActivity().invalidateOptionsMenu();
             PictureFragment.this.pictureSize = pictureSize;
+        }
+    }
+
+    @Override
+    public void onStripTabRequestData() {
+        if (mStatus == PictureStatus.wait || mStatus == PictureStatus.faild) {
+            loadPicture(viewFailure);
         }
     }
 

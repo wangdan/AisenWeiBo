@@ -49,6 +49,8 @@ public class WebLoginAction extends IAction {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        mBizFragment.setDMLogin(getChild());
+
                         WeiboClientActivity.launchForAuth(mBizFragment, requestCode);
                     }
 

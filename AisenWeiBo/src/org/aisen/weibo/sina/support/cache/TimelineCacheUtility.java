@@ -57,7 +57,8 @@ public class TimelineCacheUtility implements ICacheUtility {
 		
 		if (!AppContext.isLogedin())
 			return null;
-		
+
+
 		// 如果是用户微博，只返回用户的微博
 		if (action.getValue().equals("statuses/user_timeline.json")) {
 //			if (params.containsKey("feature")) {
@@ -97,6 +98,10 @@ public class TimelineCacheUtility implements ICacheUtility {
 
 	@Override
 	public void addCacheData(Setting action, Params params, Object responseObj) {
+        // 如果是离线请求，忽略数据缓存
+        if (action.getExtras() != null && action.getExtras().containsKey("offline_action"))
+            return;
+
 		// 如果是用户微博
 		if (action.getValue().equals("statuses/user_timeline.json")) {
 //			if (params.containsKey("feature")) {

@@ -1,7 +1,6 @@
 package org.aisen.weibo.sina.support.utils;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -12,9 +11,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.text.TextUtils;
 import android.util.TypedValue;
-import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,6 +29,7 @@ import com.m.common.utils.Logger;
 import com.m.common.utils.SystemUtils;
 import com.m.common.utils.Utils;
 import com.m.common.utils.ViewUtils;
+import com.m.component.bitmaploader.BitmapLoader;
 import com.m.component.bitmaploader.core.BitmapDecoder;
 import com.m.network.task.TaskException;
 import com.m.network.task.WorkTask;
@@ -52,7 +54,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -672,7 +673,51 @@ public class AisenUtils {
         case R.id.weiguan:
             PublishActivity.publishStatusRepostAndWeiguan(fragment.getActivity(), null, status);
             break;
+        case R.id.share:
+
+            break;
         }
+    }
+
+    public static void setStatusShareMenu(MenuItem shareItem, StatusContent status) {
+        String url = null;
+
+        if (status.getPic_urls() != null && status.getPic_urls().length > 0) {
+            url = status.getPic_urls()[0].getThumbnail_pic();
+        }
+        else if (!TextUtils.isEmpty(status.getThumbnail_pic())) {
+            url = status.getThumbnail_pic();
+        }
+        if (!TextUtils.isEmpty(url)) {
+            File file = BitmapLoader.getInstance().getCacheFile(url.replace("thumbnail", "large"));
+            if (file.exists()) {
+                url = url.replace("thumbnail", "large");
+            } else {
+                file = BitmapLoader.getInstance().getCacheFile(url.replace("thumbnail", "bmiddle"));
+                if (file.exists()) {
+                    url = url.replace("thumbnail", "bmiddle");
+                }
+            }
+        }
+
+        Intent shareIntent = Utils.getShareIntent(status.getText(), status.getText(), url);
+
+        ShareActionProvider shareProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
+        shareProvider.setShareHistoryFileName("channe_share.xml");
+        shareProvider.setShareIntent(shareIntent);
+    }
+
+    public static boolean isLoggedUser(WeiBoUser user) {
+        return user.getIdstr().equalsIgnoreCase(AppContext.getUser().getIdstr());
+    }
+
+    public static String getUnit(long length) {
+        String sizeStr;
+        if (length * 1.0f / 1024 / 1024 > 1)
+            sizeStr = String.format("%s M", new DecimalFormat("#.00").format(length * 1.0d / 1024 / 1024));
+        else
+            sizeStr = String.format("%s Kb", new DecimalFormat("#.00").format(length * 1.0d / 1024));
+        return sizeStr;
     }
 
 }

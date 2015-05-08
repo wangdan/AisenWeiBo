@@ -19,5 +19,12 @@ public class SinaDB {
 
 		return SqliteUtility.getInstance("sina_timeline_db");
 	}
-	
+
+    public static SqliteUtility getOfflineSqlite() {
+        if (SqliteUtility.getInstance("sina_offline_db") == null)
+            new SqliteUtilityBuilder().configDBName("sina_offline_db").configVersion(43).build(GlobalContext.getInstance());
+
+        return SqliteUtility.getInstance("sina_offline_db");
+    }
+
 }

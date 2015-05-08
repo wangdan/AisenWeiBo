@@ -119,6 +119,15 @@ public class TimelineRepostFragment extends ATimelineFragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+
+        CommentsHeaderView timelineItem = (CommentsHeaderView) headerView.getTag();
+        if (timelineItem != null)
+            timelineItem.layPicturs.release();
+    }
+
+    @Override
     protected AbstractItemView<StatusContent> newItemView() {
         return new TimelineItemView(this, mStatusContent, false);
     }
@@ -171,6 +180,8 @@ public class TimelineRepostFragment extends ATimelineFragment {
         if (mStatusContent.getUser() == null ||
                 !mStatusContent.getUser().getIdstr().equalsIgnoreCase(AppContext.getUser().getIdstr()))
             menu.removeItem(R.id.delete);
+
+        AisenUtils.setStatusShareMenu(menu.findItem(R.id.share), mStatusContent);
 
         super.onCreateOptionsMenu(menu, inflater);
     }

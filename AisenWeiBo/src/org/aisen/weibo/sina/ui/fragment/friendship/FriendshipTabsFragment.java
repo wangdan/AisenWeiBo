@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import com.m.component.container.FragmentArgs;
 import com.m.component.container.FragmentContainerActivity;
 import com.m.ui.activity.basic.BaseActivity;
+import com.m.ui.fragment.AAutoReleaseStripTabsFragment;
 import com.m.ui.fragment.ABaseFragment;
 
 import org.aisen.weibo.sina.R;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
  * @author wangdan
  *
  */
-public class FriendshipTabsFragment extends AMainStripTabsFragment {
+public class FriendshipTabsFragment extends AAutoReleaseStripTabsFragment {
 
 	/**
 	 * 用户关系 
@@ -59,12 +60,20 @@ public class FriendshipTabsFragment extends AMainStripTabsFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
         mUser = savedInstanceState == null ? (WeiBoUser) getArguments().getSerializable("user")
                                            : (WeiBoUser) savedInstanceState.getSerializable("user");
         type = savedInstanceState == null ? getArguments().getInt("index", type)
                                           : savedInstanceState.getInt("index");
+
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    protected int inflateContentView() {
+        if (getActivity() instanceof MainActivity)
+            return R.layout.as_ui_main_tabs;
+
+        return super.inflateContentView();
     }
 
     @Override
@@ -114,5 +123,13 @@ public class FriendshipTabsFragment extends AMainStripTabsFragment {
 		
 		return null;
 	}
+
+    @Override
+    public void onPageSelected(int position) {
+        super.onPageSelected(position);
+
+        if (getActivity() instanceof MainActivity)
+            ((MainActivity) getActivity()).toggleToolbarShown(true);
+    }
 
 }

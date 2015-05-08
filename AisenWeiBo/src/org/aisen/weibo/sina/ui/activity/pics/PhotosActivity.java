@@ -57,6 +57,8 @@ public class PhotosActivity extends BaseActivity implements OnPageChangeListener
 	private PhotosBean mBean;
 	private int index;
 
+    MyViewPagerAdapter myViewPagerAdapter;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -71,8 +73,9 @@ public class PhotosActivity extends BaseActivity implements OnPageChangeListener
 										   : (PhotosBean) savedInstanceState.getSerializable("bean");
 		index = savedInstanceState == null ? getIntent().getIntExtra("index", 0)
 										: savedInstanceState.getInt("index", 0);
-		
-		viewPager.setAdapter(new MyViewPagerAdapter(getFragmentManager()));
+
+        myViewPagerAdapter = new MyViewPagerAdapter(getFragmentManager());
+		viewPager.setAdapter(myViewPagerAdapter);
 		viewPager.setCurrentItem(index);
 		viewPager.setOnPageChangeListener(this);
 		if (size() > 1 && getSupportActionBar() != null)
@@ -113,6 +116,10 @@ public class PhotosActivity extends BaseActivity implements OnPageChangeListener
 	private PicUrls getPicture(int index) {
 		return mBean.getList().get(index).getPhoto();
 	}
+
+    public PicUrls getCurrent() {
+        return getPicture(viewPager.getCurrentItem());
+    }
 	
 	private StatusContent getStatus(int index) {
 		return mBean.getList().get(index).getStatus();
@@ -181,7 +188,11 @@ public class PhotosActivity extends BaseActivity implements OnPageChangeListener
 		
 		if (getSupportActionBar() != null)
 			getSupportActionBar().setTitle(String.format("%d/%d", index + 1, size()));
-		
+
+        PictureFragment fragment = (PictureFragment) myViewPagerAdapter.getItem(index);
+        if (fragment != null)
+            fragment.onStripTabRequestData();
+
 		Intent data = new Intent();
 		data.putExtra("index", viewPager.getCurrentItem());
 		setResult(Activity.RESULT_OK, data);

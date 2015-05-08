@@ -15,6 +15,7 @@ import com.m.network.http.ParamsUtil;
 import com.m.network.task.TaskException;
 
 import org.aisen.weibo.sina.base.AppSettings;
+import org.aisen.weibo.sina.sys.service.OfflineService;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -336,7 +337,7 @@ public class HttpsUtility implements IHttpUtility {
 	private <T> T executeClient(HttpUriRequest request, Class<T> responseCls) throws TaskException {
 		if (AppSettings.isNetworkDelay()) {
 			try {
-				Thread.sleep(10 * 1000);
+				Thread.sleep(2 * 1000);
 			} catch (Exception e) {
 			}
 		}
@@ -352,6 +353,12 @@ public class HttpsUtility implements IHttpUtility {
 				T result = null;
 				try {
 					result = JSON.parseObject(responseStr, responseCls);
+
+                    if (result instanceof OfflineService.OfflineLength) {
+                        OfflineService.OfflineLength iLength = (OfflineService.OfflineLength) result;
+                        iLength.setLength(responseStr.length());
+                    }
+
 				} catch (Exception e) {
 					e.printStackTrace();
 					throw new TaskException(TaskException.TaskError.timeout.toString());

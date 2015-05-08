@@ -15,7 +15,7 @@ public class PublishDB {
 
 	public static void addPublish(PublishBean bean, WeiBoUser user) {
 		Extra extra = new Extra(user.getIdstr(), null);
-		SinaDB.getSqlite().insert(extra, bean);
+		SinaDB.getSqlite().insertOrReplace(extra, bean);
 	}
 
 	public static void deletePublish(PublishBean bean, WeiBoUser user) {
@@ -25,7 +25,7 @@ public class PublishDB {
 
 	public static void updatePublish(PublishBean bean, WeiBoUser user) {
 		Extra extra = new Extra(user.getIdstr(), null);
-		SinaDB.getSqlite().insert(extra, bean);
+		SinaDB.getSqlite().insertOrReplace(extra, bean);
 	}
 
 	public static ArrayList<PublishBean> getPublishList(WeiBoUser user) {

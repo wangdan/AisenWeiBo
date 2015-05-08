@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.ListView;
 
+import com.m.common.utils.Logger;
 import com.m.network.http.Params;
 import com.m.network.task.TaskException;
 import com.m.ui.fragment.ABaseFragment;
@@ -33,6 +34,19 @@ public class MentionTimelineFragment extends ATimelineFragment {
         fragment.setArguments(args);
 
         return fragment;
+    }
+
+    static int count = 0;
+
+    public MentionTimelineFragment() {
+        Logger.e("MentionTimeline, " + ++count);
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+
+        Logger.e("MentionTimeline, " + --count);
     }
 
     @Override

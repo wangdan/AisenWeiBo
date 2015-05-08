@@ -29,6 +29,7 @@
     <string name="exitapp">退出</string>
     <string name="group_add">新增分组</string>
     <string name="publish">写微薄</string>
+    <string name="toggle_offline">开始离线</string>
 
     <string name="timeline_cmt">评论</string>
     <string name="timeline_repost">转发</string>
@@ -75,11 +76,13 @@
     <string name="account_load_auth">正在完成授权，请稍等</string>
     <string name="account_illegal_app">安全方面考虑，开发人员重置了应用秘钥，当前应用被视为盗版，请重新从应用市场下载!</string>
     <string name="account_remind">账号、密码仅存本地，用于授权页面、微博网页版辅助登录，不是黑魔法授权噢，亲！\n\n如有疑问，请联系我 : wangd.info@gmail.com</string>
+    <string name="account_weico_remind">如果你发现个人微博只有5条、粉丝不全、相册无配图，在这里点一下授权就好，遇到验证码的问题我再优化。\n\n如有疑问，请联系我 : wangd.info@gmail.com</string>
     <string name="account_pwd_hint">密码</string>
     <string name="account_username_hint">邮箱/手机号</string>
     <string name="account_fillaccount_loading">处理中</string>
     <string name="account_fillaccount_faild">填充失败，烦请手动输入账号密码</string>
     <string name="webclient_login">填充账号</string>
+    <string name="weico_success">高级授权成功</string>
 
     <!-- 公共 -->
     <string name="copy">复制</string>
@@ -504,6 +507,10 @@
     <string name="settings_error_market">无法打开应用市场</string>
     <string name="settings_current_version">当前版本: %s</string>
 
+    <!-- 微博离线 -->
+    <string name="offline_groups_dialog">设置离线分组</string>
+    <string name="offline_none_groups_remind">未设置离线分组，是否现在设置？</string>
+
     <string-array name="user_headers">
         <item>全部</item>
         <item>原创</item>
@@ -512,9 +519,9 @@
 
     <string-array name="pCacheValidity">
         <item>30秒</item>
-        <item>2小时</item>
         <item>6小时</item>
         <item>12小时</item>
+        <item>24小时</item>
         <item>永久</item>
     </string-array>
 

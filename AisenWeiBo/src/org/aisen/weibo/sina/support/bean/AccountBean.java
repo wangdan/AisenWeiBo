@@ -27,10 +27,6 @@ public class AccountBean implements Serializable {
 	
 	private TokenInfo tokenInfo;
 	
-	private String advancedAppKey;// 高级授权
-	
-	private String advancedAppScreet;// 高级授权
-	
 	private AccessToken advancedToken;// 高级授权的Token
 
     private String account;
@@ -108,22 +104,6 @@ public class AccountBean implements Serializable {
 		}
 		
 		return false;
-	}
-
-	public String getAdvancedAppKey() {
-		return advancedAppKey;
-	}
-
-	public void setAdvancedAppKey(String advancedAppKey) {
-		this.advancedAppKey = advancedAppKey;
-	}
-
-	public String getAdvancedAppScreet() {
-		return advancedAppScreet;
-	}
-
-	public void setAdvancedAppScreet(String advancedAppScreet) {
-		this.advancedAppScreet = advancedAppScreet;
 	}
 
 	public AccessToken getAdvancedToken() {

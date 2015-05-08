@@ -3,12 +3,13 @@ package org.sina.android.bean;
 import com.m.network.biz.IResult;
 
 import org.aisen.weibo.sina.support.bean.PhotosBean;
+import org.aisen.weibo.sina.sys.service.OfflineService;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StatusContents extends PhotosBean implements Serializable, IResult {
+public class StatusContents extends PhotosBean implements Serializable, IResult, OfflineService.OfflineLength {
 
 	private static final long serialVersionUID = 2115103214814709009L;
 
@@ -23,6 +24,8 @@ public class StatusContents extends PhotosBean implements Serializable, IResult 
 	private boolean _expired;
 	
 	private boolean _noMore;
+
+    private long length;
 
 	public StatusContents() {
 		statuses = new ArrayList<StatusContent>();
@@ -86,5 +89,13 @@ public class StatusContents extends PhotosBean implements Serializable, IResult 
 	public String[] pagingIndex() {
 		return null;
 	}
-	
+
+    public long getLength() {
+        return length;
+    }
+
+    @Override
+    public void setLength(long length) {
+        this.length = length;
+    }
 }

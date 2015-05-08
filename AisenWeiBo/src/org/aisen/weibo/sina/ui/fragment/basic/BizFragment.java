@@ -17,6 +17,7 @@ import com.m.component.sqlite.extra.Extra;
 import com.m.component.sqlite.utils.FieldUtils;
 import com.m.network.task.TaskException;
 import com.m.network.task.WorkTask;
+import com.m.support.action.IAction;
 import com.m.support.textspan.ClickableTextViewMentionLinkOnTouchListener;
 import com.m.ui.fragment.ABaseFragment;
 
@@ -870,6 +871,12 @@ public class BizFragment extends ABaseFragment {
 
     private Map<String, WeakReference<DoLikeAction>> likeActionMap = new HashMap<>();
 
+    private WeakReference<IAction> dmLoginAction;
+
+    public void setDMLogin(IAction action) {
+        dmLoginAction = new WeakReference<IAction>(action);
+    }
+
     /**
      * 点赞或者取消点赞
      *
@@ -895,6 +902,12 @@ public class BizFragment extends ABaseFragment {
                 DoLikeAction action = likeActionMap.get(key).get();
                 if (action != null && ((WebLoginAction) action.getParent()).getRequestCode() == requestCode)
                     action.run();
+            }
+
+            if (dmLoginAction != null && dmLoginAction.get() != null) {
+                dmLoginAction.get().run();
+
+                dmLoginAction = null;
             }
         }
     }

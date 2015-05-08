@@ -92,6 +92,8 @@ public class DraftFragment extends AListFragment<PublishBean, ArrayList<PublishB
             bizFragment = BizFragment.getBizFragment(this);
         } catch (Exception e) {
         }
+
+//        AisenTextView.stringMemoryCache.evictAll();
     }
 
     @Override

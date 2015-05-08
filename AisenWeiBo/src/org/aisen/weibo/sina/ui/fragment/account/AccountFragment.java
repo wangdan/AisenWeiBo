@@ -33,6 +33,7 @@ import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.MyApplication;
 import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.db.AccountDB;
+import org.aisen.weibo.sina.support.db.SinaDB;
 import org.aisen.weibo.sina.support.notifier.UnreadCountNotifier;
 import org.aisen.weibo.sina.support.publisher.PublishNotifier;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;

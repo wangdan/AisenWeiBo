@@ -16,14 +16,17 @@ import com.m.support.inject.ViewInject;
 import com.m.support.paging.IPaging;
 import com.m.support.paging.PageIndexPaging;
 import com.m.ui.activity.basic.BaseActivity;
+import com.m.ui.fragment.ARefreshFragment;
 import com.m.ui.fragment.AStripTabsFragment;
 
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.ui.fragment.timeline.ATimelineFragment;
 import org.sina.android.SinaSDK;
+import org.sina.android.bean.PicUrls;
 import org.sina.android.bean.StatusContent;
 import org.sina.android.bean.StatusContents;
+import org.w3c.dom.Text;
 
 /**
  * Created by wangdan on 15/4/28.
@@ -116,7 +119,8 @@ public class SearchTopicsFragment extends ATimelineFragment {
 
     @Override
     protected void requestData(RefreshMode mode) {
-
+        if (mode == RefreshMode.update)
+            new UpdateTask().execute();
     }
 
     SearchTopicsTask mTask;
@@ -131,6 +135,8 @@ public class SearchTopicsFragment extends ATimelineFragment {
 
             if (mTask != null)
                 mTask.cancel(true);
+            if (updateTask != null)
+                updateTask.cancel(true);
 
             mTask = this;
         }
@@ -138,7 +144,19 @@ public class SearchTopicsFragment extends ATimelineFragment {
         @Override
         protected StatusContents workInBackground(RefreshMode mode, String previousPage, String nextPage,
                                                   Void... params) throws TaskException {
-            return SinaSDK.getInstance(AppContext.getToken()).searchTopics(nextPage, q, "30");
+            StatusContents datas = SinaSDK.getInstance(AppContext.getToken()).searchTopics(nextPage, q, "30");
+
+            // 把图片塞进去
+            for (StatusContent data : datas.getStatuses()) {
+                if (data.getPic_urls() == null && !TextUtils.isEmpty(data.getThumbnail_pic())) {
+                    PicUrls picUrls = new PicUrls();
+                    picUrls.setThumbnail_pic(data.getThumbnail_pic());
+
+                    data.setPic_urls(new PicUrls[]{ picUrls });
+                }
+            }
+
+            return datas;
         }
 
         @Override
@@ -158,6 +176,47 @@ public class SearchTopicsFragment extends ATimelineFragment {
             mTask = null;
         }
 
+    }
+
+    UpdateTask updateTask;
+    class UpdateTask extends TimelineTask {
+
+        UpdateTask() {
+            super(RefreshMode.update);
+            updateTask = this;
+        }
+
+        @Override
+        protected StatusContents workInBackground(RefreshMode mode, String previousPage, String nextPage, Void... params) throws TaskException {
+            StatusContents datas = SinaSDK.getInstance(AppContext.getToken())
+                        .searchTopics(nextPage, searchView.getQuery().toString(), "30");
+
+            // 把图片塞进去
+            for (StatusContent data : datas.getStatuses()) {
+                if (data.getPic_urls() == null && !TextUtils.isEmpty(data.getThumbnail_pic())) {
+                    PicUrls picUrls = new PicUrls();
+                    picUrls.setThumbnail_pic(data.getThumbnail_pic());
+
+                    data.setPic_urls(new PicUrls[]{ picUrls });
+                }
+            }
+
+            return datas;
+        }
+
+        @Override
+        protected void onFinished() {
+            super.onFinished();
+
+            updateTask = null;
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        searchView.clearFocus();
     }
 
 }

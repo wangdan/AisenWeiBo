@@ -38,8 +38,9 @@ public class UnreadCountNotifier extends Notifier {
 
 			Intent intent = new Intent(context, MainActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			intent.setAction("showFollowers");
-			PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+			intent.setAction(MainActivity.ACTION_NOTIFICATION);
+            intent.putExtra("type", "4");
+			PendingIntent contentIntent = PendingIntent.getActivity(context, RemindUnreadForFollowers, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 			builder.setContentIntent(contentIntent).setAutoCancel(true);
 			builder.setTicker(contentTitle);
 			
@@ -58,9 +59,10 @@ public class UnreadCountNotifier extends Notifier {
 			builder.setTicker(contentTitle);
 
 			Intent intent = new Intent(context, MainActivity.class);
-			intent.setAction("showComments");
+            intent.setAction(MainActivity.ACTION_NOTIFICATION);
+            intent.putExtra("type", "3");
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+			PendingIntent contentIntent = PendingIntent.getActivity(context, RemindUnreadComments, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 			builder.setContentIntent(contentIntent).setAutoCancel(true);
 
 			notify(RemindUnreadComments, builder);
@@ -79,9 +81,9 @@ public class UnreadCountNotifier extends Notifier {
 			builder.setTicker(contentTitle);
 
 			Intent intent = new Intent(context, MainActivity.class);
-			intent.setAction("showMentionStatus");
+            intent.setAction(MainActivity.ACTION_NOTIFICATION_MS);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+			PendingIntent contentIntent = PendingIntent.getActivity(context, RemindUnreadForMentionStatus, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 			builder.setContentIntent(contentIntent).setAutoCancel(true);
 
 			notify(RemindUnreadForMentionStatus, builder);
@@ -100,9 +102,9 @@ public class UnreadCountNotifier extends Notifier {
 			builder.setTicker(contentTitle);
 
 			Intent intent = new Intent(context, MainActivity.class);
-			intent.setAction("showMentionCmt");
+            intent.setAction(MainActivity.ACTION_NOTIFICATION_MC);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+			PendingIntent contentIntent = PendingIntent.getActivity(context, RemindUnreadForMentionComments, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 			builder.setContentIntent(contentIntent).setAutoCancel(true);
 
 			notify(RemindUnreadForMentionComments, builder);
@@ -122,9 +124,10 @@ public class UnreadCountNotifier extends Notifier {
 			builder.setTicker(contentTitle);
 
 			Intent intent = new Intent(context, MainActivity.class);
-			intent.setAction("showDm");
+            intent.setAction(MainActivity.ACTION_NOTIFICATION);
+            intent.putExtra("type", "10");
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+			PendingIntent contentIntent = PendingIntent.getActivity(context, RemindUnreadForDM, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 			builder.setContentIntent(contentIntent).setAutoCancel(true);
 
 			notify(RemindUnreadForDM, builder);

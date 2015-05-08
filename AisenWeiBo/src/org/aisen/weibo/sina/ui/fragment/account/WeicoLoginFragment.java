@@ -32,6 +32,8 @@ import com.m.ui.activity.basic.BaseActivity;
 import com.m.ui.fragment.ABaseFragment;
 
 import org.aisen.weibo.sina.R;
+import org.aisen.weibo.sina.base.AppContext;
+import org.aisen.weibo.sina.support.db.AccountDB;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.sina.android.SinaSDK;
@@ -76,7 +78,7 @@ public class WeicoLoginFragment extends ABaseFragment {
 
     @Override
     protected int inflateContentView() {
-        return R.layout.as_ui_login;
+        return R.layout.as_ui_weico_login;
     }
 
     @Override
@@ -157,6 +159,8 @@ public class WeicoLoginFragment extends ABaseFragment {
 
             editAccount.setText(mAccount);
             editPassword.setText(mPassword);
+            editPassword.setSelection(editPassword.getText().length());
+            editPassword.setFocusable(true);
         }
     }
 
@@ -168,6 +172,8 @@ public class WeicoLoginFragment extends ABaseFragment {
 
         @JavascriptInterface
         public void setAccount(String account, String password) {
+            mAccount = account;
+            mPassword = password;
         }
 
     }
@@ -215,7 +221,7 @@ public class WeicoLoginFragment extends ABaseFragment {
             String callback = SettingUtility.getStringSetting("weico_callback");
 
             final String url = String
-                    .format("https://api.weibo.com/oauth2/authorize?client_id=%s&scope=friendships_groups_read,friendships_groups_write,statuses_to_me_read,follow_app_official_microblog&redirect_uri=%s&display=mobile&forcelogin=true",
+                    .format("https://api.weibo.com/oauth2/authorize?client_id=%s&scope=friendships_groups_read,friendships_groups_write,statuses_to_me_read&redirect_uri=%s&display=mobile&forcelogin=true",
                             key, callback);
             int count = 3;
             while (count-- >= 0) {
@@ -301,6 +307,13 @@ public class WeicoLoginFragment extends ABaseFragment {
             super.onSuccess(result);
 
             Logger.d(TAG, "授权成功");
+
+            if (result.getUid().equalsIgnoreCase(AppContext.getUser().getIdstr())) {
+                AppContext.getAccount().setAdvancedToken(result);
+
+                AccountDB.setLogedinAccount(AppContext.getAccount());
+                AccountDB.newAccount(AppContext.getAccount());
+            }
 
             if (getActivity() != null) {
                 Intent data = new Intent();

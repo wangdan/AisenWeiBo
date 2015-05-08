@@ -16,11 +16,9 @@ import org.aisen.weibo.sina.support.bean.PublishBean;
 import org.aisen.weibo.sina.support.db.AccountDB;
 import org.aisen.weibo.sina.support.db.EmotionsDB;
 import org.aisen.weibo.sina.support.db.PublishDB;
-import org.aisen.weibo.sina.support.db.SinaDB;
 import org.aisen.weibo.sina.sys.receiver.TimingBroadcastReceiver;
 import org.aisen.weibo.sina.sys.receiver.TimingIntent;
 import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
-import org.sina.android.bean.AccessToken;
 import org.sina.android.bean.WeiBoUser;
 import org.sina.android.core.SinaErrorMsgUtil;
 
@@ -39,10 +37,6 @@ public class MyApplication extends GlobalContext {
         // 设置登录账户
         AccountBean accountBean = AccountDB.getLogedinAccount();
         SettingUtility.addSettings("meizt_actions");
-        // 读取高级token
-        List<AccessToken> token = SinaDB.getSqlite().select(null, AccessToken.class);
-        if (token.size() > 0)
-            AppContext.setAdvancedToken(token.get(0));
         if (accountBean != null)
             AppContext.login(accountBean);
         // 检查表情

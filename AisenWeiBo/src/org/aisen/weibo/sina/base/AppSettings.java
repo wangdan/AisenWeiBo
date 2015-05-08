@@ -323,17 +323,17 @@ public class AppSettings {
             return 30 * 1000;
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
-        int value = Integer.parseInt(prefs.getString("pCacheValidity", "1"));
+        int value = Integer.parseInt(prefs.getString("pCacheValidity", "2"));
 
         switch (value) {
             case 0:
                 return 30 * 1000;
             case 1:
-                return 2 * 60 * 60 * 1000;
-            case 2:
                 return 6 * 60 * 60 * 1000;
-            case 3:
+            case 2:
                 return 12 * 60 * 60 * 1000;
+            case 3:
+                return 24 * 60 * 60 * 1000;
             case 4:
                 return Integer.MAX_VALUE;
 //		case 1:
@@ -416,7 +416,7 @@ public class AppSettings {
      */
     public static int getFabBtnType() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
-        return Integer.parseInt(prefs.getString("pFabType", "0"));
+        return Integer.parseInt(prefs.getString("pFabType", "1"));
     }
 
     /**
@@ -435,6 +435,33 @@ public class AppSettings {
 
     public static void setThemeColor(int theme) {
         ActivityHelper.putIntShareData("Theme_index", theme);
+    }
+
+    /**
+     * 离线大小
+     *
+     * @return
+     */
+    public static int getOfflineStatusSize() {
+        return 100;
+    }
+
+    /**
+     * 同时离线图片
+     *
+     * @return
+     */
+    public static boolean offlinePicture() {
+        return true;
+    }
+
+    /**
+     * 同时离线图片线程大小
+     *
+     * @return
+     */
+    public static int offlinePicTaskSize() {
+        return 15;
     }
 
 }

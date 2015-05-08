@@ -113,7 +113,7 @@ public class TimelineItemView extends ABaseAdapter.AbstractItemView<StatusConten
     AisenTextView txtReContent;
 
     @ViewInject(id = R.id.layPicturs)
-    TimelinePicsView layPicturs;
+    public TimelinePicsView layPicturs;
 
     @ViewInject(id = R.id.btnMenus)
     View btnMenus;

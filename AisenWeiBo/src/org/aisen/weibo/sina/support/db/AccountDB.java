@@ -16,7 +16,7 @@ public class AccountDB {
 		SinaDB.getSqlite().delete(AccountBean.class, whereClause, whereArgs);
 		
 		// 设置当前登录账户
-		SinaDB.getSqlite().insert(new Extra(null, "Logedin"), bean);
+		SinaDB.getSqlite().insertOrReplace(new Extra(null, "Logedin"), bean);
 	}
 	
 	public static AccountBean getLogedinAccount() {
@@ -31,7 +31,7 @@ public class AccountDB {
 	}
 	
 	public static void newAccount(AccountBean bean) {
-		SinaDB.getSqlite().insert(null, bean);
+		SinaDB.getSqlite().insertOrReplace(null, bean);
 	}
 	
 	public static List<AccountBean> query() {

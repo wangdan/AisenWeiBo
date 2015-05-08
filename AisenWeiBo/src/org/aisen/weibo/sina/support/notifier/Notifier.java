@@ -31,6 +31,12 @@ public abstract class Notifier {
 
 	public static final int RemindUnreadForFollowers = 6000;// 新粉丝
 
+    public static final int OfflineStatus = 9001;// 离线微博
+
+    public static final int OfflineCmt = 9002;// 离线评论
+
+    public static final int OfflinePicture = 9003;// 离线图片
+
 	public Notifier(Context context) {
 		this.context = context;
 		notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

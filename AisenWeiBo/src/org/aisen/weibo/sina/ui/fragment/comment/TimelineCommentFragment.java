@@ -122,8 +122,6 @@ public class TimelineCommentFragment extends ASwipeRefreshListFragment<StatusCom
             getActivity().finish();
             return;
         }
-
-        timelineItem.bindingData(headerView, mStatusContent);
     }
 
     @Override
@@ -256,6 +254,8 @@ public class TimelineCommentFragment extends ASwipeRefreshListFragment<StatusCom
                 !mStatusContent.getUser().getIdstr().equalsIgnoreCase(AppContext.getUser().getIdstr()))
             menu.removeItem(R.id.delete);
 
+        AisenUtils.setStatusShareMenu(menu.findItem(R.id.share), mStatusContent);
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -268,6 +268,24 @@ public class TimelineCommentFragment extends ASwipeRefreshListFragment<StatusCom
 
     void onFabBtnClicked(View v) {
         AisenUtils.onMenuClicked(this, R.id.comment, mStatusContent);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        CommentsHeaderView timelineItem = (CommentsHeaderView) headerView.getTag();
+        if (timelineItem != null)
+            timelineItem.bindingData(headerView, mStatusContent);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        CommentsHeaderView timelineItem = (CommentsHeaderView) headerView.getTag();
+        if (timelineItem != null)
+            timelineItem.layPicturs.release();
     }
 
 }

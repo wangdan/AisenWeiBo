@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.m.common.utils.Logger;
 import com.m.network.task.TaskException;
 import com.m.support.adapter.ABaseAdapter;
 import com.m.support.paging.IPaging;
@@ -44,6 +45,19 @@ public class MentionCommentsFragment extends AWeiboRefreshListFragment<StatusCom
         fragment.setArguments(args);
 
         return fragment;
+    }
+
+    static int count = 0;
+
+    public MentionCommentsFragment() {
+        Logger.e("MentionComments, " + ++count);
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+
+        Logger.e("MentionComments, " + --count);
     }
 
     private AStripTabsFragment.StripTabItem mGroupBean;
@@ -93,8 +107,8 @@ public class MentionCommentsFragment extends AWeiboRefreshListFragment<StatusCom
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         ListView listView = (ListView) getRefreshView();
         position -= listView.getHeaderViewsCount();
-//        if (position >= 0 && position < getAdapter().getCount())
-//            BizFragment.getBizFragment(this).replyComment(null, getAdapterItems().get(position));
+        if (position >= 0 && position < getAdapter().getCount())
+            BizFragment.getBizFragment(this).replyComment(null, getAdapterItems().get(position));
     }
 
     @Override

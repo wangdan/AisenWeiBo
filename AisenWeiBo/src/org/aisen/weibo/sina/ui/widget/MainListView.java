@@ -1,8 +1,6 @@
 package org.aisen.weibo.sina.ui.widget;
 
-import android.app.Fragment;
 import android.content.Context;
-import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -11,8 +9,6 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
 
 import com.m.common.utils.Utils;
-import com.m.ui.activity.basic.BaseActivity;
-import com.m.ui.fragment.AStripTabsFragment;
 import com.m.ui.fragment.ASwipeRefreshListFragment;
 
 import org.aisen.weibo.sina.ui.activity.basic.MainActivity;
@@ -28,8 +24,6 @@ public class MainListView extends ListView implements OnScrollListener {
 
 	public static final String TAG = "MainListView";
 
-    private Toolbar mToolbar;
-    private View mStripView;// slidingTabs
     private MainActivity mMainActivity;
 
     private ASwipeRefreshListFragment mFragment;
@@ -58,15 +52,6 @@ public class MainListView extends ListView implements OnScrollListener {
 	private void init() {
         if (getContext() instanceof MainActivity) {
             mMainActivity = (MainActivity) getContext();
-
-            BaseActivity baseActivity = (BaseActivity) getContext();
-
-            mToolbar = baseActivity.getToolbar();
-
-            Fragment fragment = ((MainActivity) baseActivity).getFragmentManager().findFragmentByTag(MainActivity.FRAGMENT_TAG);
-            if (fragment != null && fragment instanceof AStripTabsFragment) {
-                mStripView = ((AStripTabsFragment) fragment).getSlidingTabLayout();
-            }
         }
 	}
 
@@ -156,4 +141,12 @@ public class MainListView extends ListView implements OnScrollListener {
         return super.onTouchEvent(ev);
     }
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+
+        mMainActivity = null;
+        mFragment = null;
+        onScrollListeners.clear();
+    }
 }
