@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.m.common.utils.ActivityHelper;
 import com.m.component.container.FragmentArgs;
 import com.m.component.container.FragmentContainerActivity;
 import com.m.network.http.Params;
@@ -24,6 +25,7 @@ import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.ui.fragment.settings.AboutWebFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.ATimelineFragment;
 import org.sina.android.SinaSDK;
 import org.sina.android.bean.AccessToken;
@@ -267,10 +269,27 @@ public class UserTimelineFragment extends ATimelineFragment
         protected void onSuccess(StatusContents result) {
             super.onSuccess(result);
 
-            if (result == null)
+            if (result == null || getActivity() == null)
                 return;
 
             getActivity().invalidateOptionsMenu();
+
+            // 提示用户去高级授权
+            if (!ActivityHelper.getBooleanShareData("IgnoreWeicoRemind", false)) {
+                new AlertDialogWrapper.Builder(getActivity())
+                        .setTitle(R.string.remind)
+                        .setMessage(R.string.profile_help)
+                        .setNegativeButton(R.string.cancel, null)
+                        .setPositiveButton(R.string.title_help, new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                AboutWebFragment.launchAbout(getActivity());
+                            }
+
+                        })
+                        .show();
+            }
         }
 
     }

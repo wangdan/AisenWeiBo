@@ -110,12 +110,12 @@
 	
 	<setting type="about_url">
 		<des>关于</des>
-		<value>https://www.github.com/wangdan/AisenWeibo/</value>
+		<value>https://github.com/wangdan/AisenWeiBo/blob/master/README.md</value>
 	</setting>
 	
 	<setting type="help_url">
 		<des>帮助</des>
-		<value>http://aisenyuedu.duapp.com/?p=31</value>
+		<value>https://github.com/wangdan/AisenWeiBo/blob/master/HELP.md</value>
 	</setting>
 	
 	<!-- <setting type="fragment_lifecycle">

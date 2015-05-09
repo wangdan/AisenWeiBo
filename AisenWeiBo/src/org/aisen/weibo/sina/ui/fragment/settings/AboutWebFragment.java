@@ -49,10 +49,15 @@ public class AboutWebFragment extends ABaseFragment {
 	}
 	
 	public static void launchHelp(Activity from) {
-		FragmentArgs args = new FragmentArgs();
-		args.add("type", 1);
+//		FragmentArgs args = new FragmentArgs();
+//		args.add("type", 1);
+//
+//		FragmentContainerActivity.launch(from, AboutWebFragment.class, args);
 
-		FragmentContainerActivity.launch(from, AboutWebFragment.class, args);
+        Intent intent = new Intent(from, BrowserActivity.class);
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.putExtra("url", SettingUtility.getStringSetting("help_url"));
+        from.startActivity(intent);
 	}
 	
 	public static void launchOpensource(Activity from) {

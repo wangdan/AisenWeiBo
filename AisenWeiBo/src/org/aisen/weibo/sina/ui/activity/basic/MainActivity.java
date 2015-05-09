@@ -626,9 +626,10 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
         username = AppContext.getAccount().getAccount();
         password = AppContext.getAccount().getPassword();
 
-        String path = SdcardUtils.getSdcardPath() + File.separator + "aisenweibo" + File.separator;
-        path = path + "hprof" + File.separator;
-        HprofUtils.dumpHprof(path);
+        // 这里导出Hprof文件，跟踪分析内存
+//        String path = SdcardUtils.getSdcardPath() + File.separator + "aisenweibo" + File.separator;
+//        path = path + "hprof" + File.separator;
+//        HprofUtils.dumpHprof(path);
 
         WeicoLoginFragment.launch(this, username, password, 1000);
         return true;

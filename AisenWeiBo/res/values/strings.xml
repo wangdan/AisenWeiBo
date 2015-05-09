@@ -328,6 +328,7 @@
     <string name="profile_tab4">相册</string>
     <string name="profile_tab5">收藏</string>
     <string name="profile_feature_dialog">微博类型</string>
+    <string name="profile_help">是不是只能看到5条微博？想不想看更多，那就点“帮助”去找解决方法吧！</string>
 
     <!-- 查看图片 -->
     <string name="title_pic">查看图片</string>

@@ -195,6 +195,8 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
         TextView txtTokenInfo;
         @ViewInject(id = R.id.btnRight, click = "deleteAccount")
         View btnRight;
+        @ViewInject(id = R.id.divider)
+        View divider;
 
         private ColorDrawable grayDrawable;
 
@@ -229,6 +231,8 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
 
             viewCover.setImageDrawable(grayDrawable);
             btnRight.setTag(data);
+
+            divider.setVisibility(getPosition() == getSize() - 1 ? View.GONE : View.VISIBLE);
         }
 
         void deleteAccount(View v) {
