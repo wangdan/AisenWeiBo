@@ -31,6 +31,7 @@ import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.db.AccountDB;
+import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.BaiduAnalyzeUtils;
 import org.sina.android.SinaSDK;
 import org.sina.android.bean.Group;
@@ -246,7 +247,7 @@ public class GroupSortFragment extends ADragSortFragment<Group, Groups> {
 		protected void onPrepare() {
 			super.onPrepare();
 
-			ViewUtils.createProgressDialog(getActivity(), getString(R.string.group_update_group_loading)).show();
+			ViewUtils.createProgressDialog(getActivity(), getString(R.string.group_update_group_loading), AisenUtils.getProgressBarDrawable()).show();
 		};
 
 		@Override
@@ -301,7 +302,7 @@ public class GroupSortFragment extends ADragSortFragment<Group, Groups> {
 		protected void onPrepare() {
 			super.onPrepare();
 
-			ViewUtils.createProgressDialog(getActivity(), getString(R.string.group_create_group_loading)).show();
+			ViewUtils.createProgressDialog(getActivity(), getString(R.string.group_create_group_loading), AisenUtils.getProgressBarDrawable()).show();
 		};
 
 		@Override
@@ -353,7 +354,7 @@ public class GroupSortFragment extends ADragSortFragment<Group, Groups> {
 		protected void onPrepare() {
 			super.onPrepare();
 
-			ViewUtils.createProgressDialog(getActivity(), getString(R.string.group_del_group_loading)).show();
+			ViewUtils.createProgressDialog(getActivity(), getString(R.string.group_del_group_loading), AisenUtils.getProgressBarDrawable()).show();
 		};
 
 		@Override
@@ -420,7 +421,7 @@ public class GroupSortFragment extends ADragSortFragment<Group, Groups> {
 		protected void onPrepare() {
 			super.onPrepare();
 
-			ViewUtils.createProgressDialog(getActivity(), getString(R.string.group_sort_group_loading)).show();
+			ViewUtils.createProgressDialog(getActivity(), getString(R.string.group_sort_group_loading), AisenUtils.getProgressBarDrawable()).show();
 		}
 
 		@Override

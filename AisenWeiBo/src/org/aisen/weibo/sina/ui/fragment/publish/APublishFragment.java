@@ -535,16 +535,17 @@ public abstract class APublishFragment extends ABaseFragment
 
         int statusBarHeight = SystemBarUtils.getStatusBarHeight(getActivity());
 		emotionHeight = SystemUtils.getKeyboardHeight(getActivity());
-        if (Build.VERSION.SDK_INT >= 19) {
-            emotionHeight += statusBarHeight;
-        }
 
         SystemUtils.hideSoftInput(editContent);
         layEmotion.getLayoutParams().height = emotionHeight;
         layEmotion.setVisibility(View.VISIBLE);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-        lockContainerHeight(SystemUtils.getAppContentHeight(getActivity()) - statusBarHeight);
+        // 2015 05-09 在5.0有navigationbar的手机，高度高了一个statusBar
+        int lockHeight = SystemUtils.getAppContentHeight(getActivity());
+        if (Build.VERSION.SDK_INT <= 19)
+            lockHeight = lockHeight - statusBarHeight;
+        lockContainerHeight(lockHeight);
 	}
 
 	 private void lockContainerHeight(int paramInt) {

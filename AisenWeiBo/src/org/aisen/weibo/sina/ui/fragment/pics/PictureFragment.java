@@ -543,7 +543,7 @@ import uk.co.senab.photoview.PhotoView;
             protected void onPrepare() {
                 super.onPrepare();
 
-                ViewUtils.createProgressDialog(getActivity(), "msg_save_pic_loading").show();
+                ViewUtils.createProgressDialog(getActivity(), "msg_save_pic_loading", AisenUtils.getProgressBarDrawable()).show();
             }
 
             @Override

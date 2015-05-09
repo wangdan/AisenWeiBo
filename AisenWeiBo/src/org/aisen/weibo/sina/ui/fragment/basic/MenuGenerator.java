@@ -26,7 +26,9 @@ public class MenuGenerator {
         // 分割线
         menuList.add(generateMenu("1000"));
         // 微博广场
-        menuList.add(generateMenu("12"));
+//        menuList.add(generateMenu("12"));
+        // 热门微博
+        menuList.add(generateMenu("11"));
         // 离线阅读
 //        menuList.add(generateMenu("14"));
         // 草稿

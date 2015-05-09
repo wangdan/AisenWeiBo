@@ -42,6 +42,7 @@ import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.db.AccountDB;
+import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -463,7 +464,7 @@ public class WeiboClientActivity extends BaseActivity implements PhotoChoice.Pho
             protected void onPrepare() {
                 super.onPrepare();
 
-                ViewUtils.createProgressDialog(WeiboClientActivity.this, getString(R.string.account_fillaccount_loading)).show();
+                ViewUtils.createProgressDialog(WeiboClientActivity.this, getString(R.string.account_fillaccount_loading), AisenUtils.getProgressBarDrawable()).show();
             }
 
             @Override

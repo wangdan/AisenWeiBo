@@ -45,6 +45,7 @@ import org.aisen.weibo.sina.support.utils.AdTokenUtils;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.OfflineUtils;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
+import org.aisen.weibo.sina.ui.activity.profile.WeiboClientActivity;
 import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
 import org.aisen.weibo.sina.ui.fragment.account.WeicoLoginFragment;
 import org.aisen.weibo.sina.ui.fragment.basic.BizFragment;
@@ -301,6 +302,12 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
         // 私信
         case 10:
             new DMAction(this).run();
+            return true;
+        // 热门微博
+        case 11:
+            WeiboClientActivity.launchHotStatuses(this);
+
+            closeDrawer();
             return true;
         }
 

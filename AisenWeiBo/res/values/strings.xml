@@ -519,7 +519,7 @@
 
     <string-array name="pCacheValidity">
         <item>30秒</item>
-        <item>6小时</item>
+        <item>4小时</item>
         <item>12小时</item>
         <item>24小时</item>
         <item>永久</item>

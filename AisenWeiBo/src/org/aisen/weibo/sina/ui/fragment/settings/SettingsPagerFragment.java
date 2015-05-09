@@ -5,15 +5,11 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 
-import com.m.common.utils.ActivityHelper;
-import com.m.component.container.FragmentArgs;
 import com.m.component.container.FragmentContainerActivity;
 import com.m.ui.activity.basic.BaseActivity;
 import com.m.ui.fragment.AStripTabsFragment;
 
 import org.aisen.weibo.sina.R;
-import org.aisen.weibo.sina.base.AppSettings;
-import org.aisen.weibo.sina.support.utils.ThemeUtils;
 
 import java.util.ArrayList;
 
@@ -26,13 +22,8 @@ import java.util.ArrayList;
 public class SettingsPagerFragment extends AStripTabsFragment<AStripTabsFragment.StripTabItem> {
 
 	public static void launch(Activity from) {
-        FragmentArgs args = new FragmentArgs();
-        args.add(SET_INDEX, ActivityHelper.getIntShareData("org.aisen.weibo.sina.Setting_pager", 0));
-
-		FragmentContainerActivity.launch(from, SettingsPagerFragment.class, args);
+		FragmentContainerActivity.launch(from, SettingsPagerFragment.class, null);
 	}
-
-    private int theme = AppSettings.getThemeColor();
 
     @Override
 	protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
@@ -80,10 +71,7 @@ public class SettingsPagerFragment extends AStripTabsFragment<AStripTabsFragment
 	}
 
     @Override
-    public void onPageSelected(int position) {
-        super.onPageSelected(position);
-
-        ActivityHelper.putIntShareData("org.aisen.weibo.sina.Setting_pager", position);
+    protected String configLastPositionKey() {
+        return "Settings";
     }
-
 }

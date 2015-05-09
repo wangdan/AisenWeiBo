@@ -31,7 +31,7 @@
  	        android:summary="@string/settings_cache_disable_summary" />
  	    
  	    <org.aisen.weibo.sina.ui.widget.AisenListPreference android:key="pCacheValidity" android:entries="@array/pCacheValidity" android:entryValues="@array/prefValues"
-			android:dialogTitle="@string/settings_dt_cache_validdate" android:title="@string/settings_cache_validdate" android:defaultValue="2" />
+			android:dialogTitle="@string/settings_dt_cache_validdate" android:title="@string/settings_cache_validdate" android:defaultValue="1" />
  	    
  	    <CheckBoxPreference android:key="pCrashLog" android:title="@string/settings_crash_log" android:defaultValue="true"
             android:summary="@string/settings_crash_log_summary" />

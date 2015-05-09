@@ -10,6 +10,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
@@ -33,6 +34,7 @@ import com.m.component.bitmaploader.BitmapLoader;
 import com.m.component.bitmaploader.core.BitmapDecoder;
 import com.m.network.task.TaskException;
 import com.m.network.task.WorkTask;
+import com.m.ui.activity.basic.BaseActivity;
 import com.m.ui.fragment.ABaseFragment;
 import com.m.ui.fragment.ARefreshFragment;
 
@@ -57,6 +59,8 @@ import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import fr.castorflex.android.circularprogressbar.CircularProgressDrawable;
 
 /**
  * Created by wangdan on 15/4/12.
@@ -471,7 +475,7 @@ public class AisenUtils {
                                 super.onPrepare();
 
                                 Resources res = GlobalContext.getInstance().getResources();
-                                ViewUtils.createProgressDialog(fragment.getActivity(), res.getString(R.string.processing)).show();
+                                ViewUtils.createProgressDialog(fragment.getActivity(), res.getString(R.string.processing), AisenUtils.getProgressBarDrawable()).show();
                             };
 
                             @Override
@@ -718,6 +722,15 @@ public class AisenUtils {
         else
             sizeStr = String.format("%s Kb", new DecimalFormat("#.00").format(length * 1.0d / 1024));
         return sizeStr;
+    }
+
+    public static Drawable getProgressBarDrawable() {
+        if (BaseActivity.getRunningActivity() != null) {
+            Activity context = BaseActivity.getRunningActivity();
+            return new CircularProgressDrawable.Builder(context).color(Utils.resolveColor(context, R.attr.theme_color, Color.BLUE)).build();
+        }
+
+        return null;
     }
 
 }

@@ -23,6 +23,7 @@ import com.m.ui.activity.basic.BaseActivity;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
+import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
 import org.aisen.weibo.sina.ui.activity.basic.AisenActivityHelper;
 import org.aisen.weibo.sina.ui.fragment.profile.UserProfilePagerFragment;
@@ -155,7 +156,7 @@ public class UserProfileActivity extends BaseActivity implements AisenActivityHe
 			layoutContent.setVisibility(View.VISIBLE);
 			layoutLoadFailed.setVisibility(View.GONE);
 			
-			ViewUtils.createProgressDialog(UserProfileActivity.this, getString(R.string.msg_load_profile)).show();
+			ViewUtils.createProgressDialog(UserProfileActivity.this, getString(R.string.msg_load_profile), AisenUtils.getProgressBarDrawable()).show();
 		}
 		
 		@Override

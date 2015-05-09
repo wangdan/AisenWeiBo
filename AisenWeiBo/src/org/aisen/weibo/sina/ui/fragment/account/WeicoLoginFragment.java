@@ -34,6 +34,7 @@ import com.m.ui.fragment.ABaseFragment;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.support.db.AccountDB;
+import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.sina.android.SinaSDK;
@@ -212,7 +213,7 @@ public class WeicoLoginFragment extends ABaseFragment {
         protected void onPrepare() {
             super.onPrepare();
 
-            ViewUtils.createProgressDialog(getActivity(), getString(R.string.comm_request_loading)).show();
+            ViewUtils.createProgressDialog(getActivity(), getString(R.string.comm_request_loading), AisenUtils.getProgressBarDrawable()).show();
         }
 
         @Override
@@ -281,7 +282,7 @@ public class WeicoLoginFragment extends ABaseFragment {
         protected void onPrepare() {
             super.onPrepare();
 
-            ViewUtils.createProgressDialog(getActivity(), getString(R.string.account_load_auth)).show();
+            ViewUtils.createProgressDialog(getActivity(), getString(R.string.account_load_auth), AisenUtils.getProgressBarDrawable()).show();
         }
 
         @Override

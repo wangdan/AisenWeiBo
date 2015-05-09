@@ -28,6 +28,7 @@ import org.aisen.weibo.sina.support.action.WebLoginAction;
 import org.aisen.weibo.sina.support.db.SinaDB;
 import org.aisen.weibo.sina.support.notifier.UnreadCountNotifier;
 import org.aisen.weibo.sina.support.publisher.Notifier;
+import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.sys.service.UnreadService;
 import org.aisen.weibo.sina.ui.activity.basic.MainActivity;
 import org.aisen.weibo.sina.ui.activity.pics.PicsActivity;
@@ -181,7 +182,7 @@ public class BizFragment extends ABaseFragment {
                             protected void onPrepare() {
                                 super.onPrepare();
 
-                                ViewUtils.createProgressDialog(getActivity(), getString(R.string.biz_destory_friendship)).show();
+                                ViewUtils.createProgressDialog(getActivity(), getString(R.string.biz_destory_friendship), AisenUtils.getProgressBarDrawable()).show();
                             };
 
                             @Override
@@ -237,7 +238,7 @@ public class BizFragment extends ABaseFragment {
             protected void onPrepare() {
                 super.onPrepare();
 
-                ViewUtils.createProgressDialog(getActivity(), getString(R.string.biz_create_friendship)).show();
+                ViewUtils.createProgressDialog(getActivity(), getString(R.string.biz_create_friendship), AisenUtils.getProgressBarDrawable()).show();
             };
 
             @Override
@@ -317,7 +318,7 @@ public class BizFragment extends ABaseFragment {
                                 protected void onPrepare() {
                                     super.onPrepare();
 
-                                    ViewUtils.createProgressDialog(getActivity(), getString(R.string.biz_remark_loading)).show();
+                                    ViewUtils.createProgressDialog(getActivity(), getString(R.string.biz_remark_loading), AisenUtils.getProgressBarDrawable()).show();
                                 };
 
                                 @Override
@@ -434,7 +435,7 @@ public class BizFragment extends ABaseFragment {
                             protected void onPrepare() {
                                 super.onPrepare();
 
-                                ViewUtils.createProgressDialog(getActivity(), getString(R.string.biz_destory_follower_loading)).show();
+                                ViewUtils.createProgressDialog(getActivity(), getString(R.string.biz_destory_follower_loading), AisenUtils.getProgressBarDrawable()).show();
                             };
 
                             @Override
@@ -489,7 +490,7 @@ public class BizFragment extends ABaseFragment {
             protected void onPrepare() {
                 super.onPrepare();
 
-                ViewUtils.createProgressDialog(getActivity(), getString(R.string.biz_delete_cmt_loading)).show();
+                ViewUtils.createProgressDialog(getActivity(), getString(R.string.biz_delete_cmt_loading), AisenUtils.getProgressBarDrawable()).show();
             };
 
             protected void onFinished() {
@@ -566,7 +567,7 @@ public class BizFragment extends ABaseFragment {
             protected void onPrepare() {
                 super.onPrepare();
 
-                ViewUtils.createProgressDialog(getActivity(), getString(R.string.biz_delete_status_loading)).show();
+                ViewUtils.createProgressDialog(getActivity(), getString(R.string.biz_delete_status_loading), AisenUtils.getProgressBarDrawable()).show();
             };
 
             protected void onFinished() {
@@ -631,7 +632,7 @@ public class BizFragment extends ABaseFragment {
             protected void onPrepare() {
                 super.onPrepare();
 
-                ViewUtils.createProgressDialog(getActivity(), getString(R.string.biz_add_fav)).show();
+                ViewUtils.createProgressDialog(getActivity(), getString(R.string.biz_add_fav), AisenUtils.getProgressBarDrawable()).show();
             };
 
             protected void onFinished() {
@@ -690,7 +691,7 @@ public class BizFragment extends ABaseFragment {
             protected void onPrepare() {
                 super.onPrepare();
 
-                ViewUtils.createProgressDialog(getActivity(), getString(R.string.biz_remove_fav)).show();
+                ViewUtils.createProgressDialog(getActivity(), getString(R.string.biz_remove_fav), AisenUtils.getProgressBarDrawable()).show();
             };
 
             protected void onFinished() {

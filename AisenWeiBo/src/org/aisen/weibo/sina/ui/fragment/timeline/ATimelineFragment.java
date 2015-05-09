@@ -76,10 +76,10 @@ public abstract class ATimelineFragment extends AWeiboRefreshListFragment<Status
         if (getGroup() != null)
             config.saveLastPositionKey = AisenUtils.getUserKey(getGroup().getType(), loggedIn);
 		config.emptyLabel = getString(R.string.empty_status);
-        config.animEnable = false;
         config.ignoreScroll = false;
         config.expiredAutoRefresh = true;
-	}
+        config.animEnable = false;
+    }
 
     @Override
     protected String loadingLabel() {

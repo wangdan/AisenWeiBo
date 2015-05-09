@@ -49,7 +49,7 @@ public class AisenListPreference extends ListPreference {
     @Override
     protected void showDialog(Bundle state) {
         try {
-            if (Build.VERSION.SDK_INT < 21) {
+            if (Build.VERSION.SDK_INT < 100) {
                 CharSequence[] mEntries = getEntries();
                 String[] mEntriesStrArr = new String[mEntries.length];
                 for (int i = 0; i < mEntries.length; i++)

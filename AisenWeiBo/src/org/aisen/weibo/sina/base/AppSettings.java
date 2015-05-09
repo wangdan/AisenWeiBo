@@ -323,13 +323,13 @@ public class AppSettings {
             return 30 * 1000;
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
-        int value = Integer.parseInt(prefs.getString("pCacheValidity", "2"));
+        int value = Integer.parseInt(prefs.getString("pCacheValidity", "1"));
 
         switch (value) {
             case 0:
                 return 30 * 1000;
             case 1:
-                return 6 * 60 * 60 * 1000;
+                return 4 * 60 * 60 * 1000;
             case 2:
                 return 12 * 60 * 60 * 1000;
             case 3:

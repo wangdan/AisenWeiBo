@@ -29,7 +29,7 @@ public class MyApplication extends GlobalContext {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		
+
 		// 初始化图片加载
 		BitmapLoader.newInstance(this, getImagePath());
         // 配置异常处理类

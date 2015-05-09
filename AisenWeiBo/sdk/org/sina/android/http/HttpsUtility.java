@@ -337,7 +337,7 @@ public class HttpsUtility implements IHttpUtility {
 	private <T> T executeClient(HttpUriRequest request, Class<T> responseCls) throws TaskException {
 		if (AppSettings.isNetworkDelay()) {
 			try {
-				Thread.sleep(2 * 1000);
+				Thread.sleep(10 * 1000);
 			} catch (Exception e) {
 			}
 		}
