@@ -21,7 +21,7 @@ public class TextViewWithCircularIndicator extends TextView {
 		super(context, attributeSet);
         
 		Resources res = context.getResources();
-		mCircleColor = res.getColor(R.color.comm_blue);
+		mCircleColor = com.m.common.utils.Utils.resolveColor(getContext(), R.attr.theme_color, res.getColor(R.color.comm_blue));
 		mRadius = res.getDimensionPixelOffset(R.dimen.month_select_circle_radius);
 		mItemIsSelectedText = context.getResources().getString(R.string.item_is_selected);
         
