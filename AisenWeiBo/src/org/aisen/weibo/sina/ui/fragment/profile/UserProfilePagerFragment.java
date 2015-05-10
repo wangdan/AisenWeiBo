@@ -85,7 +85,7 @@ public class UserProfilePagerFragment extends AAutoReleaseStripTabsFragment<AStr
 
         Bundle args = new Bundle();
         args.putSerializable("user", searchResult);
-        args.putInt(SET_INDEX, 1);
+        args.putInt("profile_index", 1);
         fragment.setArguments(args);
 
         return fragment;
@@ -172,6 +172,20 @@ public class UserProfilePagerFragment extends AAutoReleaseStripTabsFragment<AStr
         mHandler.postDelayed(initCurrentFragment, 300);
 
         setHasOptionsMenu(true);
+
+        // 这里延迟一点设置第二个页面选中，直接设置会导致顶层的图片没有显示
+        if (getArguments() != null && getArguments().getInt("profile_index", 0) == 1) {
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    if (getActivity() != null) {
+                        getViewPager().setCurrentItem(1);
+                    }
+                }
+
+            }, 150);
+        }
     }
 
     @Override
@@ -425,6 +439,8 @@ public class UserProfilePagerFragment extends AAutoReleaseStripTabsFragment<AStr
                     token.setSecret(accessToken.getSecret());
                 }
             }
+            if (AppContext.getAccount().getAdvancedToken() != null)
+                token = AppContext.getAccount().getAdvancedToken();
             if (token == null)
                 token = AppContext.getToken();
 

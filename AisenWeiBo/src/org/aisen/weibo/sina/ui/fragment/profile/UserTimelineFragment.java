@@ -274,21 +274,43 @@ public class UserTimelineFragment extends ATimelineFragment
 
             getActivity().invalidateOptionsMenu();
 
+            if (result.isCache())
+                return;
+
+            boolean remind = AppContext.getAdvancedToken() == null || AppContext.getAdvancedToken().isExpired();
             // 提示用户去高级授权
-            if (!ActivityHelper.getBooleanShareData("IgnoreWeicoRemind", false)) {
-                new AlertDialogWrapper.Builder(getActivity())
-                        .setTitle(R.string.remind)
-                        .setMessage(R.string.profile_help)
-                        .setNegativeButton(R.string.cancel, null)
-                        .setPositiveButton(R.string.title_help, new DialogInterface.OnClickListener() {
+            if (AppContext.getAccount().getAdvancedToken() != null) {
+                remind = false;
+            }
+            else {
+                if (mUser.getIdstr().equalsIgnoreCase(AppContext.getUser().getIdstr())) {
+                    remind = true;
+                }
+            }
+            if (remind) {
+                if (!ActivityHelper.getBooleanShareData("IgnoreWeicoRemind", false)) {
+                    new AlertDialogWrapper.Builder(getActivity())
+                            .setTitle(R.string.remind)
+                            .setMessage(R.string.profile_help)
+                            .setNegativeButton(R.string.cancel, null)
+                            .setNeutralButton(R.string.donnot_remind, new DialogInterface.OnClickListener() {
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                AboutWebFragment.launchAbout(getActivity());
-                            }
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    ActivityHelper.putBooleanShareData("IgnoreWeicoRemind", true);
+                                }
 
-                        })
-                        .show();
+                            })
+                            .setPositiveButton(R.string.title_help, new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    AboutWebFragment.launchHelp(getActivity());
+                                }
+
+                            })
+                            .show();
+                }
             }
         }
 

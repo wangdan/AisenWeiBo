@@ -16,6 +16,7 @@ import org.aisen.weibo.sina.support.bean.PublishBean;
 import org.aisen.weibo.sina.support.db.AccountDB;
 import org.aisen.weibo.sina.support.db.EmotionsDB;
 import org.aisen.weibo.sina.support.db.PublishDB;
+import org.aisen.weibo.sina.support.utils.BaiduAnalyzeUtils;
 import org.aisen.weibo.sina.sys.receiver.TimingBroadcastReceiver;
 import org.aisen.weibo.sina.sys.receiver.TimingIntent;
 import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
@@ -46,6 +47,9 @@ public class MyApplication extends GlobalContext {
         }
         // 打开Debug日志
         Logger.DEBUG = true;
+
+        if (AppSettings.isCrashLogUpload())
+            initBaiduAnalyze();
 	}
 
     // 刷新定时发布任务
@@ -113,6 +117,18 @@ public class MyApplication extends GlobalContext {
         Logger.d(TimingBroadcastReceiver.TAG, "从系统时钟移除一个定时任务, request = " + requectCode);
         AlarmManager am = (AlarmManager) GlobalContext.getInstance().getSystemService(ALARM_SERVICE);
         am.cancel(sender);
+    }
+
+    private void initBaiduAnalyze() {
+        if ("test".equals(SettingUtility.getStringSetting("app_channel")))
+            return;
+
+        com.baidu.mobstat.StatService.setAppChannel(this, SettingUtility.getStringSetting("app_channel"), true);
+        com.baidu.mobstat.StatService.setSessionTimeOut(2 * 60);
+//		com.baidu.mobstat.StatService.setSessionTimeOut(10);
+        // 打开崩溃错误收集
+        com.baidu.mobstat.StatService.setOn(this, com.baidu.mobstat.StatService.EXCEPTION_LOG);
+        com.baidu.mobstat.StatService.setDebugOn(true);
     }
 
 }

@@ -15,7 +15,7 @@
 
             <com.m.ui.widget.CircleImageView
                 android:id="@+id/imgPhoto" android:layout_width="42dip" android:layout_height="42dip" android:layout_marginRight="8dip"
-                android:src="@drawable/ic_launcher"/>
+                android:src="@drawable/a_icon_b"/>
 
             <TextView
                 android:id="@+id/txtName" style="@style/TextTitle"

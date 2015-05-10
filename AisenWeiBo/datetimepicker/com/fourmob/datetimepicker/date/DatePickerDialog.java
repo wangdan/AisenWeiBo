@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.os.Vibrator;
@@ -129,8 +130,13 @@ public class DatePickerDialog extends DialogFragment implements View.OnClickList
 			}
 			mDayPickerView.onDateChanged();
 			if (mCurrentView != currentView || forceRefresh) {
-				mMonthAndDayView.setSelected(true);
-				mYearView.setSelected(false);
+//				mMonthAndDayView.setSelected(true);
+                TextView date_picker_month = (TextView) mMonthAndDayView.findViewById(R.id.date_picker_month);
+                TextView date_picker_day = (TextView) mMonthAndDayView.findViewById(R.id.date_picker_day);
+                date_picker_month.setTextColor(com.m.common.utils.Utils.resolveColor(getActivity(), R.attr.theme_color, Color.BLUE));
+                date_picker_day.setTextColor(com.m.common.utils.Utils.resolveColor(getActivity(), R.attr.theme_color, Color.BLUE));
+//				mYearView.setSelected(false);
+                mYearView.setTextColor(getResources().getColor(R.color.date_picker_text_normal));
 				mAnimator.setDisplayedChild(MONTH_AND_DAY_VIEW);
 				mCurrentView = currentView;
 			}
@@ -147,8 +153,13 @@ public class DatePickerDialog extends DialogFragment implements View.OnClickList
 			}
 			mYearPickerView.onDateChanged();
 			if (mCurrentView != currentView  || forceRefresh) {
-				mMonthAndDayView.setSelected(false);
-				mYearView.setSelected(true);
+//				mMonthAndDayView.setSelected(false);
+//				mYearView.setSelected(true);
+                TextView date_picker_month = (TextView) mMonthAndDayView.findViewById(R.id.date_picker_month);
+                TextView date_picker_day = (TextView) mMonthAndDayView.findViewById(R.id.date_picker_day);
+                date_picker_month.setTextColor(getResources().getColor(R.color.date_picker_text_normal));
+                date_picker_day.setTextColor(getResources().getColor(R.color.date_picker_text_normal));
+                mYearView.setTextColor(com.m.common.utils.Utils.resolveColor(getActivity(), R.attr.theme_color, Color.BLUE));
 				mAnimator.setDisplayedChild(YEAR_VIEW);
 				mCurrentView = currentView;
 			}

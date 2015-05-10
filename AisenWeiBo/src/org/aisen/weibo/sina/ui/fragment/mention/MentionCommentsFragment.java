@@ -182,7 +182,8 @@ public class MentionCommentsFragment extends AWeiboRefreshListFragment<StatusCom
             if (result == null)
                 return;
 
-            if (AppContext.getUnreadCount() != null && AppContext.getUnreadCount().getMention_cmt() > 0) {
+            if (result.isCache() &&
+                    AppContext.getUnreadCount() != null && AppContext.getUnreadCount().getMention_cmt() > 0) {
                 requestDataDelay(AppSettings.REQUEST_DATA_DELAY);
 
                 // fuck sina

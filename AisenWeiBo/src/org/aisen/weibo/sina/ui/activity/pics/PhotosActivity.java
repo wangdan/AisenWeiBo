@@ -89,7 +89,7 @@ public class PhotosActivity extends BaseActivity implements OnPageChangeListener
             layToolbar.setPadding(0, layToolbar.getPaddingTop() + SystemBarUtils.getStatusBarHeight(this), 0, 0);
 
             if (SystemBarUtils.hasNavigationBar(this)) {
-                layStatus.setPadding(0, 0, SystemBarUtils.getNavigationBarHeight(this), 0);
+                layStatus.setPadding(0, 0, 0, SystemBarUtils.getNavigationBarHeight(this));
             }
         }
 

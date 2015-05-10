@@ -3,6 +3,7 @@ package org.aisen.weibo.sina.ui.fragment.comment;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -277,15 +278,35 @@ public class TimelineCommentFragment extends ASwipeRefreshListFragment<StatusCom
         CommentsHeaderView timelineItem = (CommentsHeaderView) headerView.getTag();
         if (timelineItem != null)
             timelineItem.bindingData(headerView, mStatusContent);
+
+        mHandler.removeCallbacks(releaseRunnable);
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        CommentsHeaderView timelineItem = (CommentsHeaderView) headerView.getTag();
-        if (timelineItem != null)
-            timelineItem.layPicturs.release();
+        mHandler.postDelayed(releaseRunnable, 3 * 1000);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        mHandler.removeCallbacks(releaseRunnable);
+    }
+
+    Handler mHandler = new Handler();
+
+    Runnable releaseRunnable = new Runnable() {
+
+        @Override
+        public void run() {
+            CommentsHeaderView timelineItem = (CommentsHeaderView) headerView.getTag();
+            if (timelineItem != null)
+                timelineItem.layPicturs.release();
+        }
+
+    };
 
 }

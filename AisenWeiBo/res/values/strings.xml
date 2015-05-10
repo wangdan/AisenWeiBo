@@ -28,7 +28,7 @@
     <string name="search_status">搜微博</string>
     <string name="exitapp">退出</string>
     <string name="group_add">新增分组</string>
-    <string name="publish">写微薄</string>
+    <string name="publish">写微博</string>
     <string name="toggle_offline">开始离线</string>
 
     <string name="timeline_cmt">评论</string>

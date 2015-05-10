@@ -464,4 +464,14 @@ public class AppSettings {
         return 15;
     }
 
+    /**
+     * 崩溃日志上传
+     *
+     * @return
+     */
+    public static boolean isCrashLogUpload() {
+//		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
+//		return prefs.getBoolean("pCrashLog", true);
+        return true;
+    }
 }

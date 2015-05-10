@@ -8,7 +8,7 @@
     <ImageView
         android:id="@+id/img"
         android:layout_width="match_parent" android:layout_height="match_parent"
-        android:scaleType="centerCrop" android:src="@drawable/ic_launcher"/>
+        android:scaleType="centerCrop" android:src="@drawable/a_icon_b"/>
 
     <View
         android:id="@+id/viewCover" android:layout_width="match_parent"

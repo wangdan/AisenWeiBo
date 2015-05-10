@@ -13,7 +13,7 @@
                 android:layout_width="@dimen/lefticon_size" android:layout_height="@dimen/lefticon_size">
 
                 <com.m.ui.widget.CircleImageView
-                    android:id="@+id/imgPhoto" android:layout_width="match_parent" android:layout_height="match_parent" android:scaleType="centerCrop" android:src="@drawable/ic_launcher"
+                    android:id="@+id/imgPhoto" android:layout_width="match_parent" android:layout_height="match_parent" android:scaleType="centerCrop" android:src="@drawable/a_icon_b"
                     app:border_color="@color/comm_white" app:border_width="1dp"/>
 
                 <com.m.ui.widget.CircleImageView

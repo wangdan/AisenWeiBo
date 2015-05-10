@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/day_picker_selected_date_layout" android:background="@color/comm_white" android:layout_width="@dimen/date_picker_component_width" android:layout_height="0.0dip" android:layout_weight="1.0"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout android:textColor="@color/date_picker_selector" android:layout_gravity="center" android:orientation="vertical" android:id="@id/date_picker_month_and_day" android:clickable="true" android:layout_width="fill_parent" android:layout_height="wrap_content">
-        <TextView android:textSize="@dimen/selected_date_month_size" android:textColor="@color/date_picker_selector" android:gravity="bottom|center" android:id="@id/date_picker_month" android:duplicateParentState="true" android:layout_width="fill_parent" android:layout_height="wrap_content" android:includeFontPadding="false" />
-        <TextView android:textSize="@dimen/selected_date_day_size" android:textColor="@color/date_picker_selector" android:gravity="center" android:layout_gravity="center" android:id="@id/date_picker_day" android:duplicateParentState="true" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="-10dip" android:layout_marginBottom="-10dip" android:includeFontPadding="false" />
+<LinearLayout
+    android:id="@id/day_picker_selected_date_layout" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="@dimen/date_picker_component_width" android:layout_height="0.0dip" android:layout_weight="1.0" android:background="@color/comm_white" android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@id/date_picker_month_and_day" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_gravity="center" android:clickable="true" android:orientation="vertical" android:textColor="@color/date_picker_selector">
+
+        <TextView
+            android:id="@id/date_picker_month" android:layout_width="fill_parent" android:layout_height="wrap_content" android:duplicateParentState="true" android:gravity="bottom|center" android:includeFontPadding="false" android:textColor="@color/date_picker_selector" android:textSize="@dimen/selected_date_month_size"/>
+
+        <TextView
+            android:id="@id/date_picker_day" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_gravity="center" android:layout_marginBottom="-10dip" android:layout_marginTop="-10dip" android:duplicateParentState="true" android:gravity="center" android:includeFontPadding="false" android:textColor="@color/date_picker_selector" android:textSize="@dimen/selected_date_day_size"/>
     </LinearLayout>
-    <TextView android:textSize="@dimen/selected_date_year_size" android:textColor="@color/date_picker_selector" android:gravity="top|center" android:layout_gravity="center" android:id="@id/date_picker_year" android:layout_width="fill_parent" android:layout_height="wrap_content" android:includeFontPadding="false" />
+
+    <TextView
+        android:id="@id/date_picker_year" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_gravity="center" android:gravity="top|center" android:includeFontPadding="false" android:textColor="@color/date_picker_selector" android:textSize="@dimen/selected_date_year_size"/>
 </LinearLayout>

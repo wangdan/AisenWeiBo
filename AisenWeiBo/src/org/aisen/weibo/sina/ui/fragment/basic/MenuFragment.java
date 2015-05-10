@@ -45,6 +45,7 @@ import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
 import org.aisen.weibo.sina.ui.fragment.profile.UserProfilePagerFragment;
 import org.sina.android.SinaSDK;
 import org.sina.android.bean.Groups;
+import org.sina.android.bean.Token;
 import org.sina.android.bean.WeiBoUser;
 
 import java.util.ArrayList;
@@ -223,6 +224,8 @@ public class MenuFragment extends AListFragment<MenuBean, ArrayList<MenuBean>> {
             if (intent != null && !TextUtils.isEmpty(intent.getAction())) {
                 if (UnreadService.ACTION_UNREAD_CHANGED.equals(intent.getAction())) {
                     setUnreadFollowers();
+
+                    getAdapter().notifyDataSetChanged();
                 }
                 else if (PublishManager.ACTION_PUBLISH_CHANNGED.equals(intent.getAction())) {
                     new RefreshDraftTask().execute();
@@ -480,31 +483,40 @@ public class MenuFragment extends AListFragment<MenuBean, ArrayList<MenuBean>> {
     class RefreshTask extends WorkTask<Void, Void, Boolean> {
 
         long time = System.currentTimeMillis();
+        WeiBoUser user;
+        Token token;
 
         RefreshTask() {
             mRefreshTask = this;
+            this.user = AppContext.getUser();
+            this.token = AppContext.getToken();
         }
 
         @Override
         public Boolean workInBackground(Void... params) throws TaskException {
             Logger.d("刷新用户信息");
 
-            WeiBoUser mUser = SinaSDK.getInstance(AppContext.getToken()).userShow(AppContext.getUser().getIdstr(), null);
-            Groups groups = SinaSDK.getInstance(AppContext.getToken()).friendshipGroups();
+            WeiBoUser mUser = SinaSDK.getInstance(token).userShow(user.getIdstr(), null);
+            Groups groups = SinaSDK.getInstance(token).friendshipGroups();
 
-            AppContext.refresh(mUser, groups);
+            if (AppContext.isLogedin() && user.getIdstr().equalsIgnoreCase(AppContext.getUser().getIdstr())) {
+                AppContext.refresh(mUser, groups);
 
+                return true;
+            }
 
-            return true;
+            return false;
         }
 
         @Override
         protected void onSuccess(Boolean aBoolean) {
             super.onSuccess(aBoolean);
 
-            setAccountItem();
+            if (getActivity() != null && aBoolean) {
+                setAccountItem();
 
-            getAdapter().notifyDataSetChanged();
+                getAdapter().notifyDataSetChanged();
+            }
         }
 
     }

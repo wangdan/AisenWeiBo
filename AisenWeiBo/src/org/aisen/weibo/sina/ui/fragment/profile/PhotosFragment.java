@@ -187,7 +187,7 @@ public class PhotosFragment extends ASwipyRefreshGridLayout<PhotoBean, PhotosBea
                 params.addParameter("screen_name", mUser.getScreen_name());
             }
 
-            params.addParameter("count", "100");
+            params.addParameter("count", "50");
             // 相册
             params.addParameter("feature", "2");
 
