@@ -3,6 +3,7 @@ package org.aisen.weibo.sina.ui.widget;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.SystemClock;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;

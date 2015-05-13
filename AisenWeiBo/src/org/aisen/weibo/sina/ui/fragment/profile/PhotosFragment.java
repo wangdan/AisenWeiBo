@@ -88,6 +88,7 @@ public class PhotosFragment extends ASwipyRefreshGridLayout<PhotoBean, PhotosBea
         super.configRefresh(config);
 
         config.emptyLabel = getString(R.string.profile_photos_empty);
+        config.minResultSize = 1;
     }
 
     @Override
