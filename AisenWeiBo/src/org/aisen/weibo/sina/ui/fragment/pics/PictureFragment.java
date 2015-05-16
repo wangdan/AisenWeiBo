@@ -605,7 +605,6 @@ import uk.co.senab.photoview.PhotoView;
         @Override
         public Void workInBackground(Void... params) throws TaskException {
             try {
-
                 BitmapLoader.getInstance().doDownload(getOrigImage(), config);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -636,7 +635,8 @@ import uk.co.senab.photoview.PhotoView;
             super.receiveProgress(progressed);
 
             progress[0] = progressed;
-            getActivity().invalidateOptionsMenu();
+            if (getActivity() != null)
+                getActivity().invalidateOptionsMenu();
         }
 
         @Override
@@ -644,23 +644,27 @@ import uk.co.senab.photoview.PhotoView;
             super.prepareDownload(url);
 
             progress = new long[2];
-            getActivity().invalidateOptionsMenu();
+            if (getActivity() != null)
+                getActivity().invalidateOptionsMenu();
         }
 
         @Override
         public void finishedDownload(byte[] bytes) {
             super.finishedDownload(bytes);
 
-            getActivity().invalidateOptionsMenu();
+            if (getActivity() != null) {
+                getActivity().invalidateOptionsMenu();
 
-            onDownloadPicture(bytes, file);
+                onDownloadPicture(bytes, file);
+            }
         }
 
         @Override
         public void downloadFailed(Exception e) {
             super.downloadFailed(e);
 
-            showMessage(R.string.msg_save_orig_faild);
+            if (getActivity() != null)
+                showMessage(R.string.msg_save_orig_faild);
         }
 
         @Override
@@ -668,7 +672,8 @@ import uk.co.senab.photoview.PhotoView;
             super.receiveLength(length);
 
             progress[1] = length;
-            getActivity().invalidateOptionsMenu();
+            if (getActivity() != null)
+                getActivity().invalidateOptionsMenu();
         }
 
     }
@@ -698,4 +703,11 @@ import uk.co.senab.photoview.PhotoView;
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (downloadOrigPicture != null)
+            downloadOrigPicture.cancel(true);
+    }
 }
