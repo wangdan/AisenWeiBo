@@ -33,13 +33,13 @@ Aisen微博是新浪微博的第三方客户端，UI遵循Material Design。
 
 ## 应用截图
 
+![](https://github.com/wangdan/AisenWeibo/raw/master/resource/git_2.png) 
+![](https://github.com/wangdan/AisenWeibo/raw/master/resource/git_6.png) 
+![](https://github.com/wangdan/AisenWeibo/raw/master/resource/git_4.png) 
+![](https://github.com/wangdan/AisenWeibo/raw/master/resource/git_5.png) 
+![](https://github.com/wangdan/AisenWeibo/raw/master/resource/git_3.png) 
+![](https://github.com/wangdan/AisenWeibo/raw/master/resource/git_7.png) 
 ![](https://github.com/wangdan/AisenWeibo/raw/master/resource/git_1.png) 
-![](https://github.com/wangdan/AisenForOSC/raw/master/screenshot/2_git.jpg) 
-![](https://github.com/wangdan/AisenForOSC/raw/master/screenshot/6_git.png)
-![](https://github.com/wangdan/AisenForOSC/raw/master/screenshot/8_git.png)
-![](https://github.com/wangdan/AisenForOSC/raw/master/screenshot/3_git.jpg) 
-![](https://github.com/wangdan/AisenForOSC/raw/master/screenshot/4_git.jpg) 
-![](https://github.com/wangdan/AisenForOSC/raw/master/screenshot/5_git.jpg)
 
 ## 须知
  * 私信、热门微博、热门话题、微博头条都采用内置官方触屏版实现
