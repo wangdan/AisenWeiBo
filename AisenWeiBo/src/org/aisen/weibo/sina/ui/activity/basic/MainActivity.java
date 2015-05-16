@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,15 +20,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
+import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.m.common.context.GlobalContext;
-import com.m.common.setting.SettingUtility;
 import com.m.common.utils.ActivityHelper;
-import com.m.common.utils.HprofUtils;
 import com.m.common.utils.Logger;
-import com.m.common.utils.SdcardUtils;
 import com.m.common.utils.SystemBarUtils;
+import com.m.network.task.TaskException;
+import com.m.network.task.WorkTask;
 import com.m.support.inject.ViewInject;
 import com.m.ui.activity.basic.BaseActivity;
 import com.m.ui.fragment.ABaseFragment;
@@ -39,6 +39,7 @@ import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.support.action.DMAction;
+import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.bean.MenuBean;
 import org.aisen.weibo.sina.support.db.SinaDB;
 import org.aisen.weibo.sina.support.utils.AdTokenUtils;
@@ -47,6 +48,7 @@ import org.aisen.weibo.sina.support.utils.OfflineUtils;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
 import org.aisen.weibo.sina.ui.activity.profile.WeiboClientActivity;
 import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
+import org.aisen.weibo.sina.ui.fragment.account.LoginFragment;
 import org.aisen.weibo.sina.ui.fragment.account.WeicoLoginFragment;
 import org.aisen.weibo.sina.ui.fragment.basic.BizFragment;
 import org.aisen.weibo.sina.ui.fragment.basic.MenuFragment;
@@ -61,9 +63,9 @@ import org.aisen.weibo.sina.ui.fragment.settings.AboutWebFragment;
 import org.aisen.weibo.sina.ui.fragment.settings.SettingsPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.GroupSortFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineTabsFragment;
+import org.sina.android.SinaSDK;
 import org.sina.android.bean.AccessToken;
-
-import java.io.File;
+import org.sina.android.bean.TokenInfo;
 
 /**
  * Created by wangdan on 15/4/12.
@@ -108,6 +110,8 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
         setContentView(R.layout.as_ui_main);
 
         AdTokenUtils.loadIfExpired();
+
+        new GetTokenInfoTask(AppContext.getAccount()).execute();
 
         BizFragment.getBizFragment(this);
 
@@ -648,6 +652,64 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
             SinaDB.getSqlite().deleteAll(null, AccessToken.class);
             SinaDB.getSqlite().insert(null, token);
             AppContext.setAdvancedToken(token);
+        }
+        else if (requestCode == 2000 && RESULT_OK == resultCode) {
+            login();
+        }
+    }
+
+    class GetTokenInfoTask extends WorkTask<Void, Void, TokenInfo> {
+
+        AccountBean account;
+
+        public GetTokenInfoTask(AccountBean account) {
+            this.account = account;
+        }
+
+        @Override
+        public TokenInfo workInBackground(Void... params) throws TaskException {
+            TokenInfo tokenInfo = null;
+            try {
+                tokenInfo = SinaSDK.getInstance(account.getToken()).getTokenInfo(account.get_token());
+            } catch (TaskException e) {
+                e.printStackTrace();
+                if ("21327".equals(e.getCode()) ||
+                        "21317".equals(e.getCode())) {
+                    tokenInfo = new TokenInfo();
+                    tokenInfo.setCreate_at("0");
+                    tokenInfo.setExpire_in("0");
+                }
+            }
+
+            if (tokenInfo != null) {
+                return tokenInfo;
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onSuccess(TokenInfo tokenInfo) {
+            super.onSuccess(tokenInfo);
+
+            if (tokenInfo != null && account.getUser().getIdstr().equalsIgnoreCase(AppContext.getUser().getIdstr())) {
+                long validSecond = Long.parseLong(tokenInfo.getCreate_at()) + Long.parseLong(tokenInfo.getExpire_in());
+                if (System.currentTimeMillis() > validSecond * 1000) {
+                    new AlertDialogWrapper.Builder(MainActivity.this)
+                            .setTitle(R.string.remind)
+                            .setMessage(R.string.account_expired)
+                            .setNegativeButton(R.string.no, null)
+                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    LoginFragment.launch(MainActivity.this, account.getAccount(), account.getPassword(), 2000);
+                                }
+
+                            })
+                            .show();
+                }
+            }
         }
     }
 

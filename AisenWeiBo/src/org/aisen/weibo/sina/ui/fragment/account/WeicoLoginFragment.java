@@ -74,6 +74,8 @@ public class WeicoLoginFragment extends ABaseFragment {
 
     private AccountTask accountTask;
 
+    private boolean accountFilled = false;
+
     String mAccount;
     String mPassword;
 
@@ -104,10 +106,24 @@ public class WeicoLoginFragment extends ABaseFragment {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, final String url) {
-                if (url.startsWith(SettingUtility.getStringSetting("callback_url")))
-                    webView.loadUrl("javascript:getAccount()");
+//                if (url.startsWith(SettingUtility.getStringSetting("weico_callback")))
+//                    webView.loadUrl("javascript:getAccount()");
                 view.loadUrl(url);
                 Logger.d(TAG, "load url = " + url);
+
+                // 是否授权成功
+                if (accountTask == null && !TextUtils.isEmpty(url) && url.startsWith(SettingUtility.getStringSetting("weico_callback"))) {
+                    Params params = ParamsUtil.deCodeUrl(url);
+                    String code = params.getParameter("code");
+
+                    Logger.d(TAG, "授权成功, code = " + code);
+
+                    if (getActivity() == null)
+                        return true;
+
+                    accountTask = new AccountTask();
+                    accountTask.execute(code);
+                }
 
                 return true;
             }
@@ -127,8 +143,10 @@ public class WeicoLoginFragment extends ABaseFragment {
 
                 } else if (newProgress == 100) {
                     Logger.d(TAG, String.format("progress = 100 , url = %s", view.getUrl()));
-                    if (!TextUtils.isEmpty(view.getUrl()) && view.getUrl().equalsIgnoreCase("about:blank")) {
+                    if (!accountFilled && !TextUtils.isEmpty(view.getUrl()) && view.getUrl().equalsIgnoreCase("about:blank")) {
                         webView.loadUrl("javascript:fillAccount()");
+                        Logger.d(TAG, "fillAccount()");
+                        accountFilled = true;
                     }
 
                     // 是否授权成功
@@ -222,7 +240,7 @@ public class WeicoLoginFragment extends ABaseFragment {
             String callback = SettingUtility.getStringSetting("weico_callback");
 
             final String url = String
-                    .format("https://api.weibo.com/oauth2/authorize?client_id=%s&scope=friendships_groups_read,friendships_groups_write,statuses_to_me_read&redirect_uri=%s&display=mobile&forcelogin=true",
+                    .format("https://api.weibo.com/oauth2/authorize?client_id=%s&redirect_uri=%s&display=mobile&forcelogin=true",
                             key, callback);
             int count = 3;
             while (count-- >= 0) {

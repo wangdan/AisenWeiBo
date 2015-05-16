@@ -1,13 +1,12 @@
 package org.aisen.weibo.sina.ui.activity.basic;
 
-import org.aisen.weibo.sina.R;
-import org.aisen.weibo.sina.base.AppContext;
-import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
-
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.m.ui.activity.basic.BaseActivity;
+
+import org.aisen.weibo.sina.R;
+import org.aisen.weibo.sina.base.AppContext;
+import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -47,7 +46,7 @@ public class SplashActivity extends BaseActivity implements AisenActivityHelper.
     }
 
     private void toMain() {
-        startActivity(new Intent(this, MainActivity.class));
+        MainActivity.login();
         finish();
     }
 

@@ -27,6 +27,7 @@ import com.m.component.container.FragmentContainerActivity;
 import com.m.network.task.TaskException;
 import com.m.support.adapter.ABaseAdapter;
 import com.m.support.inject.ViewInject;
+import com.m.support.paging.IPaging;
 import com.m.ui.activity.basic.BaseActivity;
 import com.m.ui.fragment.ABaseFragment;
 import com.m.ui.fragment.ARefreshFragment;
@@ -35,12 +36,16 @@ import com.m.ui.fragment.ASwipeRefreshListFragment;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.support.db.FriendMentionDB;
+import org.aisen.weibo.sina.support.paging.FriendshipPagingProcessor;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
 import org.sina.android.SinaSDK;
+import org.sina.android.bean.AccessToken;
 import org.sina.android.bean.Friendship;
+import org.sina.android.bean.Token;
 import org.sina.android.bean.WeiBoUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -113,6 +118,11 @@ public class AddFriendMentionFragment extends ASwipeRefreshListFragment<WeiBoUse
     }
 
     @Override
+    protected IPaging<WeiBoUser, Friendship> configPaging() {
+        return new FriendshipPagingProcessor();
+    }
+
+    @Override
     protected void requestData(RefreshMode mode) {
         new FriendTask(mode == RefreshMode.refresh ? RefreshMode.reset : mode).execute();
     }
@@ -175,17 +185,44 @@ public class AddFriendMentionFragment extends ASwipeRefreshListFragment<WeiBoUse
         @Override
         protected Friendship workInBackground(RefreshMode mode, String previousPage, String nextPage,
                                               Void... params) throws TaskException {
-            List<WeiBoUser> recentUsers = FriendMentionDB.getRecentMention("5");
-            recentSize = recentUsers.size();
+            Token token = AppContext.getToken();
+            if (AppContext.getAdvancedToken() != null) {
+                AccessToken accessToken = AppContext.getAdvancedToken();
 
-            Friendship friendship = SinaSDK.getInstance(AppContext.getToken(), getTaskCacheMode(this))
-                    .friendshipsFriends(AppContext.getUser().getIdstr(), null, "0");
-
-            if (recentUsers.size() > 0 && friendship != null && friendship.getUsers() != null) {
-                recentUsers.addAll(friendship.getUsers());
-                friendship.setUsers(recentUsers);
-                friendship.setNoMore(true);
+                token = new Token();
+                token.setToken(accessToken.getToken());
+                token.setSecret(accessToken.getSecret());
             }
+
+            if (mode != ARefreshFragment.RefreshMode.update)
+                nextPage = "0";
+
+            Friendship friendship = SinaSDK.getInstance(token, getTaskCacheMode(this))
+                                                    .friendshipsFriends(AppContext.getUser().getIdstr(), null, nextPage, 50);
+
+            if ("0".equalsIgnoreCase(nextPage)) {
+                List<WeiBoUser> recentUsers = FriendMentionDB.getRecentMention("5");
+                recentSize = recentUsers.size();
+
+                ArrayList<WeiBoUser> fuck = new ArrayList<>();
+                fuck.addAll(recentUsers);
+                if (recentUsers.size() > 0 && friendship != null && friendship.getUsers() != null) {
+                    for (WeiBoUser lineUser : friendship.getUsers()) {
+                        boolean find = false;
+                        for (WeiBoUser user : recentUsers) {
+                            if (user.getIdstr().equalsIgnoreCase(lineUser.getIdstr())) {
+                                find = true;
+                                break;
+                            }
+                        }
+                        if (!find)
+                            fuck.add(lineUser);
+                    }
+                    friendship.setUsers(fuck);
+                }
+            }
+            if (friendship.getNext_cursor() <= 0)
+                friendship.setNoMore(true);
 
             return friendship;
         }

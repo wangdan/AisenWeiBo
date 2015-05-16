@@ -12,11 +12,15 @@
     <LinearLayout
         android:id="@+id/layItem"
         android:layout_width="match_parent" android:layout_height="48dip"
-        android:orientation="horizontal" android:paddingLeft="@dimen/comm_h_margin" android:paddingRight="@dimen/comm_h_margin"
-        >
+        android:orientation="horizontal" android:paddingRight="@dimen/comm_h_margin">
+
+        <View
+            android:id="@+id/viewLeftPadding"
+            android:layout_width="@dimen/comm_h_margin" android:layout_height="match_parent"/>
 
         <LinearLayout
-            android:id="@+id/layIcon" android:layout_width="56dip" android:layout_height="match_parent"
+            android:id="@+id/layIcon"
+            android:layout_width="56dip" android:layout_height="match_parent"
             android:gravity="center_vertical" android:orientation="horizontal" android:visibility="gone">
 
             <ImageView

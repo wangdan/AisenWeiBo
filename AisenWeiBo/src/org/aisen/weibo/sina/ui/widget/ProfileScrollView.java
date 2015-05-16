@@ -82,7 +82,7 @@ public class ProfileScrollView extends ScrollView {
             if (viewToolbar != null)
                 viewToolbar.setBackgroundColor(themeColor);
             imgCover = activity.findViewById(R.id.imgCover);
-            activity.findViewById(R.id.layDesc).setBackgroundColor(themeColor);
+            activity.findViewById(R.id.viewBgDes).setBackgroundColor(themeColor);
 
             action_size = activity.getResources().getDimensionPixelSize(R.dimen.abc_action_bar_default_height_material);
             int statusBar = 0;

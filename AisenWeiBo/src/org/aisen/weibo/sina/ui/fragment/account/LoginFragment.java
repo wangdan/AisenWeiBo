@@ -23,6 +23,7 @@ import com.m.common.setting.SettingUtility;
 import com.m.common.utils.FileUtils;
 import com.m.common.utils.Logger;
 import com.m.common.utils.ViewUtils;
+import com.m.component.container.FragmentArgs;
 import com.m.component.container.FragmentContainerActivity;
 import com.m.network.http.Params;
 import com.m.network.http.ParamsUtil;
@@ -54,6 +55,22 @@ import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
  */
 public class LoginFragment extends ABaseFragment {
 
+    public static void launch(ABaseFragment from, String account, String password, int requestCode) {
+        FragmentArgs args = new FragmentArgs();
+        args.add("account", account);
+        args.add("password", password);
+
+        FragmentContainerActivity.launchForResult(from, LoginFragment.class, args, requestCode);
+    }
+
+    public static void launch(BaseActivity from, String account, String password, int requestCode) {
+        FragmentArgs args = new FragmentArgs();
+        args.add("account", account);
+        args.add("password", password);
+
+        FragmentContainerActivity.launchForResult(from, LoginFragment.class, args, requestCode);
+    }
+
     public static void launch(ABaseFragment from, int requestCode) {
         FragmentContainerActivity.launchForResult(from, LoginFragment.class, null, requestCode);
     }
@@ -78,6 +95,8 @@ public class LoginFragment extends ABaseFragment {
 
     private AccountTask accountTask;
 
+    boolean accountFilled = false;
+
     @Override
     protected int inflateContentView() {
         return R.layout.as_ui_login;
@@ -95,6 +114,11 @@ public class LoginFragment extends ABaseFragment {
 
         progressBar.setIndeterminate(true);
 
+        if (getArguments() != null) {
+            editAccount.setText(getArguments().getString("account"));
+            editPassword.setText(getArguments().getString("password"));
+        }
+
         WebSettings setting = webView.getSettings();
         setting.setJavaScriptEnabled(true);
         setting.setDomStorageEnabled(true);
@@ -109,6 +133,20 @@ public class LoginFragment extends ABaseFragment {
                     webView.loadUrl("javascript:getAccount()");
                 view.loadUrl(url);
                 Logger.d(TAG, "load url = " + url);
+
+                // 是否授权成功
+                if (accountTask == null && url != null && url.startsWith(SettingUtility.getStringSetting("callback_url"))) {
+                    Params params = ParamsUtil.deCodeUrl(url);
+                    String code = params.getParameter("code");
+
+                    Logger.d(TAG, "授权成功, code = " + code);
+
+                    if (getActivity() == null)
+                        return true;
+
+                    accountTask = new AccountTask();
+                    accountTask.execute(code);
+                }
 
                 return true;
             }
@@ -128,8 +166,9 @@ public class LoginFragment extends ABaseFragment {
 
                 } else if (newProgress == 100) {
                     Logger.d(TAG, String.format("progress = 100 , url = %s", view.getUrl()));
-                    if (!TextUtils.isEmpty(view.getUrl()) && view.getUrl().equalsIgnoreCase("about:blank")) {
+                    if (!accountFilled && !TextUtils.isEmpty(view.getUrl()) && view.getUrl().equalsIgnoreCase("about:blank")) {
                         webView.loadUrl("javascript:fillAccount()");
+                        accountFilled = true;
                     }
 
                     // 是否授权成功

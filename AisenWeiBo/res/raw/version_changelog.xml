@@ -8,6 +8,11 @@
         chg:changeLogFileResourceId="@raw/custom_changelog"
         in your View component in layout file -->
 
+    <changelogversion versionName="5.0.3" changeDate="2015-05">
+        <changelogtext>修复授权等待几百年都没反应的BUG.</changelogtext>
+        <changelogtext>修复4.4一下频繁崩溃的BUG.</changelogtext>
+    </changelogversion>
+
     <changelogversion versionName="5.0.2" changeDate="2015-05">
         <changelogtext>多账号切换的bug.</changelogtext>
     </changelogversion>

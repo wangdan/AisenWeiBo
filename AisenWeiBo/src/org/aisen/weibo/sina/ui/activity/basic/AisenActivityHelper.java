@@ -1,5 +1,6 @@
 package org.aisen.weibo.sina.ui.activity.basic;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 
@@ -61,6 +62,8 @@ public class AisenActivityHelper extends BaseActivityHelper implements SwipeBack
 
         if (swipeback)
             setSwipebackEdgeMode();
+
+        setScreenOrientation();
     }
 
     @Override
@@ -122,6 +125,17 @@ public class AisenActivityHelper extends BaseActivityHelper implements SwipeBack
     @Override
     protected int configTheme() {
         return ThemeUtils.themeArr[AppSettings.getThemeColor()][0];
+    }
+
+    private void setScreenOrientation() {
+        // 开启屏幕旋转
+        if (AppSettings.isScreenRotate()) {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+        }
+        else {
+            if (getActivity().getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_SENSOR)
+                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
     }
 
     public interface EnableSwipeback {

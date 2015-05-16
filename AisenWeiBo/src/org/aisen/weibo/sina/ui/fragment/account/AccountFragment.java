@@ -119,7 +119,7 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        AccountBean account = getAdapterItems().get(position);
+        final AccountBean account = getAdapterItems().get(position);
         if (AccountBean.isExpired(account)) {
             new AlertDialogWrapper.Builder(getActivity())
                     .setTitle(R.string.remind)
@@ -129,7 +129,7 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
 
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            LoginFragment.launch(AccountFragment.this, 1000);
+                            LoginFragment.launch(AccountFragment.this, account.getAccount(), account.getPassword(), 1000);
                         }
 
                     })

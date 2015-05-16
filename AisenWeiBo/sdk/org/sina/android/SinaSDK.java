@@ -593,14 +593,17 @@ public class SinaSDK extends ABizLogic {
 	 *            (false) 返回结果的游标，下一页用返回值里的next_cursor，上一页用previous_cursor，默认为0
 	 * @return
 	 */
-	public Friendship friendshipsFriends(String uid, String screenName, String cursor) throws TaskException {
+	public Friendship friendshipsFriends(String uid, String screenName, String cursor, int count) throws TaskException {
 		Params params = new Params();
 		if (!TextUtils.isEmpty(uid))
 			params.addParameter("uid", uid);
 		if (!TextUtils.isEmpty(screenName))
 			params.addParameter("screen_name", screenName);
 		params.addParameter("cursor", cursor);
-		params.addParameter("count", getPageCount(getSetting("friendshipsFriends")));
+        if (count == 0)
+		    params.addParameter("count", getPageCount(getSetting("friendshipsFriends")));
+        else
+            params.addParameter("count", String.valueOf(count));
 		params.setEncodeAble(false);
 
 		return doGet(getSetting("friendshipsFriends"), configParams(params), Friendship.class);

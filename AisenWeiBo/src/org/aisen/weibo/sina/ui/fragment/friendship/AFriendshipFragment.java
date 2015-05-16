@@ -159,8 +159,12 @@ public abstract class AFriendshipFragment extends AWeiboRefreshListFragment<WeiB
 			Token token = AppContext.getToken();
 			// 是当前登录用户
 			if (mUser.getIdstr().equals(AppContext.getUser().getIdstr())) {
+                if (AppContext.getAccount().getAdvancedToken() != null)
+                    token = AppContext.getAccount().getAdvancedToken();
 			}
 			else if (mUser.getScreen_name().equals(AppContext.getUser().getScreen_name())) {
+                if (AppContext.getAccount().getAdvancedToken() != null)
+                    token = AppContext.getAccount().getAdvancedToken();
 			}
 			else {
 				if (AppContext.getAdvancedToken() != null) {

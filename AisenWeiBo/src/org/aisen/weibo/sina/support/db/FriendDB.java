@@ -44,7 +44,7 @@ public class FriendDB implements ICacheUtility {
 		String selection = String.format(" %s = ? and %s = ? ", FieldUtils.OWNER, FieldUtils.KEY);
 		String[] selectionArgs = new String[]{ AppContext.getUser().getIdstr(), "Friends" };
 		
-		return SinaDB.getSqlite().select(WeiBoUser.class, selection, selectionArgs, null, null, null, "200");
+		return SinaDB.getSqlite().select(WeiBoUser.class, selection, selectionArgs, null, null, null, null);
 	}
 	
 	public static void clear() {

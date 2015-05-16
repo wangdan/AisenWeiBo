@@ -49,7 +49,7 @@ public class FriendsFragment extends AFriendshipFragment {
 		if (getUser() != null) {
 			ABizLogic.CacheMode cacheMode = getUser().getIdstr().equals(AppContext.getUser().getIdstr()) ? getTaskCacheMode(task) : ABizLogic.CacheMode.disable;
 			
-			return SinaSDK.getInstance(token, cacheMode).friendshipsFriends(getUser().getIdstr(), null, nextPage);
+			return SinaSDK.getInstance(token, cacheMode).friendshipsFriends(getUser().getIdstr(), null, nextPage, 0);
 		}
 		
 		throw new TaskException(GlobalContext.getInstance().getResources().getString(R.string.comm_error_timeout));

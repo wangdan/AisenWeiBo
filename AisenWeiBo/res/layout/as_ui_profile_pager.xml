@@ -16,9 +16,7 @@
                 android:layout_height="wrap_content" android:orientation="vertical">
 
                 <RelativeLayout
-                    android:id="@+id/layTop" android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:clipChildren="false" android:clipToPadding="false">
-
+                    android:id="@+id/layTop" android:layout_width="match_parent" android:layout_height="wrap_content">
 
                     <ImageView
                         android:id="@+id/imgCover"
@@ -33,14 +31,19 @@
                         android:id="@+id/layDesc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/imgCover" android:clipChildren="false"
-                        android:clipToPadding="false"
+                        android:layout_marginTop="120dip"
+
                         android:paddingLeft="16dip" android:paddingRight="16dip">
+
+                        <!--为了适配4.4以下，fuck-->
+                        <View
+                            android:id="@+id/viewBgDes" android:layout_width="match_parent"
+                            android:layout_height="match_parent" android:layout_marginTop="80dip"/>
 
                         <com.m.ui.widget.CircleImageView
                             android:id="@+id/imgPhoto"
                             android:layout_width="100dip" android:layout_height="100dip"
-                            android:layout_marginBottom="16dip" android:layout_marginTop="-80dip"
+                            android:layout_marginBottom="16dip"
                             android:src="@drawable/user_placeholder"/>
 
                         <TextView

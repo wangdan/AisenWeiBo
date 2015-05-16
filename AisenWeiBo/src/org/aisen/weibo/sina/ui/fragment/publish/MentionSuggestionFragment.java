@@ -329,9 +329,9 @@ public class MentionSuggestionFragment extends AListFragment<MentionSuggestionBe
 		public WeiBoUser workInBackground(String... params) throws TaskException {
 			WeiBoUser user = SinaSDK.getInstance(AppContext.getToken()).userShow(null, params[0]);
 			FriendMentionDB.addFriend(user);
-			List<WeiBoUser> userList = new ArrayList<WeiBoUser>();
-			userList.add(user);
-			FriendDB.insertFriends(userList);
+//			List<WeiBoUser> userList = new ArrayList<WeiBoUser>();
+//			userList.add(user);
+//			FriendDB.insertFriends(userList);
 			return null;
 		}
 		

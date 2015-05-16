@@ -9,12 +9,13 @@
         android:id="@+id/layWeb"
         android:layout_width="match_parent" android:layout_height="match_parent" android:visibility="invisible">
 
+        <WebView
+            android:id="@+id/webview" android:layout_width="match_parent" android:layout_height="match_parent"
+            android:layout_marginTop="10dip"/>
+
         <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
             android:id="@+id/progress" style="@style/GNowProgressBar" android:layout_width="match_parent"
             android:layout_height="10dip" android:indeterminate="true"/>
-
-        <WebView
-            android:id="@+id/webview" android:layout_width="match_parent" android:layout_height="match_parent"/>
     </RelativeLayout>
 
     <RelativeLayout

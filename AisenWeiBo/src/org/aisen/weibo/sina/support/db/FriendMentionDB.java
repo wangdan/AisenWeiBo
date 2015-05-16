@@ -22,7 +22,7 @@ public class FriendMentionDB {
 	 * @param friend
 	 */
 	public static void addFriend(WeiBoUser friend) {
-		SinaDB.getSqlite().insert(new Extra(AppContext.getUser().getIdstr(), "Mention"), friend);
+		SinaDB.getSqlite().insertOrReplace(new Extra(AppContext.getUser().getIdstr(), "Mention"), friend);
 	}
 	
 	public static List<WeiBoUser> query() {

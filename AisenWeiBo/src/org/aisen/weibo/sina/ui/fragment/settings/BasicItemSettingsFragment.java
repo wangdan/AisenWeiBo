@@ -3,6 +3,7 @@ package org.aisen.weibo.sina.ui.fragment.settings;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.CheckBoxPreference;
@@ -196,8 +197,10 @@ import java.io.File;
 			protected void onSuccess(Integer result) {
 				if (result == 0)
 					pClearRecentMention.setSummary(null);
-				else 
-					pClearRecentMention.setSummary(String.format(getString(R.string.settings_basic_history_remind), result));
+				else  {
+                    Resources res = GlobalContext.getInstance().getResources();
+                    pClearRecentMention.setSummary(String.format(res.getString(R.string.settings_basic_history_remind), result));
+                }
 			};
 			
 		}.execute();

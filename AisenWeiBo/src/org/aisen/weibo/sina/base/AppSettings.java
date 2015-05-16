@@ -474,4 +474,18 @@ public class AppSettings {
 //		return prefs.getBoolean("pCrashLog", true);
         return true;
     }
+
+    /**
+     * 屏幕旋转
+     *
+     * @return
+     */
+    public static boolean isScreenRotate() {
+        if (isDebug())
+            return true;
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
+        return prefs.getBoolean("pScreenRotate", false);
+    }
+
 }

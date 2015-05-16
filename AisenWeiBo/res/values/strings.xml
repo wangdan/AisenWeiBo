@@ -75,8 +75,8 @@
     <string name="account_load_groups">正在加载分组信息</string>
     <string name="account_load_auth">正在完成授权，请稍等</string>
     <string name="account_illegal_app">安全方面考虑，开发人员重置了应用秘钥，当前应用被视为盗版，请重新从应用市场下载!</string>
-    <string name="account_remind">账号、密码仅存本地，用于授权页面、微博网页版辅助登录，不是黑魔法授权噢，亲！\n\n如有疑问，请联系我 : wangd.info@gmail.com</string>
-    <string name="account_weico_remind">如果你发现个人微博只有5条、粉丝不全、相册无配图，在这里点一下授权就好，遇到验证码的问题我再优化。\n\n如有疑问，请联系我 : wangd.info@gmail.com</string>
+    <string name="account_remind">Aisen是个人开源项目，记录账号信息仅用于方便您多次网页授权，且在卸载Aisen时自动清除\n\n友情提示，如果遇到验证码，请先刷新再输入验证码通过概率高一点，目前还没有优化这个问题！\n\n如有疑问，请联系我 : wangd.info@gmail.com</string>
+    <string name="account_weico_remind">个人微博只有5条、粉丝不全、相册无配图，在这里点一下授权就好。\n\n友情提示，如果遇到验证码，请先刷新再输入验证码通过概率高一点，目前还没有优化这个问题！\n\n如有疑问，请联系我 : wangd.info@gmail.com</string>
     <string name="account_pwd_hint">密码</string>
     <string name="account_username_hint">邮箱/手机号</string>
     <string name="account_fillaccount_loading">处理中</string>
