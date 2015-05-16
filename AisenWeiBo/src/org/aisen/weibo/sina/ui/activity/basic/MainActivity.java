@@ -44,6 +44,7 @@ import org.aisen.weibo.sina.support.bean.MenuBean;
 import org.aisen.weibo.sina.support.db.SinaDB;
 import org.aisen.weibo.sina.support.utils.AdTokenUtils;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.support.utils.BaiduAnalyzeUtils;
 import org.aisen.weibo.sina.support.utils.OfflineUtils;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
 import org.aisen.weibo.sina.ui.activity.profile.WeiboClientActivity;
@@ -358,6 +359,15 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
             finish();
 
         setFabType();
+
+        BaiduAnalyzeUtils.onPageStart("首页");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        BaiduAnalyzeUtils.onPageEnd("首页");
     }
 
     private void setFabType() {
