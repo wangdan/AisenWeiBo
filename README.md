@@ -11,7 +11,7 @@
 [酷安](http://coolapk.com/apk/org.aisen.weibo.sina)
 
 ## 前言
-新浪目前已经限制了第三方微博的很多API接口，加上平常时间不够，所以后续可能不会面向产品的去维护Aisen，不过也有了一些新的方向，例如引入最新[Android-support-library](https://blog.leancloud.cn/3306/)，在一个完整的APP项目中示例最新的玩意儿，如果你也是程序员，也想以Aisen作为示例项目切入自己的Library库或者UI控件实现某部分的功能，可以联系我。
+新浪目前已经限制了第三方微博的很多API接口，加上平常时间不够，所以后续可能不会面向产品的去维护Aisen，不过也有了一些新的方向，例如引入最新[Android-support-library](https://blog.leancloud.cn/3306/)，在一个完整的APP项目中示例最新的玩意儿，如果你也想以Aisen作为示例项目切入自己的Library库或者UI控件实现某部分的功能，可以联系我。
 
 ## 说明
 Aisen微博是新浪微博的第三方客户端，UI遵循Material Design。
