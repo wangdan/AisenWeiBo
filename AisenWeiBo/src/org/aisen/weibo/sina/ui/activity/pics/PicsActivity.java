@@ -18,6 +18,7 @@ import com.m.support.inject.ViewInject;
 import com.m.ui.activity.basic.BaseActivity;
 
 import org.aisen.weibo.sina.R;
+import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.ui.fragment.pics.PictureFragment;
 import org.sina.android.bean.PicUrls;
 import org.sina.android.bean.StatusContent;
@@ -43,6 +44,7 @@ public class PicsActivity extends BaseActivity implements OnPageChangeListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+        AisenUtils.setPicStatusBar(this);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.as_ui_pics);
 		

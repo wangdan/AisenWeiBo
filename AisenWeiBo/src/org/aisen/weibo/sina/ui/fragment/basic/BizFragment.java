@@ -40,6 +40,7 @@ import org.sina.android.bean.Favority;
 import org.sina.android.bean.SetCount;
 import org.sina.android.bean.StatusComment;
 import org.sina.android.bean.StatusContent;
+import org.sina.android.bean.Token;
 import org.sina.android.bean.UnreadCount;
 import org.sina.android.bean.WeiBoUser;
 
@@ -165,6 +166,11 @@ public class BizFragment extends ABaseFragment {
 
     // XXX /*取消对某用户的关注*/
     public void destoryFriendship(final WeiBoUser user, final OnDestoryFriendshipCallback callback) {
+        Token token = AppContext.getToken();
+        if (AppContext.getAccount().getAdvancedToken() != null)
+            token = AppContext.getAccount().getAdvancedToken();
+        final Token trueToken = token;
+
         new AlertDialogWrapper.Builder(getActivity()).setMessage(R.string.biz_destory_friend)
                 .setNegativeButton(R.string.no, null)
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
@@ -175,7 +181,7 @@ public class BizFragment extends ABaseFragment {
 
                             @Override
                             public WeiBoUser workInBackground(Void... params) throws TaskException {
-                                return SinaSDK.getInstance(AppContext.getToken()).friendshipsDestroy(user.getIdstr());
+                                return SinaSDK.getInstance(trueToken).friendshipsDestroy(user.getIdstr());
                             }
 
                             @Override
@@ -227,11 +233,16 @@ public class BizFragment extends ABaseFragment {
 
     // XXX /*添加关注*/
     public void createFriendship(final WeiBoUser user, final OnCreateFriendshipCallback callback) {
+        Token token = AppContext.getToken();
+        if (AppContext.getAccount().getAdvancedToken() != null)
+            token = AppContext.getAccount().getAdvancedToken();
+        final Token trueToken = token;
+
         new WorkTask<Void, Void, WeiBoUser>() {
 
             @Override
             public WeiBoUser workInBackground(Void... params) throws TaskException {
-                return SinaSDK.getInstance(AppContext.getToken()).friendshipsCreate(user.getIdstr());
+                return SinaSDK.getInstance(trueToken).friendshipsCreate(user.getIdstr());
             }
 
             @Override
@@ -416,6 +427,11 @@ public class BizFragment extends ABaseFragment {
 
     // XXX /*开始移除粉丝*/
     public void destoryFollower(final WeiBoUser user, final OnDestoryFollowerCallback callback) {
+        Token token = AppContext.getToken();
+        if (AppContext.getAccount().getAdvancedToken() != null)
+            token = AppContext.getAccount().getAdvancedToken();
+        final Token trueToken = token;
+
         new AlertDialogWrapper.Builder(getActivity())
                 .setTitle(R.string.title_destory_friend)
                 .setMessage(R.string.biz_destory_follower)
@@ -428,7 +444,7 @@ public class BizFragment extends ABaseFragment {
 
                             @Override
                             public WeiBoUser workInBackground(Void... params) throws TaskException {
-                                return SinaSDK.getInstance(AppContext.getToken()).friendshipsFollowersDestory(user.getIdstr());
+                                return SinaSDK.getInstance(trueToken).friendshipsFollowersDestory(user.getIdstr());
                             }
 
                             @Override

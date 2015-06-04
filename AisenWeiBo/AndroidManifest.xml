@@ -1,4 +1,4 @@
-<manifest package="org.aisen.weibo.sina" xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="503" android:versionName="5.0.3">
+<manifest package="org.aisen.weibo.sina" xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="505" android:versionName="5.0.5">
 
     <uses-sdk android:minSdkVersion="16" android:targetSdkVersion="21"/>
 

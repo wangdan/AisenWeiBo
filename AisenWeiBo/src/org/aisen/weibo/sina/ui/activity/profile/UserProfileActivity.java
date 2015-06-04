@@ -74,6 +74,7 @@ public class UserProfileActivity extends BaseActivity implements AisenActivityHe
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
+        AisenUtils.setStatusBar(this);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.as_ui_profile_activity);
 

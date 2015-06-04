@@ -3,6 +3,7 @@
     <style name="AppBaseTheme" parent="BaseTheme.Light">
         <item name="android:navigationBarColor">?attr/theme_color</item>
 
+        <item name="android:statusBarColor">?attr/theme_statusbar_color</item>
         <!--Translucent system bars-->
         <item name="android:windowTranslucentNavigation">false</item>
         <item name="android:windowTranslucentStatus">false</item>
@@ -14,6 +15,8 @@
         <item name="android:windowTranslucentNavigation">false</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="menu_header_height">180dip</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/comm_transparent</item>
     </style>
     <style name="AppTheme.Profile">
         <item name="android:windowTranslucentNavigation">false</item>

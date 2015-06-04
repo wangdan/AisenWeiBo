@@ -194,7 +194,7 @@ public class AisenTextView extends TextView {
 				spannableString.setSpan(l, k, m, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}
 			
-			publishProgress(spannableString);
+//			publishProgress(spannableString);
 			
 			// 用户名称
 //			Pattern pattern = Pattern.compile("@([a-zA-Z0-9_\\-\\u4e00-\\u9fa5]+)");

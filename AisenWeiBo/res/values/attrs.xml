@@ -2,6 +2,7 @@
 <resources>
     <!--主题颜色-->
     <attr name="theme_color" format="reference|color"/>
+    <attr name="theme_statusbar_color" format="reference|color"/>
     <!--主题背景色-->
     <attr name="theme_background" format="reference|color"/>
     <!--flat样式的TextView-->

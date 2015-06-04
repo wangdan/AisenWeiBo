@@ -86,7 +86,7 @@ public class MDColorsDialogFragment extends DialogFragment
 				convertView = View.inflate(getActivity(), R.layout.as_item_mdcolors, null);
 
 			if (!colorMap.containsKey(String.valueOf(position)))
-				colorMap.put(String.valueOf(position), new ColorDrawable(getResources().getColor(ThemeUtils.themeColorArr[position])));
+				colorMap.put(String.valueOf(position), new ColorDrawable(getResources().getColor(ThemeUtils.themeColorArr[position][0])));
 
 			CircleImageView imgColor = (CircleImageView) convertView.findViewById(R.id.imgColor);
 			ColorDrawable colorDrawable = colorMap.get(String.valueOf(position));

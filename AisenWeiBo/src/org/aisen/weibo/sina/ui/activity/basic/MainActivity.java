@@ -107,7 +107,10 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AisenUtils.setStatusBar(this);
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.as_ui_main);
 
         AdTokenUtils.loadIfExpired();
