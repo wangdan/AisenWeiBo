@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout" android:layout_width="match_parent" android:layout_height="match_parent">
+
+        <org.aisen.weibo.sina.ui.widget.ProfileScrollView
+            android:id="@+id/rootScrolView"
+            android:layout_width="match_parent" android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/layTop" android:layout_width="match_parent" android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imgCover"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dip"
+                        android:scaleType="centerCrop"/>
+
+                    <View
+                        android:layout_width="match_parent" android:layout_height="200dip" android:background="@drawable/top_profile"/>
+
+                    <RelativeLayout
+                        android:id="@+id/layDesc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="120dip"
+
+                        android:paddingLeft="16dip" android:paddingRight="16dip">
+
+                        <!--为了适配4.4以下，fuck-->
+                        <View
+                            android:id="@+id/viewBgDes" android:layout_width="match_parent"
+                            android:layout_height="match_parent" android:layout_marginTop="80dip"/>
+
+                        <org.aisen.android.ui.widget.CircleImageView
+                            android:id="@+id/imgPhoto"
+                            android:layout_width="100dip" android:layout_height="100dip"
+                            android:layout_marginBottom="16dip"
+                            android:src="@drawable/user_placeholder"/>
+
+                        <TextView
+                            android:id="@+id/txtName" style="@style/TextTitle.Inverse" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:layout_below="@id/imgPhoto" android:layout_marginBottom="8dip"
+                            android:text="王丹" android:textColor="@color/comm_white" android:textSize="24sp"/>
+
+                        <ImageView
+                            android:id="@+id/imgVerified" android:layout_width="20dip"
+                            android:layout_height="20dip" android:layout_below="@id/imgPhoto"
+                            android:layout_marginLeft="8dip" android:layout_marginTop="6dip"
+                            android:layout_toRightOf="@id/txtName" android:src="@drawable/avatar_grassroot"/>
+
+                        <ImageView
+                            android:id="@+id/imgGender" android:layout_width="20dip" android:layout_height="20dip"
+                            android:layout_below="@id/imgPhoto" android:layout_marginLeft="8dip"
+                            android:layout_marginTop="6dip" android:layout_toRightOf="@id/imgVerified"
+                            android:src="@drawable/list_female"/>
+
+                        <TextView
+                            android:id="@+id/txtFriendsCounter" style="@style/TextBody.Inverse" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:layout_below="@id/txtName"
+                            android:layout_marginLeft="-8dip" android:background="?attr/selectableItemBackground"
+                            android:paddingBottom="4dip" android:paddingLeft="8dip" android:paddingRight="8dip"
+                            android:paddingTop="4dip" android:text="1.2万 关注"/>
+
+                        <TextView
+                            android:id="@+id/divider_01"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:layout_below="@id/txtName" android:layout_marginLeft="4dip" android:layout_marginRight="4dip"
+                            android:layout_toRightOf="@id/txtFriendsCounter" android:paddingBottom="4dip" android:paddingTop="4dip" android:text="|"
+                            android:textColor="@color/text_54_inverse"/>
+
+                        <TextView
+                            android:id="@+id/txtFollowersCounter" style="@style/TextBody.Inverse" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:layout_below="@id/txtName"
+                            android:layout_toRightOf="@id/divider_01" android:background="?attr/selectableItemBackground" android:paddingBottom="4dip"
+                            android:paddingLeft="8dip"
+                            android:paddingRight="8dip" android:paddingTop="4dip" android:text="1.2万 粉丝"/>
+
+                        <TextView
+                            android:id="@+id/txtDesc"
+                            style="@style/TextBody.Inverse" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:layout_below="@id/txtFollowersCounter"
+                            android:layout_marginTop="8dip" android:lineSpacingExtra="2dip" android:text="今天真的是个好日子"/>
+
+                    </RelativeLayout>
+                </RelativeLayout>
+
+                <FrameLayout
+                    android:id="@+id/layTabStrip" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:background="@color/comm_white"
+                    android:paddingLeft="16dip" android:paddingRight="16dip">
+
+                    <org.aisen.android.ui.widget.SlidingTabLayout
+                        android:id="@+id/slidingTabs" android:layout_width="wrap_content" android:layout_height="45dip"/>
+                </FrameLayout>
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/pager" android:layout_width="match_parent"
+                    android:layout_height="200dip" android:background="@color/comm_white"/>
+            </LinearLayout>
+        </org.aisen.weibo.sina.ui.widget.ProfileScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</LinearLayout>

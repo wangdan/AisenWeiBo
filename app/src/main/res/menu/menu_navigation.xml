@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<group android:checkableBehavior="single">
+		<item android:id="@+id/menu_timeline" android:title="@string/draw_timeline" android:icon="@drawable/ic_view_day_grey600_24dp" />
+		<item android:id="@+id/menu_mention" android:title="@string/draw_message" android:icon="@drawable/ic_drawer_at" />
+		<item android:id="@+id/menu_comment" android:title="@string/draw_comment" android:icon="@drawable/ic_question_answer_grey600_24dp" />
+		<item android:id="@+id/menu_dm" android:title="@string/draw_private_msg" android:icon="@drawable/ic_email_grey600_24dp" />
+	</group>
+	
+	<item android:id="@+id/menu_hot_statuses" android:title="@string/draw_hot_statuses" />
+	<item android:id="@+id/menu_draft" android:title="@string/draw_draft" />
+	<item android:id="@+id/menu_settings" android:title="@string/draw_settings" />
+
+</menu>

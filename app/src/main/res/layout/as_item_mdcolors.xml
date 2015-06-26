@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:layout_width="match_parent"
+	android:layout_height="match_parent" android:gravity="center" xmlns:app="http://schemas.android.com/apk/res-auto"> 
+
+    <org.aisen.android.ui.widget.CircleImageView android:id="@+id/imgColor" android:layout_width="40dip" android:layout_height="40dip"
+        app:border_width="0dp" app:border_color="@color/comm_white" android:layout_centerInParent="true"/>
+    
+    <ImageView android:id="@+id/imgSelected" android:layout_width="25dip" android:layout_height="25dip"
+        android:src="@drawable/ic_ok_white_disabled_18dp" android:layout_centerInParent="true"
+        />
+    
+</RelativeLayout>
