@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<item name="toolbar" type="id" />
+	<!-- 点击这个视图，重新加载数据 -->
+	<item name="layoutReload" type="id"></item>
+	<!-- 点击这个视图，刷新数据 -->
+	<item name="layoutRefresh" type="id"></item>
+	<!-- 加载数据时，显示这个ProcessBar视图 -->
+	<item name="layoutProcessing" type="id"></item>
+	<!-- 加载时 -->
+	<item name="layoutLoading" type="id"></item>
+	<!-- 加载失败时 -->
+	<item name="layoutLoadFailed" type="id"></item>
+	<!-- 加载为空时 -->
+	<item name="layoutEmpty" type="id"></item>
+	<!-- 加载成功时 -->
+	<item name="layoutContent" type="id"></item>
+	<!-- 加载数据异常，会在这个TextView打印错误信息 -->
+	<item name="txtLoadFailed" type="id"></item>
+    <item name="txtLoadEmpty" type="id"></item>
+    <item name="listView" type="id"></item>
+    <item name="drag_handle" type="id"></item>
+    <item name="click_remove" type="id"></item>
+</resources>

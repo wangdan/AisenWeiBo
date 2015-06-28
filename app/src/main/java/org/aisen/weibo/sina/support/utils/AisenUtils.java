@@ -737,7 +737,7 @@ public class AisenUtils {
     }
 
     public static void setStatusBar(Activity activity) {
-        if (true) return;
+//        if (true) return;
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activity.getWindow().requestFeature(Window.FEATURE_NO_TITLE);

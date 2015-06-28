@@ -13,6 +13,7 @@ import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.ui.activity.basic.MainActivity;
 import org.aisen.weibo.sina.ui.fragment.basic.AMainStripTabsFragment;
+import org.aisen.weibo.sina.ui.fragment.basic.AMainTabLayoutFragment;
 import org.aisen.weibo.sina.ui.fragment.basic.MenuGenerator;
 import org.aisen.weibo.sina.sinasdk.bean.Group;
 import org.aisen.weibo.sina.sinasdk.bean.Groups;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
  *
  * Created by wangdan on 15/4/14.
  */
-public class TimelineTabsFragment extends ATabLayoutFragment {
+public class TimelineTabsFragment extends AMainStripTabsFragment {
 
     public static ABaseFragment newInstance() {
         return new TimelineTabsFragment();

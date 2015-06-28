@@ -18,6 +18,7 @@ import org.aisen.android.support.paging.IPaging;
 import org.aisen.android.ui.fragment.ARefreshFragment;
 import org.aisen.android.ui.fragment.AStripTabsFragment;
 
+import org.aisen.android.ui.fragment.ATabLayoutFragment;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
@@ -173,6 +174,11 @@ public abstract class ATimelineFragment extends AWeiboRefreshListFragment<Status
 		if (aFragment instanceof AStripTabsFragment) {
             AStripTabsFragment fragment = (AStripTabsFragment) aFragment;
             return fragment.getCurrentFragment();
+		}
+
+		if (aFragment instanceof ATabLayoutFragment) {
+			ATabLayoutFragment fragment = (ATabLayoutFragment) aFragment;
+			return fragment.getCurrentFragment();
 		}
 
 		return null;

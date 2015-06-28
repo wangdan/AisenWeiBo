@@ -23,16 +23,16 @@ public class CommentTabsFragment extends AMainStripTabsFragment {
 
     @Override
     protected ArrayList<AStripTabsFragment.StripTabItem> generateTabs() {
-        ArrayList<StripTabItem> beans = new ArrayList<StripTabItem>();
+        ArrayList<AStripTabsFragment.StripTabItem> beans = new ArrayList<AStripTabsFragment.StripTabItem>();
 
-        beans.add(new StripTabItem("200", getString(R.string.cmts_to_me)));
-        beans.add(new StripTabItem("201", getString(R.string.cmts_by_me)));
+        beans.add(new AStripTabsFragment.StripTabItem("200", getString(R.string.cmts_to_me)));
+        beans.add(new AStripTabsFragment.StripTabItem("201", getString(R.string.cmts_by_me)));
 
         return beans;
     }
 
     @Override
-    protected Fragment newFragment(StripTabItem bean) {
+    protected Fragment newFragment(AStripTabsFragment.StripTabItem bean) {
         return CommentsFragment.newInstance(bean);
     }
 

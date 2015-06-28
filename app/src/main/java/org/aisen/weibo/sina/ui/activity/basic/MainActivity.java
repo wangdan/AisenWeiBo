@@ -35,6 +35,7 @@ import org.aisen.android.ui.fragment.ARefreshFragment;
 import org.aisen.android.ui.fragment.AStripTabsFragment;
 import com.melnykov.fab.FloatingActionButton;
 
+import org.aisen.android.ui.fragment.ATabLayoutFragment;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
@@ -489,6 +490,9 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
             Fragment fragment = getFragmentManager().findFragmentByTag(FRAGMENT_TAG);
             if (fragment != null && fragment instanceof AStripTabsFragment) {
                 mStripView = ((AStripTabsFragment) fragment).getSlidingTabLayout();
+            }
+            else if (fragment != null && fragment instanceof ATabLayoutFragment) {
+                mStripView = ((ATabLayoutFragment) fragment).getTabLayout();
             }
         }
 

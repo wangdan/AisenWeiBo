@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="comm_h_margin">16dip</dimen>
+    <dimen name="comm_v_margin">16dip</dimen>
+    <dimen name="comm_h_gap">10dip</dimen>
+    <dimen name="comm_v_gap">10dip</dimen>
+</resources>
