@@ -49,9 +49,10 @@
 
     <!-- 账号管理 -->
     <string name="title_acount">账号管理</string>
-    <string name="account_expired">这个账号授权过期了，是否重新授权</string>
+    <string name="account_expired">Aisen授权过期，需要重新授权才能正常使用</string>
+    <string name="account_ad_expired">高级授权过期或未授权，需要重新授权才能正常使用</string>
     <string name="account_newaccount_remind">请注意，根据新浪微博的平台政策，刚添加的帐号会在 %s 天后过期，到时需要重新登录</string>
-    <string name="account_relogin_remind">授权过期了，请重新登录授权</string>
+    <string name="account_relogin_remind">存在授权过期或者未高级授权</string>
     <string name="account_destory_account_remind">确定删除选中的账号吗？</string>
     <string name="account_delete_account_loading">正在删除账号</string>
     <string name="account_account_exit_remind">没有账号登录，将退出程序</string>

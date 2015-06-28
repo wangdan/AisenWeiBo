@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent"
                 android:background="#3b3b3b" android:orientation="vertical">
     <!-- #3b3b3b -->
-    <uk.co.senab.photoview.ViewPagerFixed
+    <org.aisen.weibo.sina.ui.widget.ViewPagerFixed
         android:id="@+id/viewPager" android:layout_width="fill_parent" android:layout_height="fill_parent"/>
 
     <View

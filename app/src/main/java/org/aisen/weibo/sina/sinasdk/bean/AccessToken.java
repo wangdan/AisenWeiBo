@@ -1,8 +1,10 @@
 package org.aisen.weibo.sina.sinasdk.bean;
 
+import org.aisen.android.common.utils.Logger;
 import org.aisen.orm.annotation.PrimaryKey;
 
 import java.io.Serializable;
+import java.util.concurrent.TimeUnit;
 
 public class AccessToken extends Token implements Serializable{
 
@@ -70,6 +72,9 @@ public class AccessToken extends Token implements Serializable{
     }
 
     public boolean isExpired() {
+        String days = String.valueOf(TimeUnit.SECONDS.toDays(getExpires_in()));
+        Logger.w("Logger", "%s还有%s天失效", uid, days);
+
         return System.currentTimeMillis() - create_at >= expires_in * 1000;
     }
 

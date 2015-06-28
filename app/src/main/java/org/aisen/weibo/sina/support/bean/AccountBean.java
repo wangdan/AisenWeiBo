@@ -17,39 +17,19 @@ public class AccountBean implements Serializable {
 	@PrimaryKey(column = "userId")
 	private String userId;
 	
-	private String _token;
+	private WeiBoUser user;// 用户的个人信息
 	
-	private String secret;
-
-	private WeiBoUser user;
-	
-	private Groups groups;
-	
-	private TokenInfo tokenInfo;
+	private Groups groups;// 用户的分组信息
 	
 	private AccessToken advancedToken;// 高级授权的Token
 
-    private String account;
+	private AccessToken token;// 应用授权的token
 
-    private String password;
+    private String account;// 用户的账号
 
-    private String cookie;
+    private String password;// 用户的密码
 
-	public String get_token() {
-		return _token;
-	}
-
-	public void set_token(String _token) {
-		this._token = _token;
-	}
-
-	public String getSecret() {
-		return secret;
-	}
-
-	public void setSecret(String secret) {
-		this.secret = secret;
-	}
+    private String cookie;// 网页授权的cookie
 
 	public WeiBoUser getUser() {
 		return user;
@@ -67,14 +47,12 @@ public class AccountBean implements Serializable {
 		this.userId = userId;
 	}
 
-	private Token token;
-
-	public Token getToken() {
-		if (token == null)
-			token = new Token();
-		token.setToken(_token);
-		token.setSecret(secret);
+	public AccessToken getToken() {
 		return token;
+	}
+
+	public void setToken(AccessToken token) {
+		this.token = token;
 	}
 
 	public Groups getGroups() {
@@ -85,26 +63,18 @@ public class AccountBean implements Serializable {
 		this.groups = groups;
 	}
 
-	public TokenInfo getTokenInfo() {
-		return tokenInfo;
-	}
+//	public static boolean isExpired(AccountBean account) {
+//		TokenInfo tokenInfo = account.getTokenInfo();
+//		if (tokenInfo != null) {
+//			long validSecond = Long.parseLong(tokenInfo.getCreate_at()) + Long.parseLong(tokenInfo.getExpire_in());
+//			if (System.currentTimeMillis() > validSecond * 1000) {
+//
+//				return true;
+//			}
+//		}
 
-	public void setTokenInfo(TokenInfo tokenInfo) {
-		this.tokenInfo = tokenInfo;
-	}
-	
-	public static boolean isExpired(AccountBean account) {
-		TokenInfo tokenInfo = account.getTokenInfo();
-		if (tokenInfo != null) {
-			long validSecond = Long.parseLong(tokenInfo.getCreate_at()) + Long.parseLong(tokenInfo.getExpire_in());
-			if (System.currentTimeMillis() > validSecond * 1000) {
-				
-				return true;
-			}
-		}
-		
-		return false;
-	}
+//		return false;
+//	}
 
 	public AccessToken getAdvancedToken() {
 		return advancedToken;

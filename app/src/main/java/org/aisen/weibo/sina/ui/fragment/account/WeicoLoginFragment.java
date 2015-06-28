@@ -12,6 +12,7 @@ import org.aisen.weibo.sina.sinasdk.bean.AccessToken;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -53,6 +54,14 @@ import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 public class WeicoLoginFragment extends ABaseFragment {
 
     public static void launch(BaseActivity from, String account, String password, int requestCode) {
+        FragmentArgs args = new FragmentArgs();
+        args.add("account", account);
+        args.add("password", password);
+
+        FragmentContainerActivity.launchForResult(from, WeicoLoginFragment.class, args, requestCode);
+    }
+
+    public static void launch(ABaseFragment from, String account, String password, int requestCode) {
         FragmentArgs args = new FragmentArgs();
         args.add("account", account);
         args.add("password", password);
@@ -192,6 +201,17 @@ public class WeicoLoginFragment extends ABaseFragment {
             editPassword.setText(mPassword);
             editPassword.setSelection(editPassword.getText().length());
             editPassword.setFocusable(true);
+        }
+
+        if (!TextUtils.isEmpty(mAccount) && !TextUtils.isEmpty(mPassword)) {
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doLogin();
+                }
+
+            }, 500);
         }
     }
     
@@ -369,7 +389,7 @@ public class WeicoLoginFragment extends ABaseFragment {
 
             Logger.d(TAG, "授权成功");
 
-            if (result.getUid().equalsIgnoreCase(AppContext.getUser().getIdstr())) {
+            if (AppContext.getUser() != null && result.getUid().equalsIgnoreCase(AppContext.getUser().getIdstr())) {
                 AppContext.getAccount().setAdvancedToken(result);
 
                 AccountDB.setLogedinAccount(AppContext.getAccount());

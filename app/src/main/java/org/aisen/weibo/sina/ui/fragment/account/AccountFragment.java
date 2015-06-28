@@ -31,6 +31,8 @@ import org.aisen.android.ui.widget.CircleImageView;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.MyApplication;
+import org.aisen.weibo.sina.sinasdk.SinaSDK;
+import org.aisen.weibo.sina.sinasdk.bean.TokenInfo;
 import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.db.AccountDB;
 import org.aisen.weibo.sina.support.db.SinaDB;
@@ -91,6 +93,8 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
     @ViewInject(id = R.id.btnAccountAdd, click = "addAccount")
     View btnAccountAdd;
 
+    private int requestAdPosition;
+
     @Override
     protected int inflateContentView() {
         return R.layout.as_ui_account;
@@ -118,18 +122,37 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
         final AccountBean account = getAdapterItems().get(position);
-        if (AccountBean.isExpired(account)) {
+        // 重新授权Aisen
+        if (account.getToken().isExpired()) {
             new AlertDialogWrapper.Builder(getActivity())
                     .setTitle(R.string.remind)
                     .setMessage(R.string.account_expired)
-                    .setNegativeButton(R.string.no, null)
-                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
 
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            requestAdPosition = position;
+
                             LoginFragment.launch(AccountFragment.this, account.getAccount(), account.getPassword(), 1000);
+                        }
+
+                    })
+                    .show();
+
+            return;
+        }
+        // 重新授权Weico
+        else if (account.getAdvancedToken() == null || account.getAdvancedToken().isExpired()) {
+            new AlertDialogWrapper.Builder(getActivity())
+                    .setTitle(R.string.remind)
+                    .setMessage(R.string.account_ad_expired)
+                    .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            WeicoLoginFragment.launch(AccountFragment.this, account.getAccount(), account.getPassword(), 1001);
                         }
 
                     })
@@ -170,12 +193,22 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
 
         if (requestCode == 1000 && resultCode == Activity.RESULT_OK) {
             AccessToken token = (AccessToken) data.getSerializableExtra("token");
-            String days = String.valueOf(TimeUnit.SECONDS.toDays(token.getExpires_in()));
-            new AlertDialogWrapper.Builder(getActivity())
-                                    .setTitle(R.string.remind)
-                                    .setMessage(String.format(getString(R.string.account_newaccount_remind), days))
-                                    .setPositiveButton(R.string.i_know, null)
-                                    .show();
+//            String days = String.valueOf(TimeUnit.SECONDS.toDays(token.getExpires_in()));
+//            new AlertDialogWrapper.Builder(getActivity())
+//                                    .setTitle(R.string.remind)
+//                                    .setMessage(String.format(getString(R.string.account_newaccount_remind), days))
+//                                    .setPositiveButton(R.string.i_know, null)
+//                                    .show();
+
+            requestData(RefreshMode.reset);
+        }
+        else if (requestCode == 1001 && resultCode == Activity.RESULT_OK) {
+            AccessToken token = (AccessToken) data.getSerializableExtra("token");
+            Logger.e(token);
+
+            AccountBean accountBean = getAdapterItems().get(requestAdPosition);
+            accountBean.setAdvancedToken(token);
+            AccountDB.newAccount(accountBean);
 
             requestData(RefreshMode.reset);
         }
@@ -218,7 +251,7 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
             txtName.setText(user.getScreen_name());
             txtDesc.setText(user.getDescription() + "");
             txtTokenInfo.setText(R.string.account_relogin_remind);
-            if (AccountBean.isExpired(data)) {
+            if (data.getToken().isExpired() || data.getAdvancedToken() == null || data.getAdvancedToken().isExpired()) {
                 txtTokenInfo.setVisibility(View.VISIBLE);
             } else {
                 txtTokenInfo.setVisibility(View.GONE);
@@ -325,6 +358,74 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
         }
 
         return super.onBackClick();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        new CheckTokenInfoTask().execute();
+    }
+
+    CheckTokenInfoTask checkTask;
+    class CheckTokenInfoTask extends WorkTask<Void, Void, Boolean> {
+
+        CheckTokenInfoTask() {
+            if (checkTask != null)
+                checkTask.cancel(true);
+
+            checkTask = this;
+        }
+
+        @Override
+        public Boolean workInBackground(Void... params) throws TaskException {
+            for (AccountBean account : getAdapterItems()) {
+                TokenInfo tokenInfo = null;
+                // Aisen授权
+                try {
+                    tokenInfo = SinaSDK.getInstance(account.getToken()).getTokenInfo(account.getToken().getToken());
+                } catch (TaskException e) {
+                    e.printStackTrace();
+                    if ("21327".equals(e.getCode()) ||
+                            "21317".equals(e.getCode())) {
+                        tokenInfo = new TokenInfo();
+                        tokenInfo.setExpire_in(0);
+                    }
+                }
+                account.getToken().setExpires_in(tokenInfo.getExpire_in());
+                // Weico授权
+                try {
+                    tokenInfo = SinaSDK.getInstance(account.getAdvancedToken()).getTokenInfo(account.getAdvancedToken().getToken());
+                } catch (TaskException e) {
+                    e.printStackTrace();
+                    if ("21327".equals(e.getCode()) ||
+                            "21317".equals(e.getCode())) {
+                        tokenInfo = new TokenInfo();
+                        tokenInfo.setExpire_in(0);
+                    }
+                }
+                account.getAdvancedToken().setExpires_in(tokenInfo.getExpire_in());
+
+                // 刷新用户信息
+                AccountDB.newAccount(account);
+                if (AppContext.getAccount() != null && AppContext.getAccount().getUserId().equals(account.getUserId())) {
+                    AppContext.getAccount().setToken(account.getToken());
+                    AppContext.setAdvancedToken(account.getAdvancedToken());
+                    AccountDB.setLogedinAccount(AppContext.getAccount());
+                }
+
+                publishProgress();
+            }
+
+            return true;
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+
+            requestData(RefreshMode.reset);
+        }
     }
 
 }

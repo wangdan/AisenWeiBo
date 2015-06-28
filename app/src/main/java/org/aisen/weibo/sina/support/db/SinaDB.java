@@ -8,7 +8,7 @@ public class SinaDB {
 
 	public static SqliteUtility getSqlite() {
         if (SqliteUtility.getInstance("sina_db") == null)
-            new SqliteUtilityBuilder().configDBName("sina_db").build(GlobalContext.getInstance());
+            new SqliteUtilityBuilder().configDBName("sina_db").configVersion(2).build(GlobalContext.getInstance());
 
 		return SqliteUtility.getInstance("sina_db");
 	}

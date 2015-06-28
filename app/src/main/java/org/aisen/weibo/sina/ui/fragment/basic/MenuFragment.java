@@ -168,7 +168,7 @@ public class MenuFragment extends AListFragment<MenuBean, ArrayList<MenuBean>> {
         // 头像
         ImageView imgPhoto = (ImageView) profileHeader.findViewById(R.id.imgPhoto);
         imgPhoto.setOnClickListener(viewOnClickListener);
-        imgPhoto.setOnLongClickListener(viewOnLongClickListener);
+//        imgPhoto.setOnLongClickListener(viewOnLongClickListener);
         BitmapLoader.getInstance().display(MenuFragment.this,
                 user.getAvatar_large(), imgPhoto, ImageConfigUtils.getLargePhotoConfig());
         // 名字

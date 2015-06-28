@@ -14,7 +14,7 @@ public class TokenInfo implements Serializable {
 	
 	private String create_at;
 	
-	private String expire_in;
+	private long expire_in;
 
 	public String getUid() {
 		return uid;
@@ -48,11 +48,11 @@ public class TokenInfo implements Serializable {
 		this.create_at = create_at;
 	}
 
-	public String getExpire_in() {
+	public long getExpire_in() {
 		return expire_in;
 	}
 
-	public void setExpire_in(String expire_in) {
+	public void setExpire_in(long expire_in) {
 		this.expire_in = expire_in;
 	}
 	

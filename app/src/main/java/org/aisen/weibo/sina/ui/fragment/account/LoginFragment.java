@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -206,6 +207,17 @@ public class LoginFragment extends ABaseFragment {
 
         });
 
+        if (!TextUtils.isEmpty(editAccount.getText().toString()) &&
+                !TextUtils.isEmpty(editPassword.getText().toString())) {
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doLogin();
+                }
+
+            }, 500);
+        }
     }
     
     class MTextWatcher implements TextWatcher {
@@ -368,8 +380,7 @@ public class LoginFragment extends ABaseFragment {
             // 1、请求授权
             AccessToken accessToken = SinaSDK.getInstance(null).getAccessToken(params[0]);
             AccountBean account = new AccountBean();
-            account.set_token(accessToken.getToken());
-            account.setSecret(accessToken.getSecret());
+            account.setToken(accessToken);
 
             // 2、加载用户信息
             publishProgress(R.string.account_load_userinfo);
