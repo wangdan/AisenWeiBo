@@ -564,6 +564,7 @@ public abstract class ARefreshFragment<T extends Serializable, Ts extends Serial
 			public void run() {
 				if (getRefreshView() instanceof ListView) {
 					ListView listView = (ListView) getRefreshView();
+//					listView.smoothScrollToPositionFromTop(getLastReadPosition(), getLastReadTop() + listView.getPaddingTop());
 					listView.setSelectionFromTop(getLastReadPosition(), getLastReadTop() + listView.getPaddingTop());
 				}
 			}

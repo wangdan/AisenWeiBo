@@ -30,6 +30,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -75,6 +76,7 @@ import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class APublishFragment extends ABaseFragment
@@ -122,6 +124,12 @@ public abstract class APublishFragment extends ABaseFragment
 	CheckBox checkBox;
 	@ViewInject(id = R.id.txtContent)
 	TextView txtContent;
+
+	// 支持多图
+	@ViewInject(id = R.id.layPicContainer)
+	LinearLayout layPicContainer;
+	@ViewInject(id = R.id.scrollPicContainer)
+	HorizontalScrollView scrollPicContainer;
 	
 	private final LayoutTransition transitioner = new LayoutTransition();
 	
@@ -131,6 +139,8 @@ public abstract class APublishFragment extends ABaseFragment
 	private PublishBean mBean;
 	
 	private int emotionHeight;
+
+	private String tempFilePath;
 	
 	@Override
 	protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceState) {
@@ -184,6 +194,16 @@ public abstract class APublishFragment extends ABaseFragment
         layRoot.setLayoutTransition(transitioner);
 		
 		refreshUI();
+
+		String albumPath = SystemUtils.getSdcardPath() + File.separator + "/DCIM/Camera/";
+		File albumFile = new File(albumPath);
+		if (!albumFile.exists())
+			albumFile.mkdirs();
+		photoChoice = new PhotoChoice(getActivity(), APublishFragment.this, albumPath);
+		if (savedInstanceState != null)
+			tempFilePath = savedInstanceState.getString("tempFilePath");
+		photoChoice.setFileName(tempFilePath);
+		photoChoice.setMode(PhotoChoice.PhotoChoiceMode.uriType);
 	}
 	
 	// 如果有照片了，也显示黑色文字
@@ -196,6 +216,8 @@ public abstract class APublishFragment extends ABaseFragment
 		super.onSaveInstanceState(outState);
 		
 		outState.putSerializable("bean", mBean);
+		if (!TextUtils.isEmpty(tempFilePath))
+			outState.putString("tempFilePath", tempFilePath);
 	}
 	
 	/**
@@ -206,8 +228,7 @@ public abstract class APublishFragment extends ABaseFragment
 			return;
 		
 		PublishBean bean = getPublishBean();
-		
-		
+
 		// 显示图片
 		if (bean.getExtras() != null && (bean.getPics() != null || bean.getParams().containsKey("url"))) {
 			String[] images = bean.getPics();
@@ -219,7 +240,13 @@ public abstract class APublishFragment extends ABaseFragment
 					TextUtils.isEmpty(getPublishBean().getText())) {
 				getPublishBean().setText(getString(R.string.publish_share_pic) + " ");
 			}
-			
+
+			// 修改为支持多图
+			if (true) {
+				layImageCover.setVisibility(View.GONE);
+				picShow.setVisibility(View.GONE);
+			}
+
 			ImageConfig config = new ImageConfig();
 			config.setLoadfaildRes(R.drawable.bg_timeline_loading);
 			config.setLoadingRes(R.drawable.bg_timeline_loading);
@@ -227,31 +254,41 @@ public abstract class APublishFragment extends ABaseFragment
 			config.setMaxHeight(SystemUtils.getScreenHeight() / 2);
 			config.setBitmapCompress(TimelineBitmapCompress.class);
 			config.setProgress(new PublishDownloadProcess());
-			
-			String path = images[0];
-			if (path.toString().startsWith("content://")) {
-				Logger.v(TAG, "相册图片地址, path = " + path);
-				
-				config.setDownloaderClass(ContentProviderDownloader.class);
+
+			layPicContainer.removeAllViews();
+			scrollPicContainer.setVisibility(View.VISIBLE);
+			for (String path : images) {
+				View itemView = View.inflate(getActivity(), R.layout.as_item_publish_pic, null);
+				ImageView img = (ImageView) itemView.findViewById(R.id.img);
+
+				itemView.setTag(path);
+				itemView.setOnClickListener(onPictureClickListener);
+
+				if (path.toString().startsWith("content://")) {
+					Logger.v(TAG, "相册图片地址, path = " + path);
+
+					config.setDownloaderClass(ContentProviderDownloader.class);
+				}
+				else if (path.toString().startsWith("http://") || path.toString().startsWith("https://")) {
+					Logger.v(TAG, "网络图片地址, path = " + path);
+				}
+				else {
+					path = path.toString().replace("file://", "");
+					Logger.v(TAG, "拍照图片地址, path = " + path);
+
+					// 扫描文件
+					SystemUtils.scanPhoto(new File(path));
+					config.setDownloaderClass(SdcardDownloader.class);
+				}
+
+				BitmapLoader.getInstance().display(this, path, img, config);
+
+				layPicContainer.addView(itemView,
+						new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 			}
-			else if (path.toString().startsWith("http://") || path.toString().startsWith("https://")) {
-				Logger.v(TAG, "网络图片地址, path = " + path);
-			}
-			else {
-				path = path.toString().replace("file://", "");
-				Logger.v(TAG, "拍照图片地址, path = " + path);
-				
-				// 扫描文件
-				SystemUtils.scanPhoto(new File(path));
-				config.setDownloaderClass(SdcardDownloader.class);
-			}
-			
-			BitmapLoader.getInstance().display(this, path, picShow, config);
-			
-			layImageCover.setVisibility(View.VISIBLE);
-			picShow.setVisibility(View.VISIBLE);
 		}
 		else {
+			scrollPicContainer.setVisibility(View.GONE);
 			layImageCover.setVisibility(View.GONE);
 			picShow.setVisibility(View.GONE);
 		}
@@ -307,6 +344,49 @@ public abstract class APublishFragment extends ABaseFragment
 		}
 		
 	}
+
+	// 暂时只支持删除，不支持预览
+	View.OnClickListener onPictureClickListener = new View.OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			final String path = v.getTag().toString();
+
+			new AlertDialogWrapper.Builder(getActivity())
+					.setMessage(R.string.publish_delete_pic)
+					.setNegativeButton(R.string.cancel, null)
+					.setPositiveButton(R.string.confirm, new OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							String[] pathArr = getPublishBean().getPics();
+							List<String> pathList = new ArrayList<String>();
+							Collections.addAll(pathList, pathArr);
+							pathList.remove(path);
+							getPublishBean().setPics(pathList.toArray(new String[0]));
+
+							for (int i = 0; i < layPicContainer.getChildCount(); i++) {
+								View view = layPicContainer.getChildAt(i);
+
+								if (view.getTag().toString().equals(path)) {
+									layPicContainer.removeView(view);
+
+									break;
+								}
+							}
+
+							if (getPublishBean().getPics() == null || getPublishBean().getPics().length == 0) {
+								getPublishBean().setPics(null);
+
+								scrollPicContainer.setVisibility(View.GONE);
+							}
+						}
+
+					})
+					.show();
+		}
+
+	};
 	
 	private void send() {
 		if (AppSettings.isSendDelay()) 
@@ -404,7 +484,7 @@ public abstract class APublishFragment extends ABaseFragment
 	 */
 	void getPicture(View v) {
 		// 已经有图片了
-		if (getPublishBean().getExtras() != null && 
+		if (false && getPublishBean().getExtras() != null &&
 				(getPublishBean().getPics() != null && getPublishBean().getPics().length > 0) || getPublishBean().getParams().containsKey("url")) {
 			new AlertDialogWrapper.Builder(getActivity())
 							.setItems(R.array.publish_pic_edit, new OnClickListener() {
@@ -436,26 +516,18 @@ public abstract class APublishFragment extends ABaseFragment
 					
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
-									if (photoChoice == null) {
-										String albumPath = SystemUtils.getSdcardPath() + File.separator + "/DCIM/Camera/";
-										File albumFile = new File(albumPath);
-										if (!albumFile.exists())
-											albumFile.mkdirs();
-										photoChoice = new PhotoChoice(getActivity(), APublishFragment.this, albumPath);
-										photoChoice.setFileName(String.format("%s.jpg", String.valueOf(System.currentTimeMillis() / 1000)));
-									}
-
-									photoChoice.setMode(PhotoChoice.PhotoChoiceMode.uriType);
 									switch (which) {
 									// 相册
 									case 0:
 //										photoChoice.start(APublishFragment.this, 0);
                                         String[] images = getPublishBean().getPics();
-                                        images = null;// 这里只选中一个图片，不设置默认图片
-                                        PicturePickFragment.launch(APublishFragment.this, 1, images, 3333);
+                                        // images = null;// 这里只选中一个图片，不设置默认图片
+                                        PicturePickFragment.launch(APublishFragment.this, 9, images, 3333);
 										break;
 									// 拍照
 									case 1:
+										tempFilePath = String.format("%s.jpg", String.valueOf(System.currentTimeMillis() / 1000));
+										photoChoice.setFileName(tempFilePath);
 										photoChoice.start(APublishFragment.this, 1);
 										break;
 									// 最后一次拍照
@@ -623,6 +695,8 @@ public abstract class APublishFragment extends ABaseFragment
 
 	@Override
 	public void choieUri(Uri uri, int requestCode) {
+		Logger.e(uri.toString());
+
 		// 当拍摄照片时，提示是否设置旋转90度
 		if (!AppSettings.isRotatePic() && !ActivityHelper.getBooleanShareData("RotatePicNoRemind", false)) {
 			new AlertDialogWrapper.Builder(getActivity()).setTitle(R.string.remind)
@@ -712,8 +786,6 @@ public abstract class APublishFragment extends ABaseFragment
 			getPublishBean().setExtras(extraParams);
 		}
         String[] pics = getPublishBean().getPics();
-        // TODO 现在只支持一个图
-        pics = null;
         if (pics != null) {
             List<String> list = new ArrayList<String>();
             for (String pic : pics) {
@@ -742,19 +814,6 @@ public abstract class APublishFragment extends ABaseFragment
 			@Override
 			public String workInBackground(Void... params) throws TaskException {
 				String path = "";
-//				ContentResolver mResolver = getActivity().getContentResolver();
-//		        String[] projection = new String[]{ MediaStore.Images.Media.DATA,
-//		        									MediaStore.Images.Media.DATE_ADDED,
-//		        									"MAX(" + MediaStore.Images.Media.DATE_ADDED + ")" };
-//		        Cursor cursor = mResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, 
-//		        										projection, null, null, MediaStore.Images.Media.DEFAULT_SORT_ORDER);
-//				cursor.moveToFirst();
-//				while(!cursor.isAfterLast()){
-//					path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-//					cursor.moveToNext();
-//				}
-//				cursor.close();
-				
 				if (getActivity() != null)
 					path = Utils.getLatestCameraPicture(getActivity());
 				
@@ -799,6 +858,7 @@ public abstract class APublishFragment extends ABaseFragment
         else if (requestCode == 3333 && resultCode == Activity.RESULT_OK) {
             if (data != null) {
                 String[] pics = data.getStringArrayExtra("pics");
+				Logger.w(pics);
                 if (pics != null) {
                     getPublishBean().setPics(pics);
 

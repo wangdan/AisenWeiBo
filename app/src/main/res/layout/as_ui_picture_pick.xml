@@ -11,10 +11,10 @@
             android:layout_width="match_parent" android:layout_height="match_parent">
 
             <GridView
-                android:id="@+id/gridview"
-                android:layout_width="match_parent" android:layout_height="match_parent"
-                android:clipChildren="false" android:clipToPadding="false"
-                android:gravity="fill" android:horizontalSpacing="@dimen/gap_photo" android:numColumns="3"
+                android:id="@+id/gridview" android:layout_width="match_parent"
+                android:layout_height="match_parent" android:clipChildren="false"
+                android:clipToPadding="false" android:gravity="fill"
+                android:horizontalSpacing="@dimen/gap_photo" android:listSelector="?attr/selectableItemBackground" android:numColumns="3"
                 android:paddingBottom="?attr/actionBarSize" android:stretchMode="columnWidth" android:verticalSpacing="@dimen/gap_photo"/>
 
             <RelativeLayout

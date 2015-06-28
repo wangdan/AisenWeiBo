@@ -19,8 +19,8 @@ import java.io.InputStream;
 
 public class PhotoChoice {
 
-	public static final int PHONE_IMAGE_REQUEST_CODE = 8888;
-	public static final int CAMERA_IMAGE_REQUEST_CODE = 9999;
+	public static final int PHONE_IMAGE_REQUEST_CODE = 88888888;
+	public static final int CAMERA_IMAGE_REQUEST_CODE = 99999999;
 
 	public int picMaxDecodeWidth;
 	public int picMaxDecodeHeight;

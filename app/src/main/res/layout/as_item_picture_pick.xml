@@ -8,14 +8,14 @@
     <ImageView
         android:id="@+id/img"
         android:layout_width="match_parent" android:layout_height="match_parent"
-        android:scaleType="centerCrop" android:src="@drawable/a_icon_b"/>
+        android:scaleType="centerCrop"/>
 
     <View
         android:id="@+id/viewCover" android:layout_width="match_parent"
-        android:layout_height="match_parent" android:background="#55000000"/>
+        android:layout_height="match_parent" android:background="#88000000"/>
 
     <ImageView
-        android:id="@+id/btnCheckbox" android:layout_width="35dip"
-        android:layout_height="35dip" android:layout_centerInParent="true" android:src="@drawable/ic_done_light"/>
+        android:id="@+id/btnCheckbox" android:layout_width="25dip"
+        android:layout_height="25dip" android:layout_centerInParent="true" android:src="@drawable/check_picture_pick"/>
 
 </RelativeLayout>

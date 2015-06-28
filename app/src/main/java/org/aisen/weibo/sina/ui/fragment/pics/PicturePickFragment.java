@@ -11,6 +11,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -31,11 +34,11 @@ import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.fragment.ABaseFragment;
 import org.aisen.android.ui.fragment.AGridFragment;
-
 import org.aisen.weibo.sina.R;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,10 +59,10 @@ public class PicturePickFragment extends AGridFragment<String, ArrayList<String>
         FragmentContainerActivity.launchForResult(from, PicturePickFragment.class, args, requestCode);
     }
 
-    @ViewInject(id = R.id.btnCounter, click = "savePictures")
-    View btnCounter;
-    @ViewInject(id = R.id.txtCounter)
-    TextView txtCounter;
+//    @ViewInject(id = R.id.btnCounter, click = "savePictures")
+//    View btnCounter;
+//    @ViewInject(id = R.id.txtCounter)
+//    TextView txtCounter;
     @ViewInject(id = R.id.layCurrent, click = "switchDireListFragment")
     View layCurrent;
     @ViewInject(id = R.id.layFileDires)
@@ -85,11 +88,6 @@ public class PicturePickFragment extends AGridFragment<String, ArrayList<String>
         return R.layout.as_ui_picture_pick;
     }
 
-//    @Override
-//    protected int[] recyleImageViewRes() {
-//        return new int[]{ R.id.img };
-//    }
-
     @Override
     protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
         super.layoutInit(inflater, savedInstanceSate);
@@ -99,6 +97,8 @@ public class PicturePickFragment extends AGridFragment<String, ArrayList<String>
         baseActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         baseActivity.getSupportActionBar().setDisplayShowHomeEnabled(false);
         baseActivity.getSupportActionBar().setTitle(R.string.title_mobile_photos);
+
+        setHasOptionsMenu(true);
 
         maxSize = Integer.parseInt(getArguments().getString("maxSize"));
 
@@ -118,8 +118,9 @@ public class PicturePickFragment extends AGridFragment<String, ArrayList<String>
 
         selectedDirName = savedInstanceSate == null ? "所有图片" : savedInstanceSate.getString("selectedDirName");
         txtCurrent.setText(selectedDirName);
-        btnCounter.setVisibility(selectedFile.size() == 0 ? View.GONE : View.VISIBLE);
-        txtCounter.setText(String.format("预览(%d/%d)", selectedFile.size(), maxSize));
+        getActivity().invalidateOptionsMenu();
+//        btnCounter.setVisibility(selectedFile.size() == 0 ? View.GONE : View.VISIBLE);
+//        txtCounter.setText(String.format("预览(%d/%d)", selectedFile.size(), maxSize));
 
         if (getArguments() != null) {
             String[] pics = getArguments().getStringArray("pics");
@@ -164,7 +165,7 @@ public class PicturePickFragment extends AGridFragment<String, ArrayList<String>
         selectedDirName = dire.getName();
         txtCurrent.setText(selectedDirName);
         setItems(dire.getFiles());
-        getRefreshView().setSelection(0);
+        getGridView().smoothScrollToPosition(0);
 
         switchDireListFragment(layFileDires);
     }
@@ -232,7 +233,7 @@ public class PicturePickFragment extends AGridFragment<String, ArrayList<String>
     private void onPictureSelectedChange(String path) {
         if (!selectedFile.contains(path)) {
             if (selectedFile.size() >= maxSize) {
-                showMessage(String.format("你最多只能选%d张相片", maxSize));
+                showMessage(String.format("最多只能选%d张相片", maxSize));
                 return;
             }
 
@@ -242,8 +243,9 @@ public class PicturePickFragment extends AGridFragment<String, ArrayList<String>
             selectedFile.remove(path);
 
         getAdapter().notifyDataSetChanged();
-        btnCounter.setVisibility(selectedFile.size() == 0 ? View.GONE : View.VISIBLE);
-        txtCounter.setText(String.format("预览(%d/%d)", selectedFile.size(), maxSize));
+        getActivity().invalidateOptionsMenu();
+//        btnCounter.setVisibility(selectedFile.size() == 0 ? View.GONE : View.VISIBLE);
+//        txtCounter.setText(String.format("预览(%d/%d)", selectedFile.size(), maxSize));
     }
 
     @Override
@@ -275,8 +277,8 @@ public class PicturePickFragment extends AGridFragment<String, ArrayList<String>
             for (String pic : pics) {
                 selectedFile.add(pic);
             }
-            btnCounter.setVisibility(selectedFile.size() == 0 ? View.GONE : View.VISIBLE);
-            txtCounter.setText(String.format("预览(%d/%d)", selectedFile.size(), maxSize));
+//            btnCounter.setVisibility(selectedFile.size() == 0 ? View.GONE : View.VISIBLE);
+//            txtCounter.setText(String.format("预览(%d/%d)", selectedFile.size(), maxSize));
             getAdapter().notifyDataSetChanged();
             getActivity().invalidateOptionsMenu();
 
@@ -363,6 +365,8 @@ public class PicturePickFragment extends AGridFragment<String, ArrayList<String>
             }
             cursor.close();
 
+            Collections.reverse(picFileList);
+
             return picFileList;
         }
 
@@ -418,4 +422,28 @@ public class PicturePickFragment extends AGridFragment<String, ArrayList<String>
         BitmapLoader.getInstance().clearCache();
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.menu_picture_pick, menu);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        MenuItem item = menu.findItem(R.id.menu_confirm);
+        item.setVisible(selectedFile.size() > 0);
+        item.setTitle(String.format("完成(%d/%d)", selectedFile.size(), maxSize));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_confirm) {
+            savePics();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }

@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
+
+import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.DateUtils;
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.network.http.Params;
@@ -190,7 +192,8 @@ public class PublishStatusFragment extends APublishFragment {
         if (AppContext.getGroups() == null || AppContext.getGroups().getLists().size() == 0) {
         }
         else {
-            SubMenu subMenu = menu.addSubMenu(R.id.publish, 333, 2, getString(R.string.group_selected_visiable));
+            SubMenu subMenu = menu.addSubMenu(R.id.publish, 333, 2,
+										GlobalContext.getInstance().getResources().getString(R.string.group_selected_visiable));
             for (int i = 0; i < AppContext.getGroups().getLists().size(); i++) {
                 Group group = AppContext.getGroups().getLists().get(i);
                 subMenu.add(100, i, i, group.getName());
