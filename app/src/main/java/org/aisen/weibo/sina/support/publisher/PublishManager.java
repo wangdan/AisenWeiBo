@@ -20,6 +20,7 @@ import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.MyApplication;
 import org.aisen.weibo.sina.sinasdk.bean.UploadPictureBean;
 import org.aisen.weibo.sina.sinasdk.bean.UploadPictureResultBean;
+import org.aisen.weibo.sina.sinasdk.core.SinaErrorMsgUtil;
 import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.bean.PublishBean;
 import org.aisen.weibo.sina.support.bean.PublishBean.PublishStatus;
@@ -290,7 +291,11 @@ public class PublishManager extends Handler implements PublishQueue.PublishQueue
 					publishNotifier.notifyPublishFaild(bean, exception.getMessage());
 					
 					bean.setStatus(PublishStatus.faild);
-					bean.setErrorMsg(exception.getMessage());
+					SinaErrorMsgUtil util = new SinaErrorMsgUtil();
+					if (util.declareMessage(exception.getCode()) != null)
+						bean.setErrorMsg(util.declareMessage(exception.getCode()));
+					else
+						bean.setErrorMsg(exception.getMessage());
 					PublishDB.updatePublish(bean, loggedIn);
 					
 					refreshDraftbox();
@@ -401,7 +406,7 @@ public class PublishManager extends Handler implements PublishQueue.PublishQueue
 										path = path.toString().replace("file://", "");
 									}
 
-									Logger.w(String.format("上传第%d个文件， 路径 = ", i, path));
+									Logger.w(String.format("上传第%d个文件， 路径 = %s", i + 1, path));
 
 									File file = new File(path);
 
@@ -419,7 +424,7 @@ public class PublishManager extends Handler implements PublishQueue.PublishQueue
 									picIdList.add(resultBean.getPic_id());
 
 									// 更新到数据库
-									SinaDB.getSqlite().insert(new Extra(loggedIn.getIdstr(), null), uploadPictureBean);
+									SinaDB.getSqlite().insertOrReplace(new Extra(loggedIn.getIdstr(), null), uploadPictureBean);
 								}
 							}
 
