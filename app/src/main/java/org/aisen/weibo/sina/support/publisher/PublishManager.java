@@ -5,20 +5,27 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.FileUtils;
+import org.aisen.android.common.utils.KeyGenerator;
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
 
+import org.aisen.orm.extra.Extra;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.MyApplication;
+import org.aisen.weibo.sina.sinasdk.bean.UploadPictureBean;
+import org.aisen.weibo.sina.sinasdk.bean.UploadPictureResultBean;
+import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.bean.PublishBean;
 import org.aisen.weibo.sina.support.bean.PublishBean.PublishStatus;
 import org.aisen.weibo.sina.support.bean.PublishType;
 import org.aisen.weibo.sina.support.db.PublishDB;
+import org.aisen.weibo.sina.support.db.SinaDB;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.sys.receiver.TimingBroadcastReceiver;
 import org.aisen.weibo.sina.sys.service.PublishService;
@@ -27,6 +34,7 @@ import org.aisen.weibo.sina.sinasdk.SinaSDK;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -42,12 +50,14 @@ public class PublishManager extends Handler implements PublishQueue.PublishQueue
 	private PublishNotifier publishNotifier;
 
 	private PublishTask publishTask;
-	
+
+	private AccountBean mAccount;
 	private WeiBoUser loggedIn;
 
-	public PublishManager(Context context, WeiBoUser user) {
+	public PublishManager(Context context, AccountBean accountBean) {
 		this.context = context.getApplicationContext();
-		this.loggedIn = user;
+		this.mAccount = accountBean;
+		this.loggedIn = accountBean.getUser();
 		publishQueue = new PublishQueue(this);
 		publishNotifier = new PublishNotifier(context);
 
@@ -334,29 +344,95 @@ public class PublishManager extends Handler implements PublishQueue.PublishQueue
 					// 带图片
 					else if (bean.getPics() != null && bean.getPics().length > 0) {
 						String[] images = bean.getPics();
-						
-						String path = images[0];
-						if (path.toString().startsWith("content://")) {
-							Uri uri = Uri.parse(path);
-							path = FileUtils.getPath(GlobalContext.getInstance(), uri);
-						}
-						else {
-							path = path.toString().replace("file://", "");
-						}
-						
-						Logger.w("上传文件路径 = " + path);
-						
-						File file = new File(path);
-						
-						if (!file.exists())
-							throw new TaskException("图片不存在或已删除");
-						
-						file = AisenUtils.getUploadFile(file);
-						
-						Logger.w("上传图片大小" + (file.length() / 1024) + "KB");
-						// 压缩文件
 
-						Object result = SinaSDK.getInstance(AppContext.getToken()).statusesUpload(bean.getParams(), file);
+						Object result = null;
+
+						// 2015-06-29 在这里切入多图上传支持，暂时支持挨个挨个上传图片不并发
+
+						// 如果只有一个图片，就用Aisen，
+						if (images.length == 1) {
+							String path = images[0];
+							if (path.toString().startsWith("content://")) {
+								Uri uri = Uri.parse(path);
+								path = FileUtils.getPath(GlobalContext.getInstance(), uri);
+							}
+							else {
+								path = path.toString().replace("file://", "");
+							}
+
+							Logger.w("上传文件路径 = " + path);
+
+							File file = new File(path);
+
+							if (!file.exists())
+								throw new TaskException("图片不存在或已删除");
+
+							// 压缩文件
+							file = AisenUtils.getUploadFile(file);
+							Logger.w("上传图片大小" + (file.length() / 1024) + "KB");
+
+							result = SinaSDK.getInstance(AppContext.getToken()).statusesUpload(bean.getParams(), file);
+						}
+						// 如果存在多个图片，就用Weico高级权限
+						else {
+							List<String> picIdList = new ArrayList<>();
+
+							for (int i = 0; i < images.length; i++) {
+								String path = images[i];
+
+								// 检查这个图片是否已经上传过了
+								String pathKey = KeyGenerator.generateMD5(path);
+								UploadPictureBean uploadPictureBean = SinaDB.getSqlite().selectById(new Extra(loggedIn.getIdstr(), null), UploadPictureBean.class, pathKey);
+								if (uploadPictureBean != null && !TextUtils.isEmpty(uploadPictureBean.getPic_id())) {
+									Logger.w("这个图片已经上传过了, resultId = " + uploadPictureBean.getPic_id() + ", path = " + path);
+
+									picIdList.add(uploadPictureBean.getPic_id());
+								}
+								else {
+									uploadPictureBean = new UploadPictureBean();
+									uploadPictureBean.setKey(pathKey);
+									uploadPictureBean.setPath(path);
+
+									if (path.toString().startsWith("content://")) {
+										Uri uri = Uri.parse(path);
+										path = FileUtils.getPath(GlobalContext.getInstance(), uri);
+									}
+									else {
+										path = path.toString().replace("file://", "");
+									}
+
+									Logger.w(String.format("上传第%d个文件， 路径 = ", i, path));
+
+									File file = new File(path);
+
+									if (!file.exists())
+										throw new TaskException("图片不存在或已删除");
+
+									// 压缩文件
+									file = AisenUtils.getUploadFile(file);
+									Logger.w("上传图片大小" + (file.length() / 1024) + "KB");
+
+									// 开始上传
+									UploadPictureResultBean resultBean = SinaSDK.getInstance(mAccount.getAdvancedToken()).uploadPicture(file);
+									Logger.w("成功上传一张图片，pic_id = " + resultBean.getPic_id());
+									uploadPictureBean.setPic_id(resultBean.getPic_id());
+									picIdList.add(resultBean.getPic_id());
+
+									// 更新到数据库
+									SinaDB.getSqlite().insert(new Extra(loggedIn.getIdstr(), null), uploadPictureBean);
+								}
+							}
+
+							// 图片都上传完了，开始发布微博
+							String picIdStr = "";
+							for (String picId : picIdList) {
+								picIdStr = picIdStr + picId + ",";
+							}
+							picIdStr = picIdStr.substring(0, picIdStr.length() - 1);
+							bean.getParams().addParameter("pic_id", picIdStr);
+							return SinaSDK.getInstance(mAccount.getToken()).statusesUploadUrlText(bean.getParams());
+						}
+
 //						file.delete();
 						return result;
 					}

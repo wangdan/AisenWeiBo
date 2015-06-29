@@ -14,9 +14,14 @@ public class AccountDB {
 		String whereClause = String.format(" %s = ? ", FieldUtils.KEY);
 		String[] whereArgs = new String[]{ "Logedin" };
 		SinaDB.getSqlite().delete(AccountBean.class, whereClause, whereArgs);
-		
-		// 设置当前登录账户
-		SinaDB.getSqlite().insertOrReplace(new Extra(null, "Logedin"), bean);
+
+		if (bean != null) {
+			// 设置当前登录账户
+			SinaDB.getSqlite().insertOrReplace(new Extra(null, "Logedin"), bean);
+		}
+		else {
+			SinaDB.getSqlite().delete(AccountBean.class, whereClause, whereArgs);
+		}
 	}
 	
 	public static AccountBean getLogedinAccount() {

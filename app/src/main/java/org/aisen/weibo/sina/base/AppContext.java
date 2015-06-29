@@ -83,6 +83,8 @@ public class AppContext {
         UnreadService.stopService();
         // 移除定时任务
         MyApplication.removeAllPublishAlarm();
+        // 清理登录的账号
+        AccountDB.setLogedinAccount(null);
         // 退出账号
         accountBean = null;
     }

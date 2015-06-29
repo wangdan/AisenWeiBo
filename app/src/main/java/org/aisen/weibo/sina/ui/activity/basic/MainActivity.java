@@ -113,9 +113,6 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
         setContentView(R.layout.as_ui_main);
 
 //        AdTokenUtils.loadIfExpired();
-
-        new CheckTokenInfoTask(AppContext.getAccount()).execute();
-
         BizFragment.getBizFragment(this);
 
         if (Build.VERSION.SDK_INT >= 19) {
@@ -202,6 +199,15 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
         btnFab.setColorPressed(AisenUtils.getThemeColor(this));
         btnFab.setColorRipple(AisenUtils.getThemeColor(this));
 //        btnFab.setOnLongClickListener(this);
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                new CheckTokenInfoTask(AppContext.getAccount()).execute();
+            }
+
+        }, 2000);
     }
 
     @Override
@@ -360,10 +366,14 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
     protected void onResume() {
         super.onResume();
 
-        if (!AppContext.isLogedin())
+        if (!AppContext.isLogedin()) {
             finish();
 
-        if (AppContext.getAccount().getToken().isExpired() || AppContext.getAdvancedToken().isExpired()) {
+            return;
+        }
+
+        if (AppContext.getAccount().getToken().isExpired() ||
+                AppContext.getAdvancedToken() == null || AppContext.getAdvancedToken().isExpired()) {
             AccountFragment.launch(MainActivity.this);
 
             finish();
@@ -707,7 +717,12 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
             account.getToken().setExpires_in(tokenInfo.getExpire_in());
             // Weico授权
             try {
-                tokenInfo = SinaSDK.getInstance(account.getAdvancedToken()).getTokenInfo(account.getAdvancedToken().getToken());
+                if (account.getAdvancedToken() != null)
+                    tokenInfo = SinaSDK.getInstance(account.getAdvancedToken()).getTokenInfo(account.getAdvancedToken().getToken());
+                else {
+                    tokenInfo = new TokenInfo();
+                    tokenInfo.setExpire_in(0);
+                }
             } catch (TaskException e) {
                 e.printStackTrace();
                 if ("21327".equals(e.getCode()) ||
@@ -716,7 +731,8 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
                     tokenInfo.setExpire_in(0);
                 }
             }
-            account.getAdvancedToken().setExpires_in(tokenInfo.getExpire_in());
+            if (account.getAdvancedToken() != null)
+                account.getAdvancedToken().setExpires_in(tokenInfo.getExpire_in());
 
             // 刷新用户信息
             AccountDB.newAccount(account);
@@ -726,7 +742,8 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
                 AccountDB.setLogedinAccount(AppContext.getAccount());
             }
 
-            return account.getToken().isExpired() || account.getAdvancedToken().isExpired();
+            return account.getToken().isExpired() ||
+                    account.getAdvancedToken() == null || account.getAdvancedToken().isExpired();
         }
 
         @Override
@@ -738,6 +755,7 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
                     AppContext.getAccount() != null && AppContext.getAccount().getUserId().equals(account.getUserId())) {
                 AccountFragment.launch(MainActivity.this);
 
+                AppContext.logout();
                 finish();
             }
         }

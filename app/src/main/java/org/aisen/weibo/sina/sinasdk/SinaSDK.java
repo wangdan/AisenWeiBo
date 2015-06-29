@@ -44,6 +44,7 @@ import org.aisen.weibo.sina.sinasdk.bean.Token;
 import org.aisen.weibo.sina.sinasdk.bean.TokenInfo;
 import org.aisen.weibo.sina.sinasdk.bean.TrendsBean;
 import org.aisen.weibo.sina.sinasdk.bean.UnreadCount;
+import org.aisen.weibo.sina.sinasdk.bean.UploadPictureResultBean;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.sinasdk.http.HttpsUtility;
 
@@ -1378,6 +1379,21 @@ public class SinaSDK extends ABizLogic {
 		params.addParameter("count", "101");
 		
 		return doGet(getSetting("getGroupsTimelineIds"), params, StatusesIds.class);
+	}
+
+	// {"bmiddle_pic":"http://ww1.sinaimg.cn/bmiddle/94389574jw1etl94fy67qj21kw0w0qjd.jpg","original_pic":"http://ww1.sinaimg.cn/large/94389574jw1etl94fy67qj21kw0w0qjd.jpg","pic_id":"94389574jw1etl94fy67qj21kw0w0qjd","thumbnail_pic":"http://ww1.sinaimg.cn/thumbnail/94389574jw1etl94fy67qj21kw0w0qjd.jpg"}
+	/**
+	 * 上传一张图片<br/>
+	 * 只支持高级权限
+	 *
+	 * @param file
+	 * @return
+	 * @throws TaskException
+	 */
+	public UploadPictureResultBean uploadPicture(File file) throws TaskException {
+		Params params = new Params();
+
+		return uploadFile(configHttpConfig(), getSetting("publishUploadPicture"), configParams(params), file, null, UploadPictureResultBean.class);
 	}
 	
 }

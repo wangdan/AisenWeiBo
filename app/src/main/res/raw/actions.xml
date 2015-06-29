@@ -555,5 +555,10 @@
 		<des>获取当前登陆用户某一好友分组的微博ID列表</des>
 		<value>friendships/groups/timeline/ids.json</value>
 	</setting>
-	
+
+	<setting type="publishUploadPicture">
+		<des>上传一张图片</des>
+		<value>statuses/upload_pic.json</value>
+	</setting>
+
 </app-settings>

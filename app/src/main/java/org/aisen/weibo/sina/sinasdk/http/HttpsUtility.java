@@ -15,6 +15,7 @@ import org.aisen.android.network.http.Params;
 import org.aisen.android.network.http.ParamsUtil;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.weibo.sina.base.AppSettings;
+import org.aisen.weibo.sina.sinasdk.bean.BaseSinaBean;
 import org.aisen.weibo.sina.sinasdk.core.SinaErrorMsgUtil;
 import org.aisen.weibo.sina.sys.service.OfflineService;
 import org.apache.http.HttpEntity;
@@ -305,6 +306,14 @@ public class HttpsUtility implements IHttpUtility {
 				e.printStackTrace();
 				throw new TaskException(TaskException.TaskError.timeout.toString());
 			}
+
+			if (result instanceof BaseSinaBean) {
+				BaseSinaBean sinaBean = (BaseSinaBean) result;
+				if (sinaBean.getError_code() > 0 && !TextUtils.isEmpty(sinaBean.getError())) {
+					throw new TaskException(String.valueOf(sinaBean.getError_code()), sinaBean.getError());
+				}
+			}
+
 			return result;
 		} catch (SocketTimeoutException e) {
 			e.printStackTrace();
@@ -358,11 +367,18 @@ public class HttpsUtility implements IHttpUtility {
                         OfflineService.OfflineLength iLength = (OfflineService.OfflineLength) result;
                         iLength.setLength(responseStr.length());
                     }
-
 				} catch (Exception e) {
 					e.printStackTrace();
 					throw new TaskException(TaskException.TaskError.timeout.toString());
 				}
+
+				if (result instanceof BaseSinaBean) {
+					BaseSinaBean sinaBean = (BaseSinaBean) result;
+					if (sinaBean.getError_code() > 0 && !TextUtils.isEmpty(sinaBean.getError())) {
+						throw new TaskException(String.valueOf(sinaBean.getError_code()), sinaBean.getError());
+					}
+				}
+
 				return result;
 			} else {
 				try {

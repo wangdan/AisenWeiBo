@@ -48,7 +48,7 @@ public class PublishService extends Service implements InterfacePublisher {
 		if (binder == null)
 			binder = new PublishBinder();
 		if (publishManager == null)
-			publishManager = new PublishManager(this, AppContext.getUser());
+			publishManager = new PublishManager(this, AppContext.getAccount());
 
 		if (intent != null) {
 			if ("org.aisen.weibo.sina.PUBLISH".equals(intent.getAction())) {

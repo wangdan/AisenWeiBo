@@ -93,8 +93,6 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
     @ViewInject(id = R.id.btnAccountAdd, click = "addAccount")
     View btnAccountAdd;
 
-    private int requestAdPosition;
-
     @Override
     protected int inflateContentView() {
         return R.layout.as_ui_account;
@@ -109,6 +107,8 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
         activity.getSupportActionBar().setTitle(R.string.title_acount);
 
         setHasOptionsMenu(true);
+
+        new CheckTokenInfoTask().execute();
     }
 
     @Override
@@ -133,8 +133,6 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
 
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            requestAdPosition = position;
-
                             LoginFragment.launch(AccountFragment.this, account.getAccount(), account.getPassword(), 1000);
                         }
 
@@ -206,9 +204,17 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
             AccessToken token = (AccessToken) data.getSerializableExtra("token");
             Logger.e(token);
 
-            AccountBean accountBean = getAdapterItems().get(requestAdPosition);
-            accountBean.setAdvancedToken(token);
-            AccountDB.newAccount(accountBean);
+            for (AccountBean dbAccount : AccountDB.query()) {
+                if (dbAccount.getUserId().equals(token.getUid())) {
+                    dbAccount.setAdvancedToken(token);
+                    AccountDB.newAccount(dbAccount);
+                    if (AppContext.isLogedin() && AppContext.getUser().getIdstr().equals(dbAccount.getUserId())) {
+                        AppContext.getAccount().setAdvancedToken(token);
+                        AccountDB.setLogedinAccount(AppContext.getAccount());
+                    }
+                    break;
+                }
+            }
 
             requestData(RefreshMode.reset);
         }
@@ -350,7 +356,8 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
 
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            android.os.Process.killProcess(android.os.Process.myPid());
+                            // android.os.Process.killProcess(android.os.Process.myPid());
+                            getActivity().finish();
                         }
                     })
                     .show();
@@ -360,26 +367,11 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
         return super.onBackClick();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        new CheckTokenInfoTask().execute();
-    }
-
-    CheckTokenInfoTask checkTask;
     class CheckTokenInfoTask extends WorkTask<Void, Void, Boolean> {
-
-        CheckTokenInfoTask() {
-            if (checkTask != null)
-                checkTask.cancel(true);
-
-            checkTask = this;
-        }
 
         @Override
         public Boolean workInBackground(Void... params) throws TaskException {
-            for (AccountBean account : getAdapterItems()) {
+            for (AccountBean account : AccountDB.query()) {
                 TokenInfo tokenInfo = null;
                 // Aisen授权
                 try {
@@ -395,7 +387,12 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
                 account.getToken().setExpires_in(tokenInfo.getExpire_in());
                 // Weico授权
                 try {
-                    tokenInfo = SinaSDK.getInstance(account.getAdvancedToken()).getTokenInfo(account.getAdvancedToken().getToken());
+                    if (account.getAdvancedToken() != null)
+                        tokenInfo = SinaSDK.getInstance(account.getAdvancedToken()).getTokenInfo(account.getAdvancedToken().getToken());
+                    else {
+                        tokenInfo = new TokenInfo();
+                        tokenInfo.setExpire_in(0);
+                    }
                 } catch (TaskException e) {
                     e.printStackTrace();
                     if ("21327".equals(e.getCode()) ||
@@ -404,7 +401,8 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
                         tokenInfo.setExpire_in(0);
                     }
                 }
-                account.getAdvancedToken().setExpires_in(tokenInfo.getExpire_in());
+                if (account.getAdvancedToken() != null)
+                    account.getAdvancedToken().setExpires_in(tokenInfo.getExpire_in());
 
                 // 刷新用户信息
                 AccountDB.newAccount(account);
@@ -412,6 +410,11 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
                     AppContext.getAccount().setToken(account.getToken());
                     AppContext.setAdvancedToken(account.getAdvancedToken());
                     AccountDB.setLogedinAccount(AppContext.getAccount());
+
+                    if (account.getToken().isExpired() ||
+                            account.getAdvancedToken() == null || account.getAdvancedToken().isExpired()) {
+                        AppContext.logout();
+                    }
                 }
 
                 publishProgress();
