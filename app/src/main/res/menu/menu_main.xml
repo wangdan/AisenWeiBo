@@ -22,18 +22,22 @@
             app:showAsAction="never"/>
 
         <item
-            android:id="@+id/toggle_offline" android:orderInCategory="4" android:showAsAction="never"
+            android:id="@+id/toggle_offline" android:orderInCategory="4" app:showAsAction="never"
             android:title="@string/toggle_offline"/>
 
         <item
-            android:id="@+id/feedback" android:orderInCategory="10" android:showAsAction="never"
+            android:id="@+id/stop_offline" android:orderInCategory="4" app:showAsAction="never"
+            android:title="@string/stop_offline"/>
+
+        <item
+            android:id="@+id/feedback" android:orderInCategory="10" app:showAsAction="never"
             android:title="@string/main_feedback"/>
 
         <item
-            android:id="@+id/about" android:orderInCategory="11" android:showAsAction="never" android:title="@string/title_about"/>
+            android:id="@+id/about" android:orderInCategory="11" app:showAsAction="never" android:title="@string/title_about"/>
 
         <item
-            android:id="@+id/exitapp" android:orderInCategory="12" android:showAsAction="never" android:title="@string/exitapp"/>
+            android:id="@+id/exitapp" android:orderInCategory="12" app:showAsAction="never" android:title="@string/exitapp"/>
     </group>
 
     <!--<group-->

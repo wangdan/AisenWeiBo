@@ -30,6 +30,7 @@
     <string name="group_add">新增分组</string>
     <string name="publish">写微博</string>
     <string name="toggle_offline">开始离线</string>
+    <string name="stop_offline">停止离线</string>
 
     <string name="timeline_cmt">评论</string>
     <string name="timeline_repost">转发</string>
@@ -513,7 +514,14 @@
 
     <!-- 微博离线 -->
     <string name="offline_groups_dialog">设置离线分组</string>
+    <string name="offline_none_groups">未设置</string>
     <string name="offline_none_groups_remind">未设置离线分组，是否现在设置？</string>
+    <string name="offline_status_size">每次离线微博</string>
+    <string name="offline_pic_task_count_title">设置线程大小</string>
+    <string name="offline_pic_task_count">同时离线图片%s</string>
+    <string name="offline_pic_task_count_summary">允许%s线程同时下载图片，设置越大离线越快</string>
+    <string name="offline_groups">离线分组</string>
+
 
     <string-array name="user_headers">
         <item>全部</item>
@@ -626,6 +634,19 @@
         <item>20条</item>
         <item>50条</item>
         <item>100条</item>
+        <!-- <item>自动</item> -->
+    </string-array>
+
+    <string-array name="picTaskCount">
+        <item>10个</item>
+        <item>20个</item>
+        <item>30个</item>
+    </string-array>
+
+    <string-array name="offlineTimelineCount">
+        <item>50条</item>
+        <item>100条</item>
+        <item>200条</item>
         <!-- <item>自动</item> -->
     </string-array>
 

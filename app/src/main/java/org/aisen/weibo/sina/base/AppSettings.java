@@ -438,21 +438,15 @@ public class AppSettings {
     }
 
     /**
-     * 离线大小
+     * 离线微博大小
      *
      * @return
      */
     public static int getOfflineStatusSize() {
-        return 100;
-    }
+        int[] values = new int[]{ 50, 100, 200 };
 
-    /**
-     * 同时离线图片
-     *
-     * @return
-     */
-    public static boolean offlinePicture() {
-        return true;
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
+        return values[Integer.parseInt(prefs.getString("pOfflineStatusSize", "2"))];
     }
 
     /**
@@ -461,7 +455,10 @@ public class AppSettings {
      * @return
      */
     public static int offlinePicTaskSize() {
-        return 15;
+        int[] values = new int[]{ 10, 20, 30 };
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
+        return values[Integer.parseInt(prefs.getString("pOfflinePicTaskCount", "2"))];
     }
 
     /**

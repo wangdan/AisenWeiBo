@@ -11,8 +11,8 @@
         <Preference
             android:key="pFlow" android:title="@string/settings_flow"/>
 
-        <!--<Preference-->
-            <!--android:key="pOffline" android:title="@string/settings_offline"/>-->
+        <Preference
+            android:key="pOffline" android:title="@string/settings_offline"/>
 
         <!--<Preference-->
             <!--android:key="pGroupsOffline" android:title="@string/settings_offline"/>-->

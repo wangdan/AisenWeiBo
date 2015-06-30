@@ -49,6 +49,7 @@ import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.BaiduAnalyzeUtils;
 import org.aisen.weibo.sina.support.utils.OfflineUtils;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
+import org.aisen.weibo.sina.sys.service.OfflineService;
 import org.aisen.weibo.sina.ui.activity.profile.WeiboClientActivity;
 import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
 import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
@@ -104,9 +105,13 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
 
     private int fabType = -1;
 
+    private static MainActivity mInstance;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AisenUtils.setStatusBar(this);
+
+        mInstance = this;
 
         super.onCreate(savedInstanceState);
 
@@ -382,6 +387,8 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
         setFabType();
 
         BaiduAnalyzeUtils.onPageStart("首页");
+
+        invalidateOptionsMenu();
     }
 
     @Override
@@ -593,8 +600,15 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
         menu.findItem(R.id.about).setVisible(false);
         menu.findItem(R.id.feedback).setVisible(false);
 
-        // 离线功能暂时没空维护，先屏蔽
-        menu.findItem(R.id.toggle_offline).setVisible(false);
+        if (OfflineService.getInstance() == null || OfflineService.getInstance().getStatus() == OfflineService.OfflineStatus.init ||
+                OfflineService.getInstance().getStatus() == OfflineService.OfflineStatus.finished) {
+            menu.findItem(R.id.toggle_offline).setVisible(true);
+            menu.findItem(R.id.stop_offline).setVisible(false);
+        }
+        else {
+            menu.findItem(R.id.toggle_offline).setVisible(false);
+            menu.findItem(R.id.stop_offline).setVisible(true);
+        }
 
         // 显示的是首页
         if (lastSelectedMenu != null) {
@@ -646,6 +660,9 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
         // 开始离线
         else if (item.getItemId() == R.id.toggle_offline)
             OfflineUtils.toggleOffline(this);
+        // 停止离线
+        else if (item.getItemId() == R.id.stop_offline)
+            OfflineService.stopOffline();
 
         return super.onOptionsItemSelected(item);
     }
@@ -759,6 +776,17 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
                 finish();
             }
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        mInstance = null;
+    }
+
+    public static MainActivity getInstance() {
+        return mInstance;
     }
 
 }

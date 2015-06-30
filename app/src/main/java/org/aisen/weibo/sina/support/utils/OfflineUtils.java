@@ -138,14 +138,6 @@ public class OfflineUtils {
         return new Extra(AppContext.getUser().getIdstr(), key);
     }
 
-    public static int getLastVersion() {
-        return ActivityHelper.getIntShareData("org.aisen.weibo.sina.Offline_version", 0);
-    }
-
-    public static void newVersion() {
-        ActivityHelper.putIntShareData("org.aisen.weibo.sina.Offline_version", getLastVersion() + 1);
-    }
-
     public interface OnOfflineGroupSetCallback {
 
         public void onChanged(List<Group> newGroups);

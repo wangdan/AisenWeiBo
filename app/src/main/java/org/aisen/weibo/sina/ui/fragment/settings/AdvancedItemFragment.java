@@ -58,7 +58,7 @@ public class AdvancedItemFragment extends BasePreferenceFragment
 		pNotification = (Preference) findPreference("pNotification");
 		pNotification.setOnPreferenceClickListener(this);
 		pFlow = (Preference) findPreference("pFlow");
-//        findPreference("pOffline").setOnPreferenceClickListener(this);
+        findPreference("pOffline").setOnPreferenceClickListener(this);
 		pFlow.setOnPreferenceClickListener(this);
 		pAccount = (Preference) findPreference("pAccount");
 		pAccount.setOnPreferenceClickListener(this);
@@ -79,7 +79,7 @@ public class AdvancedItemFragment extends BasePreferenceFragment
 			AccountFragment.launch(getActivity());
 		}
         else if ("pOffline".equals(preference.getKey())) {
-//            OfflineSettingsFragment.launch(getActivity());
+            OfflineSettingsFragment.launch(getActivity());
         }
 		return true;
 	}
