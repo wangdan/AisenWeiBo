@@ -88,6 +88,8 @@ public class AisenUtils {
     }
 
     public static File getUploadFile(File source) {
+        Logger.w("原图图片大小" + (source.length() / 1024) + "KB");
+
         if (source.getName().toLowerCase().endsWith(".gif")) {
             Logger.w("上传图片是GIF图片，上传原图");
             return source;

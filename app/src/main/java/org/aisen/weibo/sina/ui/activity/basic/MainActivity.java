@@ -730,6 +730,9 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
                     tokenInfo = new TokenInfo();
                     tokenInfo.setExpire_in(0);
                 }
+                else {
+                    return false;
+                }
             }
             account.getToken().setExpires_in(tokenInfo.getExpire_in());
             // Weico授权
@@ -746,6 +749,9 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
                         "21317".equals(e.getCode())) {
                     tokenInfo = new TokenInfo();
                     tokenInfo.setExpire_in(0);
+                }
+                else {
+                    return false;
                 }
             }
             if (account.getAdvancedToken() != null)
