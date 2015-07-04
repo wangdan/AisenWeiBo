@@ -255,8 +255,10 @@ public abstract class APublishFragment extends ABaseFragment
 			config.setBitmapCompress(TimelineBitmapCompress.class);
 			config.setProgress(new PublishDownloadProcess());
 
-			layPicContainer.removeAllViews();
-			scrollPicContainer.setVisibility(View.VISIBLE);
+			if (layPicContainer != null) {
+				layPicContainer.removeAllViews();
+				scrollPicContainer.setVisibility(View.VISIBLE);
+			}
 			for (String path : images) {
 				View itemView = View.inflate(getActivity(), R.layout.as_item_publish_pic, null);
 				ImageView img = (ImageView) itemView.findViewById(R.id.img);
@@ -283,12 +285,15 @@ public abstract class APublishFragment extends ABaseFragment
 
 				BitmapLoader.getInstance().display(this, path, img, config);
 
-				layPicContainer.addView(itemView,
-						new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+				if (layPicContainer != null) {
+					layPicContainer.addView(itemView,
+							new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+				}
 			}
 		}
 		else {
-			scrollPicContainer.setVisibility(View.GONE);
+			if (scrollPicContainer != null)
+				scrollPicContainer.setVisibility(View.GONE);
 			layImageCover.setVisibility(View.GONE);
 			picShow.setVisibility(View.GONE);
 		}

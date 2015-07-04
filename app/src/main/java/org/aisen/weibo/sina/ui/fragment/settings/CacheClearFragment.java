@@ -110,8 +110,8 @@ public class CacheClearFragment extends ABaseFragment implements OnPreferenceCli
 							if (clear)
 								Logger.v("ClearCache", "缓存超过2天，删除该缓存");
 						}
-						if (clear && file.delete())
-							SystemUtils.scanPhoto(file);
+//						if (clear && file.delete())
+//							SystemUtils.scanPhoto(file);
 					}
 				}
 				
@@ -226,8 +226,8 @@ public class CacheClearFragment extends ABaseFragment implements OnPreferenceCli
 						for (File childFile : childFiles)
 							deleteFile(childFile);
 					} else {
-						if (file.delete())
-							SystemUtils.scanPhoto(file);
+//						if (file.delete())
+//							SystemUtils.scanPhoto(file);
 					}
 				}
 				

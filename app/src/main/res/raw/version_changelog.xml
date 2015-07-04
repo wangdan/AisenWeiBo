@@ -8,8 +8,15 @@
         chg:changeLogFileResourceId="@raw/custom_changelog"
         in your View component in layout file -->
 
+	<changelogversion versionName="5.0.6" changeDate="2015-07">
+		<changelogtext>修复5.0以上设置通知间隔崩溃的bug.</changelogtext>
+		<changelogtext>更新授权方式，必须高级授权.</changelogtext>
+		<changelogtext>新增多图上传.</changelogtext>
+		<changelogtext>新增离线下载.</changelogtext>
+	</changelogversion>
+
     <changelogversion versionName="5.0.5" changeDate="2015-05">
-        <changelogtext>关注、取消关注使用搞基授权.</changelogtext>
+        <changelogtext>关注、取消关注使用高级授权.</changelogtext>
     </changelogversion>
 
     <changelogversion versionName="5.0.3" changeDate="2015-05">

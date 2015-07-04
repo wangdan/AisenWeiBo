@@ -4,11 +4,11 @@
     <Preference
         android:key="pOfflineGroups" android:title="@string/offline_groups"/>
 
-    <ListPreference
+    <org.aisen.weibo.sina.ui.widget.AisenListPreference
         android:defaultValue="2" android:dialogTitle="@string/offline_status_size" android:entries="@array/offlineTimelineCount"
         android:entryValues="@array/prefValues" android:key="pOfflineStatusSize" android:title="@string/offline_status_size"/>
 
-    <ListPreference
+    <org.aisen.weibo.sina.ui.widget.AisenListPreference
         android:defaultValue="2" android:dialogTitle="@string/offline_pic_task_count_title" android:entries="@array/picTaskCount"
         android:entryValues="@array/prefValues" android:key="pOfflinePicTaskCount" android:title="@string/offline_pic_task_count_title"/>
 

@@ -50,7 +50,7 @@ public class UnreadService extends Service {
 	}
 
 	public static void updateAlarm() {
-		Intent intent = new Intent();
+		Intent intent = new Intent(GlobalContext.getInstance(), UnreadService.class);
 		intent.setAction(ACTION_UPDATE);
 		GlobalContext.getInstance().startService(intent);
 	}

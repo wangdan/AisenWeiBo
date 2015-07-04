@@ -119,11 +119,6 @@
 
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
-            <intent-filter>
-                <action android:name="org.aisen.weibo.sina.ACTION_UPDATE"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
         </service>
         <!-- 定时发布广播 -->
         <receiver android:name="org.aisen.weibo.sina.sys.receiver.TimingBroadcastReceiver">

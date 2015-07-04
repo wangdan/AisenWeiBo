@@ -732,7 +732,10 @@ public class AisenUtils {
     public static Drawable getProgressBarDrawable() {
         if (BaseActivity.getRunningActivity() != null) {
             Activity context = BaseActivity.getRunningActivity();
-            return new CircularProgressDrawable.Builder(context).color(Utils.resolveColor(context, R.attr.theme_color, Color.BLUE)).build();
+
+            int color = context.getResources().getColor(ThemeUtils.themeColorArr[AppSettings.getThemeColor()][0]);
+
+            return new CircularProgressDrawable.Builder(context).color(color).build();
         }
 
         return null;

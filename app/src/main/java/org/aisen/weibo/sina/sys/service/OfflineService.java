@@ -30,8 +30,18 @@ import org.aisen.weibo.sina.support.bean.OfflinePictureBean;
 import org.aisen.weibo.sina.support.notifier.OfflineNotifier;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.ui.activity.basic.MainActivity;
+import org.apache.http.Header;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.params.ConnRouteParams;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -267,7 +277,8 @@ public class OfflineService extends Service {
                                     OfflinePictureBean picture = new OfflinePictureBean();
                                     picture.setThumb(picUrl.getThumbnail_pic());
 
-                                    if (!mPictureMap.containsKey(KeyGenerator.generateMD5(picture.getThumb()))) {
+                                    if (!mPictureMap.containsKey(KeyGenerator.generateMD5(picture.getThumb()))
+                                            && !BitmapLoader.getInstance().getCacheFile(picture.getThumb()).exists()) {
                                         pictureList.add(picture);
 
                                         mPictureMap.put(KeyGenerator.generateMD5(picture.getThumb()), picture.getThumb());
@@ -278,23 +289,25 @@ public class OfflineService extends Service {
                             // 处理微博头像
                             WeiBoUser user = status.getUser();
                             if (user != null) {
-                                if (!mPictureMap.containsKey(KeyGenerator.generateMD5(AisenUtils.getUserPhoto(user)))) {
+                                if (!mPictureMap.containsKey(KeyGenerator.generateMD5(AisenUtils.getUserPhoto(user))) &&
+                                        BitmapLoader.getInstance().getCacheFile(AisenUtils.getUserPhoto(user)).exists()) {
                                     OfflinePictureBean picture = new OfflinePictureBean();
                                     picture.setThumb(AisenUtils.getUserPhoto(user));
                                     pictureList.add(picture);
 
-                                    mPictureMap.put(KeyGenerator.generateMD5(picture.getThumb()), picture.getThumb());
+                                    mPictureMap.put(KeyGenerator.generateMD5(AisenUtils.getUserPhoto(user)), AisenUtils.getUserPhoto(user));
                                 }
                             }
                             // 转发微博头像
                             if (status.getRetweeted_status() != null && status.getRetweeted_status().getUser() != null) {
                                 user = status.getRetweeted_status().getUser();
-                                if (!mPictureMap.containsKey(KeyGenerator.generateMD5(AisenUtils.getUserPhoto(user)))) {
+                                if (!mPictureMap.containsKey(KeyGenerator.generateMD5(AisenUtils.getUserPhoto(user))) &&
+                                        BitmapLoader.getInstance().getCacheFile(AisenUtils.getUserPhoto(user)).exists()) {
                                     OfflinePictureBean picture = new OfflinePictureBean();
                                     picture.setThumb(AisenUtils.getUserPhoto(user));
                                     pictureList.add(picture);
 
-                                    mPictureMap.put(KeyGenerator.generateMD5(picture.getThumb()), picture.getThumb());
+                                    mPictureMap.put(KeyGenerator.generateMD5(AisenUtils.getUserPhoto(user)), AisenUtils.getUserPhoto(user));
                                 }
                             }
                         }
@@ -362,11 +375,41 @@ public class OfflineService extends Service {
             Logger.v(TAG, "开始离线图片 ---> %s", url);
 
             File file = BitmapLoader.getInstance().getCacheFile(url);
+            File fileTemp = new File(file.getPath() + ".tmp");
             if (!file.exists()) {
                 try {
-                    BitmapLoader.BitmapBytesAndFlag result = BitmapLoader.getInstance().doDownload(url, new ImageConfig());
+                    HttpGet httpGet = new HttpGet(url);
+                    DefaultHttpClient httpClient = null;
+                    BasicHttpParams httpParameters = new BasicHttpParams();
+                    HttpConnectionParams.setConnectionTimeout(httpParameters, 10 * 1000);
+                    HttpConnectionParams.setSoTimeout(httpParameters, 20 * 1000);
+                    httpClient = new DefaultHttpClient(httpParameters);
+                    // 设置网络代理
+                    HttpHost proxy = SystemUtils.getProxy();
+                    if (proxy != null)
+                        httpClient.getParams().setParameter(ConnRouteParams.DEFAULT_PROXY, proxy);
+                    HttpResponse response = httpClient.execute(httpGet);
+                    // 图片大小
+                    int length = 0;
+                    Header header = response.getFirstHeader("Content-Length");
+                    length = Integer.parseInt(header.getValue());
 
-                    bean.setLength(result.bitmapBytes.length);
+                    InputStream in = response.getEntity().getContent();
+
+                    FileOutputStream out = new FileOutputStream(fileTemp);
+                    // 获取图片数据
+                    byte[] buffer = new byte[1024 * 8];
+                    int readLen = -1;
+                    while ((readLen = in.read(buffer)) != -1) {
+                        out.write(buffer, 0, readLen);
+                    }
+                    out.flush();
+                    in.close();
+                    out.close();
+
+                    fileTemp.renameTo(file);
+
+                    bean.setLength(length);
 
                     Logger.v(TAG, "离线图片成功，url = %s", url);
                 } catch (Exception e) {
