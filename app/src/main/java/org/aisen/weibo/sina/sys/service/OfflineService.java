@@ -377,47 +377,53 @@ public class OfflineService extends Service {
             File file = BitmapLoader.getInstance().getCacheFile(url);
             File fileTemp = new File(file.getPath() + ".tmp");
             if (!file.exists()) {
-                try {
-                    HttpGet httpGet = new HttpGet(url);
-                    DefaultHttpClient httpClient = null;
-                    BasicHttpParams httpParameters = new BasicHttpParams();
-                    HttpConnectionParams.setConnectionTimeout(httpParameters, 10 * 1000);
-                    HttpConnectionParams.setSoTimeout(httpParameters, 20 * 1000);
-                    httpClient = new DefaultHttpClient(httpParameters);
-                    // 设置网络代理
-                    HttpHost proxy = SystemUtils.getProxy();
-                    if (proxy != null)
-                        httpClient.getParams().setParameter(ConnRouteParams.DEFAULT_PROXY, proxy);
-                    HttpResponse response = httpClient.execute(httpGet);
-                    // 图片大小
-                    int length = 0;
-                    Header header = response.getFirstHeader("Content-Length");
-                    length = Integer.parseInt(header.getValue());
+                int count = 3;
+                while(--count > 0) {
+                    try {
+                        HttpGet httpGet = new HttpGet(url);
+                        DefaultHttpClient httpClient = null;
+                        BasicHttpParams httpParameters = new BasicHttpParams();
+                        HttpConnectionParams.setConnectionTimeout(httpParameters, 10 * 1000);
+                        HttpConnectionParams.setSoTimeout(httpParameters, 20 * 1000);
+                        httpClient = new DefaultHttpClient(httpParameters);
+                        // 设置网络代理
+                        HttpHost proxy = SystemUtils.getProxy();
+                        if (proxy != null)
+                            httpClient.getParams().setParameter(ConnRouteParams.DEFAULT_PROXY, proxy);
+                        HttpResponse response = httpClient.execute(httpGet);
+                        // 图片大小
+                        int length = 0;
+                        Header header = response.getFirstHeader("Content-Length");
+                        length = Integer.parseInt(header.getValue());
 
-                    InputStream in = response.getEntity().getContent();
+                        InputStream in = response.getEntity().getContent();
 
-                    FileOutputStream out = new FileOutputStream(fileTemp);
-                    // 获取图片数据
-                    byte[] buffer = new byte[1024 * 8];
-                    int readLen = -1;
-                    while ((readLen = in.read(buffer)) != -1) {
-                        out.write(buffer, 0, readLen);
+                        FileOutputStream out = new FileOutputStream(fileTemp);
+                        // 获取图片数据
+                        byte[] buffer = new byte[1024 * 8];
+                        int readLen = -1;
+                        while ((readLen = in.read(buffer)) != -1) {
+                            out.write(buffer, 0, readLen);
+                        }
+                        out.flush();
+                        in.close();
+                        out.close();
+
+                        fileTemp.renameTo(file);
+
+                        bean.setLength(length);
+                        Logger.v(TAG, "离线图片成功，url = %s", url);
+
+                        break;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+
+                        if (count == 1) {
+                            Logger.e(TAG, "离线图片失败" + e.getMessage() + "" + e);
+
+                            throw new TaskException("");
+                        }
                     }
-                    out.flush();
-                    in.close();
-                    out.close();
-
-                    fileTemp.renameTo(file);
-
-                    bean.setLength(length);
-
-                    Logger.v(TAG, "离线图片成功，url = %s", url);
-                } catch (Exception e) {
-                    e.printStackTrace();
-
-                    Logger.e(TAG, "离线图片失败" + e.getMessage() + "" + e);
-
-                    throw new TaskException("");
                 }
             }
             else {

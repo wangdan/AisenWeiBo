@@ -446,7 +446,7 @@ public class AppSettings {
         int[] values = new int[]{ 50, 100, 200 };
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
-        return values[Integer.parseInt(prefs.getString("pOfflineStatusSize", "2"))];
+        return values[Integer.parseInt(prefs.getString("pOfflineStatusSize", "0"))];
     }
 
     /**

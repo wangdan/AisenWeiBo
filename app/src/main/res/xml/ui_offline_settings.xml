@@ -5,7 +5,7 @@
         android:key="pOfflineGroups" android:title="@string/offline_groups"/>
 
     <org.aisen.weibo.sina.ui.widget.AisenListPreference
-        android:defaultValue="2" android:dialogTitle="@string/offline_status_size" android:entries="@array/offlineTimelineCount"
+        android:defaultValue="0" android:dialogTitle="@string/offline_status_size" android:entries="@array/offlineTimelineCount"
         android:entryValues="@array/prefValues" android:key="pOfflineStatusSize" android:title="@string/offline_status_size"/>
 
     <org.aisen.weibo.sina.ui.widget.AisenListPreference

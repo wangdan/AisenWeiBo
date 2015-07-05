@@ -21,8 +21,6 @@
         <item name="bg_timline_item">@drawable/timeline_publish_single_normal</item>
 
         <item name="android:windowIsTranslucent">true</item>
-
-        <item name="colorControlActivated">@color/comm_black</item>
     </style>
 
     <style name="AppBaseTheme" parent="BaseTheme.Light">
@@ -34,7 +32,6 @@
     </style>
 
     <style name="AppTheme.Main">
-        <item name="colorControlActivated">@color/comm_black</item>
         <item name="android:windowIsTranslucent">false</item>
         <item name="menu_header_height">160dip</item>
     </style>

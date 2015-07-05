@@ -33,6 +33,7 @@ public class CacheClearFragment extends ABaseFragment implements OnPreferenceCli
 //	private ProgressDialog mProgressDialog;
     private MaterialDialog materialDialog;
 	private long cacheSize = 0;
+	private int cacheCount = 0;
 	private String cachePath;
 	
 	@Override
@@ -110,6 +111,9 @@ public class CacheClearFragment extends ABaseFragment implements OnPreferenceCli
 							if (clear)
 								Logger.v("ClearCache", "缓存超过2天，删除该缓存");
 						}
+						else {
+							file.delete();
+						}
 //						if (clear && file.delete())
 //							SystemUtils.scanPhoto(file);
 					}
@@ -125,7 +129,8 @@ public class CacheClearFragment extends ABaseFragment implements OnPreferenceCli
 					int value = Integer.parseInt(values[0]);
 
 
-                    materialDialog.incrementProgress(value / 1024);
+//                    materialDialog.incrementProgress(value / 1024);
+					materialDialog.incrementProgress(1);
 //                    if (value * 1.0f / 1024 / 1024 > 1)
 //                        materialDialog.setContent(String.format("%s M", new DecimalFormat("#.00").format(value * 1.0d / 1024 / 1024)));
 //                    else
@@ -146,21 +151,23 @@ public class CacheClearFragment extends ABaseFragment implements OnPreferenceCli
                                     .contentGravity(GravityEnum.CENTER)
                                     .dismissListener(new DialogInterface.OnDismissListener() {
 
-                                        @Override
-                                        public void onDismiss(DialogInterface dialog) {
-                                            task.cancel(true);
+										@Override
+										public void onDismiss(DialogInterface dialog) {
+											task.cancel(true);
 
-                                            calculateCacheFileSize();
-                                        }
+											calculateCacheFileSize();
+										}
 
-                                    })
+									})
                                     .positiveText(R.string.cancel)
-                                    .progress(false, ((int) (cacheSize / 1024)), true)
-                                    .show();
+//                                    .progress(false, ((int) (cacheSize / 1024)), true)
+									.progress(false, cacheCount, true)
+									.show();
 	}
 	
 	private void calculateCacheFileSize() {
 		cacheSize = 0;
+		cacheCount = 0;
 
 		new WorkTask<Void, Void, Void>() {
 
@@ -199,6 +206,8 @@ public class CacheClearFragment extends ABaseFragment implements OnPreferenceCli
 						calculateFileSize(childFile.getAbsolutePath());
 				} else {
 					cacheSize += file.length();
+
+					cacheCount += 1;
 				}
 			}
 
