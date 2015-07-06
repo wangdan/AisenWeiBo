@@ -204,7 +204,7 @@ public class OfflineService extends Service {
 
             // 新建线程队列，开始下载图片
             List<LoadPictureTask> taskList = new ArrayList<>();
-            for (int i = 0; i < 30; i++) {
+            for (int i = 0; i < 60; i++) {
                 OfflinePictureBean bean = pollPicture();
                 if (bean != null)
                     taskList.add(new LoadPictureTask(bean));
@@ -372,14 +372,14 @@ public class OfflineService extends Service {
             // 下载缩略图
             String url = bean.getThumb();// .replace("thumbnail", "bmiddle");
 
-            Logger.v(TAG, "开始离线图片 ---> %s", url);
-
             File file = BitmapLoader.getInstance().getCacheFile(url);
             File fileTemp = new File(file.getPath() + ".tmp");
             if (!file.exists()) {
-                int count = 3;
-                while(--count > 0) {
+                int repeat = 3;
+                while(--repeat > 0) {
                     try {
+                        Logger.v(TAG, "开始离线图片 ---> %s", url);
+
                         HttpGet httpGet = new HttpGet(url);
                         DefaultHttpClient httpClient = null;
                         BasicHttpParams httpParameters = new BasicHttpParams();
@@ -412,19 +412,23 @@ public class OfflineService extends Service {
                         fileTemp.renameTo(file);
 
                         bean.setLength(length);
-                        Logger.v(TAG, "离线图片成功，url = %s", url);
+//                        Logger.d(TAG, "离线图片成功，url = %s", url);
 
+                        repeat = 0;
                         break;
                     } catch (Exception e) {
                         e.printStackTrace();
 
-                        if (count == 1) {
+                        if (repeat == 1) {
                             Logger.e(TAG, "离线图片失败" + e.getMessage() + "" + e);
 
                             throw new TaskException("");
                         }
                     }
                 }
+
+                if (bean.getLength() > 0)
+                    Logger.v(TAG, "离线图片成功，url = %s", url);
             }
             else {
                 bean.setLength(file.length());
