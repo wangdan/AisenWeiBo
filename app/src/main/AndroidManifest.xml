@@ -23,11 +23,14 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.MANAGE_DOCUMENTS"/>
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="android.permission.GET_TASKS"/>
     <!-- 开机自启动 -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application android:name="org.aisen.weibo.sina.base.MyApplication" android:allowBackup="true" android:icon="@drawable/a_icon_b" android:label="@string/app_name"
                  android:theme="@style/AppTheme">
+        <!--BUGHD-->
+        <meta-data android:value="1177b0896827db847ce901bc8c5703e0" android:name="BUG_HD_SDK_GENERAL_KEY" />
 
         <!-- 启动界面 -->
         <activity android:name="org.aisen.weibo.sina.ui.activity.basic.SplashActivity" android:label="@string/app_name" android:screenOrientation="portrait"

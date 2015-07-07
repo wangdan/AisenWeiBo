@@ -10,25 +10,30 @@ import org.aisen.android.common.utils.Logger;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
-
+import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
+import org.aisen.weibo.sina.sinasdk.core.SinaErrorMsgUtil;
 import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.bean.PublishBean;
 import org.aisen.weibo.sina.support.db.AccountDB;
 import org.aisen.weibo.sina.support.db.EmotionsDB;
 import org.aisen.weibo.sina.support.db.PublishDB;
-import org.aisen.weibo.sina.support.utils.BaiduAnalyzeUtils;
 import org.aisen.weibo.sina.sys.receiver.TimingBroadcastReceiver;
 import org.aisen.weibo.sina.sys.receiver.TimingIntent;
 import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
-import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
-import org.aisen.weibo.sina.sinasdk.core.SinaErrorMsgUtil;
 
+import java.net.URLEncoder;
 import java.util.List;
+
+import im.fir.sdk.FIR;
 
 public class MyApplication extends GlobalContext {
 	
 	@Override
 	public void onCreate() {
+        // 初始化
+        if (AppSettings.isCrashLogUpload()) {
+            FIR.init(this);
+        }
 		super.onCreate();
 
 		// 初始化图片加载
@@ -47,9 +52,6 @@ public class MyApplication extends GlobalContext {
         }
         // 打开Debug日志
         Logger.DEBUG = true;
-
-        if (AppSettings.isCrashLogUpload())
-            initBaiduAnalyze();
 	}
 
     // 刷新定时发布任务
@@ -119,16 +121,13 @@ public class MyApplication extends GlobalContext {
         am.cancel(sender);
     }
 
-    private void initBaiduAnalyze() {
-        if ("test".equals(SettingUtility.getStringSetting("app_channel")))
-            return;
-
-        com.baidu.mobstat.StatService.setAppChannel(this, SettingUtility.getStringSetting("app_channel"), true);
-        com.baidu.mobstat.StatService.setSessionTimeOut(2 * 60);
-//		com.baidu.mobstat.StatService.setSessionTimeOut(10);
-        // 打开崩溃错误收集
-        com.baidu.mobstat.StatService.setOn(this, com.baidu.mobstat.StatService.EXCEPTION_LOG);
-        com.baidu.mobstat.StatService.setDebugOn(true);
+    public static void setDebugAccount(AccountBean account) {
+        try {
+            FIR.addCustomizeValue("uid", account.getUserId());
+            FIR.addCustomizeValue("screen_name", URLEncoder.encode(account.getUser().getScreen_name(), "utf-8"));
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
     }
 
 }

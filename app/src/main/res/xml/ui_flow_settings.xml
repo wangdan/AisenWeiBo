@@ -4,6 +4,8 @@
     <org.aisen.weibo.sina.ui.widget.AisenListPreference android:key="pUploadSetting" android:entries="@array/txtUpload" android:entryValues="@array/prefValues"
 		android:dialogTitle="@string/settings_dt_pic_upload" android:title="@string/settings_dt_pic_upload" android:defaultValue="0" />
 
+    <CheckBoxPreference android:key="pMidPicHint" android:title="@string/settings_midpic_hint" android:defaultValue="true"/>
+
     <CheckBoxPreference android:key="pLargePhoto" android:title="@string/settings_photo" android:defaultValue="true"/>
  
     <CheckBoxPreference android:key="pNonePic" android:title="@string/settings_pic_none" android:defaultValue="false"/>

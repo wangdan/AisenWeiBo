@@ -3,7 +3,6 @@ package org.aisen.weibo.sina.ui.activity.basic;
 import android.os.Bundle;
 
 import org.aisen.android.ui.activity.basic.BaseActivity;
-
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;

@@ -42,7 +42,6 @@ import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.db.AccountDB;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
-import org.aisen.weibo.sina.support.utils.BaiduAnalyzeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
@@ -421,8 +420,6 @@ public class LoginFragment extends ABaseFragment {
             super.onSuccess(result);
 
             Logger.d(TAG, "授权成功");
-
-            BaiduAnalyzeUtils.onEvent("add_account", "添加授权账号");
 
             showMessage(R.string.account_auth_success);
 

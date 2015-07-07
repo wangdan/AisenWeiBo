@@ -80,7 +80,7 @@ public class Logger {
 			Log.e(tag, toJson(msg));
 	}
 	
-	public static void e(String tag, String format, String msg) {
+	public static void e(String tag, String format, Object... msg) {
 		if (DEBUG)
 			Log.w(tag, String.format(format, msg));
 	}

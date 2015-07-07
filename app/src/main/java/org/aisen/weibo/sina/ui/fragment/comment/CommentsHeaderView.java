@@ -86,35 +86,20 @@ public class CommentsHeaderView extends TimelineItemView {
 
         // 有转发微博
         if (data.getRetweeted_status() != null) {
-//            if (hasStatusBar(data)) {
-                setLikeText(data, txtAttribute);
-                setTextCount(txtComment, data.getComments_count(), COMMENT_FORMAT);
-                setTextCount(txtRepost, data.getReposts_count(), REPOST_FORMAT);
-//            }
-//            else {
-//                layStatusBar.setVisibility(View.GONE);
-//            }
+            setLikeText(data, txtAttribute);
+            setTextCount(txtComment, data.getComments_count(), COMMENT_FORMAT);
+            setTextCount(txtRepost, data.getReposts_count(), REPOST_FORMAT);
 
-//            if (hasStatusBar(data.getRetweeted_status())) {
-                setLikeText(data.getRetweeted_status(), txtReAttribute);
-                setTextCount(txtReComment, data.getRetweeted_status().getComments_count(), COMMENT_FORMAT);
-                setTextCount(txtReRepost, data.getRetweeted_status().getReposts_count(), REPOST_FORMAT);
-//            }
-//            else {
-//                layReStatusBar.setVisibility(View.GONE);
-//            }
+            setLikeText(data.getRetweeted_status(), txtReAttribute);
+            setTextCount(txtReComment, data.getRetweeted_status().getComments_count(), COMMENT_FORMAT);
+            setTextCount(txtReRepost, data.getRetweeted_status().getReposts_count(), REPOST_FORMAT);
         }
         else {
             layStatusBar.setVisibility(View.GONE);
 
-//            if (hasStatusBar(data)) {
-                setLikeText(data, txtReAttribute);
-                setTextCount(txtReComment, data.getComments_count(), COMMENT_FORMAT);
-                setTextCount(txtReRepost, data.getReposts_count(), REPOST_FORMAT);
-//            }
-//            else {
-//                layReStatusBar.setVisibility(View.GONE);
-//            }
+            setLikeText(data, txtReAttribute);
+            setTextCount(txtReComment, data.getComments_count(), COMMENT_FORMAT);
+            setTextCount(txtReRepost, data.getReposts_count(), REPOST_FORMAT);
         }
     }
 
@@ -122,7 +107,6 @@ public class CommentsHeaderView extends TimelineItemView {
         final LikeBean reLikeBean = DoLikeAction.likeCache.get(data.getId() + "");
 
             likeTxt.setTag(data);
-//        if (data.getAttitudes_count() > 0 || (reLikeBean != null && reLikeBean.isLiked())) {
             likeTxt.setVisibility(View.VISIBLE);
             String meLike = reLikeBean != null && reLikeBean.isLiked() ? "+1" : "";
             likeTxt.setText(String.format(ATTRIBUTE_FORMAT, data.getAttitudes_count(), meLike));
@@ -153,10 +137,6 @@ public class CommentsHeaderView extends TimelineItemView {
                 }
 
             });
-//        }
-//        else {
-//            likeTxt.setVisibility(View.GONE);
-//        }
     }
 
     private void setRepostClickListener(View view, final StatusContent status) {
@@ -169,20 +149,6 @@ public class CommentsHeaderView extends TimelineItemView {
 
         });
     }
-
-//    private boolean hasStatusBar(StatusContent data) {
-//        if (data.getAttitudes_count() > 0) {
-//            return true;
-//        }
-//        else if (!TextUtils.isEmpty(data.getComments_count()) && Integer.parseInt(data.getComments_count()) > 0) {
-//            return true;
-//        }
-//        else if (!TextUtils.isEmpty(data.getReposts_count()) && Integer.parseInt(data.getReposts_count()) > 0) {
-//            return true;
-//        }
-//
-//        return false;
-//    }
 
     private void setTextCount(TextView textView, String count, String formatStr) {
         if (TextUtils.isEmpty(count) || Integer.parseInt(count) == 0) {

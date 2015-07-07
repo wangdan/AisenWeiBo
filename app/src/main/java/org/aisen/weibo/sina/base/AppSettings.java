@@ -438,6 +438,16 @@ public class AppSettings {
     }
 
     /**
+     * 开启高清图已下载提示
+     *
+     * @return
+     */
+    public static boolean midPicHint() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
+        return prefs.getBoolean("pMidPicHint", true);
+    }
+
+    /**
      * 离线微博大小
      *
      * @return
@@ -450,12 +460,22 @@ public class AppSettings {
     }
 
     /**
+     * 同时离线中图
+     *
+     * @return
+     */
+    public static boolean offlineMidPic() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
+        return prefs.getBoolean("pLoadMidPicture", true);
+    }
+
+    /**
      * 同时离线图片线程大小
      *
      * @return
      */
     public static int offlinePicTaskSize() {
-        int[] values = new int[]{ 10, 20, 30 };
+        int[] values = new int[]{ 10, 20, 30, 50 };
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
         return values[Integer.parseInt(prefs.getString("pOfflinePicTaskCount", "2"))];

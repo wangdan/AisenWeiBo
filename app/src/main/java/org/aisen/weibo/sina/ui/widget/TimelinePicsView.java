@@ -20,17 +20,14 @@ import org.aisen.android.component.bitmaploader.core.BitmapOwner;
 import org.aisen.android.component.bitmaploader.core.ImageConfig;
 import org.aisen.android.component.bitmaploader.core.LruMemoryCache;
 import org.aisen.android.ui.fragment.ABaseFragment;
-
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
+import org.aisen.weibo.sina.sinasdk.bean.PicUrls;
+import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.support.bean.PicSize;
 import org.aisen.weibo.sina.support.compress.TimelineThumbBitmapCompress;
 import org.aisen.weibo.sina.ui.fragment.basic.BizFragment;
-import org.aisen.weibo.sina.ui.fragment.comment.TimelineCommentFragment;
 import org.aisen.weibo.sina.ui.fragment.profile.PhotosFragment;
-import org.aisen.weibo.sina.ui.fragment.timeline.TimelineRepostFragment;
-import org.aisen.weibo.sina.sinasdk.bean.PicUrls;
-import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 
 import java.io.File;
 
@@ -619,20 +616,13 @@ public class TimelinePicsView extends ViewGroup implements BitmapOwner {
 					config.setMaxWidth(imgRect.right - imgRect.left);
 					config.setMaxHeight(imgRect.bottom - imgRect.top);
 				}
-//				else {
-//					config.setMaxWidth(imgRect.right - imgRect.left);
-//					config.setMaxHeight(0);
-//				}
 
                 config.setBitmapCompress(TimelineThumbBitmapCompress.class);
-//				else if (AppSettings.getPicLargeMode() == 1)
-//					config.setBitmapCompress(Timeline9ggBitmapCompress.class);
-//				else
-//					config.setBitmapCompress(TimelineBitmapCompress.class);
 
                 GifHintImageView gifView = (GifHintImageView) imgView;
 				// gif图片
                 gifView.setHint(url);
+				gifView.setMidHint(picUrls[i].getThumbnail_pic(), large);
                 // 是否截取了
                 if (picUrls.length == 1 && large &&
                                     config.getShowWidth() == TimelineThumbBitmapCompress.cutWidth &&
@@ -823,8 +813,10 @@ public class TimelinePicsView extends ViewGroup implements BitmapOwner {
         if (ownerFragment == null)
             return large;
 
-        return large && (ownerFragment instanceof TimelineCommentFragment ||
-                ownerFragment instanceof TimelineRepostFragment);
+		// 强制关闭
+        return large && false;
+//				&& (ownerFragment instanceof TimelineCommentFragment ||
+//                ownerFragment instanceof TimelineRepostFragment);
     }
 
 	@Override

@@ -31,7 +31,6 @@ import org.aisen.weibo.sina.support.bean.PublishBean;
 import org.aisen.weibo.sina.support.bean.PublishBean.PublishStatus;
 import org.aisen.weibo.sina.support.bean.PublishType;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
-import org.aisen.weibo.sina.support.utils.BaiduAnalyzeUtils;
 import org.aisen.weibo.sina.sinasdk.bean.Group;
 import org.aisen.weibo.sina.sinasdk.bean.Groups;
 
@@ -398,8 +397,6 @@ public class PublishStatusFragment extends APublishFragment {
                                     getActivity().invalidateOptionsMenu();
 
 									setTimingHint();
-									
-									BaiduAnalyzeUtils.onEvent("publish_timing", "发布设置定时");
 								}
 							})
 							.show();

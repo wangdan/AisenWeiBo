@@ -4,6 +4,7 @@ import org.aisen.weibo.sina.support.action.DoLikeAction;
 import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.db.AccountDB;
 import org.aisen.weibo.sina.support.db.SinaDB;
+import org.aisen.weibo.sina.sys.service.OfflineService;
 import org.aisen.weibo.sina.sys.service.UnreadService;
 import org.aisen.weibo.sina.sinasdk.bean.AccessToken;
 import org.aisen.weibo.sina.sinasdk.bean.Groups;
@@ -68,6 +69,10 @@ public class AppContext {
         // 处理点赞数据
         DoLikeAction.refreshLikeCache();
 
+        // 停止离线服务
+        if (OfflineService.getInstance() != null)
+            OfflineService.stopOffline();
+
         if (accountBean.getAdvancedToken() != null)
             AppContext.setAdvancedToken(accountBean.getAdvancedToken());
         else {
@@ -76,6 +81,8 @@ public class AppContext {
             if (token.size() > 0)
                 AppContext.setAdvancedToken(token.get(0));
         }
+
+        MyApplication.setDebugAccount(accountBean);
     }
 
     public static void logout() {

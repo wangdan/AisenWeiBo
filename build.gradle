@@ -17,5 +17,8 @@ allprojects {
     repositories {
         jcenter()
         mavenCentral()
+        maven {
+            url "http://dl.bintray.com/fir/maven"
+        }
     }
 }

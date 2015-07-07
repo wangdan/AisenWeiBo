@@ -46,7 +46,6 @@ import org.aisen.weibo.sina.support.bean.MenuBean;
 import org.aisen.weibo.sina.support.db.AccountDB;
 import org.aisen.weibo.sina.support.db.SinaDB;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
-import org.aisen.weibo.sina.support.utils.BaiduAnalyzeUtils;
 import org.aisen.weibo.sina.support.utils.OfflineUtils;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
 import org.aisen.weibo.sina.sys.service.OfflineService;
@@ -109,6 +108,8 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        OfflineService.setOfflineFinished(AppContext.getUser(), false);
+
         AisenUtils.setStatusBar(this);
 
         mInstance = this;
@@ -384,18 +385,19 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
             finish();
         }
 
+        // 离线完成，重新加载微博数据
+        if (lastSelectedMenu != null &&
+                "1".equalsIgnoreCase(lastSelectedMenu.getType())) {
+            if (OfflineService.isOfflineFinished(AppContext.getUser())) {
+                OfflineService.setOfflineFinished(AppContext.getUser(), false);
+
+                onMenuSelected(MenuGenerator.generateMenu("1"), true, null);
+            }
+        }
+
         setFabType();
 
-        BaiduAnalyzeUtils.onPageStart("首页");
-
         invalidateOptionsMenu();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        BaiduAnalyzeUtils.onPageEnd("首页");
     }
 
     private void setFabType() {
@@ -789,6 +791,10 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
         super.onDestroy();
 
         mInstance = null;
+    }
+
+    public MenuBean getSelectedMenu() {
+        return lastSelectedMenu;
     }
 
     public static MainActivity getInstance() {

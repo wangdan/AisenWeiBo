@@ -499,6 +499,7 @@
     <string name="settings_clear_cache">清理缓存</string>
     <string name="settings_dt_pic_upload">图片上传质量</string>
     <string name="settings_photo">显示高清头像</string>
+    <string name="settings_midpic_hint">显示高清图已下载提示</string>
     <string name="settings_pic_none">开启列表无图模式</string>
     <string name="settings_pic_mode">图片加载模式</string>
     <string name="settings_dt_status_count">微博每次加载数量</string>
@@ -521,6 +522,8 @@
     <string name="offline_pic_task_count">同时离线图片%s</string>
     <string name="offline_pic_task_count_summary">允许%s线程同时下载图片，设置越大离线越快</string>
     <string name="offline_groups">离线分组</string>
+    <string name="settings_load_midpic">离线中图</string>
+    <string name="settings_load_midpic_summary">建议勾选时只离线50条微博，将耗费较多流量和时间</string>
 
 
     <string-array name="user_headers">

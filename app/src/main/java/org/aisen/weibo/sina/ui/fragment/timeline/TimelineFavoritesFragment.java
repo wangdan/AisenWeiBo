@@ -17,14 +17,12 @@ import org.aisen.android.support.paging.IPaging;
 import org.aisen.android.support.paging.PageIndexPaging;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.fragment.ABaseFragment;
-import org.aisen.android.ui.fragment.ARefreshFragment;
 import org.aisen.android.ui.fragment.AStripTabsFragment;
 
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.support.cache.FavoritesCacheUtility;
-import org.aisen.weibo.sina.support.utils.BaiduAnalyzeUtils;
 import org.aisen.weibo.sina.ui.fragment.profile.UserProfilePagerFragment;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
 import org.aisen.weibo.sina.sinasdk.bean.Favorities;
@@ -174,8 +172,6 @@ public class TimelineFavoritesFragment extends ATimelineFragment
     	IntentFilter filter = new IntentFilter();
     	filter.addAction("org.aisen.weibo.sina.FAV_DESTORY");
     	getActivity().registerReceiver(receiver, filter);
-    	
-    	BaiduAnalyzeUtils.onPageStart("收藏的微博");
     }
     
     @Override
@@ -183,8 +179,6 @@ public class TimelineFavoritesFragment extends ATimelineFragment
     	super.onPause();
     	
     	getActivity().unregisterReceiver(receiver);
-    	
-    	BaiduAnalyzeUtils.onPageEnd("收藏的微博");
     }
     
     // 接收来自BizFragment的删除(溢出菜单)

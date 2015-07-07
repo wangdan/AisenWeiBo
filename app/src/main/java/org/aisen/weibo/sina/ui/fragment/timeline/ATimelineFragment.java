@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
+import org.aisen.android.common.utils.ActivityHelper;
 import org.aisen.android.component.container.FragmentContainerActivity;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.support.adapter.ABaseAdapter.AbstractItemView;
@@ -22,6 +23,7 @@ import org.aisen.android.ui.fragment.ATabLayoutFragment;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
+import org.aisen.weibo.sina.sinasdk.bean.Group;
 import org.aisen.weibo.sina.support.paging.TimelinePagingProcessor;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.ui.activity.basic.MainActivity;
@@ -68,6 +70,12 @@ public abstract class ATimelineFragment extends AWeiboRefreshListFragment<Status
         getRefreshView().setOnItemLongClickListener(this);
 
 		setHasOptionsMenu(true);
+	}
+
+	public static void clearLastRead(Group group, WeiBoUser user) {
+		String key = AisenUtils.getUserKey(group.getIdstr(), user);
+		ActivityHelper.putIntShareData(key + "Position", 0);
+		ActivityHelper.putIntShareData(key + "Top", 0);
 	}
 
 	@Override

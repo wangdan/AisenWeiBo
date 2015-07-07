@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.common.utils.ViewUtils;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
@@ -27,15 +28,16 @@ import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.fragment.AListFragment;
 import org.aisen.android.ui.widget.CircleImageView;
-
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.MyApplication;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
+import org.aisen.weibo.sina.sinasdk.bean.AccessToken;
 import org.aisen.weibo.sina.sinasdk.bean.TokenInfo;
+import org.aisen.weibo.sina.sinasdk.bean.UnreadCount;
+import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.db.AccountDB;
-import org.aisen.weibo.sina.support.db.SinaDB;
 import org.aisen.weibo.sina.support.notifier.UnreadCountNotifier;
 import org.aisen.weibo.sina.support.publisher.PublishNotifier;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
@@ -43,13 +45,9 @@ import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
 import org.aisen.weibo.sina.sys.service.PublishService;
 import org.aisen.weibo.sina.sys.service.UnreadService;
 import org.aisen.weibo.sina.ui.activity.basic.MainActivity;
-import org.aisen.weibo.sina.sinasdk.bean.AccessToken;
-import org.aisen.weibo.sina.sinasdk.bean.UnreadCount;
-import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 账号管理页面

@@ -10,7 +10,6 @@ import org.aisen.android.network.task.TaskException;
 import org.aisen.android.ui.fragment.ABaseFragment;
 import org.aisen.android.ui.fragment.ARefreshFragment;
 import org.aisen.android.ui.fragment.AStripTabsFragment;
-
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
@@ -18,9 +17,8 @@ import org.aisen.weibo.sina.sinasdk.bean.StatusContents;
 
 /**
  * 分组的微博列表
- * 
- * @author wangdan
  *
+ * @author wangdan
  */
 public class TimelineGroupsFragment extends ATimelineFragment implements AStripTabsFragment.IStripTabInitData {
 
@@ -28,16 +26,16 @@ public class TimelineGroupsFragment extends ATimelineFragment implements AStripT
         return newInstance(groupBean, false);
     }
 
-	public static ABaseFragment newInstance(AStripTabsFragment.StripTabItem groupBean, boolean offline) {
-		TimelineGroupsFragment fragment = new TimelineGroupsFragment();
-		
-		Bundle args = new Bundle();
-		args.putSerializable("bean", groupBean);
+    public static ABaseFragment newInstance(AStripTabsFragment.StripTabItem groupBean, boolean offline) {
+        TimelineGroupsFragment fragment = new TimelineGroupsFragment();
+
+        Bundle args = new Bundle();
+        args.putSerializable("bean", groupBean);
         args.putBoolean("offline", offline);
-		fragment.setArguments(args);
-		
-		return fragment;
-	}
+        fragment.setArguments(args);
+
+        return fragment;
+    }
 
     static int count = 0;
 
@@ -71,38 +69,37 @@ public class TimelineGroupsFragment extends ATimelineFragment implements AStripT
         if (getTaskCount("TimelineTask") == 0) {
             if (getPagerCurrentFragment() == this)
                 new FriendsGroupTimelineTask(mode).execute();
-        }
-        else {
+        } else {
             new FriendsGroupTimelineTask(mode).execute();
         }
     }
 
-	// 加载分组好友的task
-	class FriendsGroupTimelineTask extends TimelineTask {
+    // 加载分组好友的task
+    class FriendsGroupTimelineTask extends TimelineTask {
 
-		public FriendsGroupTimelineTask(ARefreshFragment.RefreshMode mode) {
-			super(mode);
-		}
+        public FriendsGroupTimelineTask(ARefreshFragment.RefreshMode mode) {
+            super(mode);
+        }
 
-		@Override
-		protected StatusContents workInBackground(ARefreshFragment.RefreshMode mode, String previousPage, String nextPage, Void... p) throws TaskException {
-			Params params = new Params();
+        @Override
+        protected StatusContents workInBackground(ARefreshFragment.RefreshMode mode, String previousPage, String nextPage, Void... p) throws TaskException {
+            Params params = new Params();
 
-			if (mode == ARefreshFragment.RefreshMode.refresh && !TextUtils.isEmpty(previousPage))
-				params.addParameter("since_id", previousPage);
+            if (mode == ARefreshFragment.RefreshMode.refresh && !TextUtils.isEmpty(previousPage))
+                params.addParameter("since_id", previousPage);
 
-			if (mode == ARefreshFragment.RefreshMode.update && !TextUtils.isEmpty(nextPage))
-				params.addParameter("max_id", nextPage);
+            if (mode == ARefreshFragment.RefreshMode.update && !TextUtils.isEmpty(nextPage))
+                params.addParameter("max_id", nextPage);
 
-			params.addParameter("list_id", getGroup().getType());
-			
-			params.addParameter("count", String.valueOf(AppSettings.getTimelineCount()));
+            params.addParameter("list_id", getGroup().getType());
+
+            params.addParameter("count", String.valueOf(AppSettings.getTimelineCount()));
 
             boolean offline = getArguments() != null ? getArguments().getBoolean("offline") : false;
 
             long time = System.currentTimeMillis();
-			StatusContents beans = offline ? SinaSDK.getInstance(AppContext.getToken(), getTaskCacheMode(this)).offlineFriendshipGroupsTimeline(params)
-                                           : SinaSDK.getInstance(AppContext.getToken(), getTaskCacheMode(this)).friendshipGroupsTimeline(params);
+            StatusContents beans = offline ? SinaSDK.getInstance(AppContext.getToken(), getTaskCacheMode(this)).offlineFriendshipGroupsTimeline(params)
+                    : SinaSDK.getInstance(AppContext.getToken(), getTaskCacheMode(this)).friendshipGroupsTimeline(params);
 
             // 如果是缓存，延迟一点返回，防止有点点卡顿
             if (beans.isCache() && System.currentTimeMillis() - time < 100) {
@@ -113,10 +110,10 @@ public class TimelineGroupsFragment extends ATimelineFragment implements AStripT
                 }
             }
 
-			return beans;
-		}
+            return beans;
+        }
 
-	}
+    }
 
     public void resetDatas() {
         cleatTaskCount("TimelineTask");
@@ -131,5 +128,5 @@ public class TimelineGroupsFragment extends ATimelineFragment implements AStripT
 
         new FriendsGroupTimelineTask(RefreshMode.reset).execute();
     }
-	
+
 }

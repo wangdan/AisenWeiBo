@@ -10,18 +10,32 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
+import org.aisen.android.common.context.GlobalContext;
+import org.aisen.android.common.utils.SystemUtils;
+import org.aisen.android.common.utils.Utils;
+import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.weibo.sina.R;
+import org.aisen.weibo.sina.base.AppSettings;
+import org.aisen.weibo.sina.support.utils.ThemeUtils;
 
 public class GifHintImageView extends ImageView {
 
 	private boolean showGif = false;
     
     private boolean cut = false;
+
+    private boolean midExist = false;
+
+    private String url;
 	
 	public static Bitmap gif = null;
     public static Bitmap cutBitmap = null;
-	
+
+    private int gap = 0;
+
 	private Paint paint;
+    private Paint dotPaint;
+    private int theme = -1;
 
 	public GifHintImageView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -60,7 +74,22 @@ public class GifHintImageView extends ImageView {
 
                 canvas.drawBitmap(cutBitmap, getWidth() - cutBitmap.getWidth(), getHeight() - cutBitmap.getHeight(), paint);
             }
-		}
+
+            // 如果高清图已下载，显示提示
+            if (AppSettings.midPicHint() && midExist) {
+                if (dotPaint == null) {
+                    dotPaint = new Paint();
+                    gap = Utils.dip2px(8);
+                }
+                if (theme != AppSettings.getThemeColor()) {
+                    dotPaint.setColor(GlobalContext.getInstance().getResources().getColor(ThemeUtils.themeColorArr[AppSettings.getThemeColor()][0]));
+
+                    theme = AppSettings.getThemeColor();
+                }
+                canvas.drawRect(getWidth() - gap, 0, getWidth(), gap, dotPaint);
+            }
+        }
+
 	}
 
     @Override
@@ -69,6 +98,13 @@ public class GifHintImageView extends ImageView {
 
         if (getParent() instanceof TimelinePicsView)
             ((TimelinePicsView) getParent()).checkPicSize();
+    }
+
+    public void setMidHint(String url, boolean large) {
+        this.url = url;
+
+        String midUrl = url.replace("thumbnail", "bmiddle");
+        midExist = BitmapLoader.getInstance().getCacheFile(midUrl).exists() && !large;
     }
 
     public void setCut(boolean cut) {

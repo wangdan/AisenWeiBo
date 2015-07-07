@@ -5,9 +5,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -22,10 +19,7 @@ import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.fragment.ABaseFragment;
 
 import org.aisen.weibo.sina.R;
-import org.aisen.weibo.sina.base.AppSettings;
-import org.aisen.weibo.sina.support.utils.BaiduAnalyzeUtils;
 import org.aisen.weibo.sina.ui.activity.basic.BrowserActivity;
-import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
 
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
@@ -154,21 +148,7 @@ public class AboutWebFragment extends ABaseFragment {
 		
 		return super.onBackClick();
 	}
-	
-	@Override
-	public void onResume() {
-		super.onResume();
-		
-		BaiduAnalyzeUtils.onPageStart(getPageTitle(type));
-	}
-	
-	@Override
-	public void onPause() {
-		super.onPause();
-		
-		BaiduAnalyzeUtils.onPageEnd(getPageTitle(type));
-	}
-	
+
 	String getPageTitle(int type) {
 		switch (type) {
 		case 0:

@@ -9,12 +9,10 @@ import android.preference.Preference.OnPreferenceClickListener;
 
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
-
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.db.AccountDB;
-import org.aisen.weibo.sina.support.utils.BaiduAnalyzeUtils;
 import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
 import org.aisen.weibo.sina.ui.widget.AisenTextView;
 
@@ -87,12 +85,8 @@ public class AdvancedItemFragment extends BasePreferenceFragment
 	@Override
 	public boolean onPreferenceChange(Preference preference, Object newValue) {
 		if ("pRotatePic".equals(preference.getKey())) {
-			if (Boolean.parseBoolean(newValue.toString()))
-				BaiduAnalyzeUtils.onEvent("set_rotate_pic", "设置旋转照片");
 		}
 		else if ("pSendDelay".equals(preference.getKey())) {
-			if (Boolean.parseBoolean(newValue.toString()))
-				BaiduAnalyzeUtils.onEvent("set_publish_delay", "设置延迟发布");
 		}
 		else if ("pInnerBrowser".equals(preference.getKey())) {
 			try {

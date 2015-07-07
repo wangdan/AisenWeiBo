@@ -33,7 +33,6 @@ import org.aisen.weibo.sina.support.bean.PublishType;
 import org.aisen.weibo.sina.support.db.PublishDB;
 import org.aisen.weibo.sina.support.publisher.PublishManager;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
-import org.aisen.weibo.sina.support.utils.BaiduAnalyzeUtils;
 import org.aisen.weibo.sina.sys.service.PublishService;
 import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
 import org.aisen.weibo.sina.ui.fragment.basic.BizFragment;
@@ -133,8 +132,6 @@ public class DraftFragment extends AListFragment<PublishBean, ArrayList<PublishB
         getActivity().registerReceiver(receiver, filter);
 
         new DraftTask(RefreshMode.reset).execute();
-
-        BaiduAnalyzeUtils.onPageStart("草稿箱");
     }
 
     @Override
@@ -142,8 +139,6 @@ public class DraftFragment extends AListFragment<PublishBean, ArrayList<PublishB
         super.onPause();
 
         getActivity().unregisterReceiver(receiver);
-
-        BaiduAnalyzeUtils.onPageEnd("草稿箱");
     }
 
     BroadcastReceiver receiver = new BroadcastReceiver() {

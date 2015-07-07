@@ -32,7 +32,6 @@ import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.db.AccountDB;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
-import org.aisen.weibo.sina.support.utils.BaiduAnalyzeUtils;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
 import org.aisen.weibo.sina.sinasdk.bean.Group;
 import org.aisen.weibo.sina.sinasdk.bean.GroupSortResult;
@@ -460,8 +459,6 @@ public class GroupSortFragment extends ADragSortFragment<Group, Groups> {
 
 			// 更新首页排序
 			ActivityHelper.putBooleanShareData("ChanneSortHasChanged", true);
-
-			BaiduAnalyzeUtils.onEvent("sort_group", "分组排序");
 
 			if ("true".equals(result.getResult()))
 				showMessage(R.string.update_success);

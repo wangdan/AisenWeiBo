@@ -8,6 +8,10 @@
         android:defaultValue="0" android:dialogTitle="@string/offline_status_size" android:entries="@array/offlineTimelineCount"
         android:entryValues="@array/prefValues" android:key="pOfflineStatusSize" android:title="@string/offline_status_size"/>
 
+    <CheckBoxPreference
+        android:defaultValue="true" android:key="pLoadMidPicture" android:summary="@string/settings_load_midpic_summary"
+        android:title="@string/settings_load_midpic"/>
+
     <org.aisen.weibo.sina.ui.widget.AisenListPreference
         android:defaultValue="2" android:dialogTitle="@string/offline_pic_task_count_title" android:entries="@array/picTaskCount"
         android:entryValues="@array/prefValues" android:key="pOfflinePicTaskCount" android:title="@string/offline_pic_task_count_title"/>
