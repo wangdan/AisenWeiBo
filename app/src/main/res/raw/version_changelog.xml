@@ -13,6 +13,7 @@
 		<changelogtext>更新授权方式，必须高级授权.</changelogtext>
 		<changelogtext>新增多图上传.</changelogtext>
 		<changelogtext>新增离线下载.</changelogtext>
+		<changelogtext>新增图片点击返回.</changelogtext>
 	</changelogversion>
 
     <changelogversion versionName="5.0.5" changeDate="2015-05">

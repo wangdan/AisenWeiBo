@@ -620,8 +620,8 @@ public abstract class APublishFragment extends ABaseFragment
 
         // 2015 05-09 在5.0有navigationbar的手机，高度高了一个statusBar
         int lockHeight = SystemUtils.getAppContentHeight(getActivity());
-        if (Build.VERSION.SDK_INT <= 19)
-            lockHeight = lockHeight - statusBarHeight;
+//        if (Build.VERSION.SDK_INT < 19)
+//            lockHeight = lockHeight - statusBarHeight;
         lockContainerHeight(lockHeight);
 	}
 

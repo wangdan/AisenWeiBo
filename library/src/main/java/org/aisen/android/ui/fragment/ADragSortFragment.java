@@ -1,14 +1,16 @@
 package org.aisen.android.ui.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AbsListView;
 
-import org.aisen.android.R;
-import org.aisen.android.support.inject.ViewInject;
 import com.mobeta.android.dslv.DragSortController;
 import com.mobeta.android.dslv.DragSortListView;
 import com.mobeta.android.dslv.DragSortListView.DropListener;
+
+import org.aisen.android.R;
+import org.aisen.android.support.inject.ViewInject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -82,6 +84,7 @@ public abstract class ADragSortFragment<T extends Serializable, Ts extends Seria
 		controller.setSortEnabled(true);
 		controller.setDragInitMode(DragSortController.ON_DOWN);
 		controller.setRemoveMode(DragSortController.FLING_REMOVE);
+		controller.setBackgroundColor(Color.parseColor("#50ffffff"));
 		return controller;
 	}
 

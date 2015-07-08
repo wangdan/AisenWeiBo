@@ -9,7 +9,7 @@
             android:id="@+id/dragsortListview" android:layout_width="fill_parent"
             android:layout_height="fill_parent" android:divider="@drawable/divider_groups_sort" android:dividerHeight="1.0dip"
             android:listSelector="?attr/selectableItemBackground" dslv:collapsed_height="2dp" dslv:drag_enabled="true" dslv:drag_scroll_start="0.33" dslv:float_alpha="1.0"
-            dslv:float_background_color="#77000000" dslv:max_drag_scroll_speed="0.5" dslv:slide_shuffle_speed="0.3"
-            dslv:track_drag_sort="false" dslv:use_default_controller="true"/>
+            dslv:max_drag_scroll_speed="0.5" dslv:slide_shuffle_speed="0.3"
+            />
     </LinearLayout>
 </LinearLayout>

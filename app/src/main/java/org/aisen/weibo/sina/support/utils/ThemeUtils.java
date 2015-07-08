@@ -1,6 +1,8 @@
 package org.aisen.weibo.sina.support.utils;
 
+import org.aisen.android.common.context.GlobalContext;
 import org.aisen.weibo.sina.R;
+import org.aisen.weibo.sina.base.AppSettings;
 
 /**
  * Created by wangdan on 15/4/30.
@@ -51,4 +53,7 @@ public class ThemeUtils {
             { R.color.md_blue_grey_500, R.color.md_blue_grey_700 }
     };
 
+        public static int getThemeColor() {
+                return GlobalContext.getInstance().getResources().getColor(themeColorArr[AppSettings.getThemeColor()][0]);
+        }
 }

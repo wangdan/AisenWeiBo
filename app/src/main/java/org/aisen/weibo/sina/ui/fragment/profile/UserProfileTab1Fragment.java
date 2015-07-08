@@ -23,6 +23,7 @@ import org.aisen.android.ui.fragment.ABaseFragment;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.support.utils.ThemeUtils;
 import org.aisen.weibo.sina.ui.activity.profile.WeiboClientActivity;
 import org.aisen.weibo.sina.ui.fragment.basic.BizFragment;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
@@ -366,7 +367,7 @@ public class UserProfileTab1Fragment extends ABaseFragment
         protected void onPrepare() {
             super.onPrepare();
 
-            ViewUtils.createProgressDialog(getActivity(), getString(R.string.profile_group_update_loading), AisenUtils.getProgressBarDrawable()).show();
+            ViewUtils.createProgressDialog(getActivity(), getString(R.string.profile_group_update_loading), ThemeUtils.getThemeColor()).show();
         }
 
         @Override

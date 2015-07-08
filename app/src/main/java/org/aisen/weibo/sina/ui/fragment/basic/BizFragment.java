@@ -1,34 +1,5 @@
 package org.aisen.weibo.sina.ui.fragment.basic;
 
-import java.lang.ref.WeakReference;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.aisen.weibo.sina.R;
-import org.aisen.weibo.sina.base.AppContext;
-import org.aisen.weibo.sina.support.action.DoLikeAction;
-import org.aisen.weibo.sina.support.action.WebLoginAction;
-import org.aisen.weibo.sina.support.db.SinaDB;
-import org.aisen.weibo.sina.support.notifier.UnreadCountNotifier;
-import org.aisen.weibo.sina.support.publisher.Notifier;
-import org.aisen.weibo.sina.support.utils.AisenUtils;
-import org.aisen.weibo.sina.sys.service.UnreadService;
-import org.aisen.weibo.sina.ui.activity.basic.MainActivity;
-import org.aisen.weibo.sina.ui.activity.pics.PicsActivity;
-import org.aisen.weibo.sina.ui.activity.profile.UserProfileActivity;
-import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
-import org.aisen.weibo.sina.ui.fragment.profile.UserProfilePagerFragment;
-import org.aisen.weibo.sina.sinasdk.SinaSDK;
-import org.aisen.weibo.sina.sinasdk.bean.Favority;
-import org.aisen.weibo.sina.sinasdk.bean.SetCount;
-import org.aisen.weibo.sina.sinasdk.bean.StatusComment;
-import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
-import org.aisen.weibo.sina.sinasdk.bean.Token;
-import org.aisen.weibo.sina.sinasdk.bean.UnreadCount;
-import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
-
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -39,16 +10,46 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.common.utils.ViewUtils;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.support.action.IAction;
-import org.aisen.orm.extra.Extra;
-import org.aisen.orm.utils.FieldUtils;
 import org.aisen.android.support.textspan.ClickableTextViewMentionLinkOnTouchListener;
 import org.aisen.android.ui.fragment.ABaseFragment;
+import org.aisen.orm.extra.Extra;
+import org.aisen.orm.utils.FieldUtils;
+import org.aisen.weibo.sina.R;
+import org.aisen.weibo.sina.base.AppContext;
+import org.aisen.weibo.sina.sinasdk.SinaSDK;
+import org.aisen.weibo.sina.sinasdk.bean.Favority;
+import org.aisen.weibo.sina.sinasdk.bean.SetCount;
+import org.aisen.weibo.sina.sinasdk.bean.StatusComment;
+import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
+import org.aisen.weibo.sina.sinasdk.bean.Token;
+import org.aisen.weibo.sina.sinasdk.bean.UnreadCount;
+import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
+import org.aisen.weibo.sina.support.action.DoLikeAction;
+import org.aisen.weibo.sina.support.action.WebLoginAction;
+import org.aisen.weibo.sina.support.db.SinaDB;
+import org.aisen.weibo.sina.support.notifier.UnreadCountNotifier;
+import org.aisen.weibo.sina.support.publisher.Notifier;
+import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.support.utils.ThemeUtils;
+import org.aisen.weibo.sina.sys.service.UnreadService;
+import org.aisen.weibo.sina.ui.activity.basic.MainActivity;
+import org.aisen.weibo.sina.ui.activity.pics.PicsActivity;
+import org.aisen.weibo.sina.ui.activity.profile.UserProfileActivity;
+import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
+import org.aisen.weibo.sina.ui.fragment.profile.UserProfilePagerFragment;
+
+import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 程序一系列业务逻辑处理，如下:<br/>
@@ -188,7 +189,7 @@ public class BizFragment extends ABaseFragment {
                             protected void onPrepare() {
                                 super.onPrepare();
 
-                                ViewUtils.createProgressDialog(getActivity(), getString(R.string.biz_destory_friendship), AisenUtils.getProgressBarDrawable()).show();
+                                ViewUtils.createProgressDialog(getActivity(), getString(R.string.biz_destory_friendship), ThemeUtils.getThemeColor()).show();
                             };
 
                             @Override
@@ -249,7 +250,7 @@ public class BizFragment extends ABaseFragment {
             protected void onPrepare() {
                 super.onPrepare();
 
-                ViewUtils.createProgressDialog(getActivity(), getString(R.string.biz_create_friendship), AisenUtils.getProgressBarDrawable()).show();
+                ViewUtils.createProgressDialog(getActivity(), getString(R.string.biz_create_friendship), ThemeUtils.getThemeColor()).show();
             };
 
             @Override
@@ -329,7 +330,7 @@ public class BizFragment extends ABaseFragment {
                                 protected void onPrepare() {
                                     super.onPrepare();
 
-                                    ViewUtils.createProgressDialog(getActivity(), getString(R.string.biz_remark_loading), AisenUtils.getProgressBarDrawable()).show();
+                                    ViewUtils.createProgressDialog(getActivity(), getString(R.string.biz_remark_loading), ThemeUtils.getThemeColor()).show();
                                 };
 
                                 @Override
@@ -451,7 +452,7 @@ public class BizFragment extends ABaseFragment {
                             protected void onPrepare() {
                                 super.onPrepare();
 
-                                ViewUtils.createProgressDialog(getActivity(), getString(R.string.biz_destory_follower_loading), AisenUtils.getProgressBarDrawable()).show();
+                                ViewUtils.createProgressDialog(getActivity(), getString(R.string.biz_destory_follower_loading), ThemeUtils.getThemeColor()).show();
                             };
 
                             @Override
@@ -506,7 +507,7 @@ public class BizFragment extends ABaseFragment {
             protected void onPrepare() {
                 super.onPrepare();
 
-                ViewUtils.createProgressDialog(getActivity(), getString(R.string.biz_delete_cmt_loading), AisenUtils.getProgressBarDrawable()).show();
+                ViewUtils.createProgressDialog(getActivity(), getString(R.string.biz_delete_cmt_loading), ThemeUtils.getThemeColor()).show();
             };
 
             protected void onFinished() {
@@ -583,7 +584,7 @@ public class BizFragment extends ABaseFragment {
             protected void onPrepare() {
                 super.onPrepare();
 
-                ViewUtils.createProgressDialog(getActivity(), getString(R.string.biz_delete_status_loading), AisenUtils.getProgressBarDrawable()).show();
+                ViewUtils.createProgressDialog(getActivity(), getString(R.string.biz_delete_status_loading), ThemeUtils.getThemeColor()).show();
             };
 
             protected void onFinished() {
@@ -648,7 +649,7 @@ public class BizFragment extends ABaseFragment {
             protected void onPrepare() {
                 super.onPrepare();
 
-                ViewUtils.createProgressDialog(getActivity(), getString(R.string.biz_add_fav), AisenUtils.getProgressBarDrawable()).show();
+                ViewUtils.createProgressDialog(getActivity(), getString(R.string.biz_add_fav), ThemeUtils.getThemeColor()).show();
             };
 
             protected void onFinished() {
@@ -707,7 +708,7 @@ public class BizFragment extends ABaseFragment {
             protected void onPrepare() {
                 super.onPrepare();
 
-                ViewUtils.createProgressDialog(getActivity(), getString(R.string.biz_remove_fav), AisenUtils.getProgressBarDrawable()).show();
+                ViewUtils.createProgressDialog(getActivity(), getString(R.string.biz_remove_fav), ThemeUtils.getThemeColor()).show();
             };
 
             protected void onFinished() {

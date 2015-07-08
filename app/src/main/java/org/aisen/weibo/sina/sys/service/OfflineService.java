@@ -195,7 +195,10 @@ public class OfflineService extends Service {
 
         // 正在运行
         if (BaseActivity.getRunningActivity() instanceof MainActivity) {
-            ((MainActivity) BaseActivity.getRunningActivity()).onMenuSelected(MenuGenerator.generateMenu("1"), true, null);
+            try {
+                ((MainActivity) BaseActivity.getRunningActivity()).onMenuSelected(MenuGenerator.generateMenu("1"), true, null);
+            } catch (Throwable e) {
+            }
         }
         else {
             setOfflineFinished(loggedIn, true);

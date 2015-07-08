@@ -480,7 +480,7 @@ public class AisenUtils {
                                 super.onPrepare();
 
                                 Resources res = GlobalContext.getInstance().getResources();
-                                ViewUtils.createProgressDialog(fragment.getActivity(), res.getString(R.string.processing), AisenUtils.getProgressBarDrawable()).show();
+                                ViewUtils.createProgressDialog(fragment.getActivity(), res.getString(R.string.processing), ThemeUtils.getThemeColor()).show();
                             };
 
                             @Override

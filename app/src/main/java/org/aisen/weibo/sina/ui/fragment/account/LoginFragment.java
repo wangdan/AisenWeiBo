@@ -42,6 +42,7 @@ import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.db.AccountDB;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.support.utils.ThemeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
@@ -297,7 +298,7 @@ public class LoginFragment extends ABaseFragment {
         protected void onPrepare() {
             super.onPrepare();
 
-            ViewUtils.createProgressDialog(getActivity(), getString(R.string.comm_request_loading), AisenUtils.getProgressBarDrawable()).show();
+            ViewUtils.createProgressDialog(getActivity(), getString(R.string.comm_request_loading), ThemeUtils.getThemeColor()).show();
         }
 
         @Override
@@ -363,7 +364,7 @@ public class LoginFragment extends ABaseFragment {
         protected void onPrepare() {
             super.onPrepare();
 
-            ViewUtils.createProgressDialog(getActivity(), getString(R.string.account_load_auth), AisenUtils.getProgressBarDrawable()).show();
+            ViewUtils.createProgressDialog(getActivity(), getString(R.string.account_load_auth), ThemeUtils.getThemeColor()).show();
         }
 
         @Override

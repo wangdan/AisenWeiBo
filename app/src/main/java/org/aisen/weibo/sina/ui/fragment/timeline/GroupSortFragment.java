@@ -2,6 +2,7 @@ package org.aisen.weibo.sina.ui.fragment.timeline;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -15,7 +16,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
-import org.aisen.android.common.utils.ActivityHelper;
+import com.mobeta.android.dslv.DragSortController;
+import com.mobeta.android.dslv.DragSortListView;
+
 import org.aisen.android.common.utils.ViewUtils;
 import org.aisen.android.component.container.FragmentContainerActivity;
 import org.aisen.android.network.task.TaskException;
@@ -25,17 +28,15 @@ import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.fragment.ADragSortFragment;
 import org.aisen.android.ui.fragment.ARefreshFragment;
-import com.mobeta.android.dslv.DragSortListView;
-
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
-import org.aisen.weibo.sina.support.bean.AccountBean;
-import org.aisen.weibo.sina.support.db.AccountDB;
-import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
 import org.aisen.weibo.sina.sinasdk.bean.Group;
 import org.aisen.weibo.sina.sinasdk.bean.GroupSortResult;
 import org.aisen.weibo.sina.sinasdk.bean.Groups;
+import org.aisen.weibo.sina.support.bean.AccountBean;
+import org.aisen.weibo.sina.support.db.AccountDB;
+import org.aisen.weibo.sina.support.utils.ThemeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +75,13 @@ public class GroupSortFragment extends ADragSortFragment<Group, Groups> {
         getListView().setDragEnabled(true);
 
 		setHasOptionsMenu(true);
+	}
+
+	@Override
+	protected DragSortController buildController(DragSortListView dslv) {
+		DragSortController controller = super.buildController(dslv);
+		controller.setBackgroundColor(Color.parseColor("#66000000"));
+		return controller;
 	}
 
 	@Override
@@ -246,7 +254,7 @@ public class GroupSortFragment extends ADragSortFragment<Group, Groups> {
 		protected void onPrepare() {
 			super.onPrepare();
 
-			ViewUtils.createProgressDialog(getActivity(), getString(R.string.group_update_group_loading), AisenUtils.getProgressBarDrawable()).show();
+			ViewUtils.createProgressDialog(getActivity(), getString(R.string.group_update_group_loading), ThemeUtils.getThemeColor()).show();
 		};
 
 		@Override
@@ -278,8 +286,7 @@ public class GroupSortFragment extends ADragSortFragment<Group, Groups> {
 		protected void onSuccess(Group result) {
 			super.onSuccess(result);
 
-			// 更新首页排序
-			ActivityHelper.putBooleanShareData("ChanneSortHasChanged", true);
+			onGroupChanged();
 
 			copyAndSet();
 		};
@@ -292,6 +299,10 @@ public class GroupSortFragment extends ADragSortFragment<Group, Groups> {
 		};
 	}
 
+	public void onGroupChanged() {
+		TimelineTabsFragment.setGroupChanged(true);
+	}
+
 	/**
 	 * 新建分组
 	 */
@@ -301,7 +312,7 @@ public class GroupSortFragment extends ADragSortFragment<Group, Groups> {
 		protected void onPrepare() {
 			super.onPrepare();
 
-			ViewUtils.createProgressDialog(getActivity(), getString(R.string.group_create_group_loading), AisenUtils.getProgressBarDrawable()).show();
+			ViewUtils.createProgressDialog(getActivity(), getString(R.string.group_create_group_loading), ThemeUtils.getThemeColor()).show();
 		};
 
 		@Override
@@ -324,8 +335,7 @@ public class GroupSortFragment extends ADragSortFragment<Group, Groups> {
 
 			AppContext.getGroups().getLists().add(result);
 
-			// 更新首页排序
-			ActivityHelper.putBooleanShareData("ChanneSortHasChanged", true);
+			onGroupChanged();
 
 			copyAndSet();
 		};
@@ -353,7 +363,7 @@ public class GroupSortFragment extends ADragSortFragment<Group, Groups> {
 		protected void onPrepare() {
 			super.onPrepare();
 
-			ViewUtils.createProgressDialog(getActivity(), getString(R.string.group_del_group_loading), AisenUtils.getProgressBarDrawable()).show();
+			ViewUtils.createProgressDialog(getActivity(), getString(R.string.group_del_group_loading), ThemeUtils.getThemeColor()).show();
 		};
 
 		@Override
@@ -387,8 +397,7 @@ public class GroupSortFragment extends ADragSortFragment<Group, Groups> {
                 AccountDB.newAccount(accountBean);
                 AccountDB.setLogedinAccount(accountBean);
 
-                // 更新首页排序
-                ActivityHelper.putBooleanShareData("ChanneSortHasChanged", true);
+                onGroupChanged();
             } catch (Exception e) {
                 publishProgress("0", group.getName());
             }
@@ -420,7 +429,7 @@ public class GroupSortFragment extends ADragSortFragment<Group, Groups> {
 		protected void onPrepare() {
 			super.onPrepare();
 
-			ViewUtils.createProgressDialog(getActivity(), getString(R.string.group_sort_group_loading), AisenUtils.getProgressBarDrawable()).show();
+			ViewUtils.createProgressDialog(getActivity(), getString(R.string.group_sort_group_loading), ThemeUtils.getThemeColor()).show();
 		}
 
 		@Override
@@ -457,8 +466,7 @@ public class GroupSortFragment extends ADragSortFragment<Group, Groups> {
 			getActivity().invalidateOptionsMenu();
 			getAdapter().notifyDataSetChanged();
 
-			// 更新首页排序
-			ActivityHelper.putBooleanShareData("ChanneSortHasChanged", true);
+			onGroupChanged();
 
 			if ("true".equals(result.getResult()))
 				showMessage(R.string.update_success);

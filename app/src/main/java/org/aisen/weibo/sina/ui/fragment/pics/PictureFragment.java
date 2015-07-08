@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.ImageView;
 
@@ -38,17 +39,17 @@ import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.fragment.ABaseFragment;
 import org.aisen.android.ui.fragment.AStripTabsFragment;
-
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
+import org.aisen.weibo.sina.sinasdk.bean.PicUrls;
 import org.aisen.weibo.sina.support.bean.PictureSize;
 import org.aisen.weibo.sina.support.biz.BaseBizlogic;
 import org.aisen.weibo.sina.support.db.SinaDB;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.support.utils.ThemeUtils;
 import org.aisen.weibo.sina.ui.activity.pics.PhotosActivity;
 import org.aisen.weibo.sina.ui.activity.pics.PicsActivity;
 import org.aisen.weibo.sina.ui.widget.PictureProgressView;
-import org.aisen.weibo.sina.sinasdk.bean.PicUrls;
 
 import java.io.File;
 import java.text.DecimalFormat;
@@ -58,6 +59,7 @@ import javax.microedition.khronos.opengles.GL11;
 
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 import uk.co.senab.photoview.PhotoView;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * 部分代码参考自四次元
@@ -125,9 +127,32 @@ import uk.co.senab.photoview.PhotoView;
             layProgress.setPadding(0, SystemBarUtils.getStatusBarHeight(getActivity()), 0, 0);
         }
 
+		photoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+
+			@Override
+			public void onPhotoTap(View view, float v, float v1) {
+				getActivity().finish();
+			}
+
+		});
+		mWebView.addJavascriptInterface(new PictureJavaScriptInterface(), "picturejs");
+
 		loadPicture(viewFailure);
 		
 		setHasOptionsMenu(true);
+	}
+
+	final class PictureJavaScriptInterface {
+
+		public PictureJavaScriptInterface() {
+
+		}
+
+		@JavascriptInterface
+		public void onClick() {
+			getActivity().finish();
+		}
+
 	}
 	
 	@Override
@@ -319,6 +344,9 @@ import uk.co.senab.photoview.PhotoView;
 				+ "          objImage.src = imgUrl;\n"
 				+ "     }\n"
 				+ "\n"
+				+ "     function imgOnClick() {\n"
+				+ "			window.picturejs.onClick();"
+				+ "     }\n"
 				+ "     function onResize() {\n"
 				+ "          var scale = 1;\n"
 				+ "          var newWidth = document.gagImg.width;\n"
@@ -339,7 +367,7 @@ import uk.co.senab.photoview.PhotoView;
 				+ "          <tr style=\"width: 100%;\">\n"
 				+ "               <td valign=\"middle\" align=\"center\" style=\"width: 100%;\">\n"
 				+ "                    <div style=\"display:block\">\n"
-				+ "                         <img name=\"gagImg\" src=\"\" width=\"100%\" style=\"\" />\n"
+				+ "                         <img name=\"gagImg\" src=\"\" width=\"100%\" style=\"\" onclick=\"imgOnClick()\" />\n"
 				+ "                    </div>\n"
 				+ "                    <div id=\"hiddenBar\" style=\"position:absolute; width: 0%; background: #3b3b3b;\"></div>\n"
 				+ "               </td>\n" + "          </tr>\n" + "     </table>\n" + "</body>\n" + "</html>";
@@ -386,6 +414,9 @@ import uk.co.senab.photoview.PhotoView;
 				+ "          objImage.src = imgUrl;\n"
 				+ "     }\n"
 				+ "\n"
+				+ "     function imgOnClick() {\n"
+				+ "			window.picturejs.onClick();"
+				+ "     }\n"
 				+ "     function onResize() {\n"
 				+ "          var scale = 1;\n"
 				+ "          var newWidth = document.gagImg.width;\n"
@@ -406,7 +437,7 @@ import uk.co.senab.photoview.PhotoView;
 				+ "          <tr style=\"width: 100%;\">\n"
 				+ "               <td valign=\"middle\" align=\"center\" style=\"width: 100%;\">\n"
 				+ "                    <div style=\"display:block\">\n"
-				+ "                         <img name=\"gagImg\" src=\"\" width=\"100%\" style=\"\" />\n"
+				+ "                         <img name=\"gagImg\" src=\"\" width=\"100%\" style=\"\" onclick=\"imgOnClick()\" />\n"
 				+ "                    </div>\n"
 				+ "                    <div id=\"hiddenBar\" style=\"position:absolute; width: 0%; background: #3b3b3b;\"></div>\n"
 				+ "               </td>\n" + "          </tr>\n" + "     </table>\n" + "</body>\n" + "</html>";
@@ -462,43 +493,45 @@ import uk.co.senab.photoview.PhotoView;
 	
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
-		File file = BitmapLoader.getInstance().getCacheFile(getImage());
-		menu.findItem(R.id.savePicture).setVisible(file.exists());
-		menu.findItem(R.id.share).setVisible(file.exists());
+		if (getActivity() != null) {
+			File file = BitmapLoader.getInstance().getCacheFile(getImage());
+			menu.findItem(R.id.savePicture).setVisible(file.exists());
+			menu.findItem(R.id.share).setVisible(file.exists());
 
-        MenuItem origItem = menu.findItem(R.id.origPicture);
-        if (file.exists())
-            origItem.setVisible(!origFile.exists());
-        else
-            origItem.setVisible(false);
+			MenuItem origItem = menu.findItem(R.id.origPicture);
+			if (file.exists())
+				origItem.setVisible(!origFile.exists());
+			else
+				origItem.setVisible(false);
 
-        if (origItem.isVisible()) {
-            if (downloadOrigPicture != null) {
-                String progressed = String.valueOf(Math.round(progress[0] * 100.0f / progress[1]));
-                origItem.setTitle(String.format("%s(%s", getString(R.string.orig_pic), progressed) + "%)");
-            }
-            else {
-                if (pictureSize != null) {
-                    String sizeStr;
-                    if (pictureSize.getSize() * 1.0f / 1024 / 1024 > 1)
-                        sizeStr = String.format("%s M", new DecimalFormat("#.00").format(pictureSize.getSize() * 1.0d / 1024 / 1024));
-                    else
-                        sizeStr = String.format("%d Kb", pictureSize.getSize() / 1024);
-                    origItem.setTitle(getString(R.string.orig_pic) +
-                            String.format("(%s)", sizeStr));
-                }
-                else {
-                    origItem.setTitle(R.string.orig_pic);
-                }
-            }
-        }
+			if (origItem.isVisible()) {
+				if (downloadOrigPicture != null) {
+					String progressed = String.valueOf(Math.round(progress[0] * 100.0f / progress[1]));
+					origItem.setTitle(String.format("%s(%s", getString(R.string.orig_pic), progressed) + "%)");
+				}
+				else {
+					if (pictureSize != null) {
+						String sizeStr;
+						if (pictureSize.getSize() * 1.0f / 1024 / 1024 > 1)
+							sizeStr = String.format("%s M", new DecimalFormat("#.00").format(pictureSize.getSize() * 1.0d / 1024 / 1024));
+						else
+							sizeStr = String.format("%d Kb", pictureSize.getSize() / 1024);
+						origItem.setTitle(getString(R.string.orig_pic) +
+								String.format("(%s)", sizeStr));
+					}
+					else {
+						origItem.setTitle(R.string.orig_pic);
+					}
+				}
+			}
 
-		Intent shareIntent = Utils.getShareIntent("", "", getImage());
+			Intent shareIntent = Utils.getShareIntent("", "", getImage());
 
-		MenuItem shareItem = menu.findItem(R.id.share);
-		ShareActionProvider shareProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
-		shareProvider.setShareHistoryFileName("channe_share.xml");
-		shareProvider.setShareIntent(shareIntent);
+			MenuItem shareItem = menu.findItem(R.id.share);
+			ShareActionProvider shareProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
+			shareProvider.setShareHistoryFileName("channe_share.xml");
+			shareProvider.setShareIntent(shareIntent);
+		}
 
 		super.onPrepareOptionsMenu(menu);
 	}
@@ -543,7 +576,7 @@ import uk.co.senab.photoview.PhotoView;
             protected void onPrepare() {
                 super.onPrepare();
 
-                ViewUtils.createProgressDialog(getActivity(), "msg_save_pic_loading", AisenUtils.getProgressBarDrawable()).show();
+                ViewUtils.createProgressDialog(getActivity(), "msg_save_pic_loading", ThemeUtils.getThemeColor()).show();
             }
 
             @Override

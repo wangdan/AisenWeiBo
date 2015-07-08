@@ -157,7 +157,7 @@ public class UserProfileActivity extends BaseActivity implements AisenActivityHe
 			layoutContent.setVisibility(View.VISIBLE);
 			layoutLoadFailed.setVisibility(View.GONE);
 			
-			ViewUtils.createProgressDialog(UserProfileActivity.this, getString(R.string.msg_load_profile), AisenUtils.getProgressBarDrawable()).show();
+			ViewUtils.createProgressDialog(UserProfileActivity.this, getString(R.string.msg_load_profile), ThemeUtils.getThemeColor()).show();
 		}
 		
 		@Override

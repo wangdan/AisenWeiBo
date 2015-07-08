@@ -42,6 +42,7 @@ import org.aisen.weibo.sina.support.notifier.UnreadCountNotifier;
 import org.aisen.weibo.sina.support.publisher.PublishNotifier;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
+import org.aisen.weibo.sina.support.utils.ThemeUtils;
 import org.aisen.weibo.sina.sys.service.PublishService;
 import org.aisen.weibo.sina.sys.service.UnreadService;
 import org.aisen.weibo.sina.ui.activity.basic.MainActivity;
@@ -289,7 +290,7 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
                                 protected void onPrepare() {
                                     super.onPrepare();
 
-                                    ViewUtils.createProgressDialog(getActivity(), getString(R.string.account_delete_account_loading), AisenUtils.getProgressBarDrawable()).show();
+                                    ViewUtils.createProgressDialog(getActivity(), getString(R.string.account_delete_account_loading), ThemeUtils.getThemeColor()).show();
                                 }
 
                                 @Override

@@ -33,6 +33,7 @@ import org.aisen.weibo.sina.support.bean.PublishType;
 import org.aisen.weibo.sina.support.db.PublishDB;
 import org.aisen.weibo.sina.support.publisher.PublishManager;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.support.utils.ThemeUtils;
 import org.aisen.weibo.sina.sys.service.PublishService;
 import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
 import org.aisen.weibo.sina.ui.fragment.basic.BizFragment;
@@ -264,7 +265,7 @@ public class DraftFragment extends AListFragment<PublishBean, ArrayList<PublishB
 
                             @Override
                             protected void onPrepare() {
-                                ViewUtils.createProgressDialog(getActivity(), getString(R.string.draft_del_draft_loading), AisenUtils.getProgressBarDrawable()).show();
+                                ViewUtils.createProgressDialog(getActivity(), getString(R.string.draft_del_draft_loading), ThemeUtils.getThemeColor()).show();
                             }
 
                             @Override

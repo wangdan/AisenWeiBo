@@ -22,6 +22,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.ActivityHelper;
 import org.aisen.android.common.utils.BitmapUtil;
@@ -36,13 +37,12 @@ import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.support.utils.PhotoChoice;
 import org.aisen.android.ui.activity.basic.BaseActivity;
-
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.db.AccountDB;
-import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.support.utils.ThemeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -464,7 +464,7 @@ public class WeiboClientActivity extends BaseActivity implements PhotoChoice.Pho
             protected void onPrepare() {
                 super.onPrepare();
 
-                ViewUtils.createProgressDialog(WeiboClientActivity.this, getString(R.string.account_fillaccount_loading), AisenUtils.getProgressBarDrawable()).show();
+                ViewUtils.createProgressDialog(WeiboClientActivity.this, getString(R.string.account_fillaccount_loading), ThemeUtils.getThemeColor()).show();
             }
 
             @Override
