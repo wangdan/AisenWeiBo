@@ -10,6 +10,8 @@
 
 [酷安](http://coolapk.com/apk/org.aisen.weibo.sina)
 
+[最新测试版](https://github.com/wangdan/AisenWeibo/raw/master/resource/v5_0_6.apk)
+
 ## 前言
 新浪目前已经限制了第三方微博的很多API接口，加上平常时间不够，所以后续可能不会面向产品的去维护Aisen，不过也有了一些新的方向，例如引入最新[Android-support-library](https://blog.leancloud.cn/3306/)，在一个完整的APP项目中示例最新的玩意儿，如果你也想以Aisen作为示例项目切入自己的Library库或者UI控件实现某部分的功能，可以联系我。
 
@@ -28,7 +30,21 @@ Aisen微博是新浪微博的第三方客户端，UI遵循Material Design。
 
 ## 应用截图
 
-![](https://github.com/wangdan/AisenWeibo/raw/master/resource/aisen_5.gif) 
+![](https://github.com/wangdan/AisenWeibo/raw/master/resource/aisen1.gif) 
+
+![](https://github.com/wangdan/AisenWeibo/raw/master/resource/aisen2.gif) 
+
+![](https://github.com/wangdan/AisenWeibo/raw/master/resource/aisen3.gif) 
+
+![](https://github.com/wangdan/AisenWeibo/raw/master/resource/aisen4.gif) 
+
+![](https://github.com/wangdan/AisenWeibo/raw/master/resource/aisen5.gif) 
+
+![](https://github.com/wangdan/AisenWeibo/raw/master/resource/aisen6.gif) 
+
+![](https://github.com/wangdan/AisenWeibo/raw/master/resource/aisen7.gif) 
+
+![](https://github.com/wangdan/AisenWeibo/raw/master/resource/aisen8.gif) 
 
 ![](https://github.com/wangdan/AisenWeibo/raw/master/resource/git_2.png)
 
