@@ -424,7 +424,7 @@ public class PublishStatusFragment extends APublishFragment {
 		String content = editContent.getText().toString();
 
 		if (bean.getExtras() != null && bean.getPics() != null && TextUtils.isEmpty(content)) {
-			content = getString(R.string.publish_share_pic) + " ";
+//			content = getString(R.string.publish_share_pic) + " ";
 		}
 		
 		if (TextUtils.isEmpty(content)) {

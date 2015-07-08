@@ -238,7 +238,7 @@ public abstract class APublishFragment extends ABaseFragment
 
 			if (TextUtils.isEmpty(editContent.getText().toString().trim()) && 
 					TextUtils.isEmpty(getPublishBean().getText())) {
-				getPublishBean().setText(getString(R.string.publish_share_pic) + " ");
+//				getPublishBean().setText(getString(R.string.publish_share_pic) + " ");
 			}
 
 			// 修改为支持多图

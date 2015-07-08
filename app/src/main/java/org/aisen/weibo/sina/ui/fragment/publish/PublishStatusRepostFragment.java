@@ -68,8 +68,8 @@ public class PublishStatusRepostFragment extends APublishFragment implements OnC
 		
 		// 当转发，内容为空时，自动添加"转发微博"
 		if (TextUtils.isEmpty(editContent.getText().toString().trim())) {
-			editContent.setText(R.string.publish_also_repost);
-			editContent.setSelection(editContent.getText().toString().length());
+//			editContent.setText(R.string.publish_also_repost);
+//			editContent.setSelection(editContent.getText().toString().length());
 		}
 		
 		StatusContent status = getPublishBean().getStatusContent().getRetweeted_status() != null ? getPublishBean().getStatusContent().getRetweeted_status()

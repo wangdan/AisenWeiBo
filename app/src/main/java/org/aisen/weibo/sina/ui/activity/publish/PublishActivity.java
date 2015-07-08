@@ -283,10 +283,13 @@ public class PublishActivity extends BaseActivity implements AisenActivityHelper
 		 
 		if (imageUri != null) {
         	PublishBean bean = PublishStatusFragment.generateBean();
-    		if (TextUtils.isEmpty(sharedText))
-    			bean.setText(getString(R.string.publish_share_pic));
-    		else 
-    			bean.setText(sharedText);
+    		if (TextUtils.isEmpty(sharedText)) {
+//				bean.setText(getString(R.string.publish_share_pic));
+				bean.setText("");
+			}
+    		else {
+				bean.setText(sharedText);
+			}
     		bean.setParams(new Params());
     		bean.setExtras(new Params());
     		bean.getExtras().addParameter("share", "true");
