@@ -18,12 +18,14 @@ import org.aisen.android.support.adapter.ABaseAdapter.AbstractItemView;
 import org.aisen.android.support.paging.IPaging;
 import org.aisen.android.ui.fragment.ARefreshFragment;
 import org.aisen.android.ui.fragment.AStripTabsFragment;
-
 import org.aisen.android.ui.fragment.ATabLayoutFragment;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.sinasdk.bean.Group;
+import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
+import org.aisen.weibo.sina.sinasdk.bean.StatusContents;
+import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.support.paging.TimelinePagingProcessor;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.ui.activity.basic.MainActivity;
@@ -31,9 +33,6 @@ import org.aisen.weibo.sina.ui.activity.profile.UserProfileActivity;
 import org.aisen.weibo.sina.ui.fragment.basic.AWeiboRefreshListFragment;
 import org.aisen.weibo.sina.ui.fragment.comment.TimelineCommentFragment;
 import org.aisen.weibo.sina.ui.widget.TimelinePicsView;
-import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
-import org.aisen.weibo.sina.sinasdk.bean.StatusContents;
-import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +51,7 @@ public abstract class ATimelineFragment extends AWeiboRefreshListFragment<Status
 	private AStripTabsFragment.StripTabItem mGroupBean;
 
 	private WeiBoUser loggedIn;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceSate) {
         loggedIn = AppContext.getUser();
