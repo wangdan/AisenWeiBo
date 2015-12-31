@@ -1,10 +1,10 @@
 package org.aisen.android.component.bitmaploader.download;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-
 import org.aisen.android.common.utils.BitmapUtil;
 import org.aisen.android.component.bitmaploader.core.ImageConfig;
+
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 
 public class DrawableDownloader implements Downloader {
 

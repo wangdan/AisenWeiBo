@@ -1,12 +1,12 @@
 package org.aisen.android.component.bitmaploader.download;
 
-import java.io.InputStream;
-
 import android.net.Uri;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.FileUtils;
 import org.aisen.android.component.bitmaploader.core.ImageConfig;
+
+import java.io.InputStream;
 
 public class ContentProviderDownloader implements Downloader {
 

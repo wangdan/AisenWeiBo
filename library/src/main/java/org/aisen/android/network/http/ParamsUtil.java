@@ -1,10 +1,10 @@
 package org.aisen.android.network.http;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 public class ParamsUtil {
 	public static char[] base64Encode(byte[] data) {

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.aisen.android.ui.widget.AsToolbar
+    android:id="@+id/toolbar"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/colorPrimary"
+    android:minHeight="?attr/toolbarSize"
+    tools:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+    tools:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    >
+
+    <include
+        android:id="@+id/toolbarSpinner" layout="@layout/comm_lay_spinner" android:layout_width="170dip"
+        android:layout_height="match_parent"/>
+
+</org.aisen.android.ui.widget.AsToolbar>

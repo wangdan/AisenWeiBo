@@ -1,15 +1,15 @@
 package org.aisen.android.component.bitmaploader.core;
 
+import android.text.TextUtils;
+
+import org.aisen.android.common.setting.SettingUtility;
+import org.aisen.android.common.utils.Logger;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-
-import android.text.TextUtils;
-
-import org.aisen.android.common.setting.SettingUtility;
-import org.aisen.android.common.utils.Logger;
 
 public class FileDisk {
 

@@ -1,11 +1,11 @@
 package org.aisen.android.support.paging;
 
-import java.io.Serializable;
-import java.lang.reflect.Field;
-
 import android.text.TextUtils;
 
 import org.aisen.android.network.biz.IResult;
+
+import java.io.Serializable;
+import java.lang.reflect.Field;
 
 /**
  * 始终自增，但是有最大分页页码，根据配置的属性获取
@@ -31,16 +31,11 @@ public class PageIndexPaging<T extends Serializable, Ts extends Serializable> im
 	}
 
 	@Override
-    public IPaging<T, Ts> newInstance() {
-		return new PageIndexPaging<T, Ts>(pageTotalField);
-	}
-
-	@Override
     public void processData(Ts newDatas, T firstData, T lastData) {
 		pageIndex++;
 		if (newDatas instanceof IResult) {
 			IResult iResult = (IResult) newDatas;
-			if (iResult.isCache() && iResult.pagingIndex() != null) {
+			if (iResult.fromCache() && iResult.pagingIndex() != null) {
 				pageIndex = Integer.parseInt(iResult.pagingIndex()[1]);
 			}
 		}
@@ -60,16 +55,6 @@ public class PageIndexPaging<T extends Serializable, Ts extends Serializable> im
 	}
 
 	@Override
-    public boolean canRefresh() {
-		return true;
-	}
-
-	@Override
-    public boolean canUpdate() {
-		return pageTotal == -1 ? true : (pageIndex < pageTotal + 1);
-	}
-
-	@Override
     public String getPreviousPage() {
 		return String.valueOf(pageIndex - 1);
 	}
@@ -77,11 +62,6 @@ public class PageIndexPaging<T extends Serializable, Ts extends Serializable> im
 	@Override
     public String getNextPage() {
 		return String.valueOf(pageIndex);
-	}
-
-	@Override
-    public void setPage(String previousPage, String nextPage) {
-		this.pageIndex = Integer.parseInt(nextPage);
 	}
 
 }

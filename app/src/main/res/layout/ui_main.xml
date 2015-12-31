@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.aisen.android.ui.widget.FitWindowsFrameLayout
+    android:id="@+id/layMainRoot"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:fitsSystemWindows="?attr/fitSystemWindows"
+    android:orientation="vertical" app:fitType="bottom"
+    app:navigationBarColor="?attr/themeColor" app:statusBarColor="?attr/statusbarColor">
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <org.aisen.android.ui.widget.FitWindowsFrameLayout
+            android:id="@+id/layMainContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" app:fitType="top"
+            app:statusBarColor="?attr/statusbarColor">
+
+            <FrameLayout
+                android:id="@+id/content_frame" android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="@dimen/abc_action_bar_default_height_material"/>
+
+            <include
+                layout="@layout/comm_lay_toolbar_spinner" android:layout_width="match_parent"
+                android:layout_height="?attr/toolbarSize"/>
+
+        </org.aisen.android.ui.widget.FitWindowsFrameLayout>
+
+        <FrameLayout
+            android:id="@+id/menu_frame" android:layout_width="match_parent"
+            android:layout_height="match_parent" android:layout_gravity="start"
+            android:layout_marginRight="10dip"
+            android:background="#00ff00" android:orientation="vertical"
+            />
+
+    </android.support.v4.widget.DrawerLayout>
+
+</org.aisen.android.ui.widget.FitWindowsFrameLayout>

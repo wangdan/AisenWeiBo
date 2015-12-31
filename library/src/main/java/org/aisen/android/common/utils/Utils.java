@@ -1,11 +1,5 @@
 package org.aisen.android.common.utils;
 
-import java.io.File;
-import java.util.List;
-
-import javax.microedition.khronos.opengles.GL10;
-import javax.microedition.khronos.opengles.GL11;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +18,12 @@ import android.util.TypedValue;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
+
+import java.io.File;
+import java.util.List;
+
+import javax.microedition.khronos.opengles.GL10;
+import javax.microedition.khronos.opengles.GL11;
 
 public class Utils {
 

@@ -15,10 +15,10 @@
  */
 package org.aisen.android.component.bitmaploader.core;
 
+import org.aisen.android.common.utils.Logger;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import org.aisen.android.common.utils.Logger;
 
 public class LruMemoryCache<K, V> {
 	private final LinkedHashMap<K, V> map;

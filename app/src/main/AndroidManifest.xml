@@ -1,6 +1,4 @@
-<manifest package="org.aisen.weibo.sina" xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="506" android:versionName="5.0.6">
-
-    <uses-sdk android:minSdkVersion="16" android:targetSdkVersion="22"/>
+<manifest package="org.aisen.weibo.sina" xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- 允许程序打开网络 -->
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -8,8 +6,6 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <!-- 允许程序改变Wi-Fi连接状态 -->
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-    <!-- 允许程序写入API设置 -->
-    <!-- <uses-permission android:name="android.permission.WRITE_APN_SETTINGS" /> -->
     <!-- 允许写入sdcard -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
@@ -19,125 +15,26 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <!-- 允许访问振动设备 -->
     <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS"/>
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
-    <uses-permission android:name="android.permission.GET_TASKS"/>
     <!-- 开机自启动 -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
-    <application android:name="org.aisen.weibo.sina.base.MyApplication" android:allowBackup="true" android:icon="@drawable/a_icon_b" android:label="@string/app_name"
-                 android:theme="@style/AppTheme">
-        <!--BUGHD-->
-        <meta-data android:value="1177b0896827db847ce901bc8c5703e0" android:name="BUG_HD_SDK_GENERAL_KEY" />
-
+    <application android:name=".base.MyApplication" android:allowBackup="true"
+                 android:icon="@drawable/a_icon_b" android:label="@string/app_name">
         <!-- 启动界面 -->
-        <activity android:name="org.aisen.weibo.sina.ui.activity.basic.SplashActivity" android:label="@string/app_name" android:screenOrientation="portrait"
-                  android:theme="@style/AppTheme.Splash">
+        <activity android:name=".ui.activity.base.SplashActivity" android:screenOrientation="portrait"
+                  android:theme="@style/AppBaseTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <!-- 首页 -->
-        <activity android:name="org.aisen.weibo.sina.ui.activity.basic.MainActivity" android:hardwareAccelerated="true" android:launchMode="singleTask"
-                  android:screenOrientation="portrait" android:theme="@style/AppTheme.Main"/>
-        <!-- 公共界面 -->
-        <activity android:name="org.aisen.android.component.container.FragmentContainerActivity" android:screenOrientation="portrait"/>
-        <!-- 发布微博、转发微博、评论、回复评论、意见反馈、分享 -->
-        <activity android:name="org.aisen.weibo.sina.ui.activity.publish.PublishActivity" android:launchMode="singleTop" android:screenOrientation="portrait"
-                  android:windowSoftInputMode="stateVisible|adjustResize">
-            <intent-filter>
-                <action android:name="android.intent.action.SEND"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data android:mimeType="image/*"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.SEND"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data android:mimeType="text/plain"/>
-            </intent-filter>
-        </activity>
-        <!-- 用户信息、搜索 -->
-        <activity android:name="org.aisen.weibo.sina.ui.activity.profile.UserProfileActivity" android:screenOrientation="portrait"
-                  android:theme="@style/AppTheme.Profile">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <action android:name="android.intent.action.VIEW"/>
-                <data android:scheme="org.aisen.weibo.sina.userinfo"/>
-            </intent-filter>
-        </activity>
-        <activity android:name=".ui.activity.profile.WeiboClientActivity"/>
-        <!-- 图片详情 -->
-        <activity android:name="org.aisen.weibo.sina.ui.activity.pics.PicsActivity" android:screenOrientation="user"/>
-        <!-- 相册详情 -->
-        <activity android:name="org.aisen.weibo.sina.ui.activity.pics.PhotosActivity" />
-        <!-- 浏览器 -->
-        <activity android:name="org.aisen.weibo.sina.ui.activity.basic.BrowserActivity">
-            <!-- <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <data android:host="e.weibo.com"
-                      android:scheme="http"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <data android:host="weibo.com"
-                      android:scheme="http"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <data android:host="t.cn"
-                      android:scheme="http"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter> -->
-            <!-- 默认浏览器 -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <data android:scheme="aisen"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
-        <!-- 话题 -->
-        <activity android:name="org.aisen.weibo.sina.ui.activity.topics.TopicsActivity" android:screenOrientation="portrait">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <action android:name="android.intent.action.VIEW"/>
-                <data android:scheme="org.aisen.weibo.sina.topics"/>
-            </intent-filter>
-        </activity>
-
-
-        <!-- 发布服务 -->
-        <service android:name="org.aisen.weibo.sina.sys.service.PublishService"/>
-        <!-- 离线服务 -->
-        <service android:name="org.aisen.weibo.sina.sys.service.OfflineService"/>
-        <!-- 未读消息服务 -->
-        <service android:name="org.aisen.weibo.sina.sys.service.UnreadService" android:exported="true">
-            <intent-filter>
-                <action android:name="org.aisen.weibo.sina.ACTION_GET"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </service>
-        <!-- 定时发布广播 -->
-        <receiver android:name="org.aisen.weibo.sina.sys.receiver.TimingBroadcastReceiver">
-            <intent-filter>
-                <action android:name="org.aisen.weibo.sina.ACTION_TIMING_PUBLISH"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </receiver>
-        <!-- 开机自启动 -->
-        <receiver android:name="org.aisen.weibo.sina.sys.receiver.BootCompletedReceiver" android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </receiver>
+        <!--首页-->
+        <activity android:name=".ui.activity.base.MainActivity" android:screenOrientation="portrait"
+                  android:theme="@style/MainTheme"/>
+        <!--公共页-->
+        <activity android:name=".ui.activity.base.SinaCommonActivity" android:screenOrientation="portrait"
+                  android:theme="@style/AppBaseTheme"/>
     </application>
 
 </manifest>

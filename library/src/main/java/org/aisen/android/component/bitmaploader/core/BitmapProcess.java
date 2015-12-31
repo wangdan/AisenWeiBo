@@ -15,12 +15,6 @@
  */
 package org.aisen.android.component.bitmaploader.core;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
@@ -31,6 +25,12 @@ import org.aisen.android.common.utils.BitmapUtil.BitmapType;
 import org.aisen.android.common.utils.KeyGenerator;
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class BitmapProcess {
 	private static final String TAG = "BitmapCache";

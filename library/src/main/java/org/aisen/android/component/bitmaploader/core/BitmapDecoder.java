@@ -15,13 +15,13 @@
  */
 package org.aisen.android.component.bitmaploader.core;
 
-import java.io.FileDescriptor;
-
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import org.aisen.android.common.utils.SystemUtils;
+
+import java.io.FileDescriptor;
 
 public class BitmapDecoder {
 	

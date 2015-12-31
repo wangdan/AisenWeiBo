@@ -1,11 +1,11 @@
 package org.aisen.android.common.utils;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 在Application中一定要先配置

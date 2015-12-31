@@ -5,13 +5,6 @@ import java.io.Serializable;
 public interface IPaging<T extends Serializable, Ts extends Serializable> extends Serializable {
 
 	/**
-	 * 重设参数
-	 * 
-	 * @return
-	 */
-    public IPaging<T, Ts> newInstance();
-
-	/**
 	 * 处理数据
 	 * 
 	 * @param newDatas
@@ -26,21 +19,5 @@ public interface IPaging<T extends Serializable, Ts extends Serializable> extend
     public String getPreviousPage();
 
     public String getNextPage();
-
-    public void setPage(String previousPage, String nextPage);
-
-	/**
-	 * 是否还能刷新最新
-	 * 
-	 * @return
-	 */
-    public boolean canRefresh();
-
-	/**
-	 * 是否还能拉取更多
-	 * 
-	 * @return
-	 */
-    public boolean canUpdate();
 
 }

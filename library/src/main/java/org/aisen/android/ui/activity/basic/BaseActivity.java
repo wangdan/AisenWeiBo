@@ -23,7 +23,6 @@ import org.aisen.android.network.task.ITaskManager;
 import org.aisen.android.network.task.TaskManager;
 import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.support.inject.InjectUtility;
-
 import org.aisen.android.ui.fragment.ABaseFragment;
 import org.aisen.android.ui.widget.AsToolbar;
 
@@ -393,7 +392,7 @@ public class BaseActivity extends ActionBarActivity implements BitmapOwner, ITas
     @Override
     public void finish() {
         // 2014-09-12 解决ATabTitlePagerFragment的destoryFragments方法报错的BUG
-        setMDestory(true);
+        setDestory(true);
 
         super.finish();
 
@@ -402,11 +401,11 @@ public class BaseActivity extends ActionBarActivity implements BitmapOwner, ITas
         }
     }
 
-    public boolean mIsDestoryed() {
+    public boolean isDestory() {
         return isDestory;
     }
 
-    public void setMDestory(boolean destory) {
+    public void setDestory(boolean destory) {
         this.isDestory = destory;
     }
 

@@ -1,5 +1,7 @@
 package org.aisen.android.common.setting;
 
+import com.alibaba.fastjson.JSON;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,5 +23,9 @@ public class Setting extends SettingBean implements Serializable {
 	public void setExtras(Map<String, SettingExtra> extras) {
 		this.extras = extras;
 	}
-	
+
+	public Setting copy() {
+		return JSON.parseObject(JSON.toJSONString(this), Setting.class);
+	}
+
 }

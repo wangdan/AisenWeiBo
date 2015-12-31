@@ -1,7 +1,6 @@
 package org.aisen.android.ui.fragment;
 
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.ListView;
 
 import org.aisen.android.R;
@@ -11,29 +10,46 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * 普通的ListView
+ * 维护ListView
  *
  */
-public abstract class AListFragment<T extends Serializable, Ts extends Serializable> extends ARefreshFragment<T, Ts, ListView> {
+public abstract class AListFragment<T extends Serializable, Ts extends Serializable>
+                                extends APagingFragment<T, Ts, ListView> {
 
-	@ViewInject(idStr = "listView")
-	ListView listView;
+    @ViewInject(idStr = "listView")
+    ListView mListView;
 
-	@Override
-	public AbsListView getRefreshView() {
-		return listView;
-	}
+    @Override
+    protected int inflateContentView() {
+        return R.layout.comm_ui_list;
+    }
 
-	@Override
-	protected int inflateContentView() {
-		return R.layout.comm_lay_listview;
-	}
+    @Override
+    public ListView getRefreshView() {
+        return mListView;
+    }
 
-	protected ListView getListView() {
-		return listView;
-	}
+    @Override
+    public boolean setRefreshing() {
+        return false;
+    }
 
-	public void setItems(ArrayList<T> items) {
+    @Override
+    protected void onChangedByConfig(RefreshConfig config) {
+
+    }
+
+    @Override
+    public void onRefreshViewComplete(RefreshMode mode) {
+
+    }
+
+    /**
+     * 初始化ListView
+     *
+     * @param items
+     */
+    public void setItems(ArrayList<T> items) {
         if (items == null)
             return;
 
@@ -48,26 +64,13 @@ public abstract class AListFragment<T extends Serializable, Ts extends Serializa
             setViewVisiable(contentLayout, View.VISIBLE);
         }
         setAdapterItems(items);
-        notifyDataSetChanged();
-        if (listView.getAdapter() == null) {
-            listView.setAdapter(getAdapter());
+        getAdapter().notifyDataSetChanged();
+        if (mListView.getAdapter() == null) {
+            mListView.setAdapter(getAdapter());
         }
         else {
-            getListView().setSelectionFromTop(0, 0);
+            mListView.setSelectionFromTop(0, 0);
         }
-	}
-
-    @Override
-	public boolean setRefreshing() {
-		return false;
-	}
-
-	@Override
-	public void onRefreshViewComplete() {
-	}
-
-	@Override
-	public void onChangedByConfig(RefreshConfig config) {
-	}
+    }
 
 }

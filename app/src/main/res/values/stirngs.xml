@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Aisen</string>
+
+    <string name="draw_open">打开</string>
+    <string name="draw_close">关闭</string>
+
+    <string name="menu_main">首页</string>
+
+</resources>

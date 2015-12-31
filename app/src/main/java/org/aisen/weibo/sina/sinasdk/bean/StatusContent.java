@@ -1,12 +1,11 @@
 package org.aisen.weibo.sina.sinasdk.bean;
 
-import org.aisen.orm.annotation.PrimaryKey;
-import org.aisen.weibo.sina.support.bean.PhotoBean;
+import org.aisen.android.component.orm.annotation.PrimaryKey;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class StatusContent extends PhotoBean implements Serializable {
+public class StatusContent implements Serializable {
 
     private static final long serialVersionUID = 4658890626870999594L;
 

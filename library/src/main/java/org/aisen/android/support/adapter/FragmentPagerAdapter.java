@@ -16,8 +16,6 @@
 
 package org.aisen.android.support.adapter;
 
-import java.io.Serializable;
-
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -27,7 +25,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.aisen.android.ui.fragment.ARefreshFragment;
+import org.aisen.android.ui.fragment.APagingFragment;
+
+import java.io.Serializable;
 
 /**
  * Implementation of {@link PagerAdapter} that
@@ -126,8 +126,8 @@ public abstract class FragmentPagerAdapter extends PagerAdapter {
 	}
 	
 	protected void freshUI(Fragment fragment) {
-		if (fragment instanceof ARefreshFragment)
-			((ARefreshFragment) fragment).refreshUI();
+		if (fragment instanceof APagingFragment)
+			((APagingFragment) fragment).refreshUI();
 	}
 
 	@Override
@@ -138,8 +138,8 @@ public abstract class FragmentPagerAdapter extends PagerAdapter {
 		if (DEBUG)
 			Log.v(TAG, "Detaching item #" + getItemId(position) + ": f=" + object + " v=" + ((Fragment) object).getView());
 //		mCurTransaction.detach((Fragment) object);
-		if (object instanceof ARefreshFragment)
-			((ARefreshFragment<Serializable, Serializable, View>) object).releaseImageViewByIds();
+		if (object instanceof APagingFragment)
+			((APagingFragment<Serializable, Serializable, ViewGroup>) object).releaseImageViewByIds();
 		if (object instanceof FragmentPagerChangeListener)
 			((FragmentPagerChangeListener) object).destroy(makeFragmentName(position));
 

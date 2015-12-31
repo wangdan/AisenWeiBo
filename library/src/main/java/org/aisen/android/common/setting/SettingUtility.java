@@ -1,13 +1,13 @@
 package org.aisen.android.common.setting;
 
+import org.aisen.android.common.context.GlobalContext;
+import org.aisen.android.common.utils.ActivityHelper;
+import org.aisen.android.common.utils.SdcardUtils;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-import org.aisen.android.common.context.GlobalContext;
-import org.aisen.android.common.utils.ActivityHelper;
-import org.aisen.android.common.utils.SdcardUtils;
 
 public class SettingUtility {
 

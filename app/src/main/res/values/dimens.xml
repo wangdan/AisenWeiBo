@@ -1,44 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- 主要文本字体大小 -->
-    <dimen name="textsize_primary">16sp</dimen>
-    <!-- 次要文本字体大小 -->
-    <dimen name="textsize_secondary">14sp</dimen>
-    <!-- 文本图片左内边距 -->
-    <dimen name="insert_left_text_with_icon">72dip</dimen>
-    <!-- 左侧图片大小 -->
-    <dimen name="lefticon_size">48dip</dimen>
-    <!-- 右侧图片大小 -->
-    <dimen name="righticon_size">22dip</dimen>
-    <dimen name="righticon_padding">16dip</dimen>
-    <!-- TimelinePicsGap -->
-    <dimen name="gap_pics">4sp</dimen>
-    <!--标签的大小-->
-    <dimen name="emotion_size">18dip</dimen>
-    <dimen name="publish_emotion_size">22dip</dimen>
-    <!-- timeline padding -->
-    <dimen name="item_padding">10dip</dimen>
-    <dimen name="item_margin">5dip</dimen>
 
-    <dimen name="swipe_refresh_progress_bar_start_margin">-40dp</dimen>
-    <dimen name="swipe_refresh_progress_bar_end_margin">16dp</dimen>
-
-    <!-- 相册间隙 -->
-    <dimen name="gap_photo">3dip</dimen>
-
-    <!-- picture预览 -->
-    <dimen name="normal_gif_webview_margin_left">40dp</dimen>
-    <dimen name="normal_gif_webview_margin_right">40dp</dimen>
-
-    <dimen name="listPreferredItemHeightSmall">48dp</dimen>
-
-    <!--字体大小-->
-    <dimen name="sp_12">12sp</dimen>
-    <dimen name="sp_13">13sp</dimen>
-    <dimen name="sp_14">14sp</dimen>
-    <dimen name="sp_15">15sp</dimen>
-    <dimen name="sp_16">16sp</dimen>
-    <dimen name="sp_17">17sp</dimen>
-    <dimen name="sp_18">18sp</dimen>
-    <dimen name="sp_19">19sp</dimen>
-    <dimen name="sp_20">20sp</dimen>
 </resources>

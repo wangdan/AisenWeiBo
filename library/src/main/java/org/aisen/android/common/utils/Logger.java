@@ -1,12 +1,12 @@
 package org.aisen.android.common.utils;
 
-import com.alibaba.fastjson.JSON;
-
 import android.util.Log;
+
+import com.alibaba.fastjson.JSON;
 
 public class Logger {
 
-	private final static String TAG = "Logger";
+	public final static String TAG = "Logger";
 
 	public static boolean DEBUG = true;
 
@@ -82,12 +82,30 @@ public class Logger {
 	
 	public static void e(String tag, String format, Object... msg) {
 		if (DEBUG)
-			Log.w(tag, String.format(format, msg));
+			Log.e(tag, String.format(format, msg));
 	}
 
-	public static void logExc(Exception e) {
-		if (DEBUG)
-			e.printStackTrace();
+	// 这个日志会打印，不会因为release版本屏蔽
+	public static void sysout(String msg) {
+		try {
+			Log.v(TAG, msg);
+		} catch (Throwable e) {
+		}
+	}
+
+	public static void printExc(Class<?> clazz, Throwable e) {
+		try {
+			if (DEBUG) {
+				e.printStackTrace();
+			}
+			else {
+				String clazzName = clazz == null ? "Unknow" : clazz.getSimpleName();
+
+				Log.v(TAG, String.format("class[%s], %s", clazzName, e + ""));
+			}
+		} catch (Throwable ee) {
+			ee.printStackTrace();
+		}
 	}
 
 	public static String toJson(Object msg) {

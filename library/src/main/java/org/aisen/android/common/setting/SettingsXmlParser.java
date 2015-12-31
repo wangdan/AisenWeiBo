@@ -1,18 +1,18 @@
 package org.aisen.android.common.setting;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.xmlpull.v1.XmlPullParser;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.Xml;
 
 import com.alibaba.fastjson.JSON;
+
 import org.aisen.android.common.utils.Logger;
+import org.xmlpull.v1.XmlPullParser;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SettingsXmlParser {
 

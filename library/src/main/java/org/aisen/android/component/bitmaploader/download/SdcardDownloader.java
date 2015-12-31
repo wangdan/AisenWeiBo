@@ -2,14 +2,14 @@ package org.aisen.android.component.bitmaploader.download;
 
 import android.graphics.Bitmap;
 
+import org.aisen.android.common.utils.Logger;
+import org.aisen.android.component.bitmaploader.core.BitmapDecoder;
+import org.aisen.android.component.bitmaploader.core.ImageConfig;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-
-import org.aisen.android.common.utils.Logger;
-import org.aisen.android.component.bitmaploader.core.BitmapDecoder;
-import org.aisen.android.component.bitmaploader.core.ImageConfig;
 
 public class SdcardDownloader implements Downloader {
 

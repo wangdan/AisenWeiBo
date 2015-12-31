@@ -1,8 +1,7 @@
 package org.aisen.android.component.bitmaploader.core;
 
-import org.aisen.android.component.bitmaploader.*;
-
 import org.aisen.android.common.utils.KeyGenerator;
+import org.aisen.android.component.bitmaploader.BitmapLoader;
 
 
 public class BitmapCache {

@@ -1,15 +1,15 @@
 package org.aisen.android.component.bitmaploader.core;
 
-import java.lang.ref.WeakReference;
-import java.util.HashMap;
-import java.util.Map;
-
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.Logger;
+
+import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MyBitmap {
 

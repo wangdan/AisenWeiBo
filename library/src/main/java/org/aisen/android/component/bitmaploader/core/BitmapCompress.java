@@ -1,12 +1,12 @@
 package org.aisen.android.component.bitmaploader.core;
 
-import java.io.File;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
+
+import java.io.File;
 
 public class BitmapCompress implements IBitmapCompress {
 

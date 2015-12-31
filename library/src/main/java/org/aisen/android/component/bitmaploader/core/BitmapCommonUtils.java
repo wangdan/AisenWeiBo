@@ -15,12 +15,12 @@
  */
 package org.aisen.android.component.bitmaploader.core;
 
-import java.io.File;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.os.StatFs;
+
+import java.io.File;
 
 public class BitmapCommonUtils {
 

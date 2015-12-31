@@ -1,14 +1,16 @@
 package org.aisen.android.ui.fragment;
 
-import java.io.Serializable;
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.aisen.android.R;
 import org.aisen.android.common.utils.Logger;
@@ -16,6 +18,7 @@ import org.aisen.android.common.utils.ViewUtils;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.component.bitmaploader.core.BitmapOwner;
 import org.aisen.android.network.biz.ABizLogic.CacheMode;
+import org.aisen.android.network.biz.IResult;
 import org.aisen.android.network.task.ITaskManager;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.TaskManager;
@@ -24,19 +27,36 @@ import org.aisen.android.support.inject.InjectUtility;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 
+import java.text.SimpleDateFormat;
+
 /**
- * Created by wangdan on 15-1-16.
+ * 基于ABaseFragment，维护与Activity之间的生命周期绑定，管理WorkTask线程，支持四种个基本视图之间的自动切换<br/>
+ *
+ * 1、处理缓存数据过期后，自动刷新页面<br/>
+ * 2、处理页面离开设定时间后，自动刷新页面<br/>
+ *
  */
 public abstract class ABaseFragment extends Fragment implements ITaskManager, BitmapOwner {
-    static final String TAG = ABaseFragment.class.getSimpleName();
+
+    static final String TAG = "AFragment-Base";
 
     protected enum ABaseTaskState {
         none, prepare, falid, success, finished, canceled
     }
 
-    private ViewGroup rootView;// 根视图
+    // 非UI线程
+    private final static HandlerThread nuiHandlerThread;
+
+    static {
+        nuiHandlerThread = new HandlerThread(TAG);
+        nuiHandlerThread.start();
+
+        Logger.w(TAG, "启动非UI的HandlerThread");
+    }
+
     private TaskManager taskManager;// 管理线程
 
+    ViewGroup rootView;// 根视图
     @ViewInject(idStr = "layoutLoading")
     View loadingLayout;// 加载中视图
     @ViewInject(idStr = "layoutLoadFailed")
@@ -49,6 +69,18 @@ public abstract class ABaseFragment extends Fragment implements ITaskManager, Bi
     // 标志是否ContentView是否为空
     private boolean contentEmpty = true;
 
+    protected long lastResultGetTime = 0;// 最后一次非缓存数据获取时间
+
+    // UI线程的Handler
+    Handler mHandler = new Handler(Looper.getMainLooper()) {
+
+    };
+
+    // 非UI线程的Handler
+    Handler nuiHandler = new Handler(nuiHandlerThread.getLooper()) {
+
+    };
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -60,7 +92,9 @@ public abstract class ABaseFragment extends Fragment implements ITaskManager, Bi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         taskManager = new TaskManager();
+
         if (savedInstanceState != null)
             taskManager.restore(savedInstanceState);
     }
@@ -69,7 +103,8 @@ public abstract class ABaseFragment extends Fragment implements ITaskManager, Bi
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (inflateContentView() > 0) {
             rootView = (ViewGroup) inflater.inflate(inflateContentView(), null);
-            rootView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            rootView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                                                ViewGroup.LayoutParams.MATCH_PARENT));
 
             _layoutInit(inflater, savedInstanceState);
 
@@ -86,7 +121,7 @@ public abstract class ABaseFragment extends Fragment implements ITaskManager, Bi
      *
      * @return
      */
-    ViewGroup getRootView() {
+    public ViewGroup getContentView() {
         return rootView;
     }
 
@@ -124,6 +159,30 @@ public abstract class ABaseFragment extends Fragment implements ITaskManager, Bi
     }
 
     /**
+     * 延迟时间刷新
+     *
+     * @param delay
+     */
+    public void requestDataDelay(long delay) {
+        Runnable requestDelayRunnable = new Runnable() {
+
+            @Override
+            public void run() {
+                Logger.d(TAG, "延迟刷新，开始刷新, " + toString());
+
+                requestData();
+            }
+
+        };
+
+        runNUIRunnable(requestDelayRunnable, delay);
+    }
+
+    protected void requestDataOutofdate() {
+        requestData();
+    }
+
+    /**
      * A*Fragment重写这个方法
      *
      * @param inflater
@@ -147,7 +206,9 @@ public abstract class ABaseFragment extends Fragment implements ITaskManager, Bi
         setViewVisiable(loadingLayout, View.GONE);
         setViewVisiable(loadFailureLayout, View.GONE);
         setViewVisiable(emptyLayout, View.GONE);
+
         if (isContentEmpty()) {
+            // 如果视图为空，就开始加载数据
             if (savedInstanceSate != null) {
                 requestData();
             }
@@ -161,24 +222,12 @@ public abstract class ABaseFragment extends Fragment implements ITaskManager, Bi
         }
     }
 
-    /**
-     * 子类重写这个方法，初始化视图
-     *
-     * @param inflater
-     * @param savedInstanceSate
-     */
-    protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
-
-    }
-
-    protected View findViewById(int viewId) {
-        if (rootView == null)
+    public View findViewById(int viewId) {
+        if (getContentView() == null)
             return null;
 
-        return rootView.findViewById(viewId);
+        return getContentView().findViewById(viewId);
     }
-
-    abstract protected int inflateContentView();
 
     public void setContentEmpty(boolean empty) {
         this.contentEmpty = empty;
@@ -210,9 +259,9 @@ public abstract class ABaseFragment extends Fragment implements ITaskManager, Bi
      *
      * @param state
      *
-     * @param tag
+     * @param exception
      */
-    protected void taskStateChanged(ABaseTaskState state, Serializable tag) {
+    protected void taskStateChanged(ABaseTaskState state, TaskException exception) {
         // 开始Task
         if (state == ABaseTaskState.prepare) {
             if (isContentEmpty()) {
@@ -227,6 +276,10 @@ public abstract class ABaseFragment extends Fragment implements ITaskManager, Bi
             }
 
             setViewVisiable(emptyLayout, View.GONE);
+            if (isContentEmpty() && loadingLayout == null) {
+                setViewVisiable(contentLayout, View.VISIBLE);
+            }
+
             setViewVisiable(loadFailureLayout, View.GONE);
         }
         // Task成功
@@ -235,9 +288,11 @@ public abstract class ABaseFragment extends Fragment implements ITaskManager, Bi
 
             if (isContentEmpty()) {
                 setViewVisiable(emptyLayout, View.VISIBLE);
+                setViewVisiable(contentLayout, View.GONE);
             }
             else {
                 setViewVisiable(contentLayout, View.VISIBLE);
+                setViewVisiable(emptyLayout, View.GONE);
             }
         }
         // 取消Task
@@ -250,11 +305,20 @@ public abstract class ABaseFragment extends Fragment implements ITaskManager, Bi
         // Task失败
         else if (state == ABaseTaskState.falid) {
             if (isContentEmpty()) {
-                setViewVisiable(emptyLayout, View.GONE);
+                if (loadFailureLayout != null) {
+                    setViewVisiable(loadFailureLayout, View.VISIBLE);
+
+                    if (exception != null) {
+                        TextView txtLoadFailed = (TextView) loadFailureLayout.findViewById(R.id.txtLoadFailed);
+                        if (txtLoadFailed != null)
+                            txtLoadFailed.setText(exception.getMessage());
+                    }
+
+                    setViewVisiable(emptyLayout, View.GONE);
+                } else {
+                    setViewVisiable(emptyLayout, View.VISIBLE);
+                }
                 setViewVisiable(loadingLayout, View.GONE);
-                setViewVisiable(loadFailureLayout, View.VISIBLE);
-                if (tag != null && loadFailureLayout != null)
-                    ViewUtils.setTextViewValue(loadFailureLayout, R.id.txtLoadFailed, tag.toString());
             }
         }
         // Task结束
@@ -263,31 +327,18 @@ public abstract class ABaseFragment extends Fragment implements ITaskManager, Bi
         }
     }
 
-    /**
-     * 以Toast形式显示一个消息
-     *
-     * @param msg
-     */
-    protected void showMessage(CharSequence msg) {
+    public void showMessage(CharSequence msg) {
         if (!TextUtils.isEmpty(msg))
             ViewUtils.showMessage(msg.toString());
     }
 
-    /**
-     * 参照{@linkplain #showMessage(String)}
-     *
-     * @param msgId
-     */
-    protected void showMessage(int msgId) {
+    public void showMessage(int msgId) {
         if (getActivity() != null)
             showMessage(getString(msgId));
     }
 
     /**
      * Fragment主要的刷新任务线程，定义任务加载流程，耦合Fragment各个状态下的视图刷新方法
-     * {@link ABaseFragment#taskStateChanged(ABaseTaskState, Object)}
-     *
-     * @author wangdan
      *
      * @param <Params>
      * @param <Progress>
@@ -314,13 +365,48 @@ public abstract class ABaseFragment extends Fragment implements ITaskManager, Bi
             ABaseFragment.this.setContentEmpty(resultIsEmpty(result));
 
             taskStateChanged(ABaseTaskState.success, null);
+
+            if (Logger.DEBUG)
+                Logger.d(TAG, "Result获取时间：%s", new SimpleDateFormat("HH:mm:ss").format(lastResultGetTime));
+
+            if (result instanceof IResult) {
+                IResult iResult = (IResult) result;
+
+                // 数据是缓存数据
+                if (iResult.fromCache()) {
+                    // 缓存过期刷新数据
+                    if (iResult.outofdate()) {
+                        runUIRunnable(new Runnable() {
+
+                                                @Override
+                                                public void run() {
+                                                    Logger.d(TAG, "数据过期，开始刷新, " + toString());
+
+                                                    requestDataOutofdate();
+                                                }
+
+                                            }, configRequestDelay());
+                    }
+                } else {
+                    lastResultGetTime = System.currentTimeMillis();
+                }
+            } else {
+                lastResultGetTime = System.currentTimeMillis();
+            }
         }
 
         @Override
         protected void onFailure(TaskException exception) {
             super.onFailure(exception);
 
-            taskStateChanged(ABaseTaskState.falid, exception.getMessage());
+            taskStateChanged(ABaseTaskState.falid, exception);
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+
+            taskStateChanged(ABaseTaskState.canceled, null);
         }
 
         @Override
@@ -348,7 +434,7 @@ public abstract class ABaseFragment extends Fragment implements ITaskManager, Bi
             // 4.1.1必报错，不知道为什么
             super.onDestroy();
         } catch (Exception e) {
-            Logger.logExc(e);
+            Logger.printExc(getClass(), e);
         }
 
         removeAllTask(true);
@@ -391,14 +477,14 @@ public abstract class ABaseFragment extends Fragment implements ITaskManager, Bi
      * @param task
      * @return
      */
-    final protected CacheMode getTaskCacheMode(@SuppressWarnings("rawtypes") WorkTask task) {
+    final protected CacheMode getTaskCacheMode(WorkTask task) {
         if (task == null || !TextUtils.isEmpty(task.getTaskId()))
             return getTaskCount(task.getTaskId()) == 1 ? CacheMode.auto : CacheMode.disable;
 
         return CacheMode.disable;
     }
 
-    protected void cleatTaskCount(String taskId) {
+    public void cleatTaskCount(String taskId) {
         taskManager.cleatTaskCount(taskId);
     }
 
@@ -430,12 +516,56 @@ public abstract class ABaseFragment extends Fragment implements ITaskManager, Bi
         return taskManager;
     }
 
+    public void runUIRunnable(Runnable runnable) {
+        runUIRunnable(runnable, 0);
+    }
+
+    public void runUIRunnable(Runnable runnable, long delay) {
+        if (delay > 0) {
+            mHandler.removeCallbacks(runnable);
+            mHandler.postDelayed(runnable, delay);
+        }
+        else {
+            mHandler.post(runnable);
+        }
+    }
+
+    public void runNUIRunnable(Runnable runnable) {
+        runNUIRunnable(runnable, 0);
+    }
+
+    public void runNUIRunnable(Runnable runnable, long delay) {
+        if (delay > 0) {
+            nuiHandler.removeCallbacks(runnable);
+            nuiHandler.postDelayed(runnable, delay);
+        }
+        else {
+            nuiHandler.post(runnable);
+        }
+    }
+
+    /**
+     * 子类重写这个方法，初始化视图
+     *
+     * @param inflater
+     * @param savedInstanceSate
+     */
+    protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
+
+    }
+
     /**
      * 是否显示图片接口实现
      */
     @Override
     public boolean canDisplay() {
         return true;
+    }
+
+    abstract protected int inflateContentView();
+
+    public int configRequestDelay() {
+        return 500;
     }
 
 }

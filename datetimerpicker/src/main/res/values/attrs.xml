@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="theme_color" format="reference|color"/>
+    <attr name="themeColor" format="reference|color"/>
 </resources>

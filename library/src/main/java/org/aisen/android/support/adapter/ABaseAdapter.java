@@ -1,9 +1,5 @@
 package org.aisen.android.support.adapter;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.View;
@@ -11,6 +7,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import org.aisen.android.support.inject.InjectUtility;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class ABaseAdapter<T extends Serializable> extends BaseAdapter {
 

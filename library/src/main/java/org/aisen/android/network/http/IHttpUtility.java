@@ -1,9 +1,9 @@
 package org.aisen.android.network.http;
 
-import java.io.File;
-
 import org.aisen.android.common.setting.Setting;
 import org.aisen.android.network.task.TaskException;
+
+import java.io.File;
 
 public interface IHttpUtility {
 

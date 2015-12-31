@@ -15,6 +15,9 @@
  */
 package org.aisen.android.component.bitmaploader.core;
 
+import org.aisen.android.common.utils.Logger;
+import org.aisen.android.component.bitmaploader.BitmapLoader;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
 import java.io.Closeable;
@@ -45,9 +48,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
-import org.aisen.android.common.utils.Logger;
-import org.aisen.android.component.bitmaploader.BitmapLoader;
 
 /**
  * A cache that uses a bounded amount of space on a filesystem. Each cache entry

@@ -1,8 +1,8 @@
 package org.aisen.android.component.bitmaploader.core;
 
-import java.io.File;
-
 import android.graphics.Bitmap;
+
+import java.io.File;
 
 public interface IBitmapCompress {
 

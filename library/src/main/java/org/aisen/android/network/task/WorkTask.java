@@ -1,5 +1,11 @@
 package org.aisen.android.network.task;
 
+import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils;
+
+import org.aisen.android.common.utils.Logger;
+
 import java.util.ArrayDeque;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
@@ -16,14 +22,8 @@ import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import android.os.Handler;
-import android.os.Message;
-import android.text.TextUtils;
-
-import org.aisen.android.common.utils.Logger;
-
 public abstract class WorkTask<Params, Progress, Result> {
-	private static final String TAG = "AisenTask";
+	private static final String TAG = "WorkTask";
 
 	/**
 	 * 加载图片默认是10个线程
@@ -228,7 +228,7 @@ public abstract class WorkTask<Params, Progress, Result> {
 	 * 线程结束，不管线程结束是什么状态，都会执行这个方法
 	 */
 	protected void onFinished() {
-
+		Logger.d(TAG, String.format("%s --->onFinished()", TextUtils.isEmpty(taskId) ? "run " : (taskId + " run ")));
 	}
 
 	/**
@@ -260,23 +260,17 @@ public abstract class WorkTask<Params, Progress, Result> {
 
 	final protected void onPostExecute(Result result) {
 		if (exception == null) {
-//			if (result == null) {
-//				Logger.d(TAG, String.format("%s --->resultIsNull()", TextUtils.isEmpty(taskId) ? "run " : (taskId + " run ")));
-//				resultIsNull();
-//			} else {
-				Logger.d(TAG, String.format("%s --->onTaskSuccess()", TextUtils.isEmpty(taskId) ? "run " : (taskId + " run ")));
-				onSuccess(result);
-//			}
+			Logger.d(TAG, String.format("%s --->onTaskSuccess()", TextUtils.isEmpty(taskId) ? "run " : (taskId + " run ")));
+			onSuccess(result);
 		}
 		else if (exception != null) {
 			Logger.d(
 					TAG,
-					String.format("%s --->onTaskFailed(), \nError msg --->", TextUtils.isEmpty(taskId) ? "run " : (taskId + " run "),
+					String.format("%s --->onFailure(), \nError msg --->", TextUtils.isEmpty(taskId) ? "run " : (taskId + " run "),
 							exception.getMessage()));
 			onFailure(exception);
 		}
 
-		Logger.d(TAG, String.format("%s --->onTaskComplete()", TextUtils.isEmpty(taskId) ? "run " : (taskId + " run ")));
 		onFinished();
 	}
 
@@ -284,12 +278,17 @@ public abstract class WorkTask<Params, Progress, Result> {
 	}
 
 	protected void onCancelled(Result result) {
+		_onCancelled();
+	}
+
+	private void _onCancelled() {
 		onCancelled();
+
+		onFinished();
 	}
 
 	protected void onCancelled() {
-		Logger.d(TAG, String.format("%s --->onTaskComplete()", TextUtils.isEmpty(taskId) ? "run " : (taskId + " run ")));
-		onFinished();
+		Logger.d(TAG, String.format("%s --->onCancelled()", TextUtils.isEmpty(taskId) ? "run " : (taskId + " run ")));
 	}
 
 	public final boolean isCancelled() {
