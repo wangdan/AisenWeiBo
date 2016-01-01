@@ -1,11 +1,15 @@
 package org.aisen.weibo.sina.sinasdk.bean;
 
+import org.aisen.android.support.bean.ResultBean;
+
 import java.io.Serializable;
 
 /**
  * Created by wangdan on 15/6/29.
  */
-public class BaseSinaBean implements Serializable {
+public class BaseSinaBean extends ResultBean implements Serializable {
+
+    private static final long serialVersionUID = 5080818027671237851L;
 
     private long error_code;
 

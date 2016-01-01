@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Aisen</string>
+
+    <string name="draw_open">打开</string>
+    <string name="draw_close">关闭</string>
+
+    <string name="menu_main">首页</string>
+
+    <!--授权页面-->
+    <string name="login_title">用户授权</string>
+    <string name="login_remind">Aisen是个人开源项目，记录账号信息仅用于方便您多次网页授权，且在卸载Aisen时自动清除\n\n友情提示，如果遇到验证码，请先刷新再输入验证码通过概率高一点，目前还没有优化这个问题！\n\n如有疑问，请联系我 : wangd.info@gmail.com</string>
+    <string name="login_html_faild">加载授权网页失败...</string>
+    <string name="login_loading_token">正在请求授权...</string>
+    <string name="login_loading_userinfo">正在获取用户信息...</string>
+    <string name="login_loading_groups">正在获取用户分组...</string>
+    <string name="login_success">授权成功</string>
+    <string name="login_faild">授权失败</string>
+    <string name="login_faild_remind">授权失败，是否重新授权？</string>
+    <string name="login_exit">退出</string>
+    <string name="login_ok">再试一次</string>
+
+</resources>

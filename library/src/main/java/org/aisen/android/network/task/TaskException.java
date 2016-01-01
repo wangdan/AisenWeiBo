@@ -31,7 +31,7 @@ public class TaskException extends Exception {
 	
 	private String code;
 
-    private String msg;
+    private String msg = "";
 	
 	private static IExceptionDeclare exceptionDeclare;
 	
@@ -51,12 +51,12 @@ public class TaskException extends Exception {
 	@Override
 	public String getMessage() {
         if (!TextUtils.isEmpty(msg))
-            return msg;
+            return msg + "";
 
 		if (!TextUtils.isEmpty(code) && exceptionDeclare != null) {
 			String msg = exceptionDeclare.declareMessage(code);
 			if (!TextUtils.isEmpty(msg)) {
-				return msg;
+				return msg + "";
 			}
 		}
 
@@ -71,7 +71,7 @@ public class TaskException extends Exception {
             else if (error == TaskError.resultIllegal)
                 msg = res.getString(R.string.comm_error_resultIllegal);
             if (!TextUtils.isEmpty(msg))
-                return msg;
+                return msg + "";
         } catch (Exception e) {
         }
 

@@ -24,7 +24,7 @@ import java.util.Set;
 
 public class DefHttpUtility implements IHttpUtility {
 
-	private static final String TAG = "DefHttp";
+	private static final String TAG = "BizLogic-Http-Def";
 
 	@Override
 	public <T> T doGet(HttpConfig config, Setting action, Params params, Class<T> responseCls) throws TaskException {

@@ -17,8 +17,8 @@ public class GlobalContext extends Application {
 
 	private static GlobalContext _context;
 
-	private final static int CONN_TIMEOUT = 30000;
-	private final static int READ_TIMEOUT = 30000;
+	public final static int CONN_TIMEOUT = 30000;
+	public final static int READ_TIMEOUT = 30000;
 
 	private OkHttpClient mOkHttpClient;
 

@@ -13,6 +13,7 @@ import org.aisen.android.common.utils.KeyGenerator;
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.network.cache.ICacheUtility;
 import org.aisen.android.network.cache.ICacheUtility.Cache;
+import org.aisen.android.network.http.DefHttpUtility;
 import org.aisen.android.network.http.HttpConfig;
 import org.aisen.android.network.http.IHttpUtility;
 import org.aisen.android.network.http.Params;
@@ -24,7 +25,7 @@ import java.io.File;
 
 public abstract class ABizLogic implements IHttpUtility {
 
-	public static final String TAG = "ABizlogic";
+	public static final String TAG = "BizLogic";
 
 	public enum CacheMode {
 		/**
@@ -63,7 +64,7 @@ public abstract class ABizLogic implements IHttpUtility {
 		this.mCacheMode = cacheMode;
 	}
 	
-	protected Setting getSetting(String type) {
+	public static Setting getSetting(String type) {
 		return SettingUtility.getSetting(type);
 	}
 
@@ -83,9 +84,7 @@ public abstract class ABizLogic implements IHttpUtility {
 
 		String action = actionSetting.getValue();
 
-		Logger.v(TAG, String.format("do get() method, url = %s, action = %s, desc = %s", mConfig.baseUrl, action, actionSetting.getDescription()));
-		Logger.v(TAG, String.format("params ---> %s", toJson(params)));
-		Logger.v(TAG, String.format("HttpConfig ---> %s", toJson(mConfig)));
+		Logger.v(TAG, String.format("GET URL = %s, action = %s, desc = %s", mConfig.baseUrl, action, actionSetting.getDescription()));
 
 		ICacheUtility cacheUtility = null;
 		// 配置的缓存模式
@@ -166,8 +165,6 @@ public abstract class ABizLogic implements IHttpUtility {
 							putToCache(actionSetting, params, result, cacheUtility);
 						}
 					}
-
-					Logger.d(TAG, String.format("加载服务端数据, action = %s --->%s", actionSetting.getValue(), Logger.toJson(result)));
 				}
 			} catch (Exception e) {
 				serviceEx = e;
@@ -288,7 +285,7 @@ public abstract class ABizLogic implements IHttpUtility {
 		} catch (Exception e) {
 		}
 		
-		throw new RuntimeException("没有配置默认的HttpUtility");
+		return new DefHttpUtility();
 	}
 
 	private HttpConfig cloneHttpConfig(HttpConfig config, Setting actionSetting) {

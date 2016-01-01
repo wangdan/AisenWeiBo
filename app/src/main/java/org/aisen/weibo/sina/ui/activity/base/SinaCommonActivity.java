@@ -47,7 +47,7 @@ public class SinaCommonActivity extends BaseActivity {
         fragment.startActivityForResult(intent, requestCode);
     }
 
-    public static void launchForResult(BaseActivity from, Class<? extends Fragment> clazz, FragmentArgs args, int requestCode) {
+    public static void launchForResult(Activity from, Class<? extends Fragment> clazz, FragmentArgs args, int requestCode) {
         Intent intent = new Intent(from, SinaCommonActivity.class);
         intent.putExtra("className", clazz.getName());
         if (args != null)

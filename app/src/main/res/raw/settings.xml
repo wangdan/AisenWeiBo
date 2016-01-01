@@ -72,7 +72,7 @@
 
 	<setting type="debug">
 		<des>APP是否是DEBUG模式</des>
-		<value>false</value>
+		<value>true</value>
 	</setting>
 
 	<setting type="cache_enable">

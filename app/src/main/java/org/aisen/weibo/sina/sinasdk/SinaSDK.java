@@ -98,15 +98,15 @@ public class SinaSDK extends ABizLogic {
 		return new SinaSDK(token, cacheMode);
 	}
 	
-	private String getAppKey() {
+	public static String getAppKey() {
 		return getSetting("app_key").getValue();
 	}
-	
-	private String getAppSecret() {
+
+	public String getAppSecret() {
 		return getSetting("app_secret").getValue();
 	}
-	
-	private String getAppCallback() {
+
+	public String getAppCallback() {
 		return getSetting("callback_url").getValue();
 	}
 

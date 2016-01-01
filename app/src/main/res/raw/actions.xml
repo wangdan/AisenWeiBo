@@ -274,7 +274,7 @@
 				<value>true</value>
 			</extra>
 			<extra type="cache_utility">
-			    <value>org.aisen.weibo.sina.support.db.FriendDB</value>
+			    <value>org.aisen.weibo.sina.support.sqlit.FriendDB</value>
 			</extra>
 		</extras>
 	</setting>
@@ -290,7 +290,7 @@
 				<value>true</value>
 			</extra>
 			<extra type="cache_utility">
-			    <value>org.aisen.weibo.sina.support.db.FollowersDB</value>
+			    <value>org.aisen.weibo.sina.support.sqlit.FollowersDB</value>
 			</extra>
 		</extras>
 	</setting>
@@ -311,7 +311,7 @@
 				<value>true</value>
 			</extra>
 			<extra type="cache_utility">
-			    <value>org.aisen.weibo.sina.support.db.BilateralDB</value>
+			    <value>org.aisen.weibo.sina.support.sqlit.BilateralDB</value>
 			</extra>
 		</extras>
 	</setting>

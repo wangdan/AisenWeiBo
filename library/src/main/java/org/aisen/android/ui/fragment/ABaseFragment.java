@@ -71,6 +71,8 @@ public abstract class ABaseFragment extends Fragment implements ITaskManager, Bi
 
     protected long lastResultGetTime = 0;// 最后一次非缓存数据获取时间
 
+    private boolean destory = false;
+
     // UI线程的Handler
     Handler mHandler = new Handler(Looper.getMainLooper()) {
 
@@ -430,6 +432,8 @@ public abstract class ABaseFragment extends Fragment implements ITaskManager, Bi
 
     @Override
     public void onDestroy() {
+        destory = true;
+
         try {
             // 4.1.1必报错，不知道为什么
             super.onDestroy();
@@ -441,6 +445,14 @@ public abstract class ABaseFragment extends Fragment implements ITaskManager, Bi
 
         if (BitmapLoader.getInstance() != null)
         	BitmapLoader.getInstance().cancelPotentialTask(this);
+    }
+
+    public boolean isDestory() {
+        return destory;
+    }
+
+    public boolean isActivityRunning() {
+        return getActivity() != null;
     }
 
     @Override
