@@ -19,13 +19,46 @@
             android:layout_height="match_parent" app:fitType="top"
             app:statusBarColor="?attr/statusbarColor">
 
-            <FrameLayout
-                android:id="@+id/content_frame" android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingTop="@dimen/abc_action_bar_default_height_material"/>
+            <RelativeLayout
+                android:layout_width="match_parent" android:layout_height="match_parent">
+
+                <FrameLayout
+                    android:id="@+id/content_frame" android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="@dimen/abc_action_bar_default_height_material"/>
+
+                <org.aisen.weibo.sina.ui.widget.MainFloatingActionButton
+                    android:id="@+id/fab"
+                    style="@style/Widget.MaterialSheetFab.MainFab"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"/>
+
+                <org.aisen.android.component.sheetfab.DimOverlayFrameLayout
+                    android:id="@+id/overlay"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+                <org.aisen.android.component.io.codetail.widget.RevealFrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="end|bottom"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/fab_sheet" style="@style/Widget.MaterialSheetFab.Sheet" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <fragment
+                            android:id="@+id/fragmentFabGroups" class="org.aisen.weibo.sina.ui.fragment.menu.FabGroupsFragment" android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                    </android.support.v7.widget.CardView>
+                </org.aisen.android.component.io.codetail.widget.RevealFrameLayout>
+            </RelativeLayout>
 
             <include
-                layout="@layout/comm_lay_toolbar_spinner" android:layout_width="match_parent"
+                layout="@layout/comm_lay_toolbar" android:layout_width="match_parent"
                 android:layout_height="?attr/toolbarSize"/>
 
         </org.aisen.android.ui.widget.FitWindowsFrameLayout>

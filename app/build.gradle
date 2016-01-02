@@ -27,6 +27,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':library')
     compile project(':datetimerpicker')
+    compile 'com.android.support:cardview-v7:23.1.1'
     compile 'com.github.gabrielemariotti.changeloglib:changelog:2.0.0'
     compile 'com.melnykov:floatingactionbutton:1.3.0'
     compile('com.github.afollestad.material-dialogs:core:0.8.5.1@aar') {

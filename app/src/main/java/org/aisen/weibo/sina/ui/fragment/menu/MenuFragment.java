@@ -15,6 +15,8 @@ import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.ui.activity.base.MainActivity;
 
 /**
+ * 维护左侧抽屉
+ *
  * Created by wangdan on 15/4/23.
  */
 public class MenuFragment extends ABaseFragment {
@@ -51,8 +53,6 @@ public class MenuFragment extends ABaseFragment {
         else {
             selectedMenuItemId = savedInstanceSate.getInt("selectedMenuItemId", R.id.drawTimelines);
         }
-
-        onMenuSelected(selectedMenuItemId, -1);
     }
 
     @Override

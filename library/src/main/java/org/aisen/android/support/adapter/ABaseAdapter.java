@@ -17,10 +17,6 @@ public abstract class ABaseAdapter<T extends Serializable> extends BaseAdapter {
     private Context context;
     private ArrayList<T> datas;
 
-    private int selectedPosition = -1;
-
-    private BaseAdapterHelper<T> adapterHelper;
-
     public ABaseAdapter(ArrayList<T> datas, Activity context) {
         if (datas == null)
             datas = new ArrayList<T>();
@@ -28,62 +24,27 @@ public abstract class ABaseAdapter<T extends Serializable> extends BaseAdapter {
         this.context = context;
     }
 
-    abstract protected AbstractItemView<T> newItemView();
-
-    public void setAdapterHelper(BaseAdapterHelper<T> adapterHepler) {
-        this.adapterHelper = adapterHepler;
-    }
-
-    public BaseAdapterHelper<T> getAdapterHepler() {
-        return adapterHelper;
-    }
-
-    /**
-     * 设置position项ItemView为selected状态
-     *
-     * @param position
-     */
-    public void setSelected(int position) {
-        selectedPosition = position;
-        notifyDataSetChanged();
-    }
-
-    public int getSelected() {
-        return selectedPosition;
-    }
+    abstract protected AItemView<T> newItemView();
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        AbstractItemView<T> itemViewProcessor;
+        AItemView<T> itemView;
 
-        boolean isReusing = true;
-        if (convertView != null && adapterHelper != null)
-            isReusing = adapterHelper.isReusing(convertView);
+        if (convertView == null) {
+            itemView = newItemView();
 
-        if (convertView == null || !isReusing) {
-            itemViewProcessor = newItemView();
+            convertView = View.inflate(context, itemView.inflateViewId(), null);
+            convertView.setTag(itemView);
 
-            convertView = View.inflate(context, itemViewProcessor.inflateViewId(), null);
-            convertView.setTag(itemViewProcessor);
-
-            itemViewProcessor.bindingView(convertView);
+            itemView.convertView = convertView;
+            itemView.bindingView(convertView);
         } else {
-            itemViewProcessor = (AbstractItemView<T>) convertView.getTag();
+            itemView = (AItemView<T>) convertView.getTag();
         }
 
-        itemViewProcessor.position = position;
-        itemViewProcessor.size = datas.size();
-        if (adapterHelper != null)
-            itemViewProcessor.bindingData(convertView, adapterHelper.getItem(position, datas));
-        else
-            itemViewProcessor.bindingData(convertView, datas.get(position));
-
-        if (adapterHelper != null)
-            itemViewProcessor.updateConvertView(adapterHelper.getItem(position, datas), convertView, selectedPosition);
-        else
-            itemViewProcessor.updateConvertView(datas.get(position), convertView, selectedPosition);
-
-        convertView.setSelected(selectedPosition == position);
+        itemView.position = position;
+        itemView.size = datas.size();
+        itemView.bindingData(convertView, datas.get(position), position);
 
         return convertView;
     }
@@ -94,9 +55,6 @@ public abstract class ABaseAdapter<T extends Serializable> extends BaseAdapter {
 
     @Override
     public int getCount() {
-        if (adapterHelper != null)
-            return adapterHelper.getCount(datas);
-
         return datas.size();
     }
 
@@ -188,24 +146,11 @@ public abstract class ABaseAdapter<T extends Serializable> extends BaseAdapter {
     protected void itemIsEmpty() {
     }
 
-    private abstract static class BaseAdapterHelper<T> implements Serializable {
-
-        private static final long serialVersionUID = 8411760659150853673L;
-
-        abstract public int getCount(List<T> datas);
-
-        abstract public T getItem(int position, List<T> datas);
-
-        private boolean isReusing(View convertView) {
-            return true;
-        }
-
-    }
-
-    abstract public static class AbstractItemView<T extends Serializable> {
+    abstract public static class AItemView<T extends Serializable> {
 
         private int position;
         private int size;
+        private View convertView;
 
         /**
          * ItemView的layoutId
@@ -228,18 +173,7 @@ public abstract class ABaseAdapter<T extends Serializable> extends BaseAdapter {
          *
          * @param data
          */
-        abstract public void bindingData(View convertView, T data);
-
-        /**
-         * 刷新当前ItemView视图
-         *
-         * @param data
-         * @param convertView
-         * @param selectedPosition 参照{@link org.aisen.android.component.adapter.ABaseAdapter#setSelected(int)}
-         */
-        public void updateConvertView(T data, View convertView, int selectedPosition) {
-
-        }
+        abstract public void bindingData(View convertView, T data, int position);
 
         public int getPosition() {
             return position;
@@ -255,6 +189,10 @@ public abstract class ABaseAdapter<T extends Serializable> extends BaseAdapter {
 
         public void recycleView(View view) {
 
+        }
+
+        public View getConvertView() {
+            return convertView;
         }
 
     }

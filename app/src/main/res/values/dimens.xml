@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <dimen name="fab_spacing">10dp</dimen>
+    <dimen name="fab_elevation">4dip</dimen>
+    <dimen name="sheet_spacing">10dp</dimen>
+    <dimen name="fab_sheet_elevation">0dp</dimen>
 </resources>

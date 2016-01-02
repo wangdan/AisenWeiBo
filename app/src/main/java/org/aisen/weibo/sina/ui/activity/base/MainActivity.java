@@ -1,40 +1,37 @@
 package org.aisen.weibo.sina.ui.activity.base;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Fragment;
-import android.content.DialogInterface;
+import android.graphics.Color;
 import android.graphics.Rect;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.TextView;
 
-import org.aisen.android.common.utils.Logger;
-import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.common.utils.Utils;
+import org.aisen.android.component.sheetfab.MaterialSheetFab;
+import org.aisen.android.component.sheetfab.MaterialSheetFabEventListener;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.widget.FitWindowsFrameLayout;
 import org.aisen.weibo.sina.R;
+import org.aisen.weibo.sina.base.AppContext;
+import org.aisen.weibo.sina.sinasdk.bean.Group;
 import org.aisen.weibo.sina.support.utils.SystemBarUtils;
+import org.aisen.weibo.sina.ui.fragment.menu.FabGroupsFragment;
 import org.aisen.weibo.sina.ui.fragment.menu.MenuFragment;
-import org.aisen.weibo.sina.ui.fragment.timeline.TimelineSpinnerFragment;
+import org.aisen.weibo.sina.ui.fragment.timeline.TimelineDefFragment;
+import org.aisen.weibo.sina.ui.fragment.timeline.TimelineGroupsFragment;
+import org.aisen.weibo.sina.ui.widget.MainFloatingActionButton;
+
+import java.util.ArrayList;
 
 /**
+ *
  * Created by wangdan on 15/4/23.
  */
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements FabGroupsFragment.OnFabGroupSelectedCallback {
 
     @ViewInject(id = R.id.drawer)
     private DrawerLayout mDrawerLayout;
@@ -42,10 +39,13 @@ public class MainActivity extends BaseActivity {
     FitWindowsFrameLayout mainContent;
     @ViewInject(id = R.id.layMainRoot)
     FitWindowsFrameLayout mainRoot;
+    @ViewInject(id = R.id.fab)
+    MainFloatingActionButton fabBtn;
 
-    private ActionBarDrawerToggle mDrawerToggle;
-
+    private ActionBarDrawerToggle drawerToggle;
+    private MaterialSheetFab materialSheetFab;
     private MenuFragment menuFragment;
+    private FabGroupsFragment fabGroupsFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,7 +65,13 @@ public class MainActivity extends BaseActivity {
 
         });
 
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+        setupDrawer(savedInstanceState);
+        setupMenu(savedInstanceState);
+        setupFab(savedInstanceState);
+    }
+
+    private void setupDrawer(Bundle savedInstanceState) {
+        drawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 getToolbar(), R.string.draw_open, R.string.draw_close) {
 
             public void onDrawerClosed(View view) {
@@ -77,10 +83,77 @@ public class MainActivity extends BaseActivity {
             }
 
         };
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerLayout.setDrawerListener(drawerToggle);
+    }
 
-        menuFragment = MenuFragment.newInstance();
-        getFragmentManager().beginTransaction().add(R.id.menu_frame, menuFragment, "MenuFragment").commit();
+    private void setupMenu(Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            menuFragment = MenuFragment.newInstance();
+            getFragmentManager().beginTransaction().add(R.id.menu_frame, menuFragment, "MenuFragment").commit();
+        }
+        else {
+            menuFragment = (MenuFragment) getFragmentManager().findFragmentByTag("MenuFragment");
+        }
+    }
+
+    private void setupFab(Bundle savedInstanceState) {
+        ArrayList<Group> groupList = new ArrayList<>();
+        // 全部微博
+        Group group = new Group();
+        group.setName(getString(R.string.timeline_all));
+        group.setId("statusesFriendsTimeLine");
+        groupList.add(group);
+        // 互相关注
+        group = new Group();
+        group.setName(getString(R.string.timeline_bilateral));
+        group.setId("statusesBilateralTimeLine");
+        groupList.add(group);
+        // 发给我的
+        group = new Group();
+        group.setName(getString(R.string.timeline_tome));
+        group.setId("statusesToMe");
+        groupList.add(group);
+        // 分组微博
+        groupList.addAll(AppContext.getAccount().getGroups().getLists());
+
+        fabGroupsFragment = (FabGroupsFragment) getFragmentManager().findFragmentById(R.id.fragmentFabGroups);
+        fabGroupsFragment.setItems(groupList);
+
+        View sheetView = findViewById(R.id.fab_sheet);
+        View overlay = findViewById(R.id.overlay);
+        int sheetColor = getResources().getColor(R.color.comm_white);
+        int fabColor = Utils.resolveColor(this, R.attr.colorPrimary, Color.BLACK);
+
+        materialSheetFab = new MaterialSheetFab(fabBtn, sheetView, overlay, sheetColor, fabColor);
+        materialSheetFab.setEventListener(new MaterialSheetFabEventListener() {
+
+            @Override
+            public void onShowSheet() {
+                super.onShowSheet();
+
+                fabGroupsFragment.show();
+            }
+
+        });
+        materialSheetFab.showFab();
+        fabGroupsFragment.triggerLastPosition();
+    }
+
+    @Override
+    public void onGroupSelected(int position, Group group) {
+        Fragment fragment = null;
+        if (position <= 2) {
+            fragment = TimelineDefFragment.newInstance(group.getId());
+        }
+        else {
+            fragment = TimelineGroupsFragment.newInstance(group);
+        }
+
+        setFragemnt(fragment, group.getName());
+
+        if (materialSheetFab.isSheetVisible()) {
+            materialSheetFab.hideSheet();
+        }
     }
 
     public void onMenuSelected(MenuItem menu, MenuItem previousMenu) {
@@ -88,146 +161,34 @@ public class MainActivity extends BaseActivity {
 
         switch (menu.getItemId()) {
         case R.id.drawTimelines:
-            fragment = TimelineSpinnerFragment.newInstance();
-            break;
+            fabGroupsFragment.triggerLastPosition();
+            return;
         }
 
+        setFragemnt(fragment, menu.getTitle());
+    }
+
+    private void setFragemnt(Fragment fragment, CharSequence title) {
         if (fragment == null)
             return;
 
         closeDrawer();
 
-        getSupportActionBar().setTitle(menu.getTitle());
+        getSupportActionBar().setTitle(title);
 
         getFragmentManager().beginTransaction().replace(R.id.content_frame, fragment, "Main").commit();
-
-        View toolbarSpinner = getToolbar().findViewById(R.id.toolbarSpinner);
-        if (fragment instanceof MainSpinnerNavigation) {
-            final MainSpinnerNavigation navigation = (MainSpinnerNavigation) fragment;
-
-            toolbarSpinner.setVisibility(View.VISIBLE);
-            TextView txtTitle = (TextView) toolbarSpinner.findViewById(R.id.txtTitle);
-            txtTitle.setText(navigation.generateItems()[navigation.initPosition()]);
-            toolbarSpinner.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    showSpinnerDialog(navigation, v);
-                }
-
-            });
-
-            getSupportActionBar().setTitle("");
-        }
-        else {
-            toolbarSpinner.setOnClickListener(null);
-            toolbarSpinner.setVisibility(View.GONE);
-        }
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        if (mDrawerToggle != null)
-            mDrawerToggle.syncState();
+        if (drawerToggle != null)
+            drawerToggle.syncState();
     }
 
     public void closeDrawer() {
         mDrawerLayout.closeDrawers();
-    }
-
-    public void showSpinnerDialog(final MainSpinnerNavigation navigation, View targetView) {
-        Activity activity = this;
-        String[] items = navigation.generateItems();
-
-        Rect rect = new Rect();
-        targetView.getGlobalVisibleRect(rect);
-
-        final AlertDialog menuDialog = new AlertDialog.Builder(activity, R.style.main_overflow_menus)
-                                        .setItems(items, new DialogInterface.OnClickListener() {
-
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                TextView txtTitle = (TextView) getToolbar().findViewById(R.id.txtTitle);
-                                                txtTitle.setText(navigation.generateItems()[which]);
-
-                                                navigation.onItemSelected(null, null, which, which);
-                                            }
-
-                                        })
-                                        .create();
-
-        if (Build.VERSION.SDK_INT < 21) {
-            menuDialog.getListView().setSelector(R.drawable.selector_list_holo);
-            menuDialog.getListView().setDivider(null);
-        }
-        menuDialog.getListView().getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                menuDialog.getListView().getViewTreeObserver().removeOnPreDrawListener(this);
-
-                menuDialog.getListView().postDelayed(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        menuDialog.getListView().setSelectionFromTop(navigation.initPosition(), Utils.dip2px(100));
-                    }
-
-                }, 0);
-
-                return true;
-            }
-        });
-        menuDialog.getListView().setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
-
-            @Override
-            public void onChildViewAdded(View parent, View child) {
-                int selectposition = navigation.initPosition();
-
-                int firstPosition = menuDialog.getListView().getFirstVisiblePosition();
-                int position = selectposition - menuDialog.getListView().getFirstVisiblePosition();
-
-                Logger.v("firstPosition = " + menuDialog.getListView().getFirstVisiblePosition());
-                Logger.v("position = " + position + ", selectionPosition = " + selectposition + ", childcount = " + menuDialog.getListView().getChildCount());
-
-                if (menuDialog.getListView().getChildCount() > firstPosition) {
-                    if (menuDialog.getListView().getChildAt(firstPosition) == child) {
-                        child.setBackgroundResource(R.drawable.abc_list_pressed_holo_light);
-                    }
-                }
-            }
-
-            @Override
-            public void onChildViewRemoved(View parent, View child) {
-
-            }
-
-        });
-
-        menuDialog.show();
-
-        WindowManager.LayoutParams params = menuDialog.getWindow().getAttributes();
-        params.x = rect.left - Math.round(activity.getResources().getDimensionPixelSize(R.dimen.abc_action_bar_icon_vertical_padding_material) * 1.2f);
-        params.y = rect.top - Math.round(activity.getResources().getDimensionPixelSize(R.dimen.abc_action_bar_icon_vertical_padding_material) * 0.8f);
-        params.width = Math.round(targetView.getWidth() * 1.3f);
-        menuDialog.setCanceledOnTouchOutside(true);
-        menuDialog.getWindow().setGravity(Gravity.LEFT | Gravity.TOP);
-        if (items.length > 5) {
-            menuDialog.getWindow().setLayout(params.width, SystemUtils.getScreenHeight() * 4 / 5);
-        }
-        else {
-            menuDialog.getWindow().setLayout(params.width, WindowManager.LayoutParams.WRAP_CONTENT);
-        }
-        menuDialog.getWindow().setAttributes(params);
-    }
-
-    public interface MainSpinnerNavigation extends AdapterView.OnItemSelectedListener {
-
-        String[] generateItems();
-
-        int initPosition();
-
     }
 
 }

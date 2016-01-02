@@ -236,6 +236,10 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 	public ABaseAdapter getAdapter() {
 		return mAdapter;
 	}
+
+	public ArrayList<T> getAdapterItems() {
+		return mAdapter.getDatas();
+	}
 	
     public void onPullDownToRefresh() {
 		requestData(RefreshMode.refresh);
@@ -490,7 +494,7 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 		}
 
 		@Override
-		protected AbstractItemView<T> newItemView() {
+		protected AItemView<T> newItemView() {
 			return APagingFragment.this.newItemView();
 		}
 
@@ -676,7 +680,7 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 	 * 
 	 * @return
 	 */
-	abstract protected ABaseAdapter.AbstractItemView<T> newItemView();
+	abstract protected ABaseAdapter.AItemView<T> newItemView();
 
 	/**
 	 * 根据RefreshMode拉取数据

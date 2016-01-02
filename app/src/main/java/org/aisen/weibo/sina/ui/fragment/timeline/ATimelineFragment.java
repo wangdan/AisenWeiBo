@@ -13,7 +13,7 @@ import org.aisen.weibo.sina.sinasdk.bean.StatusContents;
 public abstract class ATimelineFragment extends AListSwipeRefreshFragment<StatusContent, StatusContents> {
 
     @Override
-    protected ABaseAdapter.AbstractItemView<StatusContent> newItemView() {
+    protected ABaseAdapter.AItemView<StatusContent> newItemView() {
         return null;
     }
 
