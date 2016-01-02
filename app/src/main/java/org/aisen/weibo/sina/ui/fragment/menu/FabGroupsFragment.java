@@ -90,7 +90,14 @@ public class FabGroupsFragment extends AListFragment<Group, Groups> {
     }
 
     public void show() {
-        getRefreshView().setSelectionFromTop(selectedPosition, Utils.dip2px(175));
+        int top = 0;
+        if (getRefreshView().getChildCount() > 0 && getRefreshView().getChildAt(0).getHeight() > 0) {
+            top = getRefreshView().getChildAt(0).getHeight() * 3;
+        }
+        else {
+            top = Utils.dip2px(175);
+        }
+        getRefreshView().setSelectionFromTop(selectedPosition, top);
     }
 
     public void triggerLastPosition() {
