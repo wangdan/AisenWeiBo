@@ -9,4 +9,6 @@
     <color name="comm_transparent">#00000000</color>
 
     <color name="comm_tab_selected_strip">#ffffffff</color>
+
+    <color name="background_dim_overlay">#44000000</color>
 </resources>

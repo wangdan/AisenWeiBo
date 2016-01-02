@@ -46,10 +46,10 @@ public class MenuFragment extends ABaseFragment {
 //        ImageLoader.getInstance().displayImage("http://tp1.sinaimg.cn/2486736244/180/5731430361/1", imgPhoto);
 
         if (savedInstanceSate == null) {
-            selectedMenuItemId = R.id.drawPics;
+            selectedMenuItemId = R.id.drawTimelines;
         }
         else {
-            selectedMenuItemId = savedInstanceSate.getInt("selectedMenuItemId", R.id.drawPics);
+            selectedMenuItemId = savedInstanceSate.getInt("selectedMenuItemId", R.id.drawTimelines);
         }
 
         onMenuSelected(selectedMenuItemId, -1);

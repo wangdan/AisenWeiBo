@@ -20,4 +20,8 @@
     <string name="login_exit">退出</string>
     <string name="login_ok">再试一次</string>
 
+    <string name="timeline_all">全部微博</string>
+    <string name="timeline_bilateral">互相关注</string>
+    <string name="timeline_tome">发给我的</string>
+
 </resources>

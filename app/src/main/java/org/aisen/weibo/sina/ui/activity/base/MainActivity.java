@@ -7,22 +7,29 @@ import android.content.DialogInterface;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import org.aisen.android.common.utils.Logger;
 import org.aisen.android.common.utils.SystemUtils;
+import org.aisen.android.common.utils.Utils;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.widget.FitWindowsFrameLayout;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.support.utils.SystemBarUtils;
 import org.aisen.weibo.sina.ui.fragment.menu.MenuFragment;
+import org.aisen.weibo.sina.ui.fragment.timeline.TimelineSpinnerFragment;
 
 /**
  * Created by wangdan on 15/4/23.
@@ -80,7 +87,8 @@ public class MainActivity extends BaseActivity {
         Fragment fragment = null;
 
         switch (menu.getItemId()) {
-        case R.id.drawPics:
+        case R.id.drawTimelines:
+            fragment = TimelineSpinnerFragment.newInstance();
             break;
         }
 
@@ -136,7 +144,7 @@ public class MainActivity extends BaseActivity {
         Rect rect = new Rect();
         targetView.getGlobalVisibleRect(rect);
 
-        AlertDialog menuDialog = new AlertDialog.Builder(activity, R.style.main_overflow_menus)
+        final AlertDialog menuDialog = new AlertDialog.Builder(activity, R.style.main_overflow_menus)
                                         .setItems(items, new DialogInterface.OnClickListener() {
 
                                             @Override
@@ -149,13 +157,55 @@ public class MainActivity extends BaseActivity {
 
                                         })
                                         .create();
-        menuDialog.show();
 
         if (Build.VERSION.SDK_INT < 21) {
-            menuDialog.getListView().setSelector(R.drawable.abc_item_background_holo_light);
+            menuDialog.getListView().setSelector(R.drawable.selector_list_holo);
             menuDialog.getListView().setDivider(null);
         }
-        menuDialog.getListView().setSelection(navigation.initPosition());
+        menuDialog.getListView().getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                menuDialog.getListView().getViewTreeObserver().removeOnPreDrawListener(this);
+
+                menuDialog.getListView().postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        menuDialog.getListView().setSelectionFromTop(navigation.initPosition(), Utils.dip2px(100));
+                    }
+
+                }, 0);
+
+                return true;
+            }
+        });
+        menuDialog.getListView().setOnHierarchyChangeListener(new ViewGroup.OnHierarchyChangeListener() {
+
+            @Override
+            public void onChildViewAdded(View parent, View child) {
+                int selectposition = navigation.initPosition();
+
+                int firstPosition = menuDialog.getListView().getFirstVisiblePosition();
+                int position = selectposition - menuDialog.getListView().getFirstVisiblePosition();
+
+                Logger.v("firstPosition = " + menuDialog.getListView().getFirstVisiblePosition());
+                Logger.v("position = " + position + ", selectionPosition = " + selectposition + ", childcount = " + menuDialog.getListView().getChildCount());
+
+                if (menuDialog.getListView().getChildCount() > firstPosition) {
+                    if (menuDialog.getListView().getChildAt(firstPosition) == child) {
+                        child.setBackgroundResource(R.drawable.abc_list_pressed_holo_light);
+                    }
+                }
+            }
+
+            @Override
+            public void onChildViewRemoved(View parent, View child) {
+
+            }
+
+        });
+
+        menuDialog.show();
 
         WindowManager.LayoutParams params = menuDialog.getWindow().getAttributes();
         params.x = rect.left - Math.round(activity.getResources().getDimensionPixelSize(R.dimen.abc_action_bar_icon_vertical_padding_material) * 1.2f);
@@ -174,9 +224,9 @@ public class MainActivity extends BaseActivity {
 
     public interface MainSpinnerNavigation extends AdapterView.OnItemSelectedListener {
 
-        public String[] generateItems();
+        String[] generateItems();
 
-        public int initPosition();
+        int initPosition();
 
     }
 
