@@ -76,10 +76,23 @@ public class MainActivity extends BaseActivity implements FabGroupsFragment.OnFa
 
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
+
+                if (materialSheetFab != null) {
+                    materialSheetFab.showFab();
+                }
             }
 
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
+
+                if (materialSheetFab != null) {
+                    if (materialSheetFab.isSheetVisible()) {
+                        materialSheetFab.hideSheetThenFab();
+                    }
+                    else if (fabBtn.isShown()) {
+                        fabBtn.hide();
+                    }
+                }
             }
 
         };

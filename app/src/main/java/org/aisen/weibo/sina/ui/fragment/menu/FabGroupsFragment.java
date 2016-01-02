@@ -82,7 +82,7 @@ public class FabGroupsFragment extends AListFragment<Group, Groups> {
             width = SystemUtils.getScreenWidth() / 2;
         }
         if (items.size() > 5) {
-            getContentView().setLayoutParams(new FrameLayout.LayoutParams(width, Utils.dip2px(400)));
+            getContentView().setLayoutParams(new FrameLayout.LayoutParams(width, Utils.dip2px(250)));
         }
         else {
             getContentView().setLayoutParams(new FrameLayout.LayoutParams(width, FrameLayout.LayoutParams.WRAP_CONTENT));
@@ -90,7 +90,7 @@ public class FabGroupsFragment extends AListFragment<Group, Groups> {
     }
 
     public void show() {
-        getRefreshView().setSelectionFromTop(selectedPosition, Utils.dip2px(100));
+        getRefreshView().setSelectionFromTop(selectedPosition, Utils.dip2px(175));
     }
 
     public void triggerLastPosition() {
