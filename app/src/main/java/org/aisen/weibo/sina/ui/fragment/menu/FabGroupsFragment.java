@@ -42,8 +42,8 @@ public class FabGroupsFragment extends AListFragment<Group, Groups> {
     }
 
     @Override
-    protected void configRefresh(RefreshConfig config) {
-        super.configRefresh(config);
+    protected void setupRefreshConfig(RefreshConfig config) {
+        super.setupRefreshConfig(config);
 
         config.footerMoreEnable = false;
     }

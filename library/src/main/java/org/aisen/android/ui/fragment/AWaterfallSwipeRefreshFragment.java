@@ -5,7 +5,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 
 import org.aisen.android.R;
 import org.aisen.android.support.inject.ViewInject;
-import org.aisen.android.ui.widget.pla.PLAMultiColumnListView;
 
 import java.io.Serializable;
 
@@ -26,8 +25,8 @@ public abstract class AWaterfallSwipeRefreshFragment<T extends Serializable, Ts 
     }
 
     @Override
-    protected void setupRefreshView(PLAMultiColumnListView refreshView, Bundle savedInstanceSate) {
-        super.setupRefreshView(refreshView, savedInstanceSate);
+    protected void setupRefreshView(Bundle savedInstanceSate) {
+        super.setupRefreshView(savedInstanceSate);
 
         setupSwipeRefreshLayout();
     }
@@ -46,14 +45,14 @@ public abstract class AWaterfallSwipeRefreshFragment<T extends Serializable, Ts 
     }
 
     @Override
-    public boolean setRefreshing() {
+    public boolean setRefreshViewToLoading() {
         swipeRefreshLayout.setRefreshing(true);
 
         return false;
     }
 
     @Override
-    public void onRefreshViewComplete(RefreshMode mode) {
+    public void onRefreshViewFinished(RefreshMode mode) {
         if (mode != RefreshMode.update && swipeRefreshLayout.isRefreshing())
             swipeRefreshLayout.setRefreshing(false);
     }

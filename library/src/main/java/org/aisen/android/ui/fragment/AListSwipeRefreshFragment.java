@@ -26,8 +26,8 @@ public abstract class AListSwipeRefreshFragment<T extends Serializable, Ts exten
     }
 
     @Override
-    protected void setupRefreshView(ListView refreshView, Bundle savedInstanceSate) {
-        super.setupRefreshView(refreshView, savedInstanceSate);
+    protected void setupRefreshView(Bundle savedInstanceSate) {
+        super.setupRefreshView(savedInstanceSate);
 
         setupSwipeRefreshLayout();
     }
@@ -46,14 +46,14 @@ public abstract class AListSwipeRefreshFragment<T extends Serializable, Ts exten
     }
 
     @Override
-    public boolean setRefreshing() {
+    public boolean setRefreshViewToLoading() {
         swipeRefreshLayout.setRefreshing(true);
 
         return false;
     }
 
     @Override
-    public void onRefreshViewComplete(RefreshMode mode) {
+    public void onRefreshViewFinished(RefreshMode mode) {
         if (mode != RefreshMode.update && swipeRefreshLayout.isRefreshing())
             swipeRefreshLayout.setRefreshing(false);
     }

@@ -1,6 +1,9 @@
 package org.aisen.android.ui.fragment;
 
+import android.os.Bundle;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import org.aisen.android.R;
@@ -16,7 +19,7 @@ import java.util.ArrayList;
  *
  */
 public abstract class AListFragment<T extends Serializable, Ts extends Serializable>
-                                extends APagingFragment<T, Ts, ListView> {
+                                extends APagingFragment<T, Ts, ListView> implements AdapterView.OnItemClickListener, AbsListView.OnScrollListener {
 
     @ViewInject(idStr = "listView")
     ListView mListView;
@@ -27,34 +30,60 @@ public abstract class AListFragment<T extends Serializable, Ts extends Serializa
     }
 
     @Override
+    protected void setupRefreshView(Bundle savedInstanceSate) {
+        super.setupRefreshView(savedInstanceSate);
+
+        // 设置事件
+        getRefreshView().setOnScrollListener(this);
+        getRefreshView().setOnItemClickListener(this);
+    }
+
+    @Override
     public ListView getRefreshView() {
         return mListView;
     }
 
     @Override
-    IPagingAdapter<T> configAdapter(ArrayList<T> datas) {
+    IPagingAdapter<T> newAdapter(ArrayList<T> datas) {
         return new BasicListAdapter<>(this, datas);
     }
 
     @Override
-    public boolean setRefreshing() {
-        return false;
-    }
-
-    @Override
-    protected void onChangedByConfig(RefreshConfig config) {
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
     }
 
     @Override
-    public void onRefreshViewComplete(RefreshMode mode) {
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        onScroll(firstVisibleItem, visibleItemCount, totalItemCount);
+    }
 
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+        onScrollStateChanged(scrollState);
+    }
+
+    @Override
+    protected void requestDataOutofdate() {
+        getRefreshView().setSelectionFromTop(0, 0);
+
+        super.requestDataOutofdate();
+    }
+
+    @Override
+    protected int getFirstVisiblePosition() {
+        return getRefreshView().getFirstVisiblePosition();
     }
 
     @Override
     protected void bindAdapter(IPagingAdapter adapter) {
         if (getRefreshView().getAdapter() == null)
             getRefreshView().setAdapter((BasicListAdapter) adapter);
+    }
+
+    @Override
+    protected void bindFooterView(View footerView) {
+        getRefreshView().addFooterView(footerView);
     }
 
     /**

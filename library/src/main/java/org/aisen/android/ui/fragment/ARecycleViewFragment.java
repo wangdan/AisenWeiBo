@@ -29,28 +29,13 @@ public abstract class ARecycleViewFragment<T extends Serializable, Ts extends Se
     }
 
     @Override
-    IPagingAdapter<T> configAdapter(ArrayList<T> datas) {
+    IPagingAdapter<T> newAdapter(ArrayList<T> datas) {
         return null;
     }
 
     @Override
-    protected void setupRefreshView(RecyclerView refreshView, Bundle savedInstanceSate) {
-        super.setupRefreshView(refreshView, savedInstanceSate);
-    }
-
-    @Override
-    public boolean setRefreshing() {
-        return false;
-    }
-
-    @Override
-    protected void onChangedByConfig(RefreshConfig config) {
-
-    }
-
-    @Override
-    public void onRefreshViewComplete(RefreshMode mode) {
-
+    protected void setupRefreshView(Bundle savedInstanceSate) {
+        super.setupRefreshView(savedInstanceSate);
     }
 
 }

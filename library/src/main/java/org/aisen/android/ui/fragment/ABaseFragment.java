@@ -263,7 +263,7 @@ public abstract class ABaseFragment extends Fragment implements ITaskManager, Bi
      *
      * @param exception
      */
-    protected void taskStateChanged(ABaseTaskState state, TaskException exception) {
+    protected void onTaskStateChanged(ABaseTaskState state, TaskException exception) {
         // 开始Task
         if (state == ABaseTaskState.prepare) {
             if (isContentEmpty()) {
@@ -356,7 +356,7 @@ public abstract class ABaseFragment extends Fragment implements ITaskManager, Bi
         protected void onPrepare() {
             super.onPrepare();
 
-            taskStateChanged(ABaseTaskState.prepare, null);
+            onTaskStateChanged(ABaseTaskState.prepare, null);
         }
 
         @Override
@@ -366,7 +366,7 @@ public abstract class ABaseFragment extends Fragment implements ITaskManager, Bi
             // 默认加载数据成功，且ContentView有数据展示
             ABaseFragment.this.setContentEmpty(resultIsEmpty(result));
 
-            taskStateChanged(ABaseTaskState.success, null);
+            onTaskStateChanged(ABaseTaskState.success, null);
 
             if (Logger.DEBUG)
                 Logger.d(TAG, "Result获取时间：%s", new SimpleDateFormat("HH:mm:ss").format(lastResultGetTime));
@@ -401,21 +401,21 @@ public abstract class ABaseFragment extends Fragment implements ITaskManager, Bi
         protected void onFailure(TaskException exception) {
             super.onFailure(exception);
 
-            taskStateChanged(ABaseTaskState.falid, exception);
+            onTaskStateChanged(ABaseTaskState.falid, exception);
         }
 
         @Override
         protected void onCancelled() {
             super.onCancelled();
 
-            taskStateChanged(ABaseTaskState.canceled, null);
+            onTaskStateChanged(ABaseTaskState.canceled, null);
         }
 
         @Override
         protected void onFinished() {
             super.onFinished();
 
-            taskStateChanged(ABaseTaskState.finished, null);
+            onTaskStateChanged(ABaseTaskState.finished, null);
         }
 
         /**

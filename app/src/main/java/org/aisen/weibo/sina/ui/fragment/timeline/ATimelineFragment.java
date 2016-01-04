@@ -25,7 +25,7 @@ public abstract class ATimelineFragment extends AListSwipeRefreshFragment<Status
         return new TimelineItemView();
     }
 
-    abstract class ATimelineTask extends PagingTask<Void, Void, StatusContents> {
+    abstract class ATimelineTask extends APagingTask<Void, Void, StatusContents> {
 
         public ATimelineTask(RefreshMode mode) {
             super(mode);
