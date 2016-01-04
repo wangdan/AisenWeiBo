@@ -64,10 +64,11 @@
         </org.aisen.android.ui.widget.FitWindowsFrameLayout>
 
         <FrameLayout
-            android:id="@+id/menu_frame" android:layout_width="match_parent"
-            android:layout_height="match_parent" android:layout_gravity="start"
-            android:layout_marginRight="10dip"
-            android:background="#00ff00" android:orientation="vertical"
+            android:id="@+id/menu_frame"
+            android:layout_width="match_parent" android:layout_height="match_parent"
+            android:layout_gravity="start" android:layout_marginRight="10dip"
+            android:background="@color/comm_white"
+            android:orientation="vertical"
             />
 
     </android.support.v4.widget.DrawerLayout>

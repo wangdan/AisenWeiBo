@@ -1,6 +1,17 @@
 package org.aisen.weibo.sina.ui.fragment.timeline;
 
 import android.os.Bundle;
+import android.text.TextUtils;
+
+import org.aisen.android.common.utils.Logger;
+import org.aisen.android.network.http.Params;
+import org.aisen.android.network.task.TaskException;
+import org.aisen.android.ui.fragment.APagingFragment;
+import org.aisen.weibo.sina.base.AppContext;
+import org.aisen.weibo.sina.sinasdk.SinaSDK;
+import org.aisen.weibo.sina.sinasdk.bean.StatusContents;
+
+import java.lang.reflect.Method;
 
 /**
  * 默认微博列表
@@ -18,5 +29,52 @@ public class TimelineDefFragment extends ATimelineFragment {
 
         return fragment;
     }
-    
+
+    private String method;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        method = savedInstanceState == null ? getArguments().getString("method")
+                                            : savedInstanceState.getString("method");
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putString("method", method);
+    }
+
+    @Override
+    protected void requestData(RefreshMode mode) {
+        new DefTimelineTask(mode).execute();
+    }
+
+    class DefTimelineTask extends ATimelineTask {
+
+        public DefTimelineTask(RefreshMode mode) {
+            super(mode);
+        }
+
+        @Override
+        StatusContents getStatusContents(Params params) throws TaskException {
+            try {
+                Method timelineMethod = SinaSDK.class.getMethod(method, new Class[] { Params.class });
+                return (StatusContents) timelineMethod.invoke(SinaSDK.getInstance(AppContext.getAccount().getAccessToken(), getTaskCacheMode(this)), params);
+            } catch (Throwable e) {
+                if (e instanceof TaskException) {
+                    throw (TaskException) e;
+                }
+                else {
+                    Logger.printExc(TimelineDefFragment.class, e);
+                }
+            }
+
+            throw new TaskException(TaskException.TaskError.resultIllegal.toString());
+        }
+
+    }
+
 }

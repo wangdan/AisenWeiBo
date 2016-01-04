@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.aisen.android.ui.widget.ForegroundLinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="match_parent" android:background="@drawable/bg_navmenu_item"
+                                                    android:foreground="?attr/selectableItemBackground"
+                                                    android:gravity="center_vertical" android:minHeight="?android:listPreferredItemHeightSmall"
+                                                    android:orientation="horizontal" android:paddingLeft="@dimen/padding_normal"
+                                                    android:paddingRight="@dimen/padding_normal">
+
+    <ImageView
+        android:id="@+id/icon" android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="start|center_vertical"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:duplicateParentState="true"/>
+
+    <TextView
+        android:id="@+id/title" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|center_vertical"
+        android:duplicateParentState="true"
+        android:textAppearance="@style/TextAppearance.Body2"
+        android:textColor="@color/app_body_text_1"/>
+</org.aisen.android.ui.widget.ForegroundLinearLayout>

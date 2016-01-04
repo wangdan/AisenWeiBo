@@ -6,6 +6,7 @@
         <attr name="border_width" format="dimension" />
         <attr name="border_color" format="color" />
     </declare-styleable>
+
     <declare-styleable name="RoundImageView">
         <attr name="borderRadius" format="dimension" />
         <attr name="type">
@@ -13,6 +14,7 @@
             <enum name="circle" value="0" />
         </attr>
     </declare-styleable>
+
     <declare-styleable name="FitWindowsFrameLayout">
         <attr name="fitType">
             <enum name="top" value="0" />
@@ -24,4 +26,11 @@
         <attr name="drawStatusBar" format="boolean"/>
         <attr name="drawNavigationBar" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="ForegroundView">
+        <attr name="android:foreground" />
+        <attr name="foregroundInsidePadding" />
+        <attr name="android:foregroundGravity" />
+    </declare-styleable>
+
 </resources>

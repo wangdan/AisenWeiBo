@@ -5,7 +5,10 @@
     <string name="draw_open">打开</string>
     <string name="draw_close">关闭</string>
 
-    <string name="menu_main">首页</string>
+    <string name="menu_sinaweibo">首页</string>
+    <string name="menu_mention">提及</string>
+    <string name="menu_comments">评论</string>
+    <string name="menu_dm">私信</string>
 
     <!--授权页面-->
     <string name="login_title">用户授权</string>

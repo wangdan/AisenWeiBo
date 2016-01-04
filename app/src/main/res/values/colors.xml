@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="app_body_text_1">#de000000</color>
+    <color name="app_body_text_2">#8a000000</color>
+    <color name="app_body_text_disabled">#44000000</color>
+    <color name="app_body_text_1_inverse">#deffffff</color>
+    <color name="app_body_text_2_inverse">#8affffff</color>
+
+    <color name="background_selected_color">#1a000000</color>
+    <color name="navmenu_selected_color">@color/background_selected_color</color>
+
+</resources>
