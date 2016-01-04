@@ -63,7 +63,7 @@ public abstract class AWaterfallFragment<T extends Serializable, Ts extends Seri
     }
 
     @Override
-    protected void bindFooterView(View footerView) {
+    protected void addFooterViewToRefreshView(View footerView) {
         getRefreshView().addFooterView(footerView);
     }
 

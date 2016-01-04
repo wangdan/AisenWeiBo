@@ -82,7 +82,7 @@ public abstract class AListFragment<T extends Serializable, Ts extends Serializa
     }
 
     @Override
-    protected void bindFooterView(View footerView) {
+    protected void addFooterViewToRefreshView(View footerView) {
         getRefreshView().addFooterView(footerView);
     }
 

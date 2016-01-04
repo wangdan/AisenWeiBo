@@ -278,7 +278,7 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 			mFooterView = configFooterView();
 
 		if (mFooterView != null) {
-			bindFooterView(mFooterView);
+			addFooterViewToRefreshView(mFooterView);
 		}
     }
 
@@ -543,7 +543,7 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 		return footerView;
 	}
 
-	abstract protected void bindFooterView(View footerView);
+	abstract protected void addFooterViewToRefreshView(View footerView);
 
 	/**
 	 * 设置FooterView为加载状态，
@@ -551,7 +551,7 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 	 * @param footerView
 	 * @return false:当前正在加载数据
 	 */
-	protected boolean setFooterRefreshing(View footerView) {
+	protected boolean setFooterViewToRefreshing(View footerView) {
 		View layLoading = footerView.findViewById(R.id.layLoading);
 
 		if (footviewHeight == 0 && footerView.getHeight() > 0)
@@ -633,7 +633,7 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 				) {
 			int childCount = getRefreshView().getChildCount();
 			if (childCount > 0 && getRefreshView().getChildAt(childCount - 1) == mFooterView) {
-				if (setFooterRefreshing(mFooterView)) {
+				if (setFooterViewToRefreshing(mFooterView)) {
 					onPullUpToRefresh();
 				}
 			}
