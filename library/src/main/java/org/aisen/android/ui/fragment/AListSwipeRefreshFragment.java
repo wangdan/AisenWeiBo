@@ -22,17 +22,17 @@ public abstract class AListSwipeRefreshFragment<T extends Serializable, Ts exten
 
     @Override
     protected int inflateContentView() {
-        return R.layout.comm_lay_list_swiperefresh;
+        return R.layout.comm_ui_list_swiperefresh;
     }
 
     @Override
-    protected void setInitRefreshView(ListView refreshView, Bundle savedInstanceSate) {
-        super.setInitRefreshView(refreshView, savedInstanceSate);
+    protected void setupRefreshView(ListView refreshView, Bundle savedInstanceSate) {
+        super.setupRefreshView(refreshView, savedInstanceSate);
 
-        setInitSwipeRefreshLayout();
+        setupSwipeRefreshLayout();
     }
 
-    protected void setInitSwipeRefreshLayout() {
+    protected void setupSwipeRefreshLayout() {
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
                                                     android.R.color.holo_green_light,

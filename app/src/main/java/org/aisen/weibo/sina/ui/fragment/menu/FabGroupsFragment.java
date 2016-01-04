@@ -9,7 +9,7 @@ import android.widget.TextView;
 import org.aisen.android.common.utils.ActivityHelper;
 import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.common.utils.Utils;
-import org.aisen.android.support.adapter.ABaseAdapter;
+import org.aisen.android.support.adapter.BasicListAdapter;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.fragment.AListFragment;
 import org.aisen.weibo.sina.R;
@@ -49,7 +49,7 @@ public class FabGroupsFragment extends AListFragment<Group, Groups> {
     }
 
     @Override
-    protected ABaseAdapter.AItemView<Group> newItemView() {
+    public BasicListAdapter.AItemView<Group> newItemView() {
         return new FabGroupsItemView();
     }
 
@@ -104,7 +104,7 @@ public class FabGroupsFragment extends AListFragment<Group, Groups> {
         onItemClick(getRefreshView(), null, selectedPosition, 0);
     }
 
-    class FabGroupsItemView extends ABaseAdapter.AItemView<Group> {
+    class FabGroupsItemView extends BasicListAdapter.AItemView<Group> {
 
         @ViewInject(id = R.id.txtTitle)
         TextView txtTitle;

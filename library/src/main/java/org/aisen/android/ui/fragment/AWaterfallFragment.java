@@ -2,14 +2,16 @@ package org.aisen.android.ui.fragment;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.BaseAdapter;
 
 import org.aisen.android.R;
+import org.aisen.android.support.adapter.BasicListAdapter;
+import org.aisen.android.support.adapter.IPagingAdapter;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.widget.pla.PLAAbsListView;
 import org.aisen.android.ui.widget.pla.PLAMultiColumnListView;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * 维护一个瀑布流
@@ -38,8 +40,8 @@ public abstract class AWaterfallFragment<T extends Serializable, Ts extends Seri
     }
 
     @Override
-    protected void setInitRefreshView(PLAMultiColumnListView refreshView, Bundle savedInstanceSate) {
-        super.setInitRefreshView(refreshView, savedInstanceSate);
+    protected void setupRefreshView(PLAMultiColumnListView refreshView, Bundle savedInstanceSate) {
+        super.setupRefreshView(refreshView, savedInstanceSate);
 
         mPlaMultiColumnList.setOnScrollListener(this);
     }
@@ -75,9 +77,14 @@ public abstract class AWaterfallFragment<T extends Serializable, Ts extends Seri
     }
 
     @Override
-    protected void bindAdapter(PLAMultiColumnListView refreshView, BaseAdapter adapter) {
-        if (refreshView.getAdapter() == null)
-            refreshView.setAdapter(adapter);
+    IPagingAdapter<T> configAdapter(ArrayList<T> datas) {
+        return new BasicListAdapter<>(this, datas);
+    }
+
+    @Override
+    protected void bindAdapter(IPagingAdapter adapter) {
+        if (getRefreshView().getAdapter() == null)
+            getRefreshView().setAdapter((BasicListAdapter) adapter);
     }
 
     @Override

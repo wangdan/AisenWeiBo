@@ -4,7 +4,7 @@ import android.text.TextUtils;
 
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
-import org.aisen.android.support.adapter.ABaseAdapter;
+import org.aisen.android.support.adapter.BasicListAdapter;
 import org.aisen.android.ui.fragment.AListSwipeRefreshFragment;
 import org.aisen.android.ui.fragment.APagingFragment;
 import org.aisen.weibo.sina.base.AppSettings;
@@ -21,7 +21,7 @@ import java.util.List;
 public abstract class ATimelineFragment extends AListSwipeRefreshFragment<StatusContent, StatusContents> {
 
     @Override
-    protected ABaseAdapter.AItemView<StatusContent> newItemView() {
+    public BasicListAdapter.AItemView<StatusContent> newItemView() {
         return new TimelineItemView();
     }
 

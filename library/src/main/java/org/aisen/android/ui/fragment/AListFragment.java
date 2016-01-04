@@ -4,6 +4,8 @@ import android.view.View;
 import android.widget.ListView;
 
 import org.aisen.android.R;
+import org.aisen.android.support.adapter.BasicListAdapter;
+import org.aisen.android.support.adapter.IPagingAdapter;
 import org.aisen.android.support.inject.ViewInject;
 
 import java.io.Serializable;
@@ -30,6 +32,11 @@ public abstract class AListFragment<T extends Serializable, Ts extends Serializa
     }
 
     @Override
+    IPagingAdapter<T> configAdapter(ArrayList<T> datas) {
+        return new BasicListAdapter<>(this, datas);
+    }
+
+    @Override
     public boolean setRefreshing() {
         return false;
     }
@@ -42,6 +49,12 @@ public abstract class AListFragment<T extends Serializable, Ts extends Serializa
     @Override
     public void onRefreshViewComplete(RefreshMode mode) {
 
+    }
+
+    @Override
+    protected void bindAdapter(IPagingAdapter adapter) {
+        if (getRefreshView().getAdapter() == null)
+            getRefreshView().setAdapter((BasicListAdapter) adapter);
     }
 
     /**
@@ -64,12 +77,12 @@ public abstract class AListFragment<T extends Serializable, Ts extends Serializa
             setViewVisiable(contentLayout, View.VISIBLE);
         }
         setAdapterItems(items);
-        getAdapter().notifyDataSetChanged();
         if (mListView.getAdapter() == null) {
-            mListView.setAdapter(getAdapter());
+            bindAdapter(getAdapter());
         }
         else {
             mListView.setSelectionFromTop(0, 0);
+            getAdapter().notifyDataSetChanged();
         }
     }
 

@@ -1,7 +1,5 @@
 package org.aisen.android.ui.fragment;
 
-import android.app.Activity;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -9,8 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -21,17 +17,13 @@ import org.aisen.android.common.utils.Logger;
 import org.aisen.android.common.utils.ViewUtils;
 import org.aisen.android.network.biz.IResult;
 import org.aisen.android.network.task.TaskException;
-import org.aisen.android.support.adapter.ABaseAdapter;
+import org.aisen.android.support.adapter.IPagingAdapter;
 import org.aisen.android.support.paging.IPaging;
 import org.aisen.android.ui.widget.AsToolbar;
 
 import java.io.Serializable;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * 基于APagingFragment，可以扩展支持BaseAdapter的UI控件，并处理上、下拉的交互逻辑<br/>
@@ -47,7 +39,7 @@ import java.util.Set;
  * @param <V>
  */
 public abstract class APagingFragment<T extends Serializable, Ts extends Serializable, V extends ViewGroup> extends ABaseFragment
-									implements AbsListView.RecyclerListener, AbsListView.OnScrollListener, AsToolbar.OnToolbarDoubleClick, AdapterView.OnItemClickListener {
+									implements AbsListView.OnScrollListener, AsToolbar.OnToolbarDoubleClick, AdapterView.OnItemClickListener {
 
 	private static final String TAG = "AFragment-Paging";
 
@@ -59,7 +51,7 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 
 	private IPaging mPaging;
 
-	private ABaseAdapter<T> mAdapter;
+	private IPagingAdapter<T> mAdapter;
 	
 	private PagingTask pagingTask;
 	
@@ -90,7 +82,7 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 
 		ArrayList<T> datas = savedInstanceState == null ? new ArrayList<T>()
                                                         : (ArrayList<T>) savedInstanceState.getSerializable(SAVED_DATAS);
-		mAdapter = new MyBaseAdapter(datas, getActivity());
+		mAdapter = configAdapter(datas);
 		
 		if (savedInstanceState != null && savedInstanceState.getSerializable(SAVED_PAGING) != null) {
             mPaging = (IPaging) savedInstanceState.getSerializable(SAVED_PAGING);
@@ -98,7 +90,7 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
             mPaging = configPaging();
 		}
 
-		footerRefreshConfig = initFooterViewConfig();
+		footerRefreshConfig = setupFooterView();
 	}
 
     @Override
@@ -139,7 +131,7 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
             configRefresh(refreshConfig);
         }
 
-        setInitRefreshView(getRefreshView(), savedInstanceSate);
+        setupRefreshView(getRefreshView(), savedInstanceSate);
 
         onChangedByConfig(refreshConfig);
 	}
@@ -162,8 +154,6 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 	void handleScrollStateChanged(V refreshView, int scrollState) {
 		// 滑动的时候，不加载图片
 		if (!refreshConfig.displayWhenScrolling) {
-			mHandler.removeCallbacks(refreshRunnable);
-
 			if (scrollState == SCROLL_STATE_FLING) {
 				refreshViewScrolling = true;
 			}
@@ -172,8 +162,6 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 			}
 			else if (scrollState == SCROLL_STATE_IDLE) {
 				refreshViewScrolling = false;
-
-				runUIRunnable(refreshRunnable, 200);
 			}
 		}
 
@@ -205,16 +193,6 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 		}
 	}
 	
-	private Runnable refreshRunnable = new Runnable() {
-		
-		@Override
-		public void run() {
-			Logger.w(TAG, "刷新视图");
-
-			getAdapter().notifyDataSetChanged();
-		}
-	};
-	
 	@Override
 	public boolean canDisplay() {
 		if (refreshConfig.displayWhenScrolling)
@@ -233,7 +211,7 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 		requestData(mode);
 	}
 
-	public ABaseAdapter getAdapter() {
+	public IPagingAdapter getAdapter() {
 		return mAdapter;
 	}
 
@@ -340,7 +318,7 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 				return;
 			}
 
-            bindAdapter(getRefreshView(), getAdapter());
+            bindAdapter(getAdapter());
 			
 			List<T> resultList;
 			if (result instanceof List)
@@ -358,9 +336,9 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 
 			// append数据
 			if (mode == RefreshMode.reset || mode == RefreshMode.refresh)
-				getAdapter().addItemsAtFront(resultList);
+				IPagingAdapter.Utils.addItemsAtFront(getAdapter(), resultList);
 			else if (mode == RefreshMode.update)
-				getAdapter().addItems(resultList);
+				IPagingAdapter.Utils.addItems(getAdapter(), resultList);
 			
 			// 处理分页数据
 			if (mPaging != null) {
@@ -487,129 +465,6 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
             requestData(RefreshMode.reset);
     }
 	
-	class MyBaseAdapter extends ABaseAdapter<T> {
-
-        public MyBaseAdapter(ArrayList<T> datas, Activity context) {
-			super(datas, context);
-		}
-
-		@Override
-		protected AItemView<T> newItemView() {
-			return APagingFragment.this.newItemView();
-		}
-
-	}
-
-    private Map<String, WeakReference<View>> viewCache = new HashMap<>();
-	@Override
-    public void onMovedToScrapHeap(View view) {
-        if (!viewCache.containsKey(view.toString())) {
-            viewCache.put(view.toString(), new WeakReference<View>(view));
-        }
-	}
-
-	/**
-	 * 
-	 * @param container
-	 * @return true:子类自行释放，父类不做处理
-	 */
-	protected boolean releaseImageView(View container) {
-		if (refreshConfig.releaseItemIds != null) {
-			for (int imgId : refreshConfig.releaseItemIds) {
-				ImageView imgView = (ImageView) container.findViewById(imgId);
-				Drawable drawable = loadingDrawableHolder(imgId);
-				if (imgView != null && drawable != null) {
-					imgView.setImageDrawable(drawable);
-				
-					Logger.v(APagingFragment.class.getSimpleName(), "释放ImageView");
-				}
-			}
-		}
-		
-		return false;
-	}
-
-	private static Drawable defLoadingDrawable;
-	protected Drawable loadingDrawableHolder(int viewId) {
-		try {
-			if (defLoadingDrawable == null)
-				defLoadingDrawable = GlobalContext.getInstance().getResources().getDrawable(R.drawable.comm_loading);
-		} catch (Throwable e) {
-			Logger.printExc(getClass(), e);
-		}
-
-		return defLoadingDrawable;
-	}
-
-    @Override
-    public void onPause() {
-		super.onPause();
-
-		// 当有手势返回时，不会调用onStop()，所以放到这里做释放了
-		if (refreshConfig.releaseItemIds != null) {
-			runUIRunnable(refreshRunnable, refreshConfig.releaseDelay);
-		}
-    }
-
-    @Override
-    public void onResume() {
-		super.onResume();
-
-		if (refreshConfig.releaseItemIds != null) {
-			mHandler.removeCallbacks(releaseRunnable);
-
-			refreshUI();
-		}
-	}
-
-    public void refreshUI() {
-        runUIRunnable(new Runnable() {
-
-			@Override
-			public void run() {
-				getAdapter().notifyDataSetChanged();
-			}
-
-		}, 200);
-
-		_refreshUI();
-	}
-
-	void _refreshUI() {
-
-	}
-
-    public void releaseImageViewByIds() {
-		Logger.v(TAG, "releaseImageViewByIds()");
-
-		if (getRefreshView() != null) {
-			int childSize = getRefreshView().getChildCount();
-			for (int i = 0; i < childSize; i++) {
-                View view = getRefreshView().getChildAt(i);
-
-				releaseImageView(view);
-
-                if (viewCache.containsKey(view.toString())) {
-                    Logger.v(TAG, "已经释放了，从Cache中移除");
-
-                    viewCache.remove(view.toString());
-                }
-            }
-
-            if (viewCache.size() > 0) {
-                Set<String> keySet = viewCache.keySet();
-                for (String key : keySet) {
-                    View view = viewCache.get(key).get();
-                    if (view != null) {
-                        Logger.v(TAG, "从Cache中释放一个View");
-
-                        releaseImageView(view);
-                    }
-                }
-            }
-		}
-	}
-	
 	protected void toLastReadPosition() {
 		if (getRefreshView() == null || TextUtils.isEmpty(refreshConfig.positionKey))
 			return;
@@ -648,10 +503,6 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 		mAdapter.setDatas(items);
 	}
 	
-    final protected RefreshConfig getRefreshConfig() {
-        return refreshConfig;
-    }
-
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -680,7 +531,7 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 	 * 
 	 * @return
 	 */
-	abstract protected ABaseAdapter.AItemView<T> newItemView();
+	abstract public IPagingAdapter.AItemView<T> newItemView();
 
 	/**
 	 * 根据RefreshMode拉取数据
@@ -695,6 +546,21 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 	 * @return
 	 */
 	abstract public V getRefreshView();
+
+	/**
+	 * 配置Adapter
+	 *
+	 * @param datas
+	 * @return
+	 */
+	abstract IPagingAdapter<T> configAdapter(ArrayList<T> datas);
+
+	/**
+	 * 绑定Adapter到RefreshView
+	 *
+	 * @param adapter
+	 */
+	abstract protected void bindAdapter(IPagingAdapter adapter);
 	
 	/**
 	 * 设置列表控件状态为刷新状态
@@ -718,7 +584,7 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
      *
      * @param refreshView
      */
-    protected void setInitRefreshView(V refreshView, Bundle savedInstanceSate) {
+    protected void setupRefreshView(V refreshView, Bundle savedInstanceSate) {
 		if (refreshConfig.footerMoreEnable)
 			mFooterView = configFooterView();
 
@@ -727,13 +593,12 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 			AbsListView absListView = (AbsListView) getRefreshView();
 
 			absListView.setOnScrollListener(this);
-			absListView.setRecyclerListener(this);
 			absListView.setOnItemClickListener(this);
 		}
 
 		bindFooterView(refreshView, mFooterView);
 
-		bindAdapter(refreshView, getAdapter());
+		bindAdapter(getAdapter());
     }
 
 	protected void bindFooterView(V refreshView, View footerView) {
@@ -744,13 +609,6 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 		}
 	}
 
-	protected void bindAdapter(V refreshView, BaseAdapter adapter) {
-		if (refreshView instanceof AbsListView) {
-			AbsListView listView = (AbsListView) refreshView;
-			if (listView.getAdapter() == null)
-				listView.setAdapter(adapter);
-		}
-	}
 
 	protected int getFirstVisiblePosition() {
 		if (getRefreshView() instanceof AbsListView) {
@@ -800,7 +658,7 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 		return true;
 	}
 
-	protected FooterViewConfig initFooterViewConfig() {
+	protected FooterViewConfig setupFooterView() {
 		FooterViewConfig config = new FooterViewConfig();
 
 		config.hintLoading = getString(R.string.comm_footer_loading);
@@ -858,17 +716,6 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 		return pagingTask != null;
 	}
 	
-	private Runnable releaseRunnable = new Runnable() {
-		
-		@Override
-		public void run() {
-            releaseImageViewByIds();
-
-			Logger.w("释放图片");
-		}
-		
-	};
-
     @Override
     public boolean onToolbarDoubleClick() {
         return false;
@@ -905,6 +752,20 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 		public String btnPagingEnd;
 
 		public String hintLoading;
+
+	}
+
+
+
+
+
+
+	// 重构需要实现的方法
+	public void refreshUI() {
+
+	}
+
+	public void releaseImageViewByIds() {
 
 	}
 
