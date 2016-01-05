@@ -7,8 +7,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import org.aisen.android.R;
-import org.aisen.android.support.adapter.BasicListAdapter;
-import org.aisen.android.support.adapter.IPagingAdapter;
+import org.aisen.android.ui.fragment.adapter.BasicListAdapter;
+import org.aisen.android.ui.fragment.adapter.IPagingAdapter;
 import org.aisen.android.support.inject.ViewInject;
 
 import java.io.Serializable;

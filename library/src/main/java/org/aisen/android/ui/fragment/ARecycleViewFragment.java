@@ -4,13 +4,15 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 
 import org.aisen.android.R;
-import org.aisen.android.support.adapter.IPagingAdapter;
+import org.aisen.android.ui.fragment.adapter.IPagingAdapter;
 import org.aisen.android.support.inject.ViewInject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
+ * 维护RecycleView
+ *
  * Created by wangdan on 16/1/4.
  */
 public abstract class ARecycleViewFragment<T extends Serializable, Ts extends Serializable> extends APagingFragment<T, Ts, RecyclerView> {

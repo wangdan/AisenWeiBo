@@ -1,12 +1,13 @@
 package org.aisen.weibo.sina.ui.fragment.timeline;
 
 import android.text.TextUtils;
+import android.view.View;
 
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
-import org.aisen.android.support.adapter.BasicListAdapter;
 import org.aisen.android.ui.fragment.AListSwipeRefreshFragment;
 import org.aisen.android.ui.fragment.APagingFragment;
+import org.aisen.android.ui.fragment.adapter.IITemView;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContents;
@@ -21,8 +22,13 @@ import java.util.List;
 public abstract class ATimelineFragment extends AListSwipeRefreshFragment<StatusContent, StatusContents> {
 
     @Override
-    public BasicListAdapter.AItemView<StatusContent> newItemView() {
-        return new TimelineItemView();
+    public IITemView<StatusContent> newItemView(View convertView) {
+        return new TimelineItemView(convertView);
+    }
+
+    @Override
+    public int configItemViewRes() {
+        return TimelineItemView.LAYOUT_RES;
     }
 
     abstract class ATimelineTask extends APagingTask<Void, Void, StatusContents> {

@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.view.View;
 
 import org.aisen.android.R;
-import org.aisen.android.support.adapter.BasicListAdapter;
-import org.aisen.android.support.adapter.IPagingAdapter;
+import org.aisen.android.ui.fragment.adapter.BasicListAdapter;
+import org.aisen.android.ui.fragment.adapter.IPagingAdapter;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.widget.pla.PLAAbsListView;
 import org.aisen.android.ui.widget.pla.PLAAdapterView;

@@ -10,14 +10,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import org.aisen.android.R;
-import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.ActivityHelper;
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.common.utils.ViewUtils;
 import org.aisen.android.network.biz.IResult;
 import org.aisen.android.network.task.TaskException;
-import org.aisen.android.support.adapter.IPagingAdapter;
 import org.aisen.android.support.paging.IPaging;
+import org.aisen.android.ui.fragment.adapter.IITemView;
+import org.aisen.android.ui.fragment.adapter.IPagingAdapter;
 import org.aisen.android.ui.widget.AsToolbar;
 
 import java.io.Serializable;
@@ -54,10 +54,9 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 	
 	private APagingTask pagingTask;// 分页线程
 	
-	RefreshConfig refreshConfig;
+	RefreshConfig refreshConfig;// 刷新方面的配置
 
 	View mFooterView;// FooterView，滑动到底部时，自动加载更多数据
-	private int footviewHeight = GlobalContext.getInstance().getResources().getDimensionPixelSize(R.dimen.comm_footer_height);// 默认高度
 
 	public enum RefreshMode {
 		/**
@@ -85,7 +84,7 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 		if (savedInstanceState != null && savedInstanceState.getSerializable(SAVED_PAGING) != null) {
             mPaging = (IPaging) savedInstanceState.getSerializable(SAVED_PAGING);
 		} else {
-            mPaging = configPaging();
+            mPaging = newPaging();
 		}
 	}
 
@@ -189,7 +188,8 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 	}
 
 	public void setAdapterItems(ArrayList<T> items) {
-		mAdapter.setDatas(items);
+		mAdapter.getDatas().clear();
+		mAdapter.getDatas().addAll(items);
 	}
 
     /**
@@ -206,7 +206,7 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
      *
      * @return <tt>null</tt> 不分页
      */
-    protected IPaging<T, Ts> configPaging() {
+    protected IPaging<T, Ts> newPaging() {
         return null;
     }
 
@@ -215,7 +215,15 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 	 * 
 	 * @return
 	 */
-	abstract public IPagingAdapter.AItemView<T> newItemView();
+	abstract public IITemView<T> newItemView(View convertView);
+
+	/**
+	 * 遇到一个先有鸡还是先有蛋的问题，操蛋的RecycleView.Adapter，新增这个方法来处理，返回ItemView的LayoutRes
+	 * 暂时只支持一个ItemType
+	 *
+	 * @return new int[][]{ { ItemLayoutRes, ItemType } }
+	 */
+	abstract public int configItemViewRes();
 
 	/**
 	 * 根据RefreshMode拉取数据
@@ -363,7 +371,7 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 			pagingTask = this;
 
 			if (mode == RefreshMode.reset && mPaging != null)
-				mPaging = configPaging();
+				mPaging = newPaging();
 		}
 
 		@Override
@@ -553,9 +561,6 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 	 */
 	protected boolean setFooterViewToRefreshing(View footerView) {
 		View layLoading = footerView.findViewById(R.id.layLoading);
-
-		if (footviewHeight == 0 && footerView.getHeight() > 0)
-			footviewHeight = footerView.getHeight();
 
 		if (layLoading.getVisibility() == View.VISIBLE)
 			return false;

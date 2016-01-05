@@ -1,8 +1,4 @@
-package org.aisen.android.support.adapter;
-
-import android.view.View;
-
-import org.aisen.android.support.inject.InjectUtility;
+package org.aisen.android.ui.fragment.adapter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,63 +13,15 @@ public interface IPagingAdapter<T extends Serializable> {
 
     ArrayList<T> getDatas();
 
-    void setDatas(ArrayList<T> datas);
-    
     void notifyDataSetChanged();
 
     int getCount();
 
-    abstract class AItemView<T extends Serializable> {
-
-        protected int position;
-        protected int size;
-        protected View convertView;
-
-        /**
-         * ItemView的layoutId
-         *
-         * @return
-         */
-        abstract public int inflateViewId();
-
-        /**
-         * 绑定ViewHolder视图
-         *
-         * @param convertView
-         */
-        public void bindingView(View convertView) {
-            InjectUtility.initInjectedView(this, convertView);
-        }
-
-        /**
-         * 绑定ViewHolder数据
-         *
-         * @param data
-         */
-        abstract public void bindingData(View convertView, T data, int position);
-
-        public int getPosition() {
-            return position;
-        }
-
-        public void setPosition(int position) {
-            this.position = position;
-        }
-
-        public int getSize() {
-            return size;
-        }
-
-        public View getConvertView() {
-            return convertView;
-        }
-
-    }
-    
     class Utils {
 
         public static <T extends Serializable> void setDatasAndRefresh(IPagingAdapter<T> adapter, ArrayList<T> datas) {
-            adapter.setDatas(datas);
+            adapter.getDatas().clear();
+            adapter.getDatas().addAll(datas);
             
             adapter.notifyDataSetChanged();
         }

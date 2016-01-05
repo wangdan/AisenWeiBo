@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.aisen.android.support.adapter;
+package org.aisen.android.ui.fragment.adapter;
 
 import android.app.Fragment;
 import android.app.FragmentManager;

@@ -12,7 +12,7 @@ import android.view.LayoutInflater;
 import org.aisen.android.R;
 import org.aisen.android.common.utils.ActivityHelper;
 import org.aisen.android.common.utils.Logger;
-import org.aisen.android.support.adapter.FragmentPagerAdapter;
+import org.aisen.android.ui.fragment.adapter.FragmentPagerAdapter;
 import org.aisen.android.support.bean.TabItem;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.activity.basic.BaseActivity;

@@ -1,7 +1,5 @@
-package org.aisen.android.support.adapter;
+package org.aisen.android.ui.fragment.adapter;
 
-import android.app.Activity;
-import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -13,39 +11,33 @@ import java.util.ArrayList;
 
 public class BasicListAdapter<T extends Serializable> extends BaseAdapter implements IPagingAdapter {
 
-    private APagingFragment mPagingFragment;
+    private APagingFragment holderFragment;
     private ArrayList<T> datas;
 
-    public BasicListAdapter(APagingFragment pagingFragment, ArrayList<T> datas) {
+    public BasicListAdapter(APagingFragment holderFragment, ArrayList<T> datas) {
         if (datas == null)
             datas = new ArrayList<T>();
-        this.mPagingFragment = pagingFragment;
+        this.holderFragment = holderFragment;
         this.datas = datas;
-    }
-
-    private AItemView<T> newItemView() {
-        return mPagingFragment.newItemView();
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        AItemView<T> itemView;
+        IITemView<T> itemView;
 
         if (convertView == null) {
-            itemView = newItemView();
+            convertView = View.inflate(holderFragment.getActivity(), holderFragment.configItemViewRes(), null);
 
-            convertView = View.inflate(mPagingFragment.getActivity(), itemView.inflateViewId(), null);
-            convertView.setTag(itemView);
-
-            itemView.convertView = convertView;
+            itemView = holderFragment.newItemView(convertView);
             itemView.bindingView(convertView);
+
+            convertView.setTag(itemView);
         } else {
-            itemView = (AItemView<T>) convertView.getTag();
+            itemView = (IITemView<T>) convertView.getTag();
         }
 
-        itemView.position = position;
-        itemView.size = datas.size();
-        itemView.bindingData(convertView, datas.get(position), position);
+        itemView.reset(datas.size(), position);
+        itemView.onBindData(convertView, datas.get(position), position);
 
         return convertView;
     }
@@ -53,11 +45,6 @@ public class BasicListAdapter<T extends Serializable> extends BaseAdapter implem
     @Override
     public ArrayList<T> getDatas() {
         return datas;
-    }
-
-    @Override
-    public void setDatas(ArrayList datas) {
-        this.datas = datas;
     }
 
     @Override

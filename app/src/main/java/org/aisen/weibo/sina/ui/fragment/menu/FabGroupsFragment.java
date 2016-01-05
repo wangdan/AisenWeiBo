@@ -9,9 +9,10 @@ import android.widget.TextView;
 import org.aisen.android.common.utils.ActivityHelper;
 import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.common.utils.Utils;
-import org.aisen.android.support.adapter.BasicListAdapter;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.fragment.AListFragment;
+import org.aisen.android.ui.fragment.adapter.ABasicItemView;
+import org.aisen.android.ui.fragment.adapter.IITemView;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.sinasdk.bean.Group;
@@ -49,8 +50,13 @@ public class FabGroupsFragment extends AListFragment<Group, Groups> {
     }
 
     @Override
-    public BasicListAdapter.AItemView<Group> newItemView() {
-        return new FabGroupsItemView();
+    public IITemView<Group> newItemView(View convertView) {
+        return new FabGroupsItemView(convertView);
+    }
+
+    @Override
+    public int configItemViewRes() {
+        return R.layout.item_main_group;
     }
 
     @Override
@@ -104,18 +110,18 @@ public class FabGroupsFragment extends AListFragment<Group, Groups> {
         onItemClick(getRefreshView(), null, selectedPosition, 0);
     }
 
-    class FabGroupsItemView extends BasicListAdapter.AItemView<Group> {
+    class FabGroupsItemView extends ABasicItemView<Group> {
 
         @ViewInject(id = R.id.txtTitle)
         TextView txtTitle;
 
-        @Override
-        public int inflateViewId() {
-            return R.layout.item_main_group;
+        public FabGroupsItemView(View convertView) {
+            super(convertView);
         }
 
+
         @Override
-        public void bindingData(View convertView, Group data, int position) {
+        public void onBindData(View convertView, Group data, int position) {
             txtTitle.setText(data.getName());
 
             if (selectedPosition == position) {
