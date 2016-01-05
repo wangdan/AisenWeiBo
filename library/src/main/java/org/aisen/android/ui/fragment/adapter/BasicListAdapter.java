@@ -9,6 +9,12 @@ import org.aisen.android.ui.fragment.APagingFragment;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * 1、支持能够使用BaseAdapter的控件
+ * 2、支持ViewType，默认是Normal Type
+ *
+ * @param <T>
+ */
 public class BasicListAdapter<T extends Serializable> extends BaseAdapter implements IPagingAdapter {
 
     private APagingFragment holderFragment;
@@ -22,13 +28,35 @@ public class BasicListAdapter<T extends Serializable> extends BaseAdapter implem
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return IPagingAdapter.TYPE_NORMAL;
+    }
+
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         IITemView<T> itemView;
 
         if (convertView == null) {
-            convertView = View.inflate(holderFragment.getActivity(), holderFragment.configItemViewRes(), null);
+            int[][] itemResAndTypeArr = holderFragment.configItemViewAndType();
 
-            itemView = holderFragment.newItemView(convertView);
+            int itemRes = -1;
+            int itemType = getItemViewType(position);
+
+            for (int[] itemResAndType : itemResAndTypeArr) {
+                if (itemType == itemResAndType[1]) {
+                    itemRes = itemResAndType[0];
+
+                    break;
+                }
+            }
+
+            if (itemRes == -1) {
+                throw new RuntimeException("没有找到ViewRes，ViewType = " + itemType);
+            }
+
+            convertView = View.inflate(holderFragment.getActivity(), itemRes, null);
+
+            itemView = holderFragment.newItemView(convertView, itemType);
             itemView.bindingView(convertView);
 
             convertView.setTag(itemView);

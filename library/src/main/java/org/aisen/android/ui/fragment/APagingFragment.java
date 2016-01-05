@@ -129,6 +129,10 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
         setupRefreshView(savedInstanceSate);
 
         setupRefreshViewWithConfig(refreshConfig);
+
+		if (savedInstanceSate != null && getAdapter().getDatas() != null) {
+			bindAdapter(getAdapter());
+		}
 	}
 	
 	public IPagingAdapter getAdapter() {
@@ -215,7 +219,7 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 	 * 
 	 * @return
 	 */
-	abstract public IITemView<T> newItemView(View convertView);
+	abstract public IITemView<T> newItemView(View convertView, int viewType);
 
 	/**
 	 * 遇到一个先有鸡还是先有蛋的问题，操蛋的RecycleView.Adapter，新增这个方法来处理，返回ItemView的LayoutRes
@@ -223,7 +227,11 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 	 *
 	 * @return new int[][]{ { ItemLayoutRes, ItemType } }
 	 */
-	abstract public int configItemViewRes();
+	abstract public int[][] configItemViewAndType();
+
+	final protected int[][] getNormalItemViewAndType(int itemViewRes) {
+		return new int[][]{ { itemViewRes, IPagingAdapter.TYPE_NORMAL } };
+	}
 
 	/**
 	 * 根据RefreshMode拉取数据
@@ -328,7 +336,7 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 	public void requestData() {
 		// 如果没有Loading视图，且数据为空，就显示FootView加载状态
 		RefreshMode mode = RefreshMode.reset;
-		if (getAdapter().getCount() == 0 && loadingLayout == null)
+		if (getAdapter().getDatas().size() == 0 && loadingLayout == null)
 			mode = RefreshMode.update;
 
 		requestData(mode);

@@ -5,13 +5,14 @@ import android.widget.TextView;
 
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.fragment.adapter.ABasicItemView;
+import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 
 /**
  * Created by wangdan on 16/1/4.
  */
-public class TimelineItemView extends ABasicItemView<StatusContent> {
+public class TimelineItemView extends ARecycleViewItemView<StatusContent> {
 
     public static final int LAYOUT_RES = R.layout.item_timeline;
 

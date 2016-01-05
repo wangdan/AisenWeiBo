@@ -50,13 +50,13 @@ public class FabGroupsFragment extends AListFragment<Group, Groups> {
     }
 
     @Override
-    public IITemView<Group> newItemView(View convertView) {
+    public IITemView<Group> newItemView(View convertView, int viewType) {
         return new FabGroupsItemView(convertView);
     }
 
     @Override
-    public int configItemViewRes() {
-        return R.layout.item_main_group;
+    public int[][] configItemViewAndType() {
+        return getNormalItemViewAndType(R.layout.item_main_group);
     }
 
     @Override

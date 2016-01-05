@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * Created by wangdan on 16/1/5.
  */
-public abstract class ARecycleViewItemView<T extends Serializable> extends RecyclerView.ViewHolder implements IITemView {
+public abstract class ARecycleViewItemView<T extends Serializable> extends RecyclerView.ViewHolder implements IITemView<T> {
 
     private int size;
 

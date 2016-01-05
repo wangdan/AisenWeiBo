@@ -1,12 +1,10 @@
 package org.aisen.weibo.sina.ui.fragment.timeline;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
-import org.aisen.android.ui.fragment.APagingFragment;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContents;

@@ -65,6 +65,11 @@
 	    <value>org.aisen.android.network.http.DefHttpUtility</value>
 	</setting>
 
+	<setting type="http_delay">
+		<des>Http延迟</des>
+		<value>0</value>
+	</setting>
+
 	<setting type="cache_validtime">
 		<des>缓存数据的有效期，max_date为永久有效，单位(s)</des>
 		<value>max_date</value>
