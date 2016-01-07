@@ -2,6 +2,7 @@ package org.aisen.weibo.sina.ui.fragment.timeline;
 
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
 
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
@@ -31,6 +32,13 @@ public abstract class ATimelineFragment extends ARecycleViewSwipeRefreshFragment
     @Override
     public int[][] configItemViewAndType() {
         return getNormalItemViewAndType(TimelineItemView.LAYOUT_RES);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        super.onItemClick(parent, view, position, id);
+
+        showMessage(getAdapterItems().get(position).getUser().getScreen_name());
     }
 
     @Override

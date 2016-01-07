@@ -7,9 +7,9 @@
     android:layout_marginLeft="@dimen/spacing_normal"
     android:layout_marginRight="@dimen/spacing_normal"
     android:layout_marginTop="@dimen/spacing_micro"
-    app:cardBackgroundColor="#ffffff"
-    app:cardCornerRadius="3dip"
-    app:cardElevation="1.5dip">
+    android:clickable="true"
+    android:foreground="?attr/selectableItemBackground" app:cardBackgroundColor="#ffffff"
+    app:cardCornerRadius="3dip" app:cardElevation="1.5dip">
 
     <LinearLayout
         android:layout_width="match_parent" android:layout_height="match_parent" android:clipChildren="false"

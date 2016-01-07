@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import org.aisen.android.R;
 import org.aisen.android.support.inject.ViewInject;
@@ -22,7 +23,8 @@ import java.util.ArrayList;
  * Created by wangdan on 16/1/4.
  */
 public abstract class ARecycleViewFragment<T extends Serializable, Ts extends Serializable>
-                            extends APagingFragment<T, Ts, RecyclerView> {
+                            extends APagingFragment<T, Ts, RecyclerView>
+                            implements AdapterView.OnItemClickListener {
 
     @ViewInject(idStr = "recycleview")
     RecyclerView mRecycleView;
@@ -79,6 +81,10 @@ public abstract class ARecycleViewFragment<T extends Serializable, Ts extends Se
             mRecycleView.setLayoutManager(configLayoutManager());
             mRecycleView.setAdapter((BasicRecycleViewAdapter) adapter);
         }
+
+        if (((BasicRecycleViewAdapter) getAdapter()).getOnItemClickListener() != this) {
+            ((BasicRecycleViewAdapter) getAdapter()).setOnItemClickListener(this);
+        }
     }
 
     @Override
@@ -98,6 +104,11 @@ public abstract class ARecycleViewFragment<T extends Serializable, Ts extends Se
     @Override
     protected void setupRefreshView(Bundle savedInstanceSate) {
         super.setupRefreshView(savedInstanceSate);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
     }
 
 }

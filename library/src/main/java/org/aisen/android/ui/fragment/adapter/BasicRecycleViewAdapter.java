@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import org.aisen.android.ui.fragment.APagingFragment;
 
@@ -21,6 +22,8 @@ public class BasicRecycleViewAdapter<T extends Serializable> extends RecyclerVie
     private APagingFragment holderFragment;
     private ArrayList<T> datas;
     private IITemView<T> footerItemView;
+
+    private AdapterView.OnItemClickListener onItemClickListener;
 
     public BasicRecycleViewAdapter(APagingFragment holderFragment, ArrayList<T> datas) {
         if (datas == null)
@@ -78,6 +81,7 @@ public class BasicRecycleViewAdapter<T extends Serializable> extends RecyclerVie
             convertView = LayoutInflater.from(holderFragment.getActivity()).inflate(itemRes, parent, false);
 
             itemView = holderFragment.newItemView(convertView, viewType);
+            convertView.setTag(itemView);
         }
         itemView.onBindView(convertView);
 
@@ -96,7 +100,28 @@ public class BasicRecycleViewAdapter<T extends Serializable> extends RecyclerVie
         if (position < datas.size()) {
             itemView.onBindData(itemView.getConvertView(), datas.get(position), position);
         }
+
+        if (onItemClickListener != null) {
+            itemView.getConvertView().setOnClickListener(innerOnClickListener);
+        }
+        else {
+            itemView.getConvertView().setOnClickListener(null);
+        }
     }
+
+    View.OnClickListener innerOnClickListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            IITemView<T> itemView = (IITemView<T>) v.getTag();
+
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClick(null, itemView.getConvertView(),
+                                                    itemView.getPosition(), getItemId(itemView.getPosition()));
+            }
+        }
+
+    };
 
     @Override
     public int getItemCount() {
@@ -106,6 +131,14 @@ public class BasicRecycleViewAdapter<T extends Serializable> extends RecyclerVie
     @Override
     public ArrayList getDatas() {
         return datas;
+    }
+
+    public AdapterView.OnItemClickListener getOnItemClickListener() {
+        return onItemClickListener;
+    }
+
+    public void setOnItemClickListener(AdapterView.OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
 }
