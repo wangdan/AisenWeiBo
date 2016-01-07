@@ -3,12 +3,10 @@ package org.aisen.android.ui.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.v4.widget.DrawerLayout;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
@@ -205,7 +203,7 @@ public class FitWindowsFrameLayout extends FrameLayout {
 
         if (mInserts != null && mStatusBarBackground != null) {
             if (mInserts.top > 0) {
-                Logger.d(TAG, "drawStatusBarBackground=" + mStatusBarBackground);
+//                Logger.d(TAG, "drawStatusBarBackground=" + mStatusBarBackground);
 
                 mStatusBarBackground.setBounds(0, 0, getWidth(), mInserts.top);
                 mStatusBarBackground.draw(canvas);
@@ -219,7 +217,7 @@ public class FitWindowsFrameLayout extends FrameLayout {
 
         if (mInserts != null && mNavigationBarBackground != null) {
             if (mInserts.bottom > 0) {
-                Logger.d(TAG, "drawNavigationBarBackground=" + mNavigationBarBackground);
+//                Logger.d(TAG, "drawNavigationBarBackground=" + mNavigationBarBackground);
 
                 mNavigationBarBackground.setBounds(0, getHeight() - mInserts.bottom, getWidth(), getHeight());
                 mNavigationBarBackground.draw(canvas);

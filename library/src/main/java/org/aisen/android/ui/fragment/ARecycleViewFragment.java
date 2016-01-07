@@ -1,9 +1,11 @@
 package org.aisen.android.ui.fragment;
 
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 
 import org.aisen.android.R;
 import org.aisen.android.support.inject.ViewInject;

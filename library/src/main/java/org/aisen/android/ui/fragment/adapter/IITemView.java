@@ -15,7 +15,7 @@ public interface IITemView<T extends Serializable> {
      *
      * @param convertView
      */
-    void bindingView(View convertView);
+    void onBindView(View convertView);
 
     /**
      * 将Data绑定到View

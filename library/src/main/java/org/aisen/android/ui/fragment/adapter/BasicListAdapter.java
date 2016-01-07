@@ -57,7 +57,7 @@ public class BasicListAdapter<T extends Serializable> extends BaseAdapter implem
             convertView = View.inflate(holderFragment.getActivity(), itemRes, null);
 
             itemView = holderFragment.newItemView(convertView, itemType);
-            itemView.bindingView(convertView);
+            itemView.onBindView(convertView);
 
             convertView.setTag(itemView);
         } else {

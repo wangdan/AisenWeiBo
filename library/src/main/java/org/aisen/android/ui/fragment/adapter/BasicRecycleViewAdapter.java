@@ -1,6 +1,7 @@
 package org.aisen.android.ui.fragment.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -31,6 +32,9 @@ public class BasicRecycleViewAdapter<T extends Serializable> extends RecyclerVie
 
     public void addFooterView(IITemView<T> footerItemView) {
         this.footerItemView = footerItemView;
+        if (footerItemView.getConvertView().getLayoutParams() == null) {
+            footerItemView.getConvertView().setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT));
+        }
     }
 
     @Override
@@ -71,11 +75,11 @@ public class BasicRecycleViewAdapter<T extends Serializable> extends RecyclerVie
             convertView = itemView.getConvertView();
         }
         else {
-            convertView = View.inflate(holderFragment.getActivity(), itemRes, null);
+            convertView = LayoutInflater.from(holderFragment.getActivity()).inflate(itemRes, parent, false);
 
             itemView = holderFragment.newItemView(convertView, viewType);
         }
-        itemView.bindingView(convertView);
+        itemView.onBindView(convertView);
 
         if (!(itemView instanceof ARecycleViewItemView)) {
             throw new RuntimeException("RecycleView只支持ARecycleViewItemView，请重新配置");

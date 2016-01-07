@@ -7,7 +7,23 @@
     <color name="app_body_text_1_inverse">#deffffff</color>
     <color name="app_body_text_2_inverse">#8affffff</color>
 
+    <!--适配Materail Design后添加的颜色-->
+    <color name="text_100">#ff000000</color>
+    <color name="text_87">#dd000000</color>
+    <color name="text_80">#cc000000</color>
+    <color name="text_60">#99000000</color>
+    <color name="text_54">#69000000</color>
+
+    <color name="text_100_inverse">#ffffffff</color>
+    <color name="text_87_inverse">#ddffffff</color>
+    <color name="text_80_inverse">#ccffffff</color>
+    <color name="text_60_inverse">#99ffffff</color>
+    <color name="text_54_inverse">#89ffffff</color>
+
     <color name="background_selected_color">#1a000000</color>
     <color name="navmenu_selected_color">@color/background_selected_color</color>
+
+    <!--timeline-->
+    <color name="divider_timeline_item">#ebeef4</color>
 
 </resources>

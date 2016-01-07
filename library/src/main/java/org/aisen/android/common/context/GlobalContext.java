@@ -1,6 +1,7 @@
 package org.aisen.android.common.context;
 
 import android.app.Application;
+import android.os.Environment;
 import android.os.Handler;
 
 import com.squareup.okhttp.OkHttpClient;
@@ -61,7 +62,7 @@ public class GlobalContext extends Application {
 	 */
 	public String getAppPath() {
 		if ("android".equals(SettingUtility.getStringSetting("root_path")))
-			return getExternalCacheDir().getAbsolutePath() + File.separator;
+			return GlobalContext.getInstance().getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() + File.separator;
 		
 		return SdcardUtils.getSdcardPath() + File.separator + SettingUtility.getStringSetting("root_path") + File.separator;
 	}

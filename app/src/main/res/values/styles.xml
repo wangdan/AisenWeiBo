@@ -19,6 +19,21 @@
         <item name="android:textColor">?android:textColorSecondary</item>
     </style>
 
+    <style name="TextTitle">
+        <item name="android:textColor">?attr/text_title</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TextSubhead">
+        <item name="android:textColor">?attr/text_subhead</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TextBody">
+        <item name="android:textColor">?attr/text_body</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
     <style name="Widget.MaterialSheetFab.MainFab" parent="">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -47,6 +62,10 @@
         <item name="android:divider">@null</item>
         <item name="android:dividerHeight">0dip</item>
         <item name="android:listSelector">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="timelinePicture">
+        <item name="android:scaleType">centerCrop</item>
     </style>
 
 </resources>

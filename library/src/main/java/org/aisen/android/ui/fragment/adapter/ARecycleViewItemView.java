@@ -25,7 +25,7 @@ public abstract class ARecycleViewItemView<T extends Serializable> extends Recyc
     }
 
     @Override
-    public void bindingView(View convertView) {
+    public void onBindView(View convertView) {
         InjectUtility.initInjectedView(this, convertView);
     }
 

@@ -22,7 +22,7 @@ public abstract class ABasicItemView<T extends Serializable> implements IITemVie
     }
 
     @Override
-    public void bindingView(View convertView) {
+    public void onBindView(View convertView) {
         InjectUtility.initInjectedView(this, convertView);
     }
 

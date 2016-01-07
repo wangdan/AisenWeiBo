@@ -117,13 +117,12 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 		super._layoutInit(inflater, savedInstanceSate);
 		
         if (savedInstanceSate == null) {
+			refreshConfig = new RefreshConfig();
+
+			setupRefreshConfig(refreshConfig);
         }
         else {
             refreshConfig = (RefreshConfig) savedInstanceSate.getSerializable(SAVED_CONFIG);
-        }
-        if (refreshConfig == null) {
-            refreshConfig = new RefreshConfig();
-            setupRefreshConfig(refreshConfig);
         }
 
         setupRefreshView(savedInstanceSate);
@@ -429,9 +428,9 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 
 			// append数据
 			if (mode == RefreshMode.reset || mode == RefreshMode.refresh)
-				IPagingAdapter.Utils.addItemsAtFront(getAdapter(), resultList);
+				IPagingAdapter.Utils.addItemsAtFrontAndRefresh(getAdapter(), resultList);
 			else if (mode == RefreshMode.update)
-				IPagingAdapter.Utils.addItems(getAdapter(), resultList);
+				IPagingAdapter.Utils.addItemsAndRefresh(getAdapter(), resultList);
 
 			// 处理分页数据
 			if (mPaging != null) {

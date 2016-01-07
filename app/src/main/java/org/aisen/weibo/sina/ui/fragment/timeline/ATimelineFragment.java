@@ -5,12 +5,14 @@ import android.view.View;
 
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
+import org.aisen.android.support.paging.IPaging;
 import org.aisen.android.ui.fragment.APagingFragment;
-import org.aisen.android.ui.fragment.ARecycleViewFragment;
+import org.aisen.android.ui.fragment.ARecycleViewSwipeRefreshFragment;
 import org.aisen.android.ui.fragment.adapter.IITemView;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContents;
+import org.aisen.weibo.sina.support.TimelinePaging;
 
 import java.util.List;
 
@@ -19,16 +21,21 @@ import java.util.List;
  *
  * Created by wangdan on 16/1/2.
  */
-public abstract class ATimelineFragment extends ARecycleViewFragment<StatusContent, StatusContents> {
+public abstract class ATimelineFragment extends ARecycleViewSwipeRefreshFragment<StatusContent, StatusContents> {
 
     @Override
     public IITemView<StatusContent> newItemView(View convertView, int viewType) {
-        return new TimelineItemView(convertView);
+        return new TimelineItemView(convertView, this);
     }
 
     @Override
     public int[][] configItemViewAndType() {
         return getNormalItemViewAndType(TimelineItemView.LAYOUT_RES);
+    }
+
+    @Override
+    protected IPaging<StatusContent, StatusContents> newPaging() {
+        return new TimelinePaging();
     }
 
     abstract class ATimelineTask extends APagingTask<Void, Void, StatusContents> {
@@ -53,7 +60,6 @@ public abstract class ATimelineFragment extends ARecycleViewFragment<StatusConte
                 params.addParameter("max_id", nextPage);
 
             params.addParameter("count", String.valueOf(AppSettings.getTimelineCount()));
-            params.addParameter("count", String.valueOf(5));
 
             return getStatusContents(params);
         }

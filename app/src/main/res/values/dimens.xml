@@ -17,4 +17,21 @@
     <dimen name="fab_elevation">4dip</dimen>
     <dimen name="sheet_spacing">10dp</dimen>
     <dimen name="fab_sheet_elevation">0dp</dimen>
+
+    <!--timeline-->
+    <dimen name="item_padding">10dip</dimen>
+    <dimen name="item_margin">5dip</dimen>
+    <dimen name="emotion_size">18dip</dimen>
+    <dimen name="gap_pics">4sp</dimen>
+
+    <!--字体大小-->
+    <dimen name="sp_12">12sp</dimen>
+    <dimen name="sp_13">13sp</dimen>
+    <dimen name="sp_14">14sp</dimen>
+    <dimen name="sp_15">15sp</dimen>
+    <dimen name="sp_16">16sp</dimen>
+    <dimen name="sp_17">17sp</dimen>
+    <dimen name="sp_18">18sp</dimen>
+    <dimen name="sp_19">19sp</dimen>
+    <dimen name="sp_20">20sp</dimen>
 </resources>

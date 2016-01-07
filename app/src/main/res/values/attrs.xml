@@ -10,4 +10,8 @@
     <!--Draw的Header高度-->
     <attr name="menuHeaderHeight" format="dimension"/>
     <attr name="menuHeaderPaddingTop" format="dimension"/>
+    <!--timeline-->
+    <attr name="text_title" format="reference|color"/>
+    <attr name="text_subhead" format="reference|color"/>
+    <attr name="text_body" format="reference|color"/>
 </resources>
