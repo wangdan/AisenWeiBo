@@ -41,6 +41,11 @@ public abstract class ARecycleViewItemView<T extends Serializable> extends Recyc
     }
 
     @Override
+    public int itemPosition() {
+        return position;
+    }
+
+    @Override
     public View getConvertView() {
         return convertView;
     }

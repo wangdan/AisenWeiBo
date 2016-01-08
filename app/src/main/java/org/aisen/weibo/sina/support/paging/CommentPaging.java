@@ -1,25 +1,25 @@
-package org.aisen.weibo.sina.support;
+package org.aisen.weibo.sina.support.paging;
 
 import android.text.TextUtils;
 
 import org.aisen.android.support.paging.IPaging;
-import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
-import org.aisen.weibo.sina.sinasdk.bean.StatusContents;
+import org.aisen.weibo.sina.sinasdk.bean.StatusComment;
+import org.aisen.weibo.sina.sinasdk.bean.StatusComments;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 
 /**
- * Created by wangdan on 16/1/7.
+ * Created by wangdan on 16/1/8.
  */
-public class TimelinePaging implements IPaging<StatusContent, StatusContents> {
+public class CommentPaging implements IPaging<StatusComment, StatusComments> {
 
-    private static final long serialVersionUID = -1563104012290641720L;
+    private static final long serialVersionUID = -2363918217556704381L;
 
     private String firstId;
 
     private String lastId;
 
     @Override
-    public void processData(StatusContents newDatas, StatusContent firstData, StatusContent lastData) {
+    public void processData(StatusComments newDatas, StatusComment firstData, StatusComment lastData) {
         if (firstData != null)
             firstId = AisenUtils.getId(firstData);
         if (lastData != null)

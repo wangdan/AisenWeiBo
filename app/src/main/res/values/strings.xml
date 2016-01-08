@@ -29,6 +29,14 @@
     <string name="timeline_tome">发给我的</string>
     <string name="publish_group_visiable">分组可见：%s</string>
 
+    <!-- 评论 -->
+    <string name="cmts_add">评论</string>
+    <string name="error_cmts">该用户不存在</string>
+    <string name="cmts_to_me">我收到的</string>
+    <string name="cmts_by_me">我发出的</string>
+    <string name="cmts_title">微博评论</string>
+    <string name="cmts_repost_title">微博转发</string>
+
     <!-- AisenUtil -->
     <string name="msg_now">刚刚</string>
     <string name="msg_today">今天</string>

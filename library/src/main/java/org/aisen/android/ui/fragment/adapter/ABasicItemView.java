@@ -27,7 +27,7 @@ public abstract class ABasicItemView<T extends Serializable> implements IITemVie
     }
 
     @Override
-    public int getPosition() {
+    public int itemPosition() {
         return position;
     }
 

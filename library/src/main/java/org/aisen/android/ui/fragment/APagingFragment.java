@@ -586,7 +586,7 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 	 * @param mode
 	 */
 	protected void setFooterViewWhenTaskStateChanged(View footerView, ABaseTaskState state, TaskException exception, RefreshMode mode) {
-		if (!refreshConfig.footerMoreEnable || footerView == null || mode != RefreshMode.update)
+		if (!refreshConfig.footerMoreEnable || footerView == null)
 			return;
 
 		if (state == ABaseTaskState.finished) {

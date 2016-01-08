@@ -3,8 +3,10 @@ package org.aisen.weibo.sina.support.utils;
 import android.content.Context;
 import android.content.res.Resources;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.DateUtils;
@@ -157,6 +159,29 @@ public class AisenUtils {
             return user.getRemark();
 
         return user.getScreen_name();
+    }
+
+    public static void setTextSize(TextView textView) {
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, AppSettings.getTextSize());
+    }
+
+    public static String getCommentText(String text) {
+        if (TextUtils.isEmpty(text))
+            return "";
+
+        try {
+            if (text.startsWith("回覆") || text.startsWith("回复")) {
+                if (text.indexOf(":") != -1) {
+                    text = text.substring(text.indexOf(":") + 1, text.length());
+                }
+                else if (text.indexOf("：") != -1) {
+                    text = text.substring(text.indexOf("：") + 1, text.length());
+                }
+            }
+        } catch (Exception e) {
+        }
+
+        return text.trim();
     }
 
 }

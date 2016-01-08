@@ -13,7 +13,8 @@ import org.aisen.android.ui.fragment.adapter.IITemView;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContents;
-import org.aisen.weibo.sina.support.TimelinePaging;
+import org.aisen.weibo.sina.support.paging.TimelinePaging;
+import org.aisen.weibo.sina.ui.fragment.comment.TimelineCommentFragment;
 
 import java.util.List;
 
@@ -38,7 +39,7 @@ public abstract class ATimelineFragment extends ARecycleViewSwipeRefreshFragment
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         super.onItemClick(parent, view, position, id);
 
-        showMessage(getAdapterItems().get(position).getUser().getScreen_name());
+        TimelineCommentFragment.launch(getActivity(), getAdapterItems().get(position));
     }
 
     @Override

@@ -31,7 +31,7 @@ public interface IITemView<T extends Serializable> {
      *
      * @return
      */
-    int getPosition();
+    int itemPosition();
 
     /**
      * 重置数据
