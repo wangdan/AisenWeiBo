@@ -10,7 +10,7 @@ import org.aisen.android.network.task.TaskException;
 import org.aisen.android.support.paging.IPaging;
 import org.aisen.android.ui.activity.container.FragmentArgs;
 import org.aisen.android.ui.fragment.ARecycleViewSwipeRefreshFragment;
-import org.aisen.android.ui.fragment.adapter.BasicItemViewCreator;
+import org.aisen.android.ui.fragment.adapter.NormalItemViewCreator;
 import org.aisen.android.ui.fragment.adapter.IITemView;
 import org.aisen.android.ui.fragment.adapter.IItemViewCreator;
 import org.aisen.weibo.sina.base.AppContext;
@@ -57,7 +57,7 @@ public class TimelineCommentFragment extends ARecycleViewSwipeRefreshFragment<St
 
     @Override
     public IItemViewCreator<StatusComment> configItemViewCreator() {
-        return new BasicItemViewCreator<StatusComment>(TimelineCommentItemView.LAYOUT_RES) {
+        return new NormalItemViewCreator<StatusComment>(TimelineCommentItemView.LAYOUT_RES) {
 
             @Override
             public IITemView<StatusComment> newItemView(View convertView, int viewType) {

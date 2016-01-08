@@ -15,7 +15,7 @@ import org.aisen.android.common.utils.ViewUtils;
 import org.aisen.android.network.biz.IResult;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.support.paging.IPaging;
-import org.aisen.android.ui.fragment.adapter.BasicItemViewCreator;
+import org.aisen.android.ui.fragment.adapter.NormalItemViewCreator;
 import org.aisen.android.ui.fragment.adapter.IITemView;
 import org.aisen.android.ui.fragment.adapter.IItemViewCreator;
 import org.aisen.android.ui.fragment.adapter.IPagingAdapter;
@@ -530,7 +530,7 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 	/*********************************************开始FooterView************************************************/
 
 	protected IItemViewCreator<T> configFooterViewCreator() {
-		return new BasicItemViewCreator<T>(BasicFooterView.LAYOUT_RES) {
+		return new NormalItemViewCreator<T>(BasicFooterView.LAYOUT_RES) {
 
 			@Override
 			public IITemView<T> newItemView(View convertView, int viewType) {

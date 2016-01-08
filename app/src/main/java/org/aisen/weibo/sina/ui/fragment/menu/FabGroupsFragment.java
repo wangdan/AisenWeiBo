@@ -12,7 +12,7 @@ import org.aisen.android.common.utils.Utils;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.fragment.AListFragment;
 import org.aisen.android.ui.fragment.adapter.ABasicItemView;
-import org.aisen.android.ui.fragment.adapter.BasicItemViewCreator;
+import org.aisen.android.ui.fragment.adapter.NormalItemViewCreator;
 import org.aisen.android.ui.fragment.adapter.IITemView;
 import org.aisen.android.ui.fragment.adapter.IItemViewCreator;
 import org.aisen.weibo.sina.R;
@@ -53,7 +53,7 @@ public class FabGroupsFragment extends AListFragment<Group, Groups> {
 
     @Override
     public IItemViewCreator<Group> configItemViewCreator() {
-        return new BasicItemViewCreator<Group>(R.layout.item_main_group) {
+        return new NormalItemViewCreator<Group>(R.layout.item_main_group) {
 
             @Override
             public IITemView<Group> newItemView(View convertView, int viewType) {
