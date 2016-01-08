@@ -10,6 +10,7 @@ import org.aisen.android.R;
 import org.aisen.android.ui.fragment.adapter.BasicListAdapter;
 import org.aisen.android.ui.fragment.adapter.IPagingAdapter;
 import org.aisen.android.support.inject.ViewInject;
+import org.aisen.android.ui.fragment.itemview.AFooterItemView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -82,8 +83,8 @@ public abstract class AListFragment<T extends Serializable, Ts extends Serializa
     }
 
     @Override
-    protected void addFooterViewToRefreshView(View footerView) {
-        getRefreshView().addFooterView(footerView);
+    protected void addFooterViewToRefreshView(AFooterItemView<?> footerItemView) {
+        getRefreshView().addFooterView(footerItemView.getConvertView());
     }
 
     /**

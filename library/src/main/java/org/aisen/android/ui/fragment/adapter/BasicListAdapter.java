@@ -18,12 +18,14 @@ import java.util.ArrayList;
 public class BasicListAdapter<T extends Serializable> extends BaseAdapter implements IPagingAdapter {
 
     private APagingFragment holderFragment;
+    private IItemViewCreator<T> itemViewCreator;
     private ArrayList<T> datas;
 
     public BasicListAdapter(APagingFragment holderFragment, ArrayList<T> datas) {
         if (datas == null)
             datas = new ArrayList<T>();
         this.holderFragment = holderFragment;
+        this.itemViewCreator = holderFragment.configItemViewCreator();
         this.datas = datas;
     }
 
@@ -37,7 +39,7 @@ public class BasicListAdapter<T extends Serializable> extends BaseAdapter implem
         IITemView<T> itemView;
 
         if (convertView == null) {
-            int[][] itemResAndTypeArr = holderFragment.configItemViewAndType();
+            int[][] itemResAndTypeArr = itemViewCreator.setLayoutRes();
 
             int itemRes = -1;
             int itemType = getItemViewType(position);
@@ -56,7 +58,7 @@ public class BasicListAdapter<T extends Serializable> extends BaseAdapter implem
 
             convertView = View.inflate(holderFragment.getActivity(), itemRes, null);
 
-            itemView = holderFragment.newItemView(convertView, itemType);
+            itemView = itemViewCreator.newItemView(convertView, itemType);
             itemView.onBindView(convertView);
 
             convertView.setTag(itemView);

@@ -10,7 +10,9 @@ import org.aisen.android.network.task.TaskException;
 import org.aisen.android.support.paging.IPaging;
 import org.aisen.android.ui.activity.container.FragmentArgs;
 import org.aisen.android.ui.fragment.ARecycleViewSwipeRefreshFragment;
+import org.aisen.android.ui.fragment.adapter.BasicItemViewCreator;
 import org.aisen.android.ui.fragment.adapter.IITemView;
+import org.aisen.android.ui.fragment.adapter.IItemViewCreator;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
@@ -54,13 +56,15 @@ public class TimelineCommentFragment extends ARecycleViewSwipeRefreshFragment<St
     }
 
     @Override
-    public IITemView<StatusComment> newItemView(View convertView, int viewType) {
-        return new TimelineCommentItemView(this, convertView);
-    }
+    public IItemViewCreator<StatusComment> configItemViewCreator() {
+        return new BasicItemViewCreator<StatusComment>(TimelineCommentItemView.LAYOUT_RES) {
 
-    @Override
-    public int[][] configItemViewAndType() {
-        return getNormalItemViewAndType(TimelineCommentItemView.LAYOUT_RES);
+            @Override
+            public IITemView<StatusComment> newItemView(View convertView, int viewType) {
+                return new TimelineCommentItemView(TimelineCommentFragment.this, convertView);
+            }
+
+        };
     }
 
     @Override

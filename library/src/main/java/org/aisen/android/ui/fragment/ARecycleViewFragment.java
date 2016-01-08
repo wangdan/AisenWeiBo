@@ -1,18 +1,16 @@
 package org.aisen.android.ui.fragment;
 
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 import org.aisen.android.R;
 import org.aisen.android.support.inject.ViewInject;
-import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
 import org.aisen.android.ui.fragment.adapter.BasicRecycleViewAdapter;
 import org.aisen.android.ui.fragment.adapter.IPagingAdapter;
+import org.aisen.android.ui.fragment.itemview.AFooterItemView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -59,6 +57,7 @@ public abstract class ARecycleViewFragment<T extends Serializable, Ts extends Se
             }
 
         });
+        mRecycleView.setLayoutManager(configLayoutManager());
     }
 
     @Override
@@ -78,7 +77,6 @@ public abstract class ARecycleViewFragment<T extends Serializable, Ts extends Se
     @Override
     protected void bindAdapter(IPagingAdapter adapter) {
         if (mRecycleView.getAdapter() == null) {
-            mRecycleView.setLayoutManager(configLayoutManager());
             mRecycleView.setAdapter((BasicRecycleViewAdapter) adapter);
         }
 
@@ -88,16 +86,7 @@ public abstract class ARecycleViewFragment<T extends Serializable, Ts extends Se
     }
 
     @Override
-    protected void addFooterViewToRefreshView(View footerView) {
-        ARecycleViewItemView footerItemView = new ARecycleViewItemView<T>(footerView) {
-
-            @Override
-            public void onBindData(View convertView, Serializable data, int position) {
-
-            }
-
-        };
-
+    protected void addFooterViewToRefreshView(AFooterItemView<?> footerItemView) {
         ((BasicRecycleViewAdapter) getAdapter()).addFooterView(footerItemView);
     }
 

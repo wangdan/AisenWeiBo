@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import org.aisen.android.R;
 import org.aisen.android.common.utils.ActivityHelper;
@@ -16,8 +15,13 @@ import org.aisen.android.common.utils.ViewUtils;
 import org.aisen.android.network.biz.IResult;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.support.paging.IPaging;
+import org.aisen.android.ui.fragment.adapter.BasicItemViewCreator;
 import org.aisen.android.ui.fragment.adapter.IITemView;
+import org.aisen.android.ui.fragment.adapter.IItemViewCreator;
 import org.aisen.android.ui.fragment.adapter.IPagingAdapter;
+import org.aisen.android.ui.fragment.itemview.AFooterItemView;
+import org.aisen.android.ui.fragment.itemview.BasicFooterView;
+import org.aisen.android.ui.fragment.itemview.OnFooterViewListener;
 import org.aisen.android.ui.widget.AsToolbar;
 
 import java.io.Serializable;
@@ -38,7 +42,7 @@ import java.util.List;
  * @param <V>
  */
 public abstract class APagingFragment<T extends Serializable, Ts extends Serializable, V extends ViewGroup> extends ABaseFragment
-															implements AsToolbar.OnToolbarDoubleClick {
+															implements AsToolbar.OnToolbarDoubleClick, OnFooterViewListener, AFooterItemView.OnFooterViewCallback {
 
 	private static final String TAG = "AFragment-Paging";
 
@@ -56,7 +60,8 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 	
 	RefreshConfig refreshConfig;// 刷新方面的配置
 
-	View mFooterView;// FooterView，滑动到底部时，自动加载更多数据
+	IItemViewCreator<T> mFooterItemViewCreator;
+	AFooterItemView<T> mFooterItemView;// FooterView，滑动到底部时，自动加载更多数据
 
 	public enum RefreshMode {
 		/**
@@ -171,7 +176,7 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 	protected void onTaskStateChanged(ABaseTaskState state, TaskException exception, RefreshMode mode) {
 		super.onTaskStateChanged(state, exception);
 
-		setFooterViewWhenTaskStateChanged(mFooterView, state, exception, mode);
+		onTaskStateChanged(mFooterItemView, state, exception, mode);
 
 		if (state == ABaseTaskState.success) {
 			if (isContentEmpty()) {
@@ -213,24 +218,7 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
         return null;
     }
 
-    /**
-	 * Adapter的ItemView
-	 * 
-	 * @return
-	 */
-	abstract public IITemView<T> newItemView(View convertView, int viewType);
-
-	/**
-	 * 遇到一个先有鸡还是先有蛋的问题，操蛋的RecycleView.Adapter，新增这个方法来处理，返回ItemView的LayoutRes
-	 * 暂时只支持一个ItemType
-	 *
-	 * @return new int[][]{ { ItemLayoutRes, ItemType } }
-	 */
-	abstract public int[][] configItemViewAndType();
-
-	final protected int[][] getNormalItemViewAndType(int itemViewRes) {
-		return new int[][]{ { itemViewRes, IPagingAdapter.TYPE_NORMAL } };
-	}
+    abstract public IItemViewCreator<T> configItemViewCreator();
 
 	/**
 	 * 根据RefreshMode拉取数据
@@ -289,11 +277,14 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
      *
      */
     protected void setupRefreshView(Bundle savedInstanceSate) {
-		if (refreshConfig.footerMoreEnable)
-			mFooterView = configFooterView();
+		if (refreshConfig.footerMoreEnable) {
+			mFooterItemViewCreator = configFooterViewCreator();
+			View convertView = View.inflate(getActivity(), mFooterItemViewCreator.setLayoutRes()[0][0], null);
+			mFooterItemView = (AFooterItemView<T>) mFooterItemViewCreator.newItemView(convertView, IPagingAdapter.TYPE_NORMAL);
+		}
 
-		if (mFooterView != null) {
-			addFooterViewToRefreshView(mFooterView);
+		if (mFooterItemView != null) {
+			addFooterViewToRefreshView(mFooterItemView);
 		}
     }
 
@@ -538,88 +529,44 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 
 	/*********************************************开始FooterView************************************************/
 
-	protected View configFooterView() {
-		View footerView = View.inflate(getActivity(), R.layout.comm_lay_footerview, null);
-
-		footerView.findViewById(R.id.btnMore).setVisibility(View.VISIBLE);
-		footerView.findViewById(R.id.layLoading).setVisibility(View.GONE);
-		TextView btnMore = (TextView) footerView.findViewById(R.id.btnMore);
-		btnMore.setOnClickListener(new View.OnClickListener() {
+	protected IItemViewCreator<T> configFooterViewCreator() {
+		return new BasicItemViewCreator<T>(BasicFooterView.LAYOUT_RES) {
 
 			@Override
-			public void onClick(View v) {
-				if (!refreshConfig.pagingEnd) {
-					onPullUpToRefresh();
-				}
+			public IITemView<T> newItemView(View convertView, int viewType) {
+				return new BasicFooterView<>(convertView, APagingFragment.this);
 			}
 
-		});
-
-		return footerView;
+		};
 	}
 
-	abstract protected void addFooterViewToRefreshView(View footerView);
+	abstract protected void addFooterViewToRefreshView(AFooterItemView<?> footerItemView);
 
 	/**
 	 * 设置FooterView为加载状态，
 	 *
-	 * @param footerView
-	 * @return false:当前正在加载数据
 	 */
-	protected boolean setFooterViewToRefreshing(View footerView) {
-		View layLoading = footerView.findViewById(R.id.layLoading);
-
-		if (layLoading.getVisibility() == View.VISIBLE)
-			return false;
-
-		layLoading.setVisibility(View.VISIBLE);
-
-		return true;
+	@Override
+	public void setFooterViewToRefreshing() {
+		if (mFooterItemView != null) {
+			mFooterItemView.setFooterViewToRefreshing();
+		}
 	}
 
 	/**
 	 * 当Task的状态发生改变时，刷新FooterView
 	 *
-	 * @param footerView
 	 * @param state
 	 * @param exception
 	 * @param mode
 	 */
-	protected void setFooterViewWhenTaskStateChanged(View footerView, ABaseTaskState state, TaskException exception, RefreshMode mode) {
-		if (!refreshConfig.footerMoreEnable || footerView == null)
+	@Override
+	public void onTaskStateChanged(AFooterItemView<?> footerItemView, ABaseTaskState state, TaskException exception, RefreshMode mode) {
+		if (!refreshConfig.footerMoreEnable || mFooterItemView == null)
 			return;
 
-		if (state == ABaseTaskState.finished) {
-			View layLoading = footerView.findViewById(R.id.layLoading);
-			TextView btnLoadMore = (TextView) footerView.findViewById(R.id.btnMore);
-			layLoading.setVisibility(View.GONE);
-			btnLoadMore.setVisibility(View.VISIBLE);
-		}
-		else if (state == ABaseTaskState.prepare) {
-			View layLoading = footerView.findViewById(R.id.layLoading);
-			TextView txtLoadingHint = (TextView) footerView.findViewById(R.id.txtLoading);
-			TextView btnLoadMore = (TextView) footerView.findViewById(R.id.btnMore);
-
-			txtLoadingHint.setText(R.string.comm_footer_loading);
-			layLoading.setVisibility(View.VISIBLE);
-			btnLoadMore.setVisibility(View.GONE);
-			btnLoadMore.setText(R.string.comm_footer_more);
-		}
-		else if (state == ABaseTaskState.success) {
-			final TextView btnLoadMore = (TextView) footerView.findViewById(R.id.btnMore);
-			if (refreshConfig.pagingEnd) {
-				btnLoadMore.setText(R.string.comm_footer_pagingend);
-			} else {
-				btnLoadMore.setText(R.string.comm_footer_more);
-			}
-		}
-		else if (state == ABaseTaskState.falid) {
-			// 正在加载
-			View layLoading = footerView.findViewById(R.id.layLoading);
-			if (layLoading.getVisibility() == View.VISIBLE) {
-				TextView btnLoadMore = (TextView) footerView.findViewById(R.id.btnMore);
-				btnLoadMore.setText(R.string.comm_footer_faild);
-			}
+		if (mFooterItemView != null) {
+			mFooterItemView.onTaskStateChanged(footerItemView, state, exception, mode);
 		}
 	}
 
@@ -641,13 +588,11 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 		if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && // 停止滚动
 				!refreshConfig.pagingEnd && // 分页未加载完
 				refreshConfig.footerMoreEnable && // 自动加载更多
-				mFooterView != null // 配置了FooterView
+				mFooterItemView != null // 配置了FooterView
 				) {
 			int childCount = getRefreshView().getChildCount();
-			if (childCount > 0 && getRefreshView().getChildAt(childCount - 1) == mFooterView) {
-				if (setFooterViewToRefreshing(mFooterView)) {
-					onPullUpToRefresh();
-				}
+			if (childCount > 0 && getRefreshView().getChildAt(childCount - 1) == mFooterItemView.getConvertView()) {
+				setFooterViewToRefreshing();
 			}
 		}
 
@@ -664,6 +609,16 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 				});
 			}
 		}
+	}
+
+	@Override
+	public boolean canLoadMore() {
+		return !refreshConfig.pagingEnd;
+	}
+
+	@Override
+	public void onLoadMore() {
+		onPullUpToRefresh();
 	}
 
 	protected void onScroll(int firstVisibleItem, int visibleItemCount, int totalItemCount) {

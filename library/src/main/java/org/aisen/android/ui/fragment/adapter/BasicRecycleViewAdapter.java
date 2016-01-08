@@ -20,6 +20,7 @@ import java.util.ArrayList;
 public class BasicRecycleViewAdapter<T extends Serializable> extends RecyclerView.Adapter implements IPagingAdapter {
 
     private APagingFragment holderFragment;
+    private IItemViewCreator<T> itemViewCreator;
     private ArrayList<T> datas;
     private IITemView<T> footerItemView;
 
@@ -29,6 +30,7 @@ public class BasicRecycleViewAdapter<T extends Serializable> extends RecyclerVie
         if (datas == null)
             datas = new ArrayList<T>();
         this.holderFragment = holderFragment;
+        this.itemViewCreator = holderFragment.configItemViewCreator();
         this.datas = datas;
         notifyDataSetChanged();
     }
@@ -51,7 +53,7 @@ public class BasicRecycleViewAdapter<T extends Serializable> extends RecyclerVie
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        int[][] itemResAndTypeArr = holderFragment.configItemViewAndType();
+        int[][] itemResAndTypeArr = itemViewCreator.setLayoutRes();
 
         int itemRes = -1;
         int itemType = viewType;
@@ -80,7 +82,7 @@ public class BasicRecycleViewAdapter<T extends Serializable> extends RecyclerVie
         else {
             convertView = LayoutInflater.from(holderFragment.getActivity()).inflate(itemRes, parent, false);
 
-            itemView = holderFragment.newItemView(convertView, viewType);
+            itemView = itemViewCreator.newItemView(convertView, viewType);
             convertView.setTag(itemView);
         }
         itemView.onBindView(convertView);

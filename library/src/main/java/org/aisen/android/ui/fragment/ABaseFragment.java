@@ -40,7 +40,7 @@ public abstract class ABaseFragment extends Fragment implements ITaskManager, Bi
 
     static final String TAG = "AFragment-Base";
 
-    protected enum ABaseTaskState {
+    public enum ABaseTaskState {
         none, prepare, falid, success, finished, canceled
     }
 
