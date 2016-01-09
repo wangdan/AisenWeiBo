@@ -1,4 +1,4 @@
-package org.aisen.android.ui.fragment.adapter;
+package org.aisen.android.ui.fragment.itemview;
 
 import android.view.View;
 

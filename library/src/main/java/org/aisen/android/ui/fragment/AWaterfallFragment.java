@@ -8,6 +8,7 @@ import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.fragment.adapter.BasicListAdapter;
 import org.aisen.android.ui.fragment.adapter.IPagingAdapter;
 import org.aisen.android.ui.fragment.itemview.AFooterItemView;
+import org.aisen.android.ui.fragment.itemview.AHeaderItemViewCreator;
 import org.aisen.android.ui.widget.pla.PLAAbsListView;
 import org.aisen.android.ui.widget.pla.PLAAdapterView;
 import org.aisen.android.ui.widget.pla.PLAMultiColumnListView;
@@ -66,6 +67,11 @@ public abstract class AWaterfallFragment<T extends Serializable, Ts extends Seri
     @Override
     protected void addFooterViewToRefreshView(AFooterItemView<?> footerItemView) {
         getRefreshView().addFooterView(footerItemView.getConvertView());
+    }
+
+    @Override
+    protected void addHeaderViewToRefreshView(AHeaderItemViewCreator<?> headerItemViewCreator) {
+        // TODO
     }
 
     @Override

@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 import org.aisen.android.ui.fragment.APagingFragment;
+import org.aisen.android.ui.fragment.itemview.AHeaderItemViewCreator;
+import org.aisen.android.ui.fragment.itemview.IITemView;
+import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,6 +26,9 @@ public class BasicRecycleViewAdapter<T extends Serializable> extends RecyclerVie
     private IItemViewCreator<T> itemViewCreator;
     private ArrayList<T> datas;
     private IITemView<T> footerItemView;
+
+    private AHeaderItemViewCreator<T> headerItemViewCreator;
+    private int[][] headerItemTypes;
 
     private AdapterView.OnItemClickListener onItemClickListener;
 
@@ -42,13 +48,37 @@ public class BasicRecycleViewAdapter<T extends Serializable> extends RecyclerVie
         }
     }
 
+    public void setHeaderItemViewCreator(AHeaderItemViewCreator<T> headerItemViewCreator) {
+        this.headerItemViewCreator = headerItemViewCreator;
+        headerItemTypes = headerItemViewCreator.setHeaderLayoutRes();
+    }
+
     @Override
     public int getItemViewType(int position) {
         if (footerItemView != null && position == getItemCount() - 1) {
             return IPagingAdapter.TYPE_FOOTER;
         }
+        else if (headerItemViewCreator != null && position < headerItemTypes.length) {
+            return headerItemTypes[position][1];
+        }
 
         return IPagingAdapter.TYPE_NORMAL;
+    }
+
+    private boolean isHeaderType(int viewType) {
+        if (headerItemTypes != null) {
+            for (int[] itemResAndType : headerItemTypes) {
+                if (viewType == itemResAndType[1]) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private boolean isFooterType(int viewType) {
+        return viewType == IPagingAdapter.TYPE_FOOTER;
     }
 
     @Override
@@ -58,7 +88,7 @@ public class BasicRecycleViewAdapter<T extends Serializable> extends RecyclerVie
         int itemRes = -1;
         int itemType = viewType;
 
-        if (itemType != IPagingAdapter.TYPE_FOOTER) {
+        if (!isHeaderType(viewType) && !isFooterType(viewType)) {
             for (int[] itemResAndType : itemResAndTypeArr) {
                 if (itemType == itemResAndType[1]) {
                     itemRes = itemResAndType[0];
@@ -78,6 +108,20 @@ public class BasicRecycleViewAdapter<T extends Serializable> extends RecyclerVie
             itemView = footerItemView;
 
             convertView = itemView.getConvertView();
+        }
+        else if (isHeaderType(viewType)) {
+            for (int[] itemResAndType : headerItemTypes) {
+                if (itemType == itemResAndType[1]) {
+                    itemRes = itemResAndType[0];
+
+                    break;
+                }
+            }
+
+            convertView = LayoutInflater.from(holderFragment.getActivity()).inflate(itemRes, parent, false);
+
+            itemView = headerItemViewCreator.newItemView(convertView, viewType);
+            convertView.setTag(itemView);
         }
         else {
             convertView = LayoutInflater.from(holderFragment.getActivity()).inflate(itemRes, parent, false);
@@ -127,7 +171,10 @@ public class BasicRecycleViewAdapter<T extends Serializable> extends RecyclerVie
 
     @Override
     public int getItemCount() {
-        return datas.size() + (footerItemView == null ? 0 : 1);
+        int footerCount = footerItemView == null ? 0 : 1;
+        int headerCount = headerItemTypes != null ? headerItemTypes.length : 0;
+
+        return datas.size() + footerCount + headerCount;
     }
 
     @Override

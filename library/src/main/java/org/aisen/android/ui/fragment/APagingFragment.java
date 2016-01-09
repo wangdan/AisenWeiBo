@@ -15,9 +15,10 @@ import org.aisen.android.common.utils.ViewUtils;
 import org.aisen.android.network.biz.IResult;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.support.paging.IPaging;
-import org.aisen.android.ui.fragment.adapter.NormalItemViewCreator;
-import org.aisen.android.ui.fragment.adapter.IITemView;
-import org.aisen.android.ui.fragment.adapter.IItemViewCreator;
+import org.aisen.android.ui.fragment.itemview.AHeaderItemViewCreator;
+import org.aisen.android.ui.fragment.itemview.NormalItemViewCreator;
+import org.aisen.android.ui.fragment.itemview.IITemView;
+import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
 import org.aisen.android.ui.fragment.adapter.IPagingAdapter;
 import org.aisen.android.ui.fragment.itemview.AFooterItemView;
 import org.aisen.android.ui.fragment.itemview.BasicFooterView;
@@ -62,6 +63,8 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 
 	IItemViewCreator<T> mFooterItemViewCreator;
 	AFooterItemView<T> mFooterItemView;// FooterView，滑动到底部时，自动加载更多数据
+
+	AHeaderItemViewCreator<T> mHeaderItemViewCreator;
 
 	public enum RefreshMode {
 		/**
@@ -283,8 +286,13 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 			mFooterItemView = (AFooterItemView<T>) mFooterItemViewCreator.newItemView(convertView, IPagingAdapter.TYPE_NORMAL);
 		}
 
+		mHeaderItemViewCreator = configHeaderViewCreator();
+
 		if (mFooterItemView != null) {
 			addFooterViewToRefreshView(mFooterItemView);
+		}
+		if (mHeaderItemViewCreator != null) {
+			addHeaderViewToRefreshView(mHeaderItemViewCreator);
 		}
     }
 
@@ -529,6 +537,10 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 
 	/*********************************************开始FooterView************************************************/
 
+	protected AHeaderItemViewCreator<T> configHeaderViewCreator() {
+		return null;
+	}
+
 	protected IItemViewCreator<T> configFooterViewCreator() {
 		return new NormalItemViewCreator<T>(BasicFooterView.LAYOUT_RES) {
 
@@ -541,6 +553,8 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 	}
 
 	abstract protected void addFooterViewToRefreshView(AFooterItemView<?> footerItemView);
+
+	abstract protected void addHeaderViewToRefreshView(AHeaderItemViewCreator<?> headerItemViewCreator);
 
 	/**
 	 * 设置FooterView为加载状态，

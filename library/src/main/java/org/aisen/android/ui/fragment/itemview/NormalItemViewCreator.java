@@ -1,4 +1,6 @@
-package org.aisen.android.ui.fragment.adapter;
+package org.aisen.android.ui.fragment.itemview;
+
+import org.aisen.android.ui.fragment.adapter.IPagingAdapter;
 
 import java.io.Serializable;
 

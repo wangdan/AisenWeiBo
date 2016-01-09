@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import org.aisen.android.support.inject.InjectUtility;
+import org.aisen.android.ui.fragment.itemview.IITemView;
 
 import java.io.Serializable;
 

@@ -5,6 +5,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import org.aisen.android.ui.fragment.APagingFragment;
+import org.aisen.android.ui.fragment.itemview.IITemView;
+import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
 
 import java.io.Serializable;
 import java.util.ArrayList;

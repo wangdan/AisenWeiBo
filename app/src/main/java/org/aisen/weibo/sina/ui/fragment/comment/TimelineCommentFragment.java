@@ -10,9 +10,10 @@ import org.aisen.android.network.task.TaskException;
 import org.aisen.android.support.paging.IPaging;
 import org.aisen.android.ui.activity.container.FragmentArgs;
 import org.aisen.android.ui.fragment.ARecycleViewSwipeRefreshFragment;
-import org.aisen.android.ui.fragment.adapter.NormalItemViewCreator;
-import org.aisen.android.ui.fragment.adapter.IITemView;
-import org.aisen.android.ui.fragment.adapter.IItemViewCreator;
+import org.aisen.android.ui.fragment.itemview.AHeaderItemViewCreator;
+import org.aisen.android.ui.fragment.itemview.NormalItemViewCreator;
+import org.aisen.android.ui.fragment.itemview.IITemView;
+import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
@@ -62,6 +63,27 @@ public class TimelineCommentFragment extends ARecycleViewSwipeRefreshFragment<St
             @Override
             public IITemView<StatusComment> newItemView(View convertView, int viewType) {
                 return new TimelineCommentItemView(TimelineCommentFragment.this, convertView);
+            }
+
+        };
+    }
+
+    @Override
+    protected AHeaderItemViewCreator<StatusComment> configHeaderViewCreator() {
+        return new AHeaderItemViewCreator<StatusComment>() {
+
+            @Override
+            public int[][] setHeaderLayoutRes() {
+                return new int[][]{ { CommentHeader01ItemView.COMMENT_HEADER_01_RES, CommentHeader01ItemView.COMMENT_HEADER_01 } };
+            }
+
+            @Override
+            public IITemView<StatusComment> newItemView(View convertView, int viewType) {
+                if (viewType == CommentHeader01ItemView.COMMENT_HEADER_01) {
+                    return new CommentHeader01ItemView(convertView);
+                }
+
+                return null;
             }
 
         };

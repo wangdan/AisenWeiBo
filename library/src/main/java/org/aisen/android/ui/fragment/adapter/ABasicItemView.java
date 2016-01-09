@@ -3,6 +3,7 @@ package org.aisen.android.ui.fragment.adapter;
 import android.view.View;
 
 import org.aisen.android.support.inject.InjectUtility;
+import org.aisen.android.ui.fragment.itemview.IITemView;
 
 import java.io.Serializable;
 
