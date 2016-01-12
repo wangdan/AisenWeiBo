@@ -57,13 +57,13 @@ public class TimelineDefFragment extends ATimelineFragment {
         }
 
         @Override
-        StatusContents getStatusContents(Params params) throws TaskException {
+        public StatusContents getStatusContents(Params params) throws TaskException {
             try {
                 Method timelineMethod = SinaSDK.class.getMethod(method, new Class[] { Params.class });
                 return (StatusContents) timelineMethod.invoke(SinaSDK.getInstance(AppContext.getAccount().getAccessToken(), getTaskCacheMode(this)), params);
             } catch (Throwable e) {
-                if (e instanceof TaskException) {
-                    throw (TaskException) e;
+                if (e.getCause() instanceof TaskException) {
+                    throw (TaskException) e.getCause();
                 }
                 else {
                     Logger.printExc(TimelineDefFragment.class, e);

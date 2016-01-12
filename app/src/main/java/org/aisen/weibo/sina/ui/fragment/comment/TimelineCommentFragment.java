@@ -1,19 +1,25 @@
 package org.aisen.weibo.sina.ui.fragment.comment;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.support.paging.IPaging;
+import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.activity.container.FragmentArgs;
 import org.aisen.android.ui.fragment.ARecycleViewSwipeRefreshFragment;
 import org.aisen.android.ui.fragment.itemview.AHeaderItemViewCreator;
-import org.aisen.android.ui.fragment.itemview.NormalItemViewCreator;
+import org.aisen.android.ui.fragment.itemview.BasicFooterView;
+import org.aisen.android.ui.fragment.itemview.DefDividerItemView;
 import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
+import org.aisen.android.ui.fragment.itemview.NormalItemViewCreator;
+import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
@@ -42,11 +48,30 @@ public class TimelineCommentFragment extends ARecycleViewSwipeRefreshFragment<St
     private StatusContent mStatusContent;
 
     @Override
+    protected int inflateContentView() {
+        return R.layout.ui_timeline_comment;
+    }
+
+    @Override
+    protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
+        super.layoutInit(inflater, savedInstanceSate);
+
+        bindAdapter(getAdapter());
+        getContentView().setBackgroundColor(Color.WHITE);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mStatusContent = savedInstanceState != null ? (StatusContent) savedInstanceState.getSerializable("status")
                                                     : (StatusContent) getArguments().getSerializable("status");
+
+        BaseActivity activity = (BaseActivity) getActivity();
+        activity.getSupportActionBar().setTitle(R.string.cmts_title);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -54,6 +79,38 @@ public class TimelineCommentFragment extends ARecycleViewSwipeRefreshFragment<St
         super.onSaveInstanceState(outState);
 
         outState.putSerializable("status", mStatusContent);
+    }
+
+    @Override
+    protected void setupRefreshView(Bundle savedInstanceSate) {
+        super.setupRefreshView(savedInstanceSate);
+
+        int color = getResources().getColor(R.color.divider_timeline_item);
+        getRefreshView().addItemDecoration(new DefDividerItemView(color));
+    }
+
+    @Override
+    protected IItemViewCreator<StatusComment> configFooterViewCreator() {
+        return new NormalItemViewCreator<StatusComment>(BasicFooterView.LAYOUT_RES) {
+
+            @Override
+            public IITemView<StatusComment> newItemView(View convertView, int viewType) {
+                return new BasicFooterView<StatusComment>(convertView, TimelineCommentFragment.this) {
+
+                    @Override
+                    protected String endpagingText() {
+                        return getString(R.string.disable_comments);
+                    }
+
+                    @Override
+                    protected String loadingText() {
+                        return String.format(getString(R.string.loading_cmts), AppSettings.getCommentCount());
+                    }
+
+                };
+            }
+
+        };
     }
 
     @Override
@@ -74,13 +131,13 @@ public class TimelineCommentFragment extends ARecycleViewSwipeRefreshFragment<St
 
             @Override
             public int[][] setHeaderLayoutRes() {
-                return new int[][]{ { CommentHeader01ItemView.COMMENT_HEADER_01_RES, CommentHeader01ItemView.COMMENT_HEADER_01 } };
+                return new int[][]{ { CommentHeaderItemView.COMMENT_HEADER_01_RES, CommentHeaderItemView.COMMENT_HEADER_01 } };
             }
 
             @Override
             public IITemView<StatusComment> newItemView(View convertView, int viewType) {
-                if (viewType == CommentHeader01ItemView.COMMENT_HEADER_01) {
-                    return new CommentHeader01ItemView(convertView);
+                if (viewType == CommentHeaderItemView.COMMENT_HEADER_01) {
+                    return new CommentHeaderItemView(TimelineCommentFragment.this, convertView, mStatusContent);
                 }
 
                 return null;

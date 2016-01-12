@@ -9,10 +9,13 @@ import org.aisen.android.network.task.TaskException;
 import org.aisen.android.support.paging.IPaging;
 import org.aisen.android.ui.fragment.APagingFragment;
 import org.aisen.android.ui.fragment.ARecycleViewSwipeRefreshFragment;
+import org.aisen.android.ui.fragment.itemview.BasicFooterView;
 import org.aisen.android.ui.fragment.itemview.NormalItemViewCreator;
 import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
+import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
+import org.aisen.weibo.sina.sinasdk.bean.StatusComment;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContents;
 import org.aisen.weibo.sina.support.paging.TimelinePaging;
@@ -51,7 +54,31 @@ public abstract class ATimelineFragment extends ARecycleViewSwipeRefreshFragment
         return new TimelinePaging();
     }
 
-    abstract class ATimelineTask extends APagingTask<Void, Void, StatusContents> {
+    @Override
+    protected IItemViewCreator<StatusContent> configFooterViewCreator() {
+        return new NormalItemViewCreator<StatusContent>(BasicFooterView.LAYOUT_RES) {
+
+            @Override
+            public IITemView<StatusContent> newItemView(View convertView, int viewType) {
+                return new BasicFooterView<StatusContent>(convertView, ATimelineFragment.this) {
+
+                    @Override
+                    protected String endpagingText() {
+                        return getString(R.string.disable_status);
+                    }
+
+                    @Override
+                    protected String loadingText() {
+                        return String.format(getString(R.string.loading_status), AppSettings.getCommentCount());
+                    }
+
+                };
+            }
+
+        };
+    }
+
+    abstract public class ATimelineTask extends APagingTask<Void, Void, StatusContents> {
 
         public ATimelineTask(RefreshMode mode) {
             super(mode);
@@ -77,7 +104,7 @@ public abstract class ATimelineFragment extends ARecycleViewSwipeRefreshFragment
             return getStatusContents(params);
         }
 
-        abstract StatusContents getStatusContents(Params params) throws TaskException;
+        public abstract StatusContents getStatusContents(Params params) throws TaskException;
 
     }
 

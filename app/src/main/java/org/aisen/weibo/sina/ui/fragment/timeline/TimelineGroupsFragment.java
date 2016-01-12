@@ -55,7 +55,7 @@ public class TimelineGroupsFragment extends ATimelineFragment {
         }
 
         @Override
-        StatusContents getStatusContents(Params params) throws TaskException {
+        public StatusContents getStatusContents(Params params) throws TaskException {
             params.addParameter("list_id", group.getIdstr());
 
             return SinaSDK.getInstance(AppContext.getAccount().getAccessToken(), getTaskCacheMode(this)).friendshipGroupsTimeline(params);

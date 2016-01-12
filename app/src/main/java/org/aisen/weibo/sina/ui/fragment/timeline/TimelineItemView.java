@@ -230,7 +230,7 @@ public class TimelineItemView extends ARecycleViewItemView<StatusContent> implem
 
             if (imgPhoto != null) {
                 BitmapLoader.getInstance().display(fragment, AisenUtils.getUserPhoto(user), imgPhoto, ImageConfigUtils.getLargePhotoConfig());
-                AisenHelper.userShow(imgPhoto, user);
+                AisenHelper.userShow(fragment.getActivity(), imgPhoto, user);
             }
 
             AisenUtils.setImageVerified(imgVerified, user);
@@ -238,7 +238,7 @@ public class TimelineItemView extends ARecycleViewItemView<StatusContent> implem
         else {
             if (imgPhoto != null) {
                 imgPhoto.setImageDrawable(new ColorDrawable(Color.GRAY));
-                AisenHelper.userShow(imgPhoto, null);
+                AisenHelper.userShow(fragment.getActivity(), imgPhoto, null);
             }
 
             imgVerified.setVisibility(View.GONE);

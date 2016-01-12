@@ -73,11 +73,11 @@ public class CommentItemView extends ARecycleViewItemView<StatusComment> impleme
             BitmapLoader.getInstance().display(fragment,
                     AisenUtils.getUserPhoto(user),
                     imgPhoto, ImageConfigUtils.getLargePhotoConfig());
-            AisenHelper.userShow(imgPhoto, user);
+            AisenHelper.userShow(fragment.getActivity(), imgPhoto, user);
             txtName.setText(AisenUtils.getUserScreenName(user));
         }
         else {
-            AisenHelper.userShow(imgPhoto, null);
+            AisenHelper.userShow(fragment.getActivity(), imgPhoto, null);
             txtName.setText(R.string.error_cmts);
             imgPhoto.setImageResource(R.drawable.user_placeholder);
         }
@@ -101,10 +101,10 @@ public class CommentItemView extends ARecycleViewItemView<StatusComment> impleme
                 BitmapLoader.getInstance().display(fragment,
                         AisenUtils.getUserPhoto(data.getReply_comment().getUser()),
                         imgRePhoto, ImageConfigUtils.getLargePhotoConfig());
-                AisenHelper.userShow(imgRePhoto, data.getReply_comment().getUser());
+                AisenHelper.userShow(fragment.getActivity(), imgRePhoto, data.getReply_comment().getUser());
             }
             else {
-                AisenHelper.userShow(imgRePhoto, null);
+                AisenHelper.userShow(fragment.getActivity(), imgRePhoto, null);
             }
         }
         else {

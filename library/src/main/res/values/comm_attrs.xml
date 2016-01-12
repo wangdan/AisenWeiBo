@@ -33,4 +33,6 @@
         <attr name="android:foregroundGravity" />
     </declare-styleable>
 
+    <attr name="MDbuttonSelector" format="reference"/>
+
 </resources>

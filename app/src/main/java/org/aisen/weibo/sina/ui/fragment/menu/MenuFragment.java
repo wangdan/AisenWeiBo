@@ -1,7 +1,6 @@
 package org.aisen.weibo.sina.ui.fragment.menu;
 
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -12,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.aisen.android.common.utils.Utils;
+import org.aisen.android.common.md.MDHelper;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.fragment.ABaseFragment;
 import org.aisen.weibo.sina.R;
@@ -103,7 +102,7 @@ public class MenuFragment extends ABaseFragment {
     }
 
     private void setSelectedMenuItem(int itemId) {
-        int selectedColor = Utils.resolveColor(getActivity(), R.attr.colorPrimary, getResources().getColor(R.color.app_body_text_1));
+        int selectedColor = MDHelper.resolveColor(getActivity(), R.attr.colorPrimary, getResources().getColor(R.color.app_body_text_1));
         int defColor = getResources().getColor(R.color.app_body_text_1);
 
         if (selectedPosition != itemId) {

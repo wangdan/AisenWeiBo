@@ -136,9 +136,13 @@ public class HttpsUtility implements IHttpUtility {
 			if (!(response.code() == HttpURLConnection.HTTP_OK || response.code() == HttpURLConnection.HTTP_PARTIAL)) {
 				Logger.e(ABizLogic.TAG, String.format("请求Http失败，状态码 : %d", response.code()));
 
+				String responseStr = response.body().string();
+
 				if (Logger.DEBUG) {
-					Logger.w(ABizLogic.TAG, response.body().string());
+					Logger.w(ABizLogic.TAG, responseStr);
 				}
+
+				TaskException.checkResponse(responseStr);
 
 				throw new TaskException(TaskException.TaskError.timeout.toString());
 			} else {

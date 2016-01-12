@@ -1,5 +1,6 @@
 package org.aisen.weibo.sina.support.utils;
 
+import android.app.Activity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -7,6 +8,7 @@ import android.widget.TextView;
 import org.aisen.android.support.textspan.ClickableTextViewMentionLinkOnTouchListener;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
+import org.aisen.weibo.sina.ui.fragment.profile.ProfilePagerFragment;
 
 /**
  * Created by wangdan on 16/1/7.
@@ -19,9 +21,14 @@ public class AisenHelper {
 //        view.setOnClickListener(PreviousArrOnClickListener);
     }
 
-    public static void userShow(View view, WeiBoUser user) {
-//        view.setTag(user);
-//        view.setOnClickListener(UserShowListener);
+    public static void userShow(final Activity from, View view, final WeiBoUser user) {
+        view.setOnClickListener(new View.OnClickListener() {
+
+                                @Override
+                                public void onClick(View v) {
+                                    ProfilePagerFragment.launch(from, user);
+                                }
+                            });
     }
 
     /* 设置有@用户、话题的onTouch事件 */

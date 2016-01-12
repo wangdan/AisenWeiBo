@@ -54,7 +54,7 @@ public class TaskException extends Exception {
             return msg + "";
 
 		if (!TextUtils.isEmpty(code) && exceptionDeclare != null) {
-			String msg = exceptionDeclare.declareMessage(code);
+			String msg = exceptionDeclare.checkCode(code);
 			if (!TextUtils.isEmpty(msg)) {
 				return msg + "";
 			}
@@ -80,6 +80,11 @@ public class TaskException extends Exception {
 	
 	public static void config(IExceptionDeclare declare) {
 		TaskException.exceptionDeclare = declare;
+	}
+
+	public static void checkResponse(String response) throws TaskException {
+		if (TaskException.exceptionDeclare != null)
+			TaskException.exceptionDeclare.checkResponse(response);
 	}
 
 }

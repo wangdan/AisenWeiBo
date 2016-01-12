@@ -67,7 +67,7 @@
 
 	<setting type="http_delay">
 		<des>Http延迟</des>
-		<value>0</value>
+		<value>5000</value>
 	</setting>
 
 	<setting type="cache_validtime">

@@ -142,16 +142,22 @@ public class BasicRecycleViewAdapter<T extends Serializable> extends RecyclerVie
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ARecycleViewItemView itemView = (ARecycleViewItemView) holder;
 
-        itemView.reset(datas.size(), position);
-        if (position < datas.size()) {
-            itemView.onBindData(itemView.getConvertView(), datas.get(position), position);
-        }
+        int headerCount = headerItemTypes != null ? headerItemTypes.length : 0;
 
-        if (onItemClickListener != null) {
-            itemView.getConvertView().setOnClickListener(innerOnClickListener);
-        }
-        else {
-            itemView.getConvertView().setOnClickListener(null);
+        if (position >= headerCount) {
+            int realPosition = position - headerCount;
+
+            itemView.reset(datas.size(), realPosition);
+            if (realPosition < datas.size()) {
+                itemView.onBindData(itemView.getConvertView(), datas.get(realPosition), realPosition);
+            }
+
+            if (onItemClickListener != null) {
+                itemView.getConvertView().setOnClickListener(innerOnClickListener);
+            }
+            else {
+                itemView.getConvertView().setOnClickListener(null);
+            }
         }
     }
 

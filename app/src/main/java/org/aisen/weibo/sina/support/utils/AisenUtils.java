@@ -11,6 +11,7 @@ import android.widget.TextView;
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.DateUtils;
 import org.aisen.weibo.sina.R;
+import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 
@@ -182,6 +183,10 @@ public class AisenUtils {
         }
 
         return text.trim();
+    }
+
+    public static boolean isLoggedUser(WeiBoUser user) {
+        return user.getIdstr().equalsIgnoreCase(AppContext.getAccount().getUser().getIdstr());
     }
 
 }

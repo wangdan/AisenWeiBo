@@ -68,4 +68,13 @@
         <item name="android:scaleType">centerCrop</item>
     </style>
 
+    <style name="Widget.MDButton" parent="">
+        <item name="android:textSize">14sp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingRight">2dp</item>
+    </style>
+
 </resources>

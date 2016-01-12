@@ -47,11 +47,11 @@ public class TimelineCommentItemView extends ARecycleViewItemView<StatusComment>
             BitmapLoader.getInstance().display(mFragment,
                                                     AisenUtils.getUserPhoto(user),
                                                     imgPhoto, ImageConfigUtils.getLargePhotoConfig());
-            AisenHelper.userShow(imgPhoto, user);
+            AisenHelper.userShow(mFragment.getActivity(), imgPhoto, user);
             txtName.setText(AisenUtils.getUserScreenName(user));
         }
         else {
-            AisenHelper.userShow(imgPhoto, null);
+            AisenHelper.userShow(mFragment.getActivity(), imgPhoto, null);
             txtName.setText(R.string.error_cmts);
             imgPhoto.setImageResource(R.drawable.user_placeholder);
         }

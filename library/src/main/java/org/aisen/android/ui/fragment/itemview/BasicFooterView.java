@@ -23,18 +23,17 @@ public class BasicFooterView<T extends Serializable> extends AFooterItemView<T> 
     private View footerView;
 
     @ViewInject(idStr = "btnMore")
-    View btnMore;
+    TextView btnMore;
     @ViewInject(idStr = "layLoading")
     View layLoading;
+    @ViewInject(idStr = "txtLoading")
+    TextView txtLoading;
 
     public BasicFooterView(View itemView, OnFooterViewCallback callback) {
         super(itemView, callback);
 
         this.footerView = itemView;
-    }
 
-    @Override
-    public void onBindView(View convertView) {
         InjectUtility.initInjectedView(this, getConvertView());
 
         btnMore.setVisibility(View.VISIBLE);
@@ -53,6 +52,11 @@ public class BasicFooterView<T extends Serializable> extends AFooterItemView<T> 
     }
 
     @Override
+    public void onBindView(View convertView) {
+
+    }
+
+    @Override
     public void onBindData(View convertView, T data, int position) {
     }
 
@@ -64,35 +68,35 @@ public class BasicFooterView<T extends Serializable> extends AFooterItemView<T> 
     @Override
     public void onTaskStateChanged(AFooterItemView<?> footerItemView, ABaseFragment.ABaseTaskState state, TaskException exception, APagingFragment.RefreshMode mode) {
         if (state == ABaseFragment.ABaseTaskState.finished) {
-            View layLoading = footerView.findViewById(R.id.layLoading);
-            TextView btnLoadMore = (TextView) footerView.findViewById(R.id.btnMore);
-            layLoading.setVisibility(View.GONE);
-            btnLoadMore.setVisibility(View.VISIBLE);
+            if (mode == APagingFragment.RefreshMode.update) {
+                if (layLoading.getVisibility() == View.VISIBLE) {
+                    layLoading.setVisibility(View.GONE);
+                    btnMore.setVisibility(View.VISIBLE);
+                }
+            }
         }
         else if (state == ABaseFragment.ABaseTaskState.prepare) {
-            View layLoading = footerView.findViewById(R.id.layLoading);
-            TextView txtLoadingHint = (TextView) footerView.findViewById(R.id.txtLoading);
-            TextView btnLoadMore = (TextView) footerView.findViewById(R.id.btnMore);
-
-            txtLoadingHint.setText(loadingText());
-            layLoading.setVisibility(View.VISIBLE);
-            btnLoadMore.setVisibility(View.GONE);
-            btnLoadMore.setText(moreText());
+            if (mode == APagingFragment.RefreshMode.update) {
+                txtLoading.setText(loadingText());
+                layLoading.setVisibility(View.VISIBLE);
+                btnMore.setVisibility(View.GONE);
+                btnMore.setText(moreText());
+            }
         }
         else if (state == ABaseFragment.ABaseTaskState.success) {
-            final TextView btnLoadMore = (TextView) footerView.findViewById(R.id.btnMore);
-            if (!getCallback().canLoadMore()) {
-                btnLoadMore.setText(endpagingText());
-            } else {
-                btnLoadMore.setText(moreText());
+            if ((mode == APagingFragment.RefreshMode.update || mode == APagingFragment.RefreshMode.reset)) {
+                if (!getCallback().canLoadMore()) {
+                    btnMore.setText(endpagingText());
+                } else {
+                    btnMore.setText(moreText());
+                }
             }
         }
         else if (state == ABaseFragment.ABaseTaskState.falid) {
-            // 正在加载
-            View layLoading = footerView.findViewById(R.id.layLoading);
-            if (layLoading.getVisibility() == View.VISIBLE) {
-                TextView btnLoadMore = (TextView) footerView.findViewById(R.id.btnMore);
-                btnLoadMore.setText(faildText());
+            if (mode == APagingFragment.RefreshMode.update) {
+                if (layLoading.getVisibility() == View.VISIBLE) {
+                    btnMore.setText(faildText());
+                }
             }
         }
     }

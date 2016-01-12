@@ -37,6 +37,13 @@
     <string name="cmts_title">微博评论</string>
     <string name="cmts_repost_title">微博转发</string>
 
+    <!--no more-->
+    <string name="disable_status">没有更多微博了</string>
+    <string name="disable_comments">没有更多评论了</string>
+    <!--Loading-->
+    <string name="loading_status">%d条微博载入中</string>
+    <string name="loading_cmts">%d条评论载入中</string>
+
     <!-- AisenUtil -->
     <string name="msg_now">刚刚</string>
     <string name="msg_today">今天</string>

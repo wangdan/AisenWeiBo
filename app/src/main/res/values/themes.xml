@@ -27,6 +27,7 @@
     <!--Values-vxx之间的差异属性-->
     <style name="AppBaseTheme" parent="AppCommonTheme">
         <item name="android:selectableItemBackground">@drawable/selector_list_holo</item>
+        <item name="MDbuttonSelector">@drawable/selector_list_holo</item>
     </style>
 
     <style name="AppTheme" parent="AppBaseTheme">

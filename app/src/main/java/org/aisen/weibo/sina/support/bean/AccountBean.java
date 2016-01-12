@@ -26,6 +26,8 @@ public class AccountBean extends BaseSinaBean {
 
     private Groups groups;
 
+    private AccessToken advancedToken;
+
     public AccessToken getAccessToken() {
         return accessToken;
     }
@@ -72,5 +74,13 @@ public class AccountBean extends BaseSinaBean {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public AccessToken getAdvancedToken() {
+        return advancedToken;
+    }
+
+    public void setAdvancedToken(AccessToken advancedToken) {
+        this.advancedToken = advancedToken;
     }
 }

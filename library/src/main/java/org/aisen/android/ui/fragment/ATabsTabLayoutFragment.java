@@ -14,7 +14,7 @@ import org.aisen.android.support.inject.ViewInject;
  *
  * Created by wangdan on 15/12/22.
  */
-public abstract class ATabsTabLayoutFragment<T extends TabItem> extends ATabsFragment {
+public abstract class ATabsTabLayoutFragment<T extends TabItem> extends ATabsFragment<T> {
 
     @ViewInject(idStr = "tabLayout")
     TabLayout mTabLayout;

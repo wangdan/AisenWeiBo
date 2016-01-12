@@ -9,7 +9,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 import android.view.View;
 
-import org.aisen.android.common.utils.Utils;
+import org.aisen.android.common.md.MDHelper;
 import org.aisen.android.component.sheetfab.MaterialSheetFab;
 import org.aisen.android.component.sheetfab.MaterialSheetFabEventListener;
 import org.aisen.android.support.inject.ViewInject;
@@ -135,7 +135,7 @@ public class MainActivity extends BaseActivity implements FabGroupsFragment.OnFa
         View sheetView = findViewById(R.id.fab_sheet);
         View overlay = findViewById(R.id.overlay);
         int sheetColor = getResources().getColor(R.color.comm_white);
-        int fabColor = Utils.resolveColor(this, R.attr.colorPrimary, Color.BLACK);
+        int fabColor = MDHelper.resolveColor(this, R.attr.colorPrimary, Color.BLACK);
 
         materialSheetFab = new MaterialSheetFab(fabBtn, sheetView, overlay, sheetColor, fabColor);
         materialSheetFab.setEventListener(new MaterialSheetFabEventListener() {

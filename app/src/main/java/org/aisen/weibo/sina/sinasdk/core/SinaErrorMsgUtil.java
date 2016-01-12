@@ -40,51 +40,51 @@ public class SinaErrorMsgUtil implements IExceptionDeclare {
 		errorMap.put("invalid_access_token", "无效授权，请稍后尝试重新授权");
 	}
 
-	public static TaskException transToException(String responseStr) {
-		Logger.w(responseStr);
+	@Override
+	public void checkResponse(String response) throws TaskException {
+		Logger.w(response);
 
-        if (!TextUtils.isEmpty(responseStr)) {
-            if (responseStr.indexOf("that page doesn’t exist!") != -1)
-                return new TaskException("", "渣浪TMD的神经病，请稍后重试...");
-        }
+		if (!TextUtils.isEmpty(response)) {
+			if (response.indexOf("that page doesn’t exist!") != -1)
+				throw new TaskException("", "渣浪TMD的神经病，请稍后重试...");
+		}
 
 		String code = null;
-        String msg = null;
+		String msg = null;
 
-		if (!TextUtils.isEmpty(responseStr)) {
+		if (!TextUtils.isEmpty(response)) {
 			JSONObject jsonMsg;
 			try {
-				jsonMsg = new JSONObject(responseStr);
+				jsonMsg = new JSONObject(response);
 				if (jsonMsg.has("error")) {
 					if (jsonMsg.has("error_code")) {
-                        msg = jsonMsg.getString("error");
+						msg = jsonMsg.getString("error");
 						if ("invalid_access_token".equals(msg)) {
-                            code = "21327";
+							code = "21327";
 						}
 						else {
-                            code = jsonMsg.getString("error_code");
+							code = jsonMsg.getString("error_code");
 						}
 						if (errorMap.containsKey(code))
-                            msg = errorMap.get(code);
+							msg = errorMap.get(code);
 					}
 				}
 			} catch (Exception e) {
 			}
 		}
 
-        if (!TextUtils.isEmpty(msg))
-            return new TaskException(code, msg);
+		if (!TextUtils.isEmpty(msg))
+			throw new TaskException(code, msg);
 
-		return new TaskException(code);
+		throw new TaskException(code);
 	}
 
-    @Override
-    public String declareMessage(String code) {
-        String msg = null;
+	@Override
+	public String checkCode(String code) {
+		if (errorMap.containsKey(code))
+			return errorMap.get(code);;
 
-        if (errorMap.containsKey(code))
-            msg = errorMap.get(code);
+		return null;
+	}
 
-        return msg;
-    }
 }
