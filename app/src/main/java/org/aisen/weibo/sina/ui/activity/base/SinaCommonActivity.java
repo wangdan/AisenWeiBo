@@ -65,6 +65,7 @@ public class SinaCommonActivity extends BaseActivity {
         }
 
         int contentId = org.aisen.android.R.layout.comm_ui_fragment_container;
+        int fragmentId = -1;
 
         FragmentArgs values = (FragmentArgs) getIntent().getSerializableExtra("args");
 
@@ -95,6 +96,13 @@ public class SinaCommonActivity extends BaseActivity {
                         contentId = Integer.parseInt(method.invoke(fragment).toString());
                 } catch (Exception e) {
                 }
+
+                try {
+                    Method method = clazz.getMethod("inflateContentView");
+                    if (method != null)
+                        fragmentId = Integer.parseInt(method.invoke(fragment).toString());
+                } catch (Exception e) {
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 finish();
@@ -108,7 +116,12 @@ public class SinaCommonActivity extends BaseActivity {
 //        BizFragment.getBizFragment(this);
 
         if (fragment != null) {
-            getFragmentManager().beginTransaction().add(org.aisen.android.R.id.fragmentContainer, fragment, FRAGMENT_TAG).commit();
+            if (fragmentId > -1) {
+                getFragmentManager().beginTransaction().add(org.aisen.android.R.id.fragmentContainer, fragment, FRAGMENT_TAG).commit();
+            }
+            else {
+                getFragmentManager().beginTransaction().add(fragment, FRAGMENT_TAG).commit();
+            }
         }
 
         if (getSupportActionBar() != null)

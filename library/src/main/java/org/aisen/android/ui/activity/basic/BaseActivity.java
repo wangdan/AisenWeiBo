@@ -160,7 +160,7 @@ public class BaseActivity extends ActionBarActivity implements BitmapOwner, ITas
         setContentView(View.inflate(this, layoutResID, null));
     }
 
-    View getRootView() {
+    public View getRootView() {
         return rootView;
     }
 

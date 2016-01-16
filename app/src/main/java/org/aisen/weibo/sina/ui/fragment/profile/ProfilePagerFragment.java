@@ -3,12 +3,22 @@ package org.aisen.weibo.sina.ui.fragment.profile;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import org.aisen.android.support.bean.TabItem;
+import org.aisen.android.support.inject.InjectUtility;
+import org.aisen.android.support.inject.ViewInject;
+import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.activity.container.FragmentArgs;
 import org.aisen.android.ui.fragment.ATabsTabLayoutFragment;
+import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
+import org.aisen.weibo.sina.ui.fragment.timeline.TimelineDefFragment;
 
 import java.util.ArrayList;
 
@@ -25,6 +35,25 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem> {
     }
 
     private WeiBoUser mUser;
+
+    @Override
+    protected int inflateContentView() {
+        return -1;
+    }
+
+    public int setActivityContentView() {
+        return R.layout.ui_profile_pager;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view =  super.onCreateView(inflater, container, savedInstanceState);
+
+        InjectUtility.initInjectedView(this, ((BaseActivity) getActivity()).getRootView());
+        layoutInit(inflater, savedInstanceState);
+
+        return view;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,7 +88,7 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem> {
             return Profile01Fragment.newInstance();
         }
         else if (type == 2) {
-            return ProfileTimelineFragment.newInstance(mUser);
+            return TimelineDefFragment.newInstance("statusesFriendsTimeLine");
         }
 
         return null;
