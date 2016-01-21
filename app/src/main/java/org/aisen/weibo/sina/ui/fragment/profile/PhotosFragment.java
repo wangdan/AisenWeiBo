@@ -8,7 +8,7 @@ import org.aisen.android.ui.fragment.ABaseFragment;
 public class PhotosFragment extends ABaseFragment {
 
     @Override
-    protected int inflateContentView() {
+    public int inflateContentView() {
         return 0;
     }
 

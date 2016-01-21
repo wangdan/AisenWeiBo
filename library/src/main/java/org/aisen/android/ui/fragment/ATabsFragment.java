@@ -44,7 +44,7 @@ public abstract class ATabsFragment<T extends TabItem> extends ABaseFragment
     int mCurrentPosition = 0;
 
     @Override
-    protected int inflateContentView() {
+    public int inflateContentView() {
         return R.layout.comm_ui_tabs;
     }
 

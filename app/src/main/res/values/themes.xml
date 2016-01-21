@@ -36,4 +36,7 @@
     <style name="MainTheme" parent="AppTheme">
 
     </style>
+
+    <style name="Profile" parent="AppTheme">
+    </style>
 </resources>

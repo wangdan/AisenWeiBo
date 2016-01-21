@@ -27,7 +27,7 @@ public abstract class AListFragment<T extends Serializable, Ts extends Serializa
     ListView mListView;
 
     @Override
-    protected int inflateContentView() {
+    public int inflateContentView() {
         return R.layout.comm_ui_list;
     }
 

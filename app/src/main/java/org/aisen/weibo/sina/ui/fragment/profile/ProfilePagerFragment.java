@@ -8,7 +8,9 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.support.bean.TabItem;
 import org.aisen.android.support.inject.InjectUtility;
 import org.aisen.android.support.inject.ViewInject;
@@ -17,6 +19,7 @@ import org.aisen.android.ui.activity.container.FragmentArgs;
 import org.aisen.android.ui.fragment.ATabsTabLayoutFragment;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
+import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
 import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineDefFragment;
 
@@ -34,25 +37,31 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem> {
         SinaCommonActivity.launch(from, ProfilePagerFragment.class, args);
     }
 
+    @ViewInject(id = R.id.imgCover)
+    ImageView imgCover;
+
     private WeiBoUser mUser;
 
     @Override
-    protected int inflateContentView() {
+    public int inflateContentView() {
         return -1;
     }
 
-    public int setActivityContentView() {
+    @Override
+    public int inflateActivityContentView() {
         return R.layout.ui_profile_pager;
+    }
+
+    public int setActivityTheme() {
+        return R.style.Profile;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view =  super.onCreateView(inflater, container, savedInstanceState);
-
         InjectUtility.initInjectedView(this, ((BaseActivity) getActivity()).getRootView());
         layoutInit(inflater, savedInstanceState);
 
-        return view;
+        return null;
     }
 
     @Override
@@ -61,6 +70,14 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem> {
 
         mUser = savedInstanceState == null ? (WeiBoUser) getArguments().getSerializable("mUser")
                                            : (WeiBoUser) savedInstanceState.getSerializable("mUser");
+    }
+
+    @Override
+    protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
+        super.layoutInit(inflater, savedInstanceSate);
+
+        // 背景图片
+        BitmapLoader.getInstance().display(this, mUser.getCover_image_phone(), imgCover, ImageConfigUtils.getPhotoConfig());
     }
 
     @Override

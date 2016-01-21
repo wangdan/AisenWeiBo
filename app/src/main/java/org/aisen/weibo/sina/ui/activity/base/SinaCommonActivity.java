@@ -8,8 +8,7 @@ import android.text.TextUtils;
 
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.activity.container.FragmentArgs;
-
-import java.lang.reflect.Method;
+import org.aisen.android.ui.fragment.ABaseFragment;
 
 /**
  * Created by wangdan on 15/12/21.
@@ -65,43 +64,26 @@ public class SinaCommonActivity extends BaseActivity {
         }
 
         int contentId = org.aisen.android.R.layout.comm_ui_fragment_container;
-        int fragmentId = -1;
 
         FragmentArgs values = (FragmentArgs) getIntent().getSerializableExtra("args");
 
-        Fragment fragment = null;
+        ABaseFragment fragment = null;
         if (savedInstanceState == null) {
             try {
                 Class clazz = Class.forName(className);
-                fragment = (Fragment) clazz.newInstance();
+                fragment = (ABaseFragment) clazz.newInstance();
+
                 // 设置参数给Fragment
                 if (values != null) {
-                    try {
-                        Method method = clazz.getMethod("setArguments", new Class[] { Bundle.class });
-                        method.invoke(fragment, FragmentArgs.transToBundle(values));
-                    } catch (Exception e) {
-                    }
+                    fragment.setArguments(FragmentArgs.transToBundle(values));
                 }
                 // 重写Activity的主题
-                try {
-                    Method method = clazz.getMethod("setTheme");
-                    if (method != null)
-                        overrideTheme = Integer.parseInt(method.invoke(fragment).toString());
-                } catch (Exception e) {
+                if (fragment.setActivityTheme() > -1) {
+                    overrideTheme = fragment.setActivityTheme();
                 }
                 // 重写Activity的contentView
-                try {
-                    Method method = clazz.getMethod("setActivityContentView");
-                    if (method != null)
-                        contentId = Integer.parseInt(method.invoke(fragment).toString());
-                } catch (Exception e) {
-                }
-
-                try {
-                    Method method = clazz.getMethod("inflateContentView");
-                    if (method != null)
-                        fragmentId = Integer.parseInt(method.invoke(fragment).toString());
-                } catch (Exception e) {
+                if (fragment.inflateActivityContentView() > 0) {
+                    contentId = fragment.inflateActivityContentView();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -113,10 +95,8 @@ public class SinaCommonActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(contentId);
 
-//        BizFragment.getBizFragment(this);
-
         if (fragment != null) {
-            if (fragmentId > -1) {
+            if (fragment.inflateContentView() > -1) {
                 getFragmentManager().beginTransaction().add(org.aisen.android.R.id.fragmentContainer, fragment, FRAGMENT_TAG).commit();
             }
             else {

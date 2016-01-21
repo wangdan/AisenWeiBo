@@ -48,7 +48,7 @@ public class TimelineCommentFragment extends ARecycleViewSwipeRefreshFragment<St
     private StatusContent mStatusContent;
 
     @Override
-    protected int inflateContentView() {
+    public int inflateContentView() {
         return R.layout.ui_timeline_comment;
     }
 

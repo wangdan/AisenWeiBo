@@ -95,7 +95,7 @@ public class WebLoginFragment extends ABaseFragment {
     }
 
     @Override
-    protected int inflateContentView() {
+    public int inflateContentView() {
         return R.layout.ui_login;
     }
 

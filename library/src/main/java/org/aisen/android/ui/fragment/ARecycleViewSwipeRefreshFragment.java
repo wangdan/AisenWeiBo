@@ -19,7 +19,7 @@ public abstract class ARecycleViewSwipeRefreshFragment<T extends Serializable, T
     SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
-    protected int inflateContentView() {
+    public int inflateContentView() {
         return R.layout.comm_ui_recycleview_swiperefresh;
     }
 

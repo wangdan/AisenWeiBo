@@ -21,7 +21,7 @@ public abstract class AListSwipeRefreshFragment<T extends Serializable, Ts exten
     SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
-    protected int inflateContentView() {
+    public int inflateContentView() {
         return R.layout.comm_ui_list_swiperefresh;
     }
 

@@ -39,7 +39,7 @@ public class MenuFragment extends ABaseFragment {
     private int selectedPosition = R.string.menu_sinaweibo;
 
     @Override
-    protected int inflateContentView() {
+    public int inflateContentView() {
         return R.layout.ui_menu;
     }
 

@@ -28,7 +28,7 @@ public abstract class AWaterfallFragment<T extends Serializable, Ts extends Seri
     PLAMultiColumnListView mPlaMultiColumnList;
 
     @Override
-    protected int inflateContentView() {
+    public int inflateContentView() {
         return R.layout.comm_ui_waterfall;
     }
 

@@ -20,7 +20,7 @@ public abstract class ATabsTabLayoutFragment<T extends TabItem> extends ATabsFra
     TabLayout mTabLayout;
 
     @Override
-    protected int inflateContentView() {
+    public int inflateContentView() {
         return R.layout.comm_ui_tabs_tablayout;
     }
 

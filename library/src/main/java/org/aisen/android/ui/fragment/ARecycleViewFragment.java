@@ -29,7 +29,7 @@ public abstract class ARecycleViewFragment<T extends Serializable, Ts extends Se
     RecyclerView mRecycleView;
 
     @Override
-    protected int inflateContentView() {
+    public int inflateContentView() {
         return R.layout.comm_ui_recycleview;
     }
 

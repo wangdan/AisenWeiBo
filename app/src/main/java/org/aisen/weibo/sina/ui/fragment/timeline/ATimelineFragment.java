@@ -7,6 +7,7 @@ import android.widget.AdapterView;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.support.paging.IPaging;
+import org.aisen.android.ui.fragment.AListSwipeRefreshFragment;
 import org.aisen.android.ui.fragment.APagingFragment;
 import org.aisen.android.ui.fragment.ARecycleViewSwipeRefreshFragment;
 import org.aisen.android.ui.fragment.itemview.BasicFooterView;

@@ -40,7 +40,7 @@ public class FabGroupsFragment extends AListFragment<Group, Groups> {
     }
 
     @Override
-    protected int inflateContentView() {
+    public int inflateContentView() {
         return R.layout.ui_fab_groups;
     }
 

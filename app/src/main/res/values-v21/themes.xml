@@ -9,7 +9,13 @@
         <item name="menuHeaderPaddingTop">40dip</item>
         <item name="MDbuttonSelector">?attr/selectableItemBackground</item>
     </style>
+
     <style name="MainTheme" parent="AppTheme">
         <item name="android:windowTranslucentStatus">true</item>
     </style>
+
+    <style name="Profile" parent="AppTheme">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
 </resources>

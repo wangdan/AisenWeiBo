@@ -104,18 +104,22 @@ public abstract class ABaseFragment extends Fragment implements ITaskManager, Bi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (inflateContentView() > 0) {
-            rootView = (ViewGroup) inflater.inflate(inflateContentView(), null);
-            rootView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+            setContentView((ViewGroup) inflater.inflate(inflateContentView(), null));
+            getContentView().setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                                                                 ViewGroup.LayoutParams.MATCH_PARENT));
 
             _layoutInit(inflater, savedInstanceState);
 
             layoutInit(inflater, savedInstanceState);
 
-            return rootView;
+            return getContentView();
         }
 
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    public void setContentView(ViewGroup view) {
+        this.rootView = view;
     }
 
     /**
@@ -574,7 +578,30 @@ public abstract class ABaseFragment extends Fragment implements ITaskManager, Bi
         return true;
     }
 
-    abstract protected int inflateContentView();
+    /**
+     * 指定Fragment的LayoutID
+     *
+     * @return
+     */
+    abstract public int inflateContentView();
+
+    /**
+     * 指定Activity的ContentViewID
+     *
+     * @return
+     */
+    public int inflateActivityContentView() {
+        return -1;
+    }
+
+    /**
+     * 设置Activity的Theme
+     *
+     * @return
+     */
+    public int setActivityTheme() {
+        return -1;
+    }
 
     public int configRequestDelay() {
         return 500;
