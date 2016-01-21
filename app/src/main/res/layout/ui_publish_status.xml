@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/layRoot"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/layContainer" android:layout_width="match_parent" android:layout_height="0dip" android:layout_weight="1"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent" android:layout_height="0dip" android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/imgBk" android:layout_width="match_parent" android:layout_height="match_parent" android:alpha="100"
+                android:scaleType="centerCrop"/>
+
+            <View
+                android:id="@+id/layImageCover" android:layout_width="match_parent" android:layout_height="match_parent" android:background="#99ffffff"
+                android:visibility="gone"/>
+
+            <LinearLayout
+                android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:padding="@dimen/comm_v_gap">
+
+                <TextView
+                    android:id="@+id/txtErrorHint" android:layout_width="match_parent" android:layout_height="22dip"
+                    android:drawableLeft="@drawable/ic_msg_error" android:drawablePadding="4dip" android:gravity="center_vertical" android:paddingLeft="@dimen/comm_h_margin"
+                    android:textColor="@color/comm_red" android:textSize="14sp" android:visibility="gone"/>
+
+                <EditText
+                    android:id="@+id/editContent" android:layout_width="match_parent" android:layout_height="0dip"
+                    android:layout_weight="1" android:gravity="left|top" android:textCursorDrawable="@null"/>
+
+                <HorizontalScrollView
+                    android:id="@+id/scrollPicContainer"
+                    android:layout_width="match_parent" android:layout_height="80dip">
+
+                    <!--图片展示容器-->
+                    <LinearLayout
+                        android:id="@+id/layPicContainer"
+                        android:layout_width="wrap_content" android:layout_height="match_parent"
+                        android:gravity="center_vertical" android:orientation="horizontal">
+
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+                <LinearLayout
+                    android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/comm_v_gap"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txtGroupHint" style="@style/hintText" android:layout_width="0dip"
+                        android:layout_height="wrap_content" android:layout_weight="1" android:textSize="14sp"/>
+                    <TextView
+                        android:id="@+id/txtTiming" style="@style/hintText" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:textSize="14sp" android:visibility="gone"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/txtContentSurplus" android:layout_width="wrap_content" android:layout_height="wrap_content" android:visibility="gone"/>
+
+        <View
+            android:layout_width="match_parent" android:layout_height="0.0dip" android:background="@drawable/divider_panel"/>
+
+        <include
+            layout="@layout/lay_publish_btns" android:layout_width="match_parent" android:layout_height="50dip"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/layEmotion" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@color/bg_emotion" android:visibility="gone">
+    </RelativeLayout>
+
+</LinearLayout>

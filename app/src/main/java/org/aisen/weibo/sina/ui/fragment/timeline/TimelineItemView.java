@@ -21,9 +21,9 @@ import org.aisen.weibo.sina.sinasdk.bean.Group;
 import org.aisen.weibo.sina.sinasdk.bean.Groups;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
-import org.aisen.weibo.sina.support.utils.AisenHelper;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
+import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.fragment.comment.TimelineCommentFragment;
 import org.aisen.weibo.sina.ui.widget.AisenTextView;
 import org.aisen.weibo.sina.ui.widget.TimelinePicsView;
@@ -230,7 +230,7 @@ public class TimelineItemView extends ARecycleViewItemView<StatusContent> implem
 
             if (imgPhoto != null) {
                 BitmapLoader.getInstance().display(fragment, AisenUtils.getUserPhoto(user), imgPhoto, ImageConfigUtils.getLargePhotoConfig());
-                AisenHelper.userShow(fragment.getActivity(), imgPhoto, user);
+                BizFragment.getBizFragment(fragment).userShow(imgPhoto, user);
             }
 
             AisenUtils.setImageVerified(imgVerified, user);
@@ -238,7 +238,7 @@ public class TimelineItemView extends ARecycleViewItemView<StatusContent> implem
         else {
             if (imgPhoto != null) {
                 imgPhoto.setImageDrawable(new ColorDrawable(Color.GRAY));
-                AisenHelper.userShow(fragment.getActivity(), imgPhoto, null);
+                BizFragment.getBizFragment(fragment).userShow(imgPhoto, null);
             }
 
             imgVerified.setVisibility(View.GONE);

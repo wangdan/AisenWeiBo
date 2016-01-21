@@ -1,14 +1,13 @@
 package org.aisen.weibo.sina.ui.fragment.profile;
 
 import android.content.Context;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 
-import org.aisen.android.common.utils.Logger;
-import org.aisen.android.common.utils.Utils;
 import org.aisen.android.ui.widget.CircleImageView;
 import org.aisen.weibo.sina.R;
 
@@ -22,18 +21,23 @@ public class AvatarBehavior extends CoordinatorLayout.Behavior<CircleImageView> 
     Context context;
 
     private ImageView imgAvatar;
+    private ImageView imgCover;
     private Toolbar toolbar;
     private View layRef;
+    private View layDetail;
+    private View viewToolbarBg;
 
     private float avatarMinY = 0.0f;
     private float scaleHeight = 0.0f;
     private int avatarSize = 0;
     private float avatarX = 0;
+    private int coverHeight;
 
     public AvatarBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         this.context = context;
+        coverHeight = context.getResources().getDimensionPixelSize(R.dimen.profile_cover);
     }
 
     @Override
@@ -43,14 +47,28 @@ public class AvatarBehavior extends CoordinatorLayout.Behavior<CircleImageView> 
             imgAvatar = (ImageView) child.findViewById(R.id.imgAvatar);
             toolbar = (Toolbar) parent.findViewById(R.id.toolbar);
             layRef = parent.findViewById(R.id.layRef);
+            layDetail = parent.findViewById(R.id.layDetail);
+            imgCover = (ImageView) parent.findViewById(R.id.imgCover);
+            viewToolbarBg = parent.findViewById(R.id.viewToolbarBg);
+            viewToolbarBg.setAlpha(0);
         }
 
         if (avatarMinY == 0.0f && toolbar.getHeight() > 0) {
+            int defHeight = layDetail.getHeight();
+            CollapsingToolbarLayout.LayoutParams lp = (CollapsingToolbarLayout.LayoutParams) imgCover.getLayoutParams();
+            if (lp.height != defHeight + coverHeight) {
+                lp.height = defHeight + coverHeight;
+                imgCover.setLayoutParams(lp);
+                imgCover.setPadding(imgCover.getPaddingLeft(), imgCover.getPaddingTop(), imgCover.getPaddingRight(), defHeight);
+
+                return false;
+            }
+
             avatarMinY = toolbar.getHeight() + getStatusBarHeight();
             avatarSize = imgAvatar.getWidth();
-            avatarX = Utils.dip2px(16);
+            avatarX = context.getResources().getDimensionPixelSize(R.dimen.padding_normal);
             scaleHeight = avatarSize * 3.0f / 4;
-            avatarX = layRef.getY() - scaleHeight - avatarMinY;
+            avatarX = coverHeight - scaleHeight - avatarMinY;
         }
 
         return avatarMinY > 0;
@@ -58,42 +76,10 @@ public class AvatarBehavior extends CoordinatorLayout.Behavior<CircleImageView> 
 
     @Override
     public boolean onDependentViewChanged(CoordinatorLayout parent, CircleImageView child, View dependency) {
-        int setAvatarSize = -1;
-
-        float childToY = layRef.getY() - avatarSize * 3.0f / 4;
-
-        if (childToY > avatarMinY) {
-            CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) child.getLayoutParams();
-            if (lp.width < avatarSize) {
-                setAvatarSize = avatarSize;
-            }
-        }
-        else {
-            if (layRef.getY() - avatarMinY > 0.0f) {
-                float scale = (layRef.getY() - avatarMinY) / scaleHeight;
-
-                setAvatarSize = Math.round(avatarSize * scale);
-                childToY = layRef.getY() - setAvatarSize * 3.0f / 4;
-            }
-            else {
-                setAvatarSize = 0;
-            }
-        }
-
-        if (setAvatarSize != -1) {
-            CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) child.getLayoutParams();
-            if (lp.width != setAvatarSize) {
-                lp.width = setAvatarSize;
-                lp.height = setAvatarSize;
-                child.setLayoutParams(lp);
-            }
-        }
-
-        float offsetX = (avatarSize - child.getWidth()) * 1.0f / 2;
-//        child.setX(avatarX + offsetX);
-        child.setY(childToY);
+        child.setY(layRef.getY() - avatarSize * 3.0f / 4);
 
         child.setAlpha((imgAvatar.getY() - avatarMinY) * 1.0f / avatarX);
+        viewToolbarBg.setAlpha(1.0f - (layRef.getY() - avatarMinY) * 1.0f / (coverHeight - avatarMinY));
 
         return true;
     }

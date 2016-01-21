@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="horizontal" android:layout_width="match_parent"
+	android:layout_height="match_parent" android:gravity="center" android:paddingLeft="@dimen/comm_h_margin" android:paddingRight="@dimen/comm_h_margin">
+
+	<EditText android:id="@+id/editQuery" android:layout_width="0dip" android:layout_height="48dip" android:layout_weight="1" android:minWidth="170dip"
+		android:hint="@string/hint_user_name" android:textColorHint="#aaffffff" android:textColor="@color/comm_white" android:textSize="16sp" android:gravity="center_vertical"
+		android:textCursorDrawable="@null" android:background="@null" android:paddingLeft="16dip" android:singleLine="true" android:imeOptions="actionSearch" />
+
+</LinearLayout>

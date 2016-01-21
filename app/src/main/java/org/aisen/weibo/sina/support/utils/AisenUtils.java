@@ -1,30 +1,246 @@
 package org.aisen.weibo.sina.support.utils;
 
+import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Build;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.text.TextUtils;
 import android.util.TypedValue;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.AlertDialogWrapper;
+
 import org.aisen.android.common.context.GlobalContext;
+import org.aisen.android.common.md.MDHelper;
+import org.aisen.android.common.setting.SettingUtility;
 import org.aisen.android.common.utils.DateUtils;
+import org.aisen.android.common.utils.FileUtils;
+import org.aisen.android.common.utils.Logger;
+import org.aisen.android.common.utils.SystemUtils;
+import org.aisen.android.common.utils.Utils;
+import org.aisen.android.common.utils.ViewUtils;
+import org.aisen.android.component.bitmaploader.BitmapLoader;
+import org.aisen.android.component.bitmaploader.core.BitmapDecoder;
+import org.aisen.android.network.task.TaskException;
+import org.aisen.android.network.task.WorkTask;
+import org.aisen.android.ui.activity.basic.BaseActivity;
+import org.aisen.android.ui.fragment.ABaseFragment;
+import org.aisen.android.ui.fragment.APagingFragment;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
+import org.aisen.weibo.sina.sinasdk.SinaSDK;
+import org.aisen.weibo.sina.sinasdk.bean.GroupSortResult;
+import org.aisen.weibo.sina.sinasdk.bean.StatusComment;
+import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
+import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
+import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
+import org.aisen.weibo.sina.ui.fragment.comment.TimelineCommentFragment;
+import org.aisen.weibo.sina.ui.fragment.timeline.ATimelineFragment;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+
+import fr.castorflex.android.circularprogressbar.CircularProgressDrawable;
 
 /**
- * Created by wangdan on 16/1/7.
+ * Created by wangdan on 15/4/12.
  */
 public class AisenUtils {
 
+    public static int getThemeColor(Context context) {
+        final int materialBlue = Color.parseColor("#ff0000");
+        int themeColor = MDHelper.resolveColor(context, R.attr.themeColor, materialBlue);
+        return themeColor;
+    }
+
+    public static String getUserScreenName(WeiBoUser user) {
+        if (AppSettings.isShowRemark() && !TextUtils.isEmpty(user.getRemark()))
+            return user.getRemark();
+
+        return user.getScreen_name();
+    }
+
+    public static String getUserKey(String key, WeiBoUser user) {
+        return key + "-" + user.getIdstr();
+    }
+
+    public static File getUploadFile(File source) {
+        Logger.w("原图图片大小" + (source.length() / 1024) + "KB");
+
+        if (source.getName().toLowerCase().endsWith(".gif")) {
+            Logger.w("上传图片是GIF图片，上传原图");
+            return source;
+        }
+
+        File file = null;
+
+        String imagePath = GlobalContext.getInstance().getAppPath() + SettingUtility.getStringSetting("draft") + File.separator;
+
+        int sample = 1;
+        int maxSize = 0;
+
+        int type = AppSettings.getUploadSetting();
+        // 自动，WIFI时原图，移动网络时高
+        if (type == 0) {
+            if (SystemUtils.getNetworkType() == SystemUtils.NetWorkType.wifi)
+                type = 1;
+            else
+                type = 2;
+        }
+        BitmapFactory.Options opts = new BitmapFactory.Options();
+        opts.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(source.getAbsolutePath(), opts);
+        switch (type) {
+            // 原图
+            case 1:
+                Logger.w("原图上传");
+                file = source;
+                break;
+            // 高
+            case 2:
+                sample = BitmapDecoder.calculateInSampleSize(opts, 1920, 1080);
+                Logger.w("高质量上传");
+                maxSize = 700 * 1024;
+                imagePath = imagePath + "高" + File.separator + source.getName();
+                file = new File(imagePath);
+                break;
+            // 中
+            case 3:
+                Logger.w("中质量上传");
+                sample = BitmapDecoder.calculateInSampleSize(opts, 1280, 720);
+                maxSize = 300 * 1024;
+                imagePath = imagePath + "中" + File.separator + source.getName();
+                file = new File(imagePath);
+                break;
+            // 低
+            case 4:
+                Logger.w("低质量上传");
+                sample = BitmapDecoder.calculateInSampleSize(opts, 1280, 720);
+                maxSize = 100 * 1024;
+                imagePath = imagePath + "低" + File.separator + source.getName();
+                file = new File(imagePath);
+                break;
+            default:
+                break;
+        }
+
+        // 压缩图片
+        if (type != 1 && !file.exists()) {
+            Logger.w(String.format("压缩图片，原图片 path = %s", source.getAbsolutePath()));
+            byte[] imageBytes = FileUtils.readFileToBytes(source);
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            try {
+                out.write(imageBytes);
+            } catch (Exception e) {
+            }
+
+            Logger.w(String.format("原图片大小%sK", String.valueOf(imageBytes.length / 1024)));
+            if (imageBytes.length > maxSize) {
+                // 尺寸做压缩
+                BitmapFactory.Options options = new BitmapFactory.Options();
+
+                if (sample > 1) {
+                    options.inSampleSize = sample;
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length, options);
+                    Logger.w(String.format("压缩图片至大小：%d*%d", bitmap.getWidth(), bitmap.getHeight()));
+                    out.reset();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                    imageBytes = out.toByteArray();
+                }
+
+                options.inSampleSize = 1;
+                if (imageBytes.length > maxSize) {
+                    BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length, options);
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length, options);
+
+                    int quality = 90;
+                    out.reset();
+                    Logger.w(String.format("压缩图片至原来的百分之%d大小", quality));
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, quality, out);
+                    while (out.toByteArray().length > maxSize) {
+                        out.reset();
+                        quality -= 10;
+                        Logger.w(String.format("压缩图片至原来的百分之%d大小", quality));
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, quality, out);
+                    }
+                }
+
+            }
+
+            try {
+                if (!file.getParentFile().exists())
+                    file.getParentFile().mkdirs();
+
+                Logger.w(String.format("最终图片大小%sK", String.valueOf(out.toByteArray().length / 1024)));
+                FileOutputStream fo = new FileOutputStream(file);
+                fo.write(out.toByteArray());
+                fo.flush();
+                fo.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return file;
+    }
+
+    public static void showMenuDialog(ABaseFragment fragment, final View targetView,
+                                      String[] menuArr, DialogInterface.OnClickListener onItemClickListener) {
+        new AlertDialogWrapper.Builder(fragment.getActivity())
+                .setItems(menuArr, onItemClickListener)
+                .show();
+    }
+
+    public static String getFirstId(@SuppressWarnings("rawtypes") List datas) {
+        int size = datas.size();
+        if (size > 0)
+            return getId(datas.get(0));
+        return null;
+    }
+
+    public static String getLastId(@SuppressWarnings("rawtypes") List datas) {
+        int size = datas.size();
+        if (size > 0)
+            return getId(datas.get(size - 1));
+        return null;
+    }
+
+    public static String getId(Object t) {
+        try {
+            Field idField = t.getClass().getDeclaredField("id");
+            idField.setAccessible(true);
+            return idField.get(t).toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @SuppressWarnings("deprecation")
     public static String convDate(String time) {
         Context context = GlobalContext.getInstance();
         Resources res = context.getResources();
@@ -67,16 +283,6 @@ public class AisenUtils {
         return timeStr;
     }
 
-    public static String getId(Object t) {
-        try {
-            Field idField = t.getClass().getDeclaredField("id");
-            idField.setAccessible(true);
-            return idField.get(t).toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     public static String getGender(WeiBoUser user) {
         Resources res = GlobalContext.getInstance().getResources();
@@ -155,15 +361,162 @@ public class AisenUtils {
             imgVerified.setVisibility(View.GONE);
     }
 
-    public static String getUserScreenName(WeiBoUser user) {
-        if (AppSettings.isShowRemark() && !TextUtils.isEmpty(user.getRemark()))
-            return user.getRemark();
+    public static void timelineMenuSelected(final ABaseFragment fragment, String selectedItem, final StatusContent status) {
+        final String[] timelineMenuArr = GlobalContext.getInstance().getResources().getStringArray(R.array.timeline_menus);
 
-        return user.getScreen_name();
+        try {
+            int position = 0;
+            for (int i = 0; i < timelineMenuArr.length; i++) {
+                if (timelineMenuArr[i].equals(selectedItem)) {
+                    position = i;
+                    break;
+                }
+            }
+
+            switch (position) {
+                // 原微博
+                case 0:
+                    TimelineCommentFragment.launch(fragment.getActivity(), status.getRetweeted_status());
+                    break;
+                // 复制
+                case 1:
+                    AisenUtils.copyToClipboard(status.getText());
+
+                    ViewUtils.showMessage(R.string.msg_text_copyed);
+                    break;
+                // 转发
+                case 2:
+                    BizFragment.getBizFragment(fragment).statusRepost(status);
+                    break;
+                // 评论
+                case 3:
+                    BizFragment.getBizFragment(fragment).commentCreate(status);
+                    break;
+                // 收藏
+                case 4:
+                    BizFragment.getBizFragment(fragment).favorityCreate(status.getId() + "", null);
+                    break;
+                // 取消收藏
+                case 5:
+                    BizFragment.getBizFragment(fragment).favorityDestory(status.getId() + "", null);
+                    break;
+                // 删除微博
+                case 6:
+                    deleteStatus(fragment, status);
+                    break;
+                // 屏蔽微博
+                case 7:
+                    shieldStatus(fragment, status);
+                    break;
+                // 围观
+                case 8:
+                    PublishActivity.publishStatusRepostAndWeiguan(fragment.getActivity(), null, status);
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public static void setTextSize(TextView textView) {
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, AppSettings.getTextSize());
+    private static void deleteStatus(final ABaseFragment fragment, final StatusContent status) {
+        new AlertDialogWrapper.Builder(fragment.getActivity())
+                .setMessage(R.string.msg_del_status_remind)
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        BizFragment.getBizFragment(fragment).statusDestory(status.getId() + "", new BizFragment.OnStatusDestoryCallback() {
+
+                            @SuppressWarnings({ "rawtypes" })
+                            @Override
+                            public void onStatusDestory(StatusContent status) {
+                                if (fragment instanceof ATimelineFragment) {
+                                    APagingFragment aRefreshFragment = ((APagingFragment) fragment);
+                                    for (Object so : aRefreshFragment.getAdapterItems()) {
+                                        StatusContent s = (StatusContent) so;
+                                        if (String.valueOf(s.getId()).equals(String.valueOf(status.getId()))) {
+                                            aRefreshFragment.getAdapterItems().remove(s);
+                                            aRefreshFragment.getAdapter().notifyDataSetChanged();
+                                            break;
+                                        }
+                                    }
+                                }
+                                else {
+                                    if (fragment.getActivity() != null && fragment instanceof TimelineCommentFragment) {
+                                        Intent data = new Intent();
+                                        data.putExtra("status", status.getId());
+
+                                        fragment.getActivity().setResult(Activity.RESULT_OK, data);
+                                        fragment.getActivity().finish();
+                                    }
+                                    ViewUtils.showMessage(R.string.delete_success);
+                                }
+                            }
+
+                            @Override
+                            public boolean onFaild(TaskException e) {
+                                ViewUtils.showMessage(R.string.delete_faild);
+
+                                return true;
+                            }
+                        });
+                    }
+                })
+                .show();
+    }
+
+    private static void shieldStatus(final ABaseFragment fragment, final StatusContent status) {
+        new AlertDialogWrapper.Builder(fragment.getActivity())
+                .setMessage(R.string.msg_shield_remind)
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        new WorkTask<Void, Void, GroupSortResult>() {
+
+                            @Override
+                            protected void onPrepare() {
+                                super.onPrepare();
+
+                                Resources res = GlobalContext.getInstance().getResources();
+                                ViewUtils.createProgressDialog(fragment.getActivity(), res.getString(R.string.processing), ThemeUtils.getThemeColor()).show();
+                            };
+
+                            @Override
+                            protected void onFinished() {
+                                super.onFinished();
+
+                                ViewUtils.dismissProgressDialog();
+                            };
+
+                            @Override
+                            protected void onFailure(TaskException exception) {
+                                super.onFailure(exception);
+
+                                ViewUtils.showMessage(exception.getMessage());
+                            };
+
+                            @Override
+                            protected void onSuccess(GroupSortResult result) {
+                                super.onSuccess(result);
+
+                                if ("true".equals(result.getResult()))
+                                    ViewUtils.showMessage(R.string.msg_shield_success);
+                                else
+                                    ViewUtils.showMessage(R.string.msg_shield_faild);
+                            };
+
+                            @Override
+                            public GroupSortResult workInBackground(Void... params) throws TaskException {
+                                return SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).statusMentionsShield(status.getId() + "");
+                            }
+
+                        }.execute();
+                    }
+                })
+                .show();
     }
 
     public static String getCommentText(String text) {
@@ -185,8 +538,251 @@ public class AisenUtils {
         return text.trim();
     }
 
+    public static void setTextSize(TextView textView) {
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, AppSettings.getTextSize());
+    }
+
+    public static int getStrLength(String content) {
+        int length = 0;
+        int tempLength = 0;
+        for (int i = 0; i < content.length(); i++) {
+            String temp = content.charAt(i) + "";
+            if (temp.getBytes().length == 3) {
+                length++;
+            } else {
+                tempLength++;
+            }
+        }
+        length += tempLength / 2 + ((tempLength % 2) == 0 ? 0 : 1);
+        return length;
+    }
+
+    public static void commentMenuSelected(final ABaseFragment fragment, String selectedItem, final StatusComment comment) {
+        final String[] commentMenuArr = GlobalContext.getInstance().getResources().getStringArray(R.array.cmt_menus);
+
+        try {
+            int position = 0;
+            for (int i = 0; i < commentMenuArr.length; i++) {
+                if (commentMenuArr[i].equals(selectedItem)) {
+                    position = i;
+                    break;
+                }
+            }
+
+            switch (position) {
+                // 复制
+                case 0:
+                    AisenUtils.copyToClipboard(comment.getText());
+
+                    ViewUtils.showMessage(R.string.msg_text_copyed);
+                    break;
+                // 转发
+                case 1:
+                    BizFragment.getBizFragment(fragment).commentRepost(comment);
+                    break;
+                // 删除
+                case 2:
+                    new AlertDialogWrapper.Builder(fragment.getActivity()).setMessage(R.string.msg_del_cmt_remind)
+                            .setNegativeButton(R.string.cancel, null)
+                            .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    BizFragment.getBizFragment(fragment).commentDestory(comment, new BizFragment.OnCommentDestoryCallback() {
+
+                                        @SuppressWarnings("unchecked")
+                                        @Override
+                                        public void onCommentDestory(StatusComment commnet) {
+                                            if (fragment instanceof APagingFragment) {
+                                                @SuppressWarnings("rawtypes")
+                                                APagingFragment aRefreshFragment = ((APagingFragment) fragment);
+                                                for (Object so : aRefreshFragment.getAdapterItems()) {
+                                                    StatusComment s = (StatusComment) so;
+                                                    if (s.getId().equals(commnet.getId())) {
+                                                        aRefreshFragment.getAdapterItems().remove(s);
+                                                        aRefreshFragment.getAdapter().notifyDataSetChanged();
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+                            })
+                            .show();
+                    break;
+                // 评论
+                case 3:
+                    BizFragment.getBizFragment(fragment).replyComment(comment.getStatus(), comment);
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void copyToClipboard(String text) {
+        // 得到剪贴板管理器
+        try {
+            ClipboardManager cmb = (ClipboardManager) GlobalContext.getInstance().getSystemService(Context.CLIPBOARD_SERVICE);
+            cmb.setPrimaryClip(ClipData.newPlainText(null, text.trim()));
+        } catch (Exception e) {
+        }
+    }
+
+    public static void launchBrowser(Activity from, String url) {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        Uri content_url = Uri.parse(url);
+        intent.setData(content_url);
+        from.startActivity(intent);
+    }
+
+    public static String getStatusMulImage(String thumbImage) {
+        switch (AppSettings.getPictureMode()) {
+            // MODE_AUTO
+            case 2:
+                if (SystemUtils.getNetworkType() == SystemUtils.NetWorkType.wifi)
+                    return thumbImage.replace("thumbnail", "bmiddle");
+
+                return thumbImage;
+            // MODE_ALWAYS_ORIG
+            case 1:
+                return thumbImage.replace("thumbnail", "bmiddle");
+            case 3:
+                return thumbImage.replace("thumbnail", "bmiddle");
+            // MODE_ALWAYS_THUMB
+            case 0:
+                return thumbImage;
+            default:
+                return thumbImage;
+        }
+    }
+
+    public static void onMenuClicked(ABaseFragment fragment, int menuId, StatusContent status) {
+        switch (menuId) {
+            case R.id.comment:
+                BizFragment.getBizFragment(fragment).commentCreate(status);
+                break;
+            case R.id.repost:
+                BizFragment.getBizFragment(fragment).statusRepost(status);
+                break;
+            case R.id.fav:
+                BizFragment.getBizFragment(fragment).favorityCreate(status.getId() + "", null);
+                break;
+            case R.id.fav_destory:
+                BizFragment.getBizFragment(fragment).favorityDestory(status.getId() + "", null);
+                break;
+            case R.id.copy:
+                copyToClipboard(status.getText());
+                ViewUtils.showMessage(R.string.msg_text_copyed);
+                break;
+            case R.id.delete:
+                deleteStatus(fragment, status);
+                break;
+            case R.id.weiguan:
+                PublishActivity.publishStatusRepostAndWeiguan(fragment.getActivity(), null, status);
+                break;
+            case R.id.share:
+
+                break;
+        }
+    }
+
+    public static void setStatusShareMenu(MenuItem shareItem, StatusContent status) {
+        String url = null;
+
+        if (status.getPic_urls() != null && status.getPic_urls().length > 0) {
+            url = status.getPic_urls()[0].getThumbnail_pic();
+        }
+        else if (!TextUtils.isEmpty(status.getThumbnail_pic())) {
+            url = status.getThumbnail_pic();
+        }
+        if (!TextUtils.isEmpty(url)) {
+            File file = BitmapLoader.getInstance().getCacheFile(url.replace("thumbnail", "large"));
+            if (file.exists()) {
+                url = url.replace("thumbnail", "large");
+            } else {
+                file = BitmapLoader.getInstance().getCacheFile(url.replace("thumbnail", "bmiddle"));
+                if (file.exists()) {
+                    url = url.replace("thumbnail", "bmiddle");
+                }
+            }
+        }
+
+        Intent shareIntent = Utils.getShareIntent(status.getText(), status.getText(), url);
+
+        ShareActionProvider shareProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
+        shareProvider.setShareHistoryFileName("channe_share.xml");
+        shareProvider.setShareIntent(shareIntent);
+    }
+
     public static boolean isLoggedUser(WeiBoUser user) {
         return user.getIdstr().equalsIgnoreCase(AppContext.getAccount().getUser().getIdstr());
+    }
+
+    public static String getUnit(long length) {
+        String sizeStr;
+        if (length * 1.0f / 1024 / 1024 > 1)
+            sizeStr = String.format("%s M", new DecimalFormat("#.00").format(length * 1.0d / 1024 / 1024));
+        else
+            sizeStr = String.format("%s Kb", new DecimalFormat("#.00").format(length * 1.0d / 1024));
+        return sizeStr;
+    }
+
+    public static Drawable getProgressBarDrawable() {
+        if (BaseActivity.getRunningActivity() != null) {
+            Activity context = BaseActivity.getRunningActivity();
+
+            int color = context.getResources().getColor(ThemeUtils.themeColorArr[AppSettings.getThemeColor()][0]);
+
+            return new CircularProgressDrawable.Builder(context).color(color).build();
+        }
+
+        return null;
+    }
+
+    public static void setStatusBar(Activity activity) {
+//        if (true) return;
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            activity.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+            Window window = activity.getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                    | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            );//| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//            window.setStatusBarColor(Utils.resolveColor(activity, R.attr.theme_statusbar_color, Color.BLUE));
+            window.setStatusBarColor(Color.parseColor("#20000000"));
+            window.setNavigationBarColor(activity.getResources().getColor(ThemeUtils.themeColorArr[AppSettings.getThemeColor()][1]));
+//            window.setNavigationBarColor(Utils.resolveColor(activity, R.attr.theme_color, Color.BLUE));
+
+//            Window window = activity.getWindow();
+//            window.requestFeature(Window.FEATURE_NO_TITLE);
+//            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+//                    | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+//            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+//                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+//            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//            window.setStatusBarColor(Color.TRANSPARENT);
+//            window.setNavigationBarColor(Utils.resolveColor(activity, R.attr.theme_statusbar_color, Color.TRANSPARENT));
+        }
+    }
+
+    public static void setPicStatusBar(Activity activity) {
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            activity.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+//            Window window = activity.getWindow();
+//            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+//                    | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+//            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+//                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+//            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//            window.setStatusBarColor(Color.TRANSPARENT);
+//        }
     }
 
 }

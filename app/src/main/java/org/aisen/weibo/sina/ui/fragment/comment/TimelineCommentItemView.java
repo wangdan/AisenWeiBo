@@ -11,9 +11,9 @@ import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.sinasdk.bean.StatusComment;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
-import org.aisen.weibo.sina.support.utils.AisenHelper;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
+import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.widget.AisenTextView;
 
 /**
@@ -47,11 +47,11 @@ public class TimelineCommentItemView extends ARecycleViewItemView<StatusComment>
             BitmapLoader.getInstance().display(mFragment,
                                                     AisenUtils.getUserPhoto(user),
                                                     imgPhoto, ImageConfigUtils.getLargePhotoConfig());
-            AisenHelper.userShow(mFragment.getActivity(), imgPhoto, user);
+            BizFragment.getBizFragment(mFragment).userShow(imgPhoto, user);
             txtName.setText(AisenUtils.getUserScreenName(user));
         }
         else {
-            AisenHelper.userShow(mFragment.getActivity(), imgPhoto, null);
+            BizFragment.getBizFragment(mFragment).userShow(imgPhoto, null);
             txtName.setText(R.string.error_cmts);
             imgPhoto.setImageResource(R.drawable.user_placeholder);
         }

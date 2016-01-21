@@ -22,9 +22,9 @@ import org.aisen.weibo.sina.sinasdk.bean.Groups;
 import org.aisen.weibo.sina.sinasdk.bean.StatusComment;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
-import org.aisen.weibo.sina.support.utils.AisenHelper;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
+import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.widget.AisenTextView;
 import org.aisen.weibo.sina.ui.widget.TimelinePicsView;
 
@@ -297,7 +297,7 @@ public class CommentHeaderItemView extends ARecycleViewItemView<StatusComment> i
 
             if (imgPhoto != null) {
                 BitmapLoader.getInstance().display(fragment, AisenUtils.getUserPhoto(user), imgPhoto, ImageConfigUtils.getLargePhotoConfig());
-                AisenHelper.userShow(fragment.getActivity(), imgPhoto, user);
+                BizFragment.getBizFragment(fragment).userShow(imgPhoto, user);
             }
 
             AisenUtils.setImageVerified(imgVerified, user);
@@ -305,7 +305,7 @@ public class CommentHeaderItemView extends ARecycleViewItemView<StatusComment> i
         else {
             if (imgPhoto != null) {
                 imgPhoto.setImageDrawable(new ColorDrawable(Color.GRAY));
-                AisenHelper.userShow(fragment.getActivity(), imgPhoto, null);
+                BizFragment.getBizFragment(fragment).userShow(imgPhoto, user);
             }
 
             imgVerified.setVisibility(View.GONE);

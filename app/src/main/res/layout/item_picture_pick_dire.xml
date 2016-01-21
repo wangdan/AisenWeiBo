@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" android:padding="16dip">
+
+    <ImageView
+        android:id="@+id/img" android:layout_width="74dip"
+        android:layout_height="74dip" android:scaleType="centerCrop" android:src="@drawable/bg_timeline_loading"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:layout_centerVertical="true"
+        android:layout_marginLeft="26dip" android:layout_toRightOf="@id/img"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtName"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="所有图片" android:textColor="@color/text_100"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/txtDesc"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginTop="8dip" android:text="16张"
+            android:textColor="#cc000000" android:textSize="14sp"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imgSelected"
+        android:layout_width="35dip" android:layout_height="35dip" android:layout_alignParentRight="true"
+        android:layout_centerVertical="true" android:layout_marginRight="16dip" android:src="@drawable/ic_done_dark"/>
+
+</RelativeLayout>

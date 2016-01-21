@@ -56,7 +56,7 @@ public class SplashActivity extends BaseActivity {
     };
 
     private void toMain() {
-        mHandler.postDelayed(toMainRunnable, 1500);
+        mHandler.postDelayed(toMainRunnable, 750);
     }
 
     private void toLogin() {

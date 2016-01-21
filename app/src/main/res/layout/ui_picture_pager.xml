@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent"
+                android:background="#3b3b3b" android:orientation="vertical">
+    <!-- #3b3b3b -->
+    <org.aisen.weibo.sina.ui.widget.ViewPagerFixed
+        android:id="@+id/viewPager" android:layout_width="fill_parent" android:layout_height="fill_parent"/>
+
+    <View
+        android:id="@+id/viewStatus"
+        android:layout_width="match_parent" android:layout_height="300dip"
+        android:layout_alignParentBottom="true" android:background="@drawable/bg_menu_profile"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/layStatus" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_alignParentBottom="true"
+        android:gravity="center_vertical" android:orientation="horizontal" android:visibility="gone">
+
+        <TextView
+            android:id="@+id/txtStatus" android:layout_width="0dip" android:layout_height="wrap_content" android:layout_weight="1" android:ellipsize="end"
+            android:gravity="center_vertical" android:maxLines="3" android:minHeight="70dip" android:paddingLeft="8dip" android:paddingRight="8dip"
+            android:textColor="@color/comm_white" android:textSize="16sp"/>
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent" android:layout_height="150dip" android:background="@drawable/top_profile"/>
+
+    <LinearLayout
+        android:id="@+id/layToolbar"
+        android:layout_width="match_parent" android:layout_height="wrap_content">
+
+        <include
+            layout="@layout/comm_lay_toolbar" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+    </LinearLayout>
+</RelativeLayout>

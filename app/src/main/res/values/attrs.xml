@@ -15,6 +15,9 @@
     <attr name="text_subhead" format="reference|color"/>
     <attr name="text_body" format="reference|color"/>
 
+    <!--主题背景色-->
+    <attr name="theme_background" format="reference|color"/>
+
     <declare-styleable name="ActionIconThemedTextView">
         <attr name="iabColor" format="color"/>
         <attr name="iabActivatedColor" format="color"/>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/lay_divider" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginBottom="@dimen/item_margin"
+        android:layout_marginLeft="@dimen/item_margin" android:layout_marginRight="@dimen/item_margin"
+        android:layout_marginTop="@dimen/item_margin" android:background="@drawable/bg_card_item_light"
+        android:gravity="center_vertical" android:minHeight="70dip"
+        android:orientation="horizontal" android:paddingBottom="@dimen/item_padding"
+        android:paddingLeft="@dimen/comm_h_gap" android:paddingRight="@dimen/comm_h_gap"
+        android:paddingTop="@dimen/item_padding">
+
+        <ImageView
+            android:id="@+id/imgPhoto" android:layout_width="50dip" android:layout_height="50dip"
+            android:layout_marginRight="@dimen/comm_h_gap"/>
+
+        <TextView
+            android:id="@+id/txtName" style="@style/TextBody" android:layout_width="0dip" android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/comm_h_gap" android:layout_weight="1" android:ellipsize="end"
+            android:lineSpacingExtra="0dip" android:singleLine="true" android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/txtRemark" style="@style/hintText" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:textSize="16sp"/>
+    </LinearLayout>
+
+</LinearLayout>

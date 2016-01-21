@@ -5,6 +5,10 @@
     <dimen name="spacing_micro">4dp</dimen>
     <dimen name="padding_normal">16dp</dimen>
 
+    <!--表情的大小-->
+    <dimen name="emotion_size">18dip</dimen>
+    <dimen name="publish_emotion_size">22dip</dimen>
+
     <!-- App Primary Text Sizes -->
     <dimen name="app_text_size_xsmall">11sp</dimen>
     <dimen name="app_text_size_small">12sp</dimen>
@@ -21,8 +25,17 @@
     <!--timeline-->
     <dimen name="item_padding">10dip</dimen>
     <dimen name="item_margin">5dip</dimen>
-    <dimen name="emotion_size">18dip</dimen>
     <dimen name="gap_pics">4sp</dimen>
+
+    <!-- picture预览 -->
+    <dimen name="normal_gif_webview_margin_left">40dp</dimen>
+    <dimen name="normal_gif_webview_margin_right">40dp</dimen>
+
+    <!-- 相册间隙 -->
+    <dimen name="gap_photo">3dip</dimen>
+
+    <!--profile-->
+    <dimen name="profile_cover">200dip</dimen>
 
     <!--字体大小-->
     <dimen name="sp_12">12sp</dimen>

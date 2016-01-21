@@ -10,7 +10,7 @@
 				<value>https://raw.githubusercontent.com/wangdan/AisenWeiBo/</value>
 			</extra>
 			<extra type="http">
-				<value>org.aisen.weibo.sina.support.biz.GithubResourceDownloadHttpUtility</value>
+				<value>org.aisen.weibo.sina.support.sdk.GithubResourceDownloadHttpUtility</value>
 			</extra>
 		</extras>
 	</setting>
@@ -24,7 +24,7 @@
                 <value></value>
             </extra>
             <extra type="http">
-                <value>org.aisen.weibo.sina.support.biz.PictureSizeHttpUtility</value>
+                <value>org.aisen.weibo.sina.support.sdk.PictureSizeHttpUtility</value>
             </extra>
         </extras>
     </setting>

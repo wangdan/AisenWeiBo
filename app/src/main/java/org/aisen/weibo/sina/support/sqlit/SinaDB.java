@@ -21,6 +21,7 @@ public class SinaDB {
             Log.w("LScreenDB", "初始化 db versionCode = " + DB_VERSION);
 
             new SqliteUtilityBuilder().configVersion(DB_VERSION).configDBName(DB_NAME).build(GlobalContext.getInstance());
+            new SqliteUtilityBuilder().configVersion(DB_VERSION).configDBName("sina_timeline_db").build(GlobalContext.getInstance());
         } catch (Throwable e) {
             Logger.printExc(SinaDB.class, e);
         }
@@ -28,6 +29,10 @@ public class SinaDB {
 
     public static SqliteUtility getDB() {
         return SqliteUtility.getInstance(DB_NAME);
+    }
+
+    public static SqliteUtility getTimelineDB() {
+        return SqliteUtility.getInstance("sina_timeline_db");
     }
 
 }

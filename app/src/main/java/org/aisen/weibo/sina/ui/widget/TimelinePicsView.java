@@ -1,5 +1,6 @@
 package org.aisen.weibo.sina.ui.widget;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
@@ -26,7 +27,7 @@ import org.aisen.weibo.sina.sinasdk.bean.PicUrls;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.support.bean.PicSize;
 import org.aisen.weibo.sina.support.compress.TimelineThumbBitmapCompress;
-import org.aisen.weibo.sina.support.utils.AisenHelper;
+import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.fragment.profile.PhotosFragment;
 
 import java.io.File;
@@ -633,7 +634,7 @@ public class TimelinePicsView extends ViewGroup implements BitmapOwner {
                 }
 				BitmapLoader.getInstance().display(this, url, imgView, config);
 				
-				AisenHelper.previousPics(imgView, mStatusContent, i);
+				BizFragment.getBizFragment((Activity) getContext()).previousPics(imgView, mStatusContent, i);
 			}
 		}
 	}

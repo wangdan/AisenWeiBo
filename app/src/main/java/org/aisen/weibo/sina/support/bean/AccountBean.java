@@ -4,6 +4,7 @@ import org.aisen.android.component.orm.annotation.PrimaryKey;
 import org.aisen.weibo.sina.sinasdk.bean.AccessToken;
 import org.aisen.weibo.sina.sinasdk.bean.BaseSinaBean;
 import org.aisen.weibo.sina.sinasdk.bean.Groups;
+import org.aisen.weibo.sina.sinasdk.bean.UnreadCount;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 
 /**
@@ -27,6 +28,8 @@ public class AccountBean extends BaseSinaBean {
     private Groups groups;
 
     private AccessToken advancedToken;
+
+    private UnreadCount unreadCount;
 
     public AccessToken getAccessToken() {
         return accessToken;
@@ -82,5 +85,13 @@ public class AccountBean extends BaseSinaBean {
 
     public void setAdvancedToken(AccessToken advancedToken) {
         this.advancedToken = advancedToken;
+    }
+
+    public UnreadCount getUnreadCount() {
+        return unreadCount;
+    }
+
+    public void setUnreadCount(UnreadCount unreadCount) {
+        this.unreadCount = unreadCount;
     }
 }

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent"
+                android:background="#3b3b3b" android:orientation="vertical">
+
+
+    <FrameLayout
+        android:id="@id/layoutContent"
+        android:layout_width="match_parent" android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent" android:layout_height="match_parent">
+
+            <GridView
+                android:id="@+id/gridview" android:layout_width="match_parent"
+                android:layout_height="match_parent" android:clipChildren="false"
+                android:clipToPadding="false" android:gravity="fill"
+                android:horizontalSpacing="@dimen/gap_photo" android:listSelector="?attr/selectableItemBackground" android:numColumns="3"
+                android:paddingBottom="?attr/actionBarSize" android:stretchMode="columnWidth" android:verticalSpacing="@dimen/gap_photo"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_alignParentBottom="true" android:background="#aa000000">
+
+
+                <LinearLayout
+                    android:id="@+id/layCurrent"
+                    android:layout_width="wrap_content" android:layout_height="match_parent"
+                    android:background="?attr/actionBarItemBackground" android:gravity="center_vertical"
+                    android:minWidth="150dip" android:orientation="horizontal"
+                    android:paddingLeft="16dip">
+
+                    <TextView
+                        android:id="@+id/txtCurrent"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:maxLines="2" android:text="所有图片"
+                        android:textColor="@color/abc_primary_text_material_dark" android:textSize="20sp"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:layout_marginLeft="12dip"
+                        android:src="@drawable/ic_done_light"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/btnCounter"
+                    android:layout_width="wrap_content" android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:background="?attr/actionBarItemBackground" android:gravity="center_vertical|right"
+                    android:minWidth="150dip" android:orientation="horizontal" android:paddingLeft="16dip"
+                    android:paddingRight="16dip">
+
+                    <TextView
+                        android:id="@+id/txtCounter" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:maxLines="2" android:textColor="@color/abc_primary_text_material_dark"
+                        android:textSize="20sp"/>
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent" android:layout_height="match_parent" android:paddingBottom="?attr/actionBarSize">
+
+            <RelativeLayout
+                android:id="@+id/layFileDireBg" android:layout_width="match_parent" android:layout_height="match_parent"
+                android:alpha="0.0" android:background="#000000" android:visibility="gone">
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layFileDires"
+                android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginTop="90dip"
+                android:background="@color/comm_white" android:visibility="gone">
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </FrameLayout>
+
+    <include
+        android:id="@id/layoutLoading" layout="@layout/comm_lay_loading" android:layout_width="fill_parent" android:layout_height="fill_parent"
+        android:visibility="gone"/>
+
+    <include
+        android:id="@id/layoutLoadFailed" layout="@layout/comm_lay_loadfailed" android:layout_width="match_parent" android:layout_height="match_parent"
+        android:visibility="gone"/>
+
+    <include
+        android:id="@id/layoutEmpty" layout="@layout/comm_lay_emptyview" android:layout_width="match_parent" android:layout_height="match_parent"
+        android:visibility="gone"/>
+</RelativeLayout>

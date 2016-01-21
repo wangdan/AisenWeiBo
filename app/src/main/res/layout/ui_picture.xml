@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <uk.co.senab.photoview.PhotoView
+        android:id="@+id/photoview" android:layout_width="match_parent" android:layout_height="match_parent"
+        android:layout_centerInParent="true" android:visibility="gone"/>
+
+    <WebView
+        android:id="@+id/webview" android:layout_width="match_parent" android:layout_height="match_parent"
+        android:layout_centerInParent="true" android:background="@color/comm_black" android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/txtFailure" android:layout_width="match_parent" android:layout_height="match_parent"
+        android:gravity="center" android:lineSpacingExtra="10dip" android:text="@string/error_pic_load_faild_1" android:textColor="@color/comm_white"
+        android:textSize="14sp" android:visibility="gone"/>
+
+    <org.aisen.weibo.sina.ui.widget.PictureProgressView
+        android:id="@+id/viewProgress" android:layout_width="match_parent" android:layout_height="match_parent"
+        android:visibility="invisible"/>
+
+</RelativeLayout>

@@ -6,7 +6,6 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.MenuItem;
 import android.view.View;
 
 import org.aisen.android.common.md.MDHelper;
@@ -32,6 +31,11 @@ import java.util.ArrayList;
  * Created by wangdan on 15/4/23.
  */
 public class MainActivity extends BaseActivity implements FabGroupsFragment.OnFabGroupSelectedCallback {
+
+    public static final String ACTION_LOGIN = "org.aisen.sina.weibo.ACTION_LOGIN";
+    public static final String ACTION_NOTIFICATION = "org.aisen.sina.weibo.ACTION_NOTIFICATION";
+    public static final String ACTION_NOTIFICATION_MS = "org.aisen.sina.weibo.ACTION_NOTIFICATION_MS";
+    public static final String ACTION_NOTIFICATION_MC = "org.aisen.sina.weibo.ACTION_NOTIFICATION_MC";
 
     @ViewInject(id = R.id.drawer)
     private DrawerLayout mDrawerLayout;
@@ -167,18 +171,6 @@ public class MainActivity extends BaseActivity implements FabGroupsFragment.OnFa
         if (materialSheetFab.isSheetVisible()) {
             materialSheetFab.hideSheet();
         }
-    }
-
-    public void onMenuSelected(MenuItem menu, MenuItem previousMenu) {
-        Fragment fragment = null;
-
-        switch (menu.getItemId()) {
-        case R.id.drawTimelines:
-            fabGroupsFragment.triggerLastPosition();
-            return;
-        }
-
-        setFragemnt(fragment, menu.getTitle());
     }
 
     private void setFragemnt(Fragment fragment, CharSequence title) {

@@ -133,10 +133,10 @@ public abstract class ATabsFragment<T extends TabItem> extends ABaseFragment
             }
         }
 
-        setViewPagerInit(savedInstanceSate);
+        setupViewPager(savedInstanceSate);
     }
 
-    protected void setViewPagerInit(final Bundle savedInstanceSate) {
+    protected void setupViewPager(final Bundle savedInstanceSate) {
         mInnerAdapter = new InnerAdapter(getFragmentManager());
         mViewPager.setOffscreenPageLimit(0);
         mViewPager.setAdapter(mInnerAdapter);

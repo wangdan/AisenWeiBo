@@ -16,9 +16,9 @@ import org.aisen.weibo.sina.sinasdk.bean.StatusComment;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.support.compress.TimelineThumbBitmapCompress;
-import org.aisen.weibo.sina.support.utils.AisenHelper;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
+import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.widget.AisenTextView;
 
 /**
@@ -73,11 +73,11 @@ public class CommentItemView extends ARecycleViewItemView<StatusComment> impleme
             BitmapLoader.getInstance().display(fragment,
                     AisenUtils.getUserPhoto(user),
                     imgPhoto, ImageConfigUtils.getLargePhotoConfig());
-            AisenHelper.userShow(fragment.getActivity(), imgPhoto, user);
+            BizFragment.getBizFragment(fragment).userShow(imgPhoto, user);
             txtName.setText(AisenUtils.getUserScreenName(user));
         }
         else {
-            AisenHelper.userShow(fragment.getActivity(), imgPhoto, null);
+            BizFragment.getBizFragment(fragment).userShow(imgPhoto, null);
             txtName.setText(R.string.error_cmts);
             imgPhoto.setImageResource(R.drawable.user_placeholder);
         }
@@ -101,10 +101,10 @@ public class CommentItemView extends ARecycleViewItemView<StatusComment> impleme
                 BitmapLoader.getInstance().display(fragment,
                         AisenUtils.getUserPhoto(data.getReply_comment().getUser()),
                         imgRePhoto, ImageConfigUtils.getLargePhotoConfig());
-                AisenHelper.userShow(fragment.getActivity(), imgRePhoto, data.getReply_comment().getUser());
+                BizFragment.getBizFragment(fragment).userShow(imgRePhoto, data.getReply_comment().getUser());
             }
             else {
-                AisenHelper.userShow(fragment.getActivity(), imgRePhoto, null);
+                BizFragment.getBizFragment(fragment).userShow(imgRePhoto, null);
             }
         }
         else {
@@ -152,7 +152,7 @@ public class CommentItemView extends ARecycleViewItemView<StatusComment> impleme
                     imgView.setVisibility(View.GONE);
                 }
 
-                AisenHelper.bindOnTouchListener(txtStatusContent);
+                BizFragment.getBizFragment(fragment).bindOnTouchListener(txtStatusContent);
             }
             else {
                 layDivider.setVisibility(View.GONE);

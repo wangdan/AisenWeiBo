@@ -25,21 +25,21 @@ public abstract class ATabsTabLayoutFragment<T extends TabItem> extends ATabsFra
     }
 
     @Override
-    final protected void setViewPagerInit(Bundle savedInstanceSate) {
-        setTabLayoutInit(savedInstanceSate);
+    final protected void setupViewPager(Bundle savedInstanceSate) {
+        setupTabLayout(savedInstanceSate, mTabLayout);
     }
 
-    protected void setTabLayoutInit(Bundle savedInstanceSate) {
-        super.setViewPagerInit(savedInstanceSate);
+    protected void setupTabLayout(Bundle savedInstanceSate, final TabLayout tabLayout) {
+        super.setupViewPager(savedInstanceSate);
 
-        mTabLayout.setTabMode(TabLayout.MODE_FIXED);
-        mTabLayout.setTabTextColors(Color.parseColor("#b3ffffff"), Color.WHITE);
-        mTabLayout.setupWithViewPager(getViewPager());
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        tabLayout.setTabTextColors(Color.parseColor("#b3ffffff"), Color.WHITE);
+        tabLayout.setupWithViewPager(getViewPager());
         new Handler().postDelayed(new Runnable() {
 
             @Override
             public void run() {
-                mTabLayout.setScrollPosition(mCurrentPosition, 0, true);
+                tabLayout.setScrollPosition(mCurrentPosition, 0, true);
             }
 
         }, 150);
