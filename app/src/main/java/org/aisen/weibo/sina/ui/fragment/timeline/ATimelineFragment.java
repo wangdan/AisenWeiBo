@@ -7,20 +7,18 @@ import android.widget.AdapterView;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.support.paging.IPaging;
-import org.aisen.android.ui.fragment.AListSwipeRefreshFragment;
 import org.aisen.android.ui.fragment.APagingFragment;
 import org.aisen.android.ui.fragment.ARecycleViewSwipeRefreshFragment;
 import org.aisen.android.ui.fragment.itemview.BasicFooterView;
-import org.aisen.android.ui.fragment.itemview.NormalItemViewCreator;
 import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
+import org.aisen.android.ui.fragment.itemview.NormalItemViewCreator;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
-import org.aisen.weibo.sina.sinasdk.bean.StatusComment;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContents;
 import org.aisen.weibo.sina.support.paging.TimelinePaging;
-import org.aisen.weibo.sina.ui.fragment.comment.TimelineCommentFragment;
+import org.aisen.weibo.sina.ui.fragment.comment.TimelineDetailPagerFragment;
 
 import java.util.List;
 
@@ -47,7 +45,7 @@ public abstract class ATimelineFragment extends ARecycleViewSwipeRefreshFragment
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         super.onItemClick(parent, view, position, id);
 
-        TimelineCommentFragment.launch(getActivity(), getAdapterItems().get(position));
+        TimelineDetailPagerFragment.launch(getActivity(), getAdapterItems().get(position));
     }
 
     @Override

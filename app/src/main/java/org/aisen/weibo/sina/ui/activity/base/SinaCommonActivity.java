@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.activity.container.FragmentArgs;
 import org.aisen.android.ui.fragment.ABaseFragment;
+import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 
 /**
  * Created by wangdan on 15/12/21.
@@ -106,6 +107,8 @@ public class SinaCommonActivity extends BaseActivity {
 
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayShowHomeEnabled(false);
+
+        BizFragment.getBizFragment(this);
     }
 
     @Override

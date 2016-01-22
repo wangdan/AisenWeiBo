@@ -18,6 +18,7 @@ import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.sinasdk.bean.Group;
 import org.aisen.weibo.sina.support.utils.SystemBarUtils;
+import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.fragment.menu.FabGroupsFragment;
 import org.aisen.weibo.sina.ui.fragment.menu.MenuFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineDefFragment;
@@ -72,6 +73,8 @@ public class MainActivity extends BaseActivity implements FabGroupsFragment.OnFa
         setupDrawer(savedInstanceState);
         setupMenu(savedInstanceState);
         setupFab(savedInstanceState);
+
+        BizFragment.getBizFragment(this);
     }
 
     private void setupDrawer(Bundle savedInstanceState) {

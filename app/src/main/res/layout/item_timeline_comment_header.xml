@@ -8,8 +8,8 @@
         android:layout_marginTop="8dip" android:textColor="?attr/text_subhead" android:visibility="gone"/>
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:layout_marginTop="16dip"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginTop="16dip"
         android:paddingLeft="16dip" android:paddingRight="16dip">
 
         <org.aisen.android.ui.widget.CircleImageView
@@ -30,40 +30,12 @@
             android:layout_height="wrap_content" android:layout_below="@id/txtName" android:layout_marginTop="2dip"
             android:layout_toRightOf="@id/imgPhoto" android:text="来自Aisen 2015-01-26"/>
 
-        <!--org.aisen.weibo.sina.ui.widget.AisenTextView-->
         <org.aisen.weibo.sina.ui.widget.AisenTextView
             android:id="@+id/txtContent" style="@style/TextBody" android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:layout_below="@id/imgPhoto" android:layout_marginBottom="4dip" android:layout_marginTop="10dip"
-            android:lineSpacingExtra="4dip"
+            android:layout_height="wrap_content" android:layout_below="@id/imgPhoto" android:layout_marginTop="10dip"
+            android:lineSpacingExtra="4dip" android:paddingBottom="8dip"
             android:text="哈哈，我今天发了条微博"/>
 
-        <LinearLayout
-            android:id="@+id/layStatusBar" android:layout_width="match_parent"
-            android:layout_height="37dip" android:layout_below="@id/txtContent"
-            android:gravity="center_vertical" android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/txtComment" style="@style/TextSubhead" android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:layout_marginRight="8dip"
-                android:text="100"/>
-
-            <TextView
-                android:id="@+id/txtRepost" style="@style/TextSubhead" android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:clickable="true"
-                android:gravity="center_vertical" android:text="100"
-                android:visibility="gone"/>
-
-            <View
-                android:layout_width="0dip" android:layout_height="wrap_content" android:layout_weight="1"/>
-
-            <TextView
-                android:id="@+id/txtAttribute"
-                style="@style/TextSubhead" android:layout_width="wrap_content" android:layout_height="wrap_content"
-
-                android:text="100"/>
-        </LinearLayout>
-
-        <!--android:background="@drawable/timeline_profile_question_single_normal"-->
     </RelativeLayout>
 
     <LinearLayout
@@ -73,7 +45,7 @@
 
         <RelativeLayout
             android:id="@+id/layRe" android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:layout_marginBottom="8dip" android:orientation="vertical">
+            android:orientation="vertical">
 
             <View
                 android:id="@+id/layReDivider"
@@ -89,10 +61,10 @@
 
         </RelativeLayout>
 
-        <!--org.aisen.weibo.sina.ui.widget.TimelinePicsView-->
         <org.aisen.weibo.sina.ui.widget.TimelinePicsView
-            android:id="@+id/layPicturs" android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:id="@+id/layPicturs"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="8dip">
 
             <!--org.aisen.weibo.sina.ui.widget.GifHintImageView-->
             <org.aisen.weibo.sina.ui.widget.GifHintImageView
@@ -135,30 +107,5 @@
         <TextView
             android:id="@+id/txtPics" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="24sp"/>
 
-        <LinearLayout
-            android:id="@+id/layReStatusBar" android:layout_width="match_parent"
-            android:layout_height="37dip" android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <org.aisen.android.ui.widget.MDButton
-                android:id="@+id/txtReComment" style="@style/Widget.MDButton" android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:layout_marginRight="8dip"
-                android:text="100"/>
-
-            <org.aisen.android.ui.widget.MDButton
-                android:id="@+id/txtReRepost" style="@style/Widget.MDButton" android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:clickable="true"
-                android:gravity="center_vertical" android:text="100"
-                android:visibility="gone"/>
-
-            <View
-                android:layout_width="0dip" android:layout_height="wrap_content" android:layout_weight="1"/>
-
-            <org.aisen.android.ui.widget.MDButton
-                android:id="@+id/txtReAttribute"
-                style="@style/Widget.MDButton" android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:text="100"/>
-
-        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

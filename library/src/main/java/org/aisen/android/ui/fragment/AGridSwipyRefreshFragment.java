@@ -75,9 +75,7 @@ public abstract class AGridSwipyRefreshFragment<T extends Serializable, Ts exten
 
     @Override
     public void onRefreshViewFinished(RefreshMode mode) {
-        if (mode != RefreshMode.update && swipyRefreshLayout.isRefreshing()) {
-            swipyRefreshLayout.setRefreshing(false);
-        }
+        swipyRefreshLayout.setRefreshing(false);
     }
 
     @Override

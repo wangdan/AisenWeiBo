@@ -58,29 +58,24 @@ public abstract class ATabsFragment<T extends TabItem> extends ABaseFragment
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void layoutInit(LayoutInflater inflater, final Bundle savedInstanceState) {
+        super.layoutInit(inflater, savedInstanceState);
 
         mItems = savedInstanceState == null ? generateTabs()
-                : (ArrayList<T>) savedInstanceState.getSerializable("items");
+                                            : (ArrayList<T>) savedInstanceState.getSerializable("items");
 
         mCurrentPosition = savedInstanceState == null ? 0
-                : savedInstanceState.getInt("current");
-    }
-
-    @Override
-    protected void layoutInit(LayoutInflater inflater, final Bundle savedInstanceSate) {
-        super.layoutInit(inflater, savedInstanceSate);
+                                                      : savedInstanceState.getInt("current");
 
         if (delayTabInit() == 0) {
-            setTabInit(savedInstanceSate);
+            setTabInit(savedInstanceState);
         }
         else {
             new Handler().postDelayed(new Runnable() {
 
                 @Override
                 public void run() {
-                    setTabInit(savedInstanceSate);
+                    setTabInit(savedInstanceState);
                 }
 
             }, delayTabInit());

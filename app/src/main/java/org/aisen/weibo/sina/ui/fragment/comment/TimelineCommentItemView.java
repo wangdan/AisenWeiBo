@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.aisen.android.common.utils.Utils;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
@@ -33,11 +34,18 @@ public class TimelineCommentItemView extends ARecycleViewItemView<StatusComment>
     AisenTextView txtContent;
 
     private TimelineCommentFragment mFragment;
+    private BizFragment bizFragment;
+    int firstTop;
+    int normalTop;
 
     public TimelineCommentItemView(TimelineCommentFragment fragment, View itemView) {
         super(itemView);
 
         this.mFragment = fragment;
+        bizFragment = BizFragment.getBizFragment(fragment);
+
+        firstTop = Utils.dip2px(16);
+        normalTop = Utils.dip2px(8);
     }
 
     @Override
@@ -47,11 +55,11 @@ public class TimelineCommentItemView extends ARecycleViewItemView<StatusComment>
             BitmapLoader.getInstance().display(mFragment,
                                                     AisenUtils.getUserPhoto(user),
                                                     imgPhoto, ImageConfigUtils.getLargePhotoConfig());
-            BizFragment.getBizFragment(mFragment).userShow(imgPhoto, user);
+            bizFragment.userShow(imgPhoto, user);
             txtName.setText(AisenUtils.getUserScreenName(user));
         }
         else {
-            BizFragment.getBizFragment(mFragment).userShow(imgPhoto, null);
+            bizFragment.userShow(imgPhoto, null);
             txtName.setText(R.string.error_cmts);
             imgPhoto.setImageResource(R.drawable.user_placeholder);
         }
@@ -63,6 +71,9 @@ public class TimelineCommentItemView extends ARecycleViewItemView<StatusComment>
         String from = String.format("%s", Html.fromHtml(data.getSource()));
         String desc = String.format("%s %s", createAt, from);
         txtDesc.setText(desc);
+
+        int top = position == 0 ? firstTop : normalTop;
+        convertView.setPadding(convertView.getPaddingLeft(), top, convertView.getPaddingRight(), convertView.getPaddingBottom());
     }
 
 }

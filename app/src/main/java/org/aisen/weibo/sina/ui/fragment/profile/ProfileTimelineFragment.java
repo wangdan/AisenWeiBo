@@ -8,15 +8,15 @@ import org.aisen.android.network.task.TaskException;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
-import org.aisen.weibo.sina.sinasdk.bean.AccessToken;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContents;
 import org.aisen.weibo.sina.sinasdk.bean.Token;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
-import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.ui.fragment.timeline.ATimelineFragment;
 
 /**
+ * 用户的微博
+ *
  * Created by wangdan on 16/1/12.
  */
 public class ProfileTimelineFragment extends ATimelineFragment {
@@ -78,25 +78,7 @@ public class ProfileTimelineFragment extends ATimelineFragment {
 
             params.addParameter("count", String.valueOf(AppSettings.getTimelineCount()));
 
-            Token token = null;
-            // 是当前登录用户
-            if (AisenUtils.isLoggedUser(mUser)) {
-                if (AppContext.getAccount().getAdvancedToken() != null) {
-                    token = AppContext.getAccount().getAdvancedToken();
-                    params.addParameter("source", AppContext.getAccount().getAdvancedToken().getAppKey());
-                }
-            }
-            else {
-                if (AppContext.getAccount().getAdvancedToken() != null) {
-                    AccessToken accessToken = AppContext.getAccount().getAdvancedToken();
-
-                    token = new Token();
-                    token.setToken(accessToken.getToken());
-                    token.setSecret(accessToken.getSecret());
-
-                    params.addParameter("source", accessToken.getAppKey());
-                }
-            }
+            Token token = AppContext.getAccount().getAdvancedToken();
             if (token == null)
                 token = AppContext.getAccount().getAccessToken();
 

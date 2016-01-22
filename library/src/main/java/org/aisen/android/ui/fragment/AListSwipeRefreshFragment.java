@@ -17,7 +17,7 @@ public abstract class AListSwipeRefreshFragment<T extends Serializable, Ts exten
                                             extends AListFragment<T, Ts>
                                             implements SwipeRefreshLayout.OnRefreshListener {
 
-    @ViewInject(idStr = "swipyRefreshLayout")
+    @ViewInject(idStr = "swipeRefreshLayout")
     SwipeRefreshLayout swipeRefreshLayout;
 
     @Override

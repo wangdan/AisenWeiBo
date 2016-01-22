@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -94,6 +95,14 @@ public class PhotosFragment extends AGridSwipyRefreshFragment<PhotoBean, PhotosB
         super.onSaveInstanceState(outState);
 
         outState.putSerializable("user", mUser);
+    }
+
+    @Override
+    protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
+        super.layoutInit(inflater, savedInstanceSate);
+
+        setViewVisiable(getLoadingLayout(), View.VISIBLE);
+        setViewVisiable(getEmptyLayout(), View.GONE);
     }
 
     @Override

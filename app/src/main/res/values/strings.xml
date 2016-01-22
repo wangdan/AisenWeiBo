@@ -37,6 +37,7 @@
     <string name="toggle_offline">开始离线</string>
     <string name="stop_offline">停止离线</string>
 
+    <string name="timeline_detail">微博详情</string>
     <string name="timeline_cmt">评论</string>
     <string name="timeline_repost">转发</string>
     <string name="timeline_fav">收藏</string>
@@ -52,6 +53,11 @@
 
     <!-- 我的收藏 -->
     <string name="myfav_title">我的收藏</string>
+
+    <!--微博详情-->
+    <string name="comment_format">%d 评论</string>
+    <string name="repost_format">%d 转发</string>
+    <string name="attitudes_format">%d 赞</string>
 
     <!--授权页面-->
     <string name="login_title">用户授权</string>
@@ -346,11 +352,11 @@
     <string name="profile_friends">%s 关注</string>
     <string name="profile_tab1">关于</string>
     <string name="profile_tab2">微博</string>
-    <string name="profile_tab3">原创</string>
-    <string name="profile_tab4">相册</string>
-    <string name="profile_tab5">收藏</string>
+    <string name="profile_tab3">相册</string>
+    <string name="profile_tab4">收藏</string>
     <string name="profile_feature_dialog">微博类型</string>
-    <string name="profile_help">是不是只能看到5条微博？想不想看更多，那就点“帮助”去找解决方法吧！</string>
+    <string name="profile_ad_title">高级权限未授权或者已过期</string>
+    <string name="profile_ad_message">看不了用户个人微博，哎，Sina也是醉了，是否开始高级授权？</string>
 
     <!-- 查看图片 -->
     <string name="title_pic">查看图片</string>
@@ -383,6 +389,9 @@
     <string name="followers">粉丝</string>
     <string name="friends">关注</string>
     <string name="bilateral">互粉</string>
+    <string name="followers_format">%d 粉丝</string>
+    <string name="friends_format">%d 关注</string>
+    <string name="bilateral_format">%d 互粉</string>
     <string name="friendship_my_friends">Ta的关注</string>
     <string name="friendship_my_followers">Ta的粉丝</string>
     <string name="friendship_my_bilateral">Ta的互粉</string>

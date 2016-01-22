@@ -26,7 +26,7 @@ public class SplashActivity extends BaseActivity {
         if (AppContext.isLoggedIn()) {
             setContentView(R.layout.ui_splash);
 
-            toMain();
+            toMain(750);
         }
         else {
             toLogin();
@@ -55,8 +55,8 @@ public class SplashActivity extends BaseActivity {
 
     };
 
-    private void toMain() {
-        mHandler.postDelayed(toMainRunnable, 750);
+    private void toMain(int delay) {
+        mHandler.postDelayed(toMainRunnable, delay);
     }
 
     private void toLogin() {
@@ -99,7 +99,7 @@ public class SplashActivity extends BaseActivity {
                 AccountUtils.setLogedinAccount(accountBean);
                 AppContext.setAccount(accountBean);
 
-                toMain();
+                toMain(0);
             }
         }
     }

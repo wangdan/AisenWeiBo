@@ -255,8 +255,8 @@ public abstract class ABaseFragment extends Fragment implements ITaskManager, Bi
             requestData();
     }
 
-    void setViewVisiable(View v, int visibility) {
-        if (v != null)
+    protected void setViewVisiable(View v, int visibility) {
+        if (v != null && v.getVisibility() != visibility)
             v.setVisibility(visibility);
     }
 
@@ -607,4 +607,19 @@ public abstract class ABaseFragment extends Fragment implements ITaskManager, Bi
         return 500;
     }
 
+    public View getLoadingLayout() {
+        return loadingLayout;
+    }
+
+    public View getLoadFailureLayout() {
+        return loadFailureLayout;
+    }
+
+    public View getContentLayout() {
+        return contentLayout;
+    }
+
+    public View getEmptyLayout() {
+        return emptyLayout;
+    }
 }

@@ -2,6 +2,7 @@ package org.aisen.weibo.sina.ui.fragment.timeline;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.v7.widget.CardView;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -37,6 +38,9 @@ import java.util.Map;
 public class TimelineItemView extends ARecycleViewItemView<StatusContent> implements View.OnClickListener {
 
     public static final int LAYOUT_RES = R.layout.item_timeline;
+
+    @ViewInject(id = R.id.cardView)
+    CardView cardView;
 
     @ViewInject(id = R.id.imgPhoto)
     ImageView imgPhoto;
@@ -87,11 +91,13 @@ public class TimelineItemView extends ARecycleViewItemView<StatusContent> implem
     private int vPadding;
 
     private ABaseFragment fragment;
+    private BizFragment bizFragment;
 
     public TimelineItemView(View convertView, ABaseFragment fragment) {
         super(convertView);
 
         this.fragment = fragment;
+        bizFragment = BizFragment.getBizFragment(fragment);
 
         textSize = AppSettings.getTextSize();
         vPadding = GlobalContext.getInstance().getResources().getDimensionPixelSize(R.dimen.comm_v_gap);
@@ -123,12 +129,12 @@ public class TimelineItemView extends ARecycleViewItemView<StatusContent> implem
         txtDesc.setText(desc);
 
         // counter
-        if (TextUtils.isEmpty(data.getReposts_count()) || Integer.parseInt(data.getReposts_count()) == 0) {
+        if (data.getReposts_count() == 0) {
             txtRepost.setVisibility(View.GONE);
         }
         else {
             txtRepost.setVisibility(View.VISIBLE);
-            txtRepost.setText(AisenUtils.getCounter(Integer.parseInt(data.getReposts_count())));
+            txtRepost.setText(AisenUtils.getCounter(data.getReposts_count()));
         }
         if (btnRepost != null) {
             btnRepost.setTag(data);
@@ -139,12 +145,12 @@ public class TimelineItemView extends ARecycleViewItemView<StatusContent> implem
             else
                 btnRepost.setVisibility(View.GONE);
         }
-        if (TextUtils.isEmpty(data.getComments_count()) || Integer.parseInt(data.getComments_count()) == 0) {
+        if (data.getComments_count() == 0) {
             txtComment.setVisibility(View.GONE);
         }
         else {
             txtComment.setVisibility(View.VISIBLE);
-            txtComment.setText(AisenUtils.getCounter(Integer.parseInt(data.getComments_count())));
+            txtComment.setText(AisenUtils.getCounter(data.getComments_count()));
         }
         if (btnComment != null) {
             btnComment.setTag(data);
@@ -230,7 +236,7 @@ public class TimelineItemView extends ARecycleViewItemView<StatusContent> implem
 
             if (imgPhoto != null) {
                 BitmapLoader.getInstance().display(fragment, AisenUtils.getUserPhoto(user), imgPhoto, ImageConfigUtils.getLargePhotoConfig());
-                BizFragment.getBizFragment(fragment).userShow(imgPhoto, user);
+                bizFragment.userShow(imgPhoto, user);
             }
 
             AisenUtils.setImageVerified(imgVerified, user);
@@ -238,7 +244,7 @@ public class TimelineItemView extends ARecycleViewItemView<StatusContent> implem
         else {
             if (imgPhoto != null) {
                 imgPhoto.setImageDrawable(new ColorDrawable(Color.GRAY));
-                BizFragment.getBizFragment(fragment).userShow(imgPhoto, null);
+                bizFragment.userShow(imgPhoto, null);
             }
 
             imgVerified.setVisibility(View.GONE);

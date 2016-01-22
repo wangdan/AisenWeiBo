@@ -6,7 +6,7 @@
         android:background="@color/comm_white">
 
         <include
-            android:id="@id/layoutLoading" layout="@layout/comm_lay_loading" android:layout_width="fill_parent" android:layout_height="fill_parent" android:visibility="gone"/>
+            android:id="@id/layoutLoading" layout="@layout/comm_lay_loading" android:layout_width="fill_parent" android:layout_height="fill_parent" android:visibility="visible"/>
 
         <include
             android:id="@id/layoutLoadFailed" layout="@layout/comm_lay_loadfailed" android:layout_width="match_parent" android:layout_height="match_parent"
@@ -21,7 +21,7 @@
         android:orientation="vertical" android:padding="@dimen/gap_photo">
 
         <org.aisen.android.ui.widget.swipyrefresh.SwipyRefreshLayout
-            android:id="@+id/swipeRefreshLayout" android:layout_width="match_parent" android:layout_height="match_parent">
+            android:id="@+id/swipyRefreshLayout" android:layout_width="match_parent" android:layout_height="match_parent">
 
             <GridView
                 android:id="@+id/gridview"

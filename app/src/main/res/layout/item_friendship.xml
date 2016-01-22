@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent" android:layout_height="72dip"
+        android:gravity="center_vertical" android:orientation="horizontal" android:paddingLeft="16dip"
+        android:paddingRight="16dip">
+
+        <org.aisen.android.ui.widget.CircleImageView
+            android:id="@+id/imgPhoto" android:layout_width="42dip" android:layout_height="42dip"
+            android:src="@drawable/a_icon_b"/>
+
+        <TextView
+            android:id="@+id/txtName" style="@style/TextBody" android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="56dip" android:singleLine="true" android:text="我是名字"/>
+
+        <TextView
+            android:id="@+id/txtRemark" style="@style/TextSubhead" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_below="@id/txtName" android:layout_marginLeft="56dip"
+            android:layout_marginTop="4dip" android:singleLine="true" android:text="我的备注"
+            android:textSize="14sp"/>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/divider" android:layout_width="match_parent"
+        android:layout_height="1.0dip" android:layout_marginLeft="72dip"
+        android:background="@drawable/divider_horizontal_bright_opaque"/>
+
+</LinearLayout>

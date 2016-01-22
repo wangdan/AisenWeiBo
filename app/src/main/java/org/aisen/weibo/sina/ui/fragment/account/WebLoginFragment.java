@@ -1,6 +1,7 @@
 package org.aisen.weibo.sina.ui.fragment.account;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -55,6 +56,18 @@ public class WebLoginFragment extends ABaseFragment {
     }
 
     public static void launch(Activity from, Client client, String account, String password) {
+        FragmentArgs args = new FragmentArgs();
+        args.add("client", client.toString());
+
+        if (!TextUtils.isEmpty(account) && !TextUtils.isEmpty(password)) {
+            args.add("account", account);
+            args.add("password", password);
+        }
+
+        SinaCommonActivity.launchForResult(from, WebLoginFragment.class, args, REQUEST_CODE_AUTH);
+    }
+
+    public static void launch(Fragment from, Client client, String account, String password) {
         FragmentArgs args = new FragmentArgs();
         args.add("client", client.toString());
 

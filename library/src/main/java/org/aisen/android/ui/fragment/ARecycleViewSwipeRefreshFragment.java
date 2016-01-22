@@ -15,7 +15,7 @@ public abstract class ARecycleViewSwipeRefreshFragment<T extends Serializable, T
                                                 extends ARecycleViewFragment<T, Ts>
                                                 implements SwipeRefreshLayout.OnRefreshListener {
 
-    @ViewInject(idStr = "swipyRefreshLayout")
+    @ViewInject(idStr = "swipeRefreshLayout")
     SwipeRefreshLayout swipeRefreshLayout;
 
     @Override

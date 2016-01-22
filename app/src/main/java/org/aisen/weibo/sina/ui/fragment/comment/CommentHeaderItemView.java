@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.aisen.android.common.context.GlobalContext;
+import org.aisen.android.common.utils.Utils;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.fragment.ABaseFragment;
@@ -49,21 +50,6 @@ public class CommentHeaderItemView extends ARecycleViewItemView<StatusComment> i
     @ViewInject(id = R.id.txtDesc)
     TextView txtDesc;
 
-    @ViewInject(id = R.id.btnLike)
-    View btnLike;
-    @ViewInject(id = R.id.imgLike)
-    ImageView imgLike;
-    @ViewInject(id = R.id.txtLike)
-    TextView txtLike;
-    @ViewInject(id = R.id.btnRepost)
-    View btnRepost;
-    @ViewInject(id = R.id.txtRepost)
-    protected TextView txtRepost;
-    @ViewInject(id = R.id.btnCmt)
-    View btnComment;
-    @ViewInject(id = R.id.txtComment)
-    protected TextView txtComment;
-
     @ViewInject(id = R.id.txtContent)
     AisenTextView txtContent;
 
@@ -76,35 +62,13 @@ public class CommentHeaderItemView extends ARecycleViewItemView<StatusComment> i
     @ViewInject(id = R.id.layPicturs)
     public TimelinePicsView layPicturs;
 
-    @ViewInject(id = R.id.btnMenus)
-    View btnMenus;
-
     @ViewInject(id = R.id.txtPics)
     TextView txtPics;
     @ViewInject(id = R.id.txtVisiable)
     TextView txtVisiable;
 
-    @ViewInject(id = R.id.layStatusBar)
-    View layStatusBar;
-    @ViewInject(id = R.id.txtAttribute)
-    TextView txtAttribute;
-    @ViewInject(id = R.id.layStatusBar)
-    TextView layReStatus;
     @ViewInject(id = R.id.layReStatusContainer)
     View layReStatusContainer;
-
-    @ViewInject(id = R.id.txtReAttribute)
-    TextView txtReAttribute;
-    @ViewInject(id = R.id.txtReComment)
-    TextView txtReComment;
-    @ViewInject(id = R.id.txtReRepost)
-    TextView txtReRepost;
-    @ViewInject(id = R.id.layReStatusBar)
-    View layReStatusBar;
-
-    private static final String ATTRIBUTE_FORMAT = "%d%s赞";
-    private static final String COMMENT_FORMAT = "%s评论";
-    private static final String REPOST_FORMAT = "%s转发";
 
     private int textSize = 0;
     private static Map<String, String> groupMap;
@@ -152,47 +116,7 @@ public class CommentHeaderItemView extends ARecycleViewItemView<StatusComment> i
         String desc = String.format("%s %s", createAt, from);
         txtDesc.setText(desc);
 
-        // counter
-        if (TextUtils.isEmpty(statusContent.getReposts_count()) || Integer.parseInt(statusContent.getReposts_count()) == 0) {
-            txtRepost.setVisibility(View.GONE);
-        }
-        else {
-            txtRepost.setVisibility(View.VISIBLE);
-            txtRepost.setText(AisenUtils.getCounter(Integer.parseInt(statusContent.getReposts_count())));
-        }
-        if (btnRepost != null) {
-            btnRepost.setTag(statusContent);
-            btnRepost.setOnClickListener(this);
-
-            if (statusContent.getVisible() == null || "0".equals(statusContent.getVisible().getType()))
-                btnRepost.setVisibility(View.VISIBLE);
-            else
-                btnRepost.setVisibility(View.GONE);
-        }
-        if (TextUtils.isEmpty(statusContent.getComments_count()) || Integer.parseInt(statusContent.getComments_count()) == 0) {
-            txtComment.setVisibility(View.GONE);
-        }
-        else {
-            txtComment.setVisibility(View.VISIBLE);
-            txtComment.setText(AisenUtils.getCounter(Integer.parseInt(statusContent.getComments_count())));
-        }
-        if (btnComment != null) {
-            btnComment.setTag(statusContent);
-            btnComment.setOnClickListener(this);
-        }
-//        LikeBean likeBean = DoLikeAction.likeCache.get(statusContent.getId() + "");
-        if (btnLike != null) {
-            btnLike.setTag(statusContent);
-            btnLike.setOnClickListener(this);
-
-            if (statusContent.getAttitudes_count() > 0)
-                txtLike.setText(statusContent.getAttitudes_count() + "");
-            else
-                txtLike.setText("");
-//            imgLike.setSelected(likeBean != null && likeBean.isLiked());
-        }
         // 文本
-//		txtContent.setText(statusContent.getText());
         txtContent.setContent(statusContent.getText());
         setTextSize(txtContent, textSize);
 
@@ -250,17 +174,7 @@ public class CommentHeaderItemView extends ARecycleViewItemView<StatusComment> i
             }
         }
 
-        if (fragment instanceof TimelineCommentFragment) {
-            if (statusContent.getRetweeted_status() != null) {
-                setRepostClickListener(txtRepost, statusContent);
-                if (statusContent.getRetweeted_status().getUser() != null)
-                    setRepostClickListener(txtReRepost, statusContent.getRetweeted_status());
-            }
-            else {
-                setRepostClickListener(txtReRepost, statusContent);
-            }
-        }
-
+        // 有转发微博时，设置查看原微博评论的事件
         if (statusContent.getRetweeted_status() != null && statusContent.getRetweeted_status().getUser() != null) {
             layReStatusContainer.setOnClickListener(new View.OnClickListener() {
 
@@ -272,22 +186,16 @@ public class CommentHeaderItemView extends ARecycleViewItemView<StatusComment> i
             });
         }
 
-        // 有转发微博
-        if (statusContent.getRetweeted_status() != null) {
-            setLikeText(statusContent, txtAttribute);
-            setTextCount(txtComment, statusContent.getComments_count(), COMMENT_FORMAT);
-            setTextCount(txtRepost, statusContent.getReposts_count(), REPOST_FORMAT);
-
-            setLikeText(statusContent.getRetweeted_status(), txtReAttribute);
-            setTextCount(txtReComment, statusContent.getRetweeted_status().getComments_count(), COMMENT_FORMAT);
-            setTextCount(txtReRepost, statusContent.getRetweeted_status().getReposts_count(), REPOST_FORMAT);
+        // 如果没有原微博和图片，把bottom的间隙都去掉
+        if (statusContent.getRetweeted_status() == null &&
+                (statusContent.getPic_urls() == null || statusContent.getPic_urls().length == 0)) {
+            txtContent.setPadding(txtContent.getPaddingLeft(), txtContent.getPaddingTop(), txtContent.getPaddingRight(), 0);
+            layReStatusContainer.setVisibility(View.GONE);
         }
-        else {
-            layStatusBar.setVisibility(View.GONE);
-
-            setLikeText(statusContent, txtReAttribute);
-            setTextCount(txtReComment, statusContent.getComments_count(), COMMENT_FORMAT);
-            setTextCount(txtReRepost, statusContent.getReposts_count(), REPOST_FORMAT);
+        // 如果没有图片，有原微博，底部加点空隙
+        if (statusContent.getRetweeted_status() != null &&
+                (statusContent.getPic_urls() == null || statusContent.getPic_urls().length == 0)) {
+            txtReContent.setPadding(txtReContent.getPaddingLeft(), txtReContent.getPaddingTop(), txtReContent.getPaddingRight(), Utils.dip2px(8));
         }
     }
 
@@ -314,62 +222,6 @@ public class CommentHeaderItemView extends ARecycleViewItemView<StatusComment> i
 
     public static void setTextSize(TextView textView, float size) {
         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
-    }
-
-    private void setLikeText(final StatusContent data, final TextView likeTxt) {
-//        final LikeBean reLikeBean = DoLikeAction.likeCache.get(data.getId() + "");
-//
-//        likeTxt.setTag(data);
-//        likeTxt.setVisibility(View.VISIBLE);
-//        String meLike = reLikeBean != null && reLikeBean.isLiked() ? "+1" : "";
-//        likeTxt.setText(String.format(ATTRIBUTE_FORMAT, data.getAttitudes_count(), meLike));
-        likeTxt.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-//                final LikeBean reLikeBean = DoLikeAction.likeCache.get(data.getId() + "");
-
-//                final boolean like = reLikeBean == null || !reLikeBean.isLiked();
-
-//                bizFragment.doLike(data, like, likeTxt,
-//                        new DoLikeAction.OnLikeCallback() {
-//
-//                            @Override
-//                            public void onLikeRefreshUI() {
-//
-//                            }
-//
-//                            @Override
-//                            public void onLikeRefreshView(StatusContent data, View likeView) {
-//                                animScale(likeView);
-//
-//                                setLikeText(data, (TextView) likeView);
-//                            };
-//
-//                        });
-            }
-
-        });
-    }
-
-    private void setRepostClickListener(View view, final StatusContent status) {
-        view.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-//                TimelineRepostFragment.launch(fragment.getActivity(), status);
-            }
-
-        });
-    }
-
-    private void setTextCount(TextView textView, String count, String formatStr) {
-        if (TextUtils.isEmpty(count) || Integer.parseInt(count) == 0) {
-            textView.setVisibility(View.GONE);
-        } else {
-            textView.setVisibility(View.VISIBLE);
-            textView.setText(String.format(formatStr, AisenUtils.getCounter(Integer.parseInt(count))));
-        }
     }
 
     @Override

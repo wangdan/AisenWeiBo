@@ -10,10 +10,8 @@ import android.view.View;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.support.paging.IPaging;
-import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.activity.container.FragmentArgs;
 import org.aisen.android.ui.fragment.ARecycleViewSwipeRefreshFragment;
-import org.aisen.android.ui.fragment.itemview.AHeaderItemViewCreator;
 import org.aisen.android.ui.fragment.itemview.BasicFooterView;
 import org.aisen.android.ui.fragment.itemview.DefDividerItemView;
 import org.aisen.android.ui.fragment.itemview.IITemView;
@@ -45,6 +43,15 @@ public class TimelineCommentFragment extends ARecycleViewSwipeRefreshFragment<St
         SinaCommonActivity.launch(from, TimelineCommentFragment.class, args);
     }
 
+    public static TimelineCommentFragment newInstance(StatusContent status) {
+        Bundle arts = new Bundle();
+        arts.putSerializable("status", status);
+
+        TimelineCommentFragment fragment = new TimelineCommentFragment();
+        fragment.setArguments(arts);
+        return fragment;
+    }
+
     private StatusContent mStatusContent;
 
     @Override
@@ -66,12 +73,6 @@ public class TimelineCommentFragment extends ARecycleViewSwipeRefreshFragment<St
 
         mStatusContent = savedInstanceState != null ? (StatusContent) savedInstanceState.getSerializable("status")
                                                     : (StatusContent) getArguments().getSerializable("status");
-
-        BaseActivity activity = (BaseActivity) getActivity();
-        activity.getSupportActionBar().setTitle(R.string.cmts_title);
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -120,27 +121,6 @@ public class TimelineCommentFragment extends ARecycleViewSwipeRefreshFragment<St
             @Override
             public IITemView<StatusComment> newItemView(View convertView, int viewType) {
                 return new TimelineCommentItemView(TimelineCommentFragment.this, convertView);
-            }
-
-        };
-    }
-
-    @Override
-    protected AHeaderItemViewCreator<StatusComment> configHeaderViewCreator() {
-        return new AHeaderItemViewCreator<StatusComment>() {
-
-            @Override
-            public int[][] setHeaderLayoutRes() {
-                return new int[][]{ { CommentHeaderItemView.COMMENT_HEADER_01_RES, CommentHeaderItemView.COMMENT_HEADER_01 } };
-            }
-
-            @Override
-            public IITemView<StatusComment> newItemView(View convertView, int viewType) {
-                if (viewType == CommentHeaderItemView.COMMENT_HEADER_01) {
-                    return new CommentHeaderItemView(TimelineCommentFragment.this, convertView, mStatusContent);
-                }
-
-                return null;
             }
 
         };

@@ -39,7 +39,7 @@ import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
 import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
-import org.aisen.weibo.sina.ui.fragment.timeline.TimelineDefFragment;
+import org.aisen.weibo.sina.ui.fragment.friendship.FriendshipPagerFragment;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -117,8 +117,6 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
 
         mUser = savedInstanceState == null ? (WeiBoUser) getArguments().getSerializable("mUser")
                                            : (WeiBoUser) savedInstanceState.getSerializable("mUser");
-
-        BizFragment.getBizFragment(getActivity());
     }
 
     @Override
@@ -157,8 +155,12 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
     protected ArrayList<TabItem> generateTabs() {
         ArrayList<TabItem> tabItems = new ArrayList<>();
 
-        tabItems.add(new TabItem("1", "关于"));
-        tabItems.add(new TabItem("2", "微博"));
+        tabItems.add(new TabItem("1", getString(R.string.profile_tab1)));
+        tabItems.add(new TabItem("2", String.format("%s(%s)", getString(R.string.profile_tab2), AisenUtils.getCounter(mUser.getStatuses_count()))));
+        tabItems.add(new TabItem("3", getString(R.string.profile_tab3)));
+        if (mUser.getIdstr().equalsIgnoreCase(AppContext.getAccount().getUser().getIdstr())) {
+            tabItems.add(new TabItem("4", getString(R.string.profile_tab4)));
+        }
 
         return tabItems;
     }
@@ -167,11 +169,21 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
     protected Fragment newFragment(TabItem bean) {
         int type = Integer.parseInt(bean.getType());
 
+        // 关于
         if (type == 1) {
             return ProfileAboutFragment.newInstance(mUser);
         }
+        // 用户微博
         else if (type == 2) {
-            return TimelineDefFragment.newInstance("statusesFriendsTimeLine");
+            return ProfileTimelineFragment.newInstance(mUser);
+        }
+        // 相册
+        else if (type == 3) {
+            return PhotosFragment.newInstance(mUser);
+        }
+        // 收藏
+        else if (type == 4) {
+            return TimelineFavoritesFragment.newInstance();
         }
 
         return null;
@@ -232,11 +244,11 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
     public void onClick(View v) {
         // 关注
         if (v.getId() == R.id.txtFriendsCounter) {
-//            FriendshipTabsFragment.launch(getActivity(), mUser, 0);
+            FriendshipPagerFragment.launch(getActivity(), mUser, 0);
         }
         // 粉丝
         else if (v.getId() == R.id.txtFollowersCounter) {
-//            FriendshipTabsFragment.launch(getActivity(), mUser, 1);
+            FriendshipPagerFragment.launch(getActivity(), mUser, 1);
         }
     }
 

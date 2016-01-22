@@ -34,19 +34,17 @@ import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.sinasdk.bean.Token;
 import org.aisen.weibo.sina.sinasdk.bean.UnreadCount;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
+import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.sqlit.SinaDB;
-import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.support.utils.AccountUtils;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
 import org.aisen.weibo.sina.ui.activity.base.MainActivity;
 import org.aisen.weibo.sina.ui.activity.picture.PicsActivity;
 import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
+import org.aisen.weibo.sina.ui.fragment.account.WebLoginFragment;
 import org.aisen.weibo.sina.ui.fragment.profile.ProfilePagerFragment;
 
-import java.lang.ref.WeakReference;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * 程序一系列业务逻辑处理，如下:<br/>
@@ -77,8 +75,8 @@ public class BizFragment extends ABaseFragment {
     private Activity mActivity;
     
     private Activity getRealActivity() {
-        if (getRealActivity() != null)
-            return getRealActivity();
+        if (getActivity() != null)
+            return getActivity();
         
         return mActivity;
     }
@@ -147,12 +145,65 @@ public class BizFragment extends ABaseFragment {
 
         @Override
         public void onClick(View v) {
-            WeiBoUser user = (WeiBoUser) v.getTag();
+            final WeiBoUser user = (WeiBoUser) v.getTag();
             if (user != null) {
-                ProfilePagerFragment.launch(getRealActivity(), user);
+                new IAction(getRealActivity(), new CheckAdTokenAction(getRealActivity(), null)) {
+
+                    @Override
+                    public void doAction() {
+                        ProfilePagerFragment.launch(getRealActivity(), user);
+                    }
+
+                }.run();
             }
         }
     };
+
+    CheckAdTokenAction checkAdTokenAction;
+    class CheckAdTokenAction extends IAction {
+
+        public CheckAdTokenAction(Activity context, IAction parent) {
+            super(context, parent);
+        }
+
+        @Override
+        protected boolean interrupt() {
+            boolean interrupt = AppContext.getAccount().getAdvancedToken() == null ||
+                    AppContext.getAccount().getAdvancedToken().isExpired();
+
+            if (interrupt) {
+                new AlertDialogWrapper.Builder(getRealActivity())
+                        .setTitle(R.string.profile_ad_title)
+                        .setMessage(R.string.profile_ad_message)
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                checkAdTokenAction = CheckAdTokenAction.this;
+
+                                String account = AppContext.getAccount().getAccount();
+                                String password = AppContext.getAccount().getPassword();
+
+                                WebLoginFragment.launch(BizFragment.this, WebLoginFragment.Client.weico, account, password);
+                            }
+
+                        })
+                        .setNegativeButton(R.string.no, null)
+                        .show();
+            }
+            else {
+                checkAdTokenAction = null;
+            }
+
+            return interrupt;
+        }
+
+        @Override
+        public void doAction() {
+            getChild().run();
+        }
+
+    }
 
     public void userShow(View view, WeiBoUser user) {
         view.setTag(user);
@@ -892,6 +943,28 @@ public class BizFragment extends ABaseFragment {
 	/* \@用户 */
     public void mentionUser(Activity from, WeiBoUser user) {
         PublishActivity.publishStatusWithMention(from, user);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK) {
+            // 请求授权
+            if (requestCode == WebLoginFragment.REQUEST_CODE_AUTH) {
+                AccountBean accountBean = (AccountBean) data.getSerializableExtra("account");
+
+                AppContext.getAccount().setAdvancedToken(accountBean.getAccessToken());
+
+                AccountUtils.newAccount(AppContext.getAccount());
+                AccountUtils.setLogedinAccount(AppContext.getAccount());
+
+                if (checkAdTokenAction != null) {
+                    checkAdTokenAction.run();
+                }
+            }
+        }
+
     }
 
 }

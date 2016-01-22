@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent"
+                                                 android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:background="#00000000" android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:background="#00000000"
+            android:fitsSystemWindows="true" android:minHeight="?attr/toolbarSize"
+            app:contentScrim="#00000000" app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+            app:statusBarScrim="#00000000">
+
+            <RelativeLayout
+                android:id="@+id/layHeader" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:layout_marginTop="?attr/toolbarSize"
+                android:background="@color/comm_white"
+                />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" app:layout_collapseMode="pin">
+
+                <org.aisen.android.ui.widget.AsToolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent" android:layout_height="?attr/toolbarSize"
+                    android:background="?attr/colorPrimary"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+            </FrameLayout>
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:background="@color/comm_white"
+            >
+
+            <View
+                android:id="@+id/layHeaderDivider"
+                android:layout_width="match_parent"
+                android:layout_height="2dip" android:layout_gravity="bottom" android:background="@color/divider_timeline_item"/>
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                />
+
+            <TextView
+                android:id="@+id/txtAttitudes"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical" android:layout_marginRight="24dip"
+                android:textColor="@color/text_54" android:textSize="@dimen/design_tab_text_size"/>
+        </FrameLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+</android.support.design.widget.CoordinatorLayout>
