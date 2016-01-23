@@ -91,7 +91,12 @@ public class MenuFragment extends ABaseFragment {
                 });
 
                 ImageView imgIcon = (ImageView) viewItem.findViewById(R.id.icon);
-                imgIcon.setImageResource(item.iconRes);
+                if (item.iconRes == -1) {
+                    imgIcon.setVisibility(View.GONE);
+                }
+                else {
+                    imgIcon.setImageResource(item.iconRes);
+                }
 
                 TextView txtTitle = (TextView) viewItem.findViewById(R.id.title);
                 txtTitle.setText(item.titleRes);
@@ -102,8 +107,8 @@ public class MenuFragment extends ABaseFragment {
     }
 
     private void setSelectedMenuItem(int itemId) {
-        int selectedColor = MDHelper.resolveColor(getActivity(), R.attr.colorPrimary, getResources().getColor(R.color.app_body_text_1));
-        int defColor = getResources().getColor(R.color.app_body_text_1);
+        int selectedColor = MDHelper.resolveColor(getActivity(), R.attr.colorPrimary, getResources().getColor(R.color.menu_color));
+        int defColor = getResources().getColor(R.color.menu_color);
 
         if (selectedPosition != itemId) {
             setNavMenuItemState(selectedPosition, false, selectedColor, defColor);
@@ -139,10 +144,13 @@ public class MenuFragment extends ABaseFragment {
         List<NavMenuItem> items = new ArrayList<>();
 
         items.add(new NavMenuItem(R.drawable.ic_view_day_grey600_24dp, R.string.menu_sinaweibo));
-        items.add(new NavMenuItem(R.drawable.ic_view_day_grey600_24dp, R.string.menu_sinaweibo));
+        items.add(new NavMenuItem(R.drawable.ic_drawer_at, R.string.draw_message));
+        items.add(new NavMenuItem(R.drawable.ic_question_answer_grey600_24dp, R.string.draw_comment));
+        items.add(new NavMenuItem(R.drawable.ic_email_grey600_24dp, R.string.draw_private_msg));
         items.add(new NavMenuSeparator());
-        items.add(new NavMenuItem(R.drawable.ic_view_day_grey600_24dp, R.string.menu_sinaweibo));
-        items.add(new NavMenuItem(R.drawable.ic_view_day_grey600_24dp, R.string.menu_sinaweibo));
+        items.add(new NavMenuItem(-1, R.string.draw_hot_statuses));
+        items.add(new NavMenuItem(-1, R.string.draw_draft));
+        items.add(new NavMenuItem(-1, R.string.draw_settings));
 
         return items;
     }

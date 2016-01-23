@@ -29,6 +29,7 @@ import org.aisen.android.ui.activity.container.FragmentArgs;
 import org.aisen.android.ui.fragment.ATabsTabLayoutFragment;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
+import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
 import org.aisen.weibo.sina.sinasdk.bean.FriendshipShow;
 import org.aisen.weibo.sina.sinasdk.bean.Token;
@@ -37,6 +38,7 @@ import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.utils.AccountUtils;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
+import org.aisen.weibo.sina.support.utils.ThemeUtils;
 import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.fragment.friendship.FriendshipPagerFragment;
@@ -100,7 +102,7 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
     }
 
     public int setActivityTheme() {
-        return R.style.Profile;
+        return ThemeUtils.themeArr[AppSettings.getThemeColor()][2];
     }
 
     @Override

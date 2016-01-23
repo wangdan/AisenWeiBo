@@ -1,12 +1,17 @@
 package org.aisen.weibo.sina.ui.fragment.comment;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 
+import com.afollestad.materialdialogs.AlertDialogWrapper;
+
+import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.support.paging.IPaging;
@@ -25,8 +30,10 @@ import org.aisen.weibo.sina.sinasdk.bean.StatusComment;
 import org.aisen.weibo.sina.sinasdk.bean.StatusComments;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.support.paging.CommentPaging;
+import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -88,6 +95,44 @@ public class TimelineCommentFragment extends ARecycleViewSwipeRefreshFragment<St
 
         int color = getResources().getColor(R.color.divider_timeline_item);
         getRefreshView().addItemDecoration(new DefDividerItemView(color));
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        super.onItemClick(parent, view, position, id);
+
+        final StatusComment comment = getAdapterItems().get(position);
+
+        final String[] commentMenuArr = GlobalContext.getInstance().getResources().getStringArray(R.array.cmt_menus);
+
+        if (mStatusContent != null)
+            comment.setStatus(mStatusContent);
+
+        final List<String> menuList = new ArrayList<String>();
+        // 回复
+        if (comment.getUser() != null && !comment.getUser().getId().equals(AppContext.getAccount().getUser().getId()))
+            menuList.add(commentMenuArr[3]);
+        // 转发
+        if (comment.getStatus() != null &&
+                (comment.getUser() != null && !comment.getUser().getIdstr().equals(AppContext.getAccount().getUser().getIdstr())))
+            menuList.add(commentMenuArr[1]);
+        // 复制
+        menuList.add(commentMenuArr[0]);
+        // 删除
+        if (comment.getUser() != null && AppContext.getAccount().getUser().getIdstr().equals(comment.getUser().getIdstr()))
+            menuList.add(commentMenuArr[2]);
+
+        new AlertDialogWrapper.Builder(getActivity())
+                .setTitle(comment.getUser().getScreen_name())
+                .setItems(menuList.toArray(new String[0]), new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        AisenUtils.commentMenuSelected(TimelineCommentFragment.this, menuList.toArray(new String[0])[which], comment);
+                    }
+
+                })
+                .show();
     }
 
     @Override

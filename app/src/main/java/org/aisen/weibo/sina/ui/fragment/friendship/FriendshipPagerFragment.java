@@ -4,9 +4,13 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import org.aisen.android.common.utils.Utils;
 import org.aisen.android.support.bean.TabItem;
+import org.aisen.android.support.inject.InjectUtility;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.activity.container.FragmentArgs;
 import org.aisen.android.ui.fragment.ATabsTabLayoutFragment;
@@ -42,6 +46,24 @@ public class FriendshipPagerFragment extends ATabsTabLayoutFragment<TabItem> {
     private int type;
 
     @Override
+    public int inflateContentView() {
+        return -1;
+    }
+
+    @Override
+    public int inflateActivityContentView() {
+        return R.layout.ui_tabs;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        InjectUtility.initInjectedView(this, ((BaseActivity) getActivity()).getRootView());
+        layoutInit(inflater, savedInstanceState);
+
+        return null;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -74,11 +96,11 @@ public class FriendshipPagerFragment extends ATabsTabLayoutFragment<TabItem> {
     protected ArrayList<TabItem> generateTabs() {
         ArrayList<TabItem> beans = new ArrayList<TabItem>();
 
-        beans.add(new TabItem("300", String.format(getString(R.string.friends_format), mUser.getFriends_count())));
-        beans.add(new TabItem("301", String.format(getString(R.string.followers_format), mUser.getFollowers_count())));
+        beans.add(new TabItem("300", String.format(getString(R.string.friends_format), AisenUtils.getCounter(mUser.getFriends_count()))));
+        beans.add(new TabItem("301", String.format(getString(R.string.followers_format), AisenUtils.getCounter(mUser.getFollowers_count()))));
         // 是当前授权用户时，显示互粉
         if (mUser.getIdstr().equals(AppContext.getAccount().getUser().getIdstr()))
-            beans.add(new TabItem("302", String.format(getString(R.string.bilateral_format), mUser.getBi_followers_count())));
+            beans.add(new TabItem("302", String.format(getString(R.string.bilateral_format), AisenUtils.getCounter(mUser.getBi_followers_count()))));
 
         return beans;
     }

@@ -1,14 +1,23 @@
 package org.aisen.weibo.sina.ui.fragment.timeline;
 
+import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.aisen.android.common.utils.Utils;
+import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
+import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.fragment.ABaseFragment;
+import org.aisen.android.ui.fragment.ATabsFragment;
+import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
 import org.aisen.android.ui.fragment.itemview.DefDividerItemView;
 import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
@@ -16,16 +25,23 @@ import org.aisen.android.ui.fragment.itemview.NormalItemViewCreator;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
+import org.aisen.weibo.sina.sinasdk.bean.StatusComment;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContents;
 import org.aisen.weibo.sina.sinasdk.bean.StatusRepost;
+import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
+import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
+import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
+import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
+import org.aisen.weibo.sina.ui.widget.AisenTextView;
 
 /**
  * 某条原创微博的转发微博
  *
  * Created by wangdan on 16/1/22.
  */
-public class TimelineRepostFragment extends ATimelineFragment {
+public class TimelineRepostFragment extends ATimelineFragment implements ATabsFragment.ITabInitData {
 
     public static TimelineRepostFragment newInstance(StatusContent statusContent) {
         Bundle args = new Bundle();
@@ -38,12 +54,21 @@ public class TimelineRepostFragment extends ATimelineFragment {
 
     private StatusContent statusContent;
 
+    private BizFragment bizFragment;
+
+    @Override
+    public int inflateContentView() {
+        return R.layout.ui_timeline_comment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         statusContent = savedInstanceState == null ? (StatusContent) getArguments().getSerializable("status")
                                                    : (StatusContent) savedInstanceState.getSerializable("status");
+
+        bizFragment = BizFragment.getBizFragment(this);
     }
 
     @Override
@@ -51,6 +76,14 @@ public class TimelineRepostFragment extends ATimelineFragment {
         super.onSaveInstanceState(outState);
 
         outState.putSerializable("status", statusContent);
+    }
+
+    @Override
+    protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
+        super.layoutInit(inflater, savedInstanceSate);
+
+        bindAdapter(getAdapter());
+        getContentView().setBackgroundColor(Color.WHITE);
     }
 
     @Override
@@ -64,11 +97,11 @@ public class TimelineRepostFragment extends ATimelineFragment {
 
     @Override
     public IItemViewCreator<StatusContent> configItemViewCreator() {
-        return new NormalItemViewCreator<StatusContent>(TimelineItemView.LAYOUT_RES) {
+        return new NormalItemViewCreator<StatusContent>(R.layout.item_timeline_comment) {
 
             @Override
             public IITemView<StatusContent> newItemView(View convertView, int viewType) {
-                return new RepostItemView(convertView, TimelineRepostFragment.this);
+                return new RepostItemView(convertView);
             }
 
         };
@@ -76,7 +109,38 @@ public class TimelineRepostFragment extends ATimelineFragment {
 
     @Override
     protected void requestData(RefreshMode mode) {
-        new RepostTask(mode).execute();
+        boolean load = true;
+
+        // 如果还没有加载过数据，切且显示的是当前的页面
+        if (getTaskCount(PAGING_TASK_ID) == 0) {
+            Fragment fragment = getPagerCurrentFragment();
+            if (fragment == null || fragment != this)
+                load = false;
+        }
+
+        if (load)
+            new RepostTask(mode).execute();
+    }
+
+    private Fragment getPagerCurrentFragment() {
+        if (getActivity() == null)
+            return null;
+
+        ABaseFragment aFragment = null;
+        if (getActivity() instanceof SinaCommonActivity) {
+            aFragment = (ABaseFragment) getActivity().getFragmentManager().findFragmentByTag(SinaCommonActivity.FRAGMENT_TAG);
+        }
+        if (aFragment != null && aFragment instanceof ATabsFragment) {
+            ATabsFragment fragment = (ATabsFragment) aFragment;
+            return fragment.getCurrentFragment();
+        }
+
+        return null;
+    }
+
+    @Override
+    public void onTabRequestData() {
+        requestDataDelay(100);
     }
 
     class RepostTask extends ATimelineTask {
@@ -104,31 +168,56 @@ public class TimelineRepostFragment extends ATimelineFragment {
 
     }
 
-    class RepostItemView extends TimelineItemView {
+    class RepostItemView extends ARecycleViewItemView<StatusContent> {
 
-        int paddingH;
-        int paddingV;
-        int menuPadding;
+        @ViewInject(id = R.id.imgPhoto)
+        ImageView imgPhoto;
+        @ViewInject(id = R.id.txtName)
+        TextView txtName;
+        @ViewInject(id = R.id.txtDesc)
+        TextView txtDesc;
+        @ViewInject(id = R.id.txtContent)
+        AisenTextView txtContent;
 
-        public RepostItemView(View convertView, ABaseFragment fragment) {
-            super(convertView, fragment);
+        int firstTop;
+        int normalTop;
 
-            paddingH = Utils.dip2px(18);
-            paddingV = Utils.dip2px(16);
-            menuPadding = Utils.dip2px(10);
+        public RepostItemView(View convertView) {
+            super(convertView);
+
+            firstTop = Utils.dip2px(16);
+            normalTop = Utils.dip2px(8);
         }
+
 
         @Override
         public void onBindData(View convertView, StatusContent data, int position) {
-            super.onBindData(convertView, data, position);
+            WeiBoUser user = data.getUser();
+            if (user != null) {
+                BitmapLoader.getInstance().display(TimelineRepostFragment.this,
+                        AisenUtils.getUserPhoto(user),
+                        imgPhoto, ImageConfigUtils.getLargePhotoConfig());
+                bizFragment.userShow(imgPhoto, user);
+                txtName.setText(AisenUtils.getUserScreenName(user));
+            }
+            else {
+                bizFragment.userShow(imgPhoto, null);
+                txtName.setText(R.string.error_cmts);
+                imgPhoto.setImageResource(R.drawable.user_placeholder);
+            }
 
-            RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) cardView.getLayoutParams();
-            lp.setMargins(0, 0, 0, 0);
-            cardView.setLayoutParams(lp);
-//            cardView.getChildAt(0).setPadding(paddingH, paddingV, paddingH, 0);
-            cardView.setRadius(0);
-            cardView.setCardElevation(0);
+            txtContent.setContent(data.getText());
+            AisenUtils.setTextSize(txtContent);
+
+            String createAt = AisenUtils.convDate(data.getCreated_at());
+            String from = String.format("%s", Html.fromHtml(data.getSource()));
+            String desc = String.format("%s %s", createAt, from);
+            txtDesc.setText(desc);
+
+            int top = position == 0 ? firstTop : normalTop;
+            convertView.setPadding(convertView.getPaddingLeft(), top, convertView.getPaddingRight(), convertView.getPaddingBottom());
         }
+
     }
 
 }

@@ -8,8 +8,8 @@
                                                     android:paddingRight="@dimen/padding_normal">
 
     <ImageView
-        android:id="@+id/icon" android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:id="@+id/icon" android:layout_width="20dip"
+        android:layout_height="22dip"
         android:layout_gravity="start|center_vertical"
         android:layout_marginEnd="32dp"
         android:layout_marginRight="32dp"
@@ -21,5 +21,6 @@
         android:layout_gravity="start|center_vertical"
         android:duplicateParentState="true"
         android:textAppearance="@style/TextAppearance.Body2"
-        android:textColor="@color/app_body_text_1"/>
+        android:textColor="@color/menu_color"
+        android:textSize="16.0sp"/>
 </org.aisen.android.ui.widget.ForegroundLinearLayout>

@@ -10,11 +10,11 @@
         <item name="MDbuttonSelector">?attr/selectableItemBackground</item>
     </style>
 
-    <style name="MainTheme" parent="AppTheme">
+    <style name="AppTheme.Main">
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
-    <style name="Profile" parent="AppTheme">
+    <style name="AppTheme.Profile">
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 

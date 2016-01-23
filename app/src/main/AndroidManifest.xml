@@ -21,7 +21,8 @@
     <application android:name=".base.MyApplication" android:allowBackup="true"
                  android:icon="@drawable/a_icon_b" android:label="@string/app_name">
         <!-- 启动界面 -->
-        <activity android:name=".ui.activity.base.SplashActivity" android:screenOrientation="portrait"
+        <activity android:name=".ui.activity.base.SplashActivity"
+                  android:screenOrientation="portrait"
                   android:theme="@style/AppBaseTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -31,10 +32,31 @@
         </activity>
         <!--首页-->
         <activity android:name=".ui.activity.base.MainActivity" android:screenOrientation="portrait"
-                  android:theme="@style/MainTheme"/>
+                  android:theme="@style/AppTheme.Main"/>
         <!--公共页-->
-        <activity android:name=".ui.activity.base.SinaCommonActivity" android:screenOrientation="portrait"
+        <activity android:name=".ui.activity.base.SinaCommonActivity"
+                  android:screenOrientation="portrait"
                   android:theme="@style/AppBaseTheme"/>
+        <!-- 发布微博、转发微博、评论、回复评论、意见反馈、分享 -->
+        <activity android:name=".ui.activity.publish.PublishActivity" android:launchMode="singleTop"
+                  android:screenOrientation="portrait"
+                  android:windowSoftInputMode="stateVisible|adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="image/*"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
+        </activity>
+        <!-- 图片详情 -->
+        <activity android:name=".ui.activity.picture.PicsActivity"
+                  android:screenOrientation="user"/>
+        <!-- 相册详情 -->
+        <activity android:name=".ui.activity.picture.PhotosActivity"/>
     </application>
 
 </manifest>

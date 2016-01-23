@@ -105,7 +105,7 @@ public class TimelineFavoritesFragment extends ATimelineFragment
     @Override
     public void onTabRequestData() {
         // 如果还没有加载过数据，就开始加载
-        if (getTaskCount("TimelineTask") == 0) {
+        if (getTaskCount(PAGING_TASK_ID) == 0) {
             requestData(RefreshMode.reset);
         }
     }
@@ -115,7 +115,7 @@ public class TimelineFavoritesFragment extends ATimelineFragment
         boolean load = true;
 
         // 如果还没有加载过数据，切且显示的是当前的页面
-        if (getTaskCount("TimelineTask") == 0) {
+        if (getTaskCount(PAGING_TASK_ID) == 0) {
             Fragment fragment = getPagerCurrentFragment();
             if (fragment != null && fragment != this)
                 load = false;

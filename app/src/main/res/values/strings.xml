@@ -55,9 +55,9 @@
     <string name="myfav_title">我的收藏</string>
 
     <!--微博详情-->
-    <string name="comment_format">%d 评论</string>
-    <string name="repost_format">%d 转发</string>
-    <string name="attitudes_format">%d 赞</string>
+    <string name="comment_format">%s 评论</string>
+    <string name="repost_format">%s 转发</string>
+    <string name="attitudes_format">%s 赞</string>
 
     <!--授权页面-->
     <string name="login_title">用户授权</string>
@@ -389,9 +389,9 @@
     <string name="followers">粉丝</string>
     <string name="friends">关注</string>
     <string name="bilateral">互粉</string>
-    <string name="followers_format">%d 粉丝</string>
-    <string name="friends_format">%d 关注</string>
-    <string name="bilateral_format">%d 互粉</string>
+    <string name="followers_format">%s 粉丝</string>
+    <string name="friends_format">%s 关注</string>
+    <string name="bilateral_format">%s 互粉</string>
     <string name="friendship_my_friends">Ta的关注</string>
     <string name="friendship_my_followers">Ta的粉丝</string>
     <string name="friendship_my_bilateral">Ta的互粉</string>

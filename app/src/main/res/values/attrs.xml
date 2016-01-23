@@ -2,6 +2,7 @@
 <resources>
     <!--主题颜色-->
     <attr name="themeColor" format="reference|color"/>
+    <attr name="themeStatusbarColor" format="reference|color"/>
     <!--状态栏颜色-->
     <attr name="statusbarColor" format="reference|color"/>
     <attr name="toolbarSize" format="reference|dimension"/>

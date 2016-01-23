@@ -37,4 +37,5 @@ dependencies {
     compile 'com.github.castorflex.smoothprogressbar:library-circular:1.1.0'
     compile 'org.jsoup:jsoup:1.8.2'
     compile 'com.github.chrisbanes.photoview:library:1.2.3'
+    compile 'com.getbase:floatingactionbutton:1.10.1'
 }

@@ -23,6 +23,8 @@
     <color name="background_selected_color">#1a000000</color>
     <color name="navmenu_selected_color">@color/background_selected_color</color>
 
+    <color name="menu_color">#ff676767</color>
+
     <!--timeline-->
     <color name="divider_timeline_item">#ebeef4</color>
 

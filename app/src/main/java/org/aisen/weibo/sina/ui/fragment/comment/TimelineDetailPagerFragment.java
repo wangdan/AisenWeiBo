@@ -1,5 +1,7 @@
 package org.aisen.weibo.sina.ui.fragment.comment;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -7,12 +9,18 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.aisen.android.common.utils.Logger;
+import com.getbase.floatingactionbutton.AddFloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
+
 import org.aisen.android.common.utils.Utils;
 import org.aisen.android.support.bean.TabItem;
 import org.aisen.android.support.inject.InjectUtility;
@@ -21,7 +29,9 @@ import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.activity.container.FragmentArgs;
 import org.aisen.android.ui.fragment.ATabsTabLayoutFragment;
 import org.aisen.weibo.sina.R;
+import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
+import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineRepostFragment;
 
@@ -32,7 +42,8 @@ import java.util.ArrayList;
  *
  * Created by wangdan on 16/1/22.
  */
-public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem> implements AppBarLayout.OnOffsetChangedListener {
+public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
+                                            implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener {
 
     public static void launch(Activity from, StatusContent status) {
         FragmentArgs args = new FragmentArgs();
@@ -51,8 +62,23 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
     View layHeaderDivider;
     @ViewInject(id = R.id.txtAttitudes)
     TextView txtAttitudes;
+    @ViewInject(id = R.id.action_menu)
+    FloatingActionsMenu action_menu;
+    @ViewInject(id = R.id.action_a)
+    FloatingActionButton action_a;
+    @ViewInject(id = R.id.action_b)
+    FloatingActionButton action_b;
+    @ViewInject(id = R.id.action_c)
+    FloatingActionButton action_c;
+    @ViewInject(id = R.id.overlay)
+    View overlay;
 
     private StatusContent mStatusContent;
+
+    @Override
+    public int inflateContentView() {
+        return -1;
+    }
 
     @Override
     public int inflateActivityContentView() {
@@ -71,11 +97,6 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
         layHeader.addView(itemConvertView, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 
         return null;
-    }
-
-    @Override
-    public int inflateContentView() {
-        return -1;
     }
 
     @Override
@@ -98,7 +119,7 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
 
         tabLayout.setPadding(Utils.dip2px(16), tabLayout.getPaddingTop(), tabLayout.getPaddingRight(), tabLayout.getPaddingBottom());
         tabLayout.setTabTextColors(getResources().getColor(R.color.text_54),
-                                        getResources().getColor(R.color.text_80));
+                getResources().getColor(R.color.text_80));
     }
 
     @Override
@@ -119,7 +140,19 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
             txtAttitudes.setText("");
         }
         else {
-            txtAttitudes.setText(String.format(getString(R.string.attitudes_format), mStatusContent.getAttitudes_count()));
+            txtAttitudes.setText(String.format(getString(R.string.attitudes_format), AisenUtils.getCounter(mStatusContent.getAttitudes_count())));
+        }
+
+        action_a.setOnClickListener(this);
+        action_b.setOnClickListener(this);
+        action_c.setOnClickListener(this);
+        overlay.setOnClickListener(this);
+        for (int i = 0; i < action_menu.getChildCount(); i++) {
+            if (action_menu.getChildAt(i) instanceof AddFloatingActionButton) {
+                action_menu.getChildAt(i).setOnClickListener(this);
+
+                break;
+            }
         }
     }
 
@@ -128,10 +161,10 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
         ArrayList<TabItem> tabItems = new ArrayList<>();
 
         if (mStatusContent.getComments_count() > 0 || mStatusContent.getReposts_count() == 0) {
-            tabItems.add(new TabItem("1", String.format(getString(R.string.comment_format), mStatusContent.getComments_count())));
+            tabItems.add(new TabItem("1", String.format(getString(R.string.comment_format), AisenUtils.getCounter(mStatusContent.getComments_count()))));
         }
         if (mStatusContent.getReposts_count() > 0) {
-            tabItems.add(new TabItem("2", String.format(getString(R.string.repost_format), mStatusContent.getReposts_count())));
+            tabItems.add(new TabItem("2", String.format(getString(R.string.repost_format), AisenUtils.getCounter(mStatusContent.getReposts_count()))));
         }
 
         return tabItems;
@@ -160,6 +193,121 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
         }
         if (layHeaderDivider.getVisibility() != visibility)
             layHeaderDivider.setVisibility(visibility);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.menu_cmts, menu);
+        menu.removeItem(R.id.fav);
+        menu.removeItem(R.id.repost);
+        menu.removeItem(R.id.comment);
+        if (mStatusContent.getUser() == null ||
+                !mStatusContent.getUser().getIdstr().equalsIgnoreCase(AppContext.getAccount().getUser().getIdstr()))
+            menu.removeItem(R.id.delete);
+        AisenUtils.setStatusShareMenu(menu.findItem(R.id.share), mStatusContent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        AisenUtils.onMenuClicked(this, item.getItemId(), mStatusContent);
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        // 点击了+按钮
+        if (v instanceof AddFloatingActionButton) {
+            if (action_menu.isExpanded()) {
+                dismissOverlay();
+            }
+            else {
+                showOverlay();
+            }
+
+            action_menu.toggle();
+
+            return;
+        }
+        // 覆盖层
+        else if (v.getId() == R.id.overlay) {
+        }
+        // 收藏
+        else if (v.getId() == R.id.action_a) {
+            AisenUtils.onMenuClicked(this, R.id.fav, mStatusContent);
+        }
+        // 转发
+        else if (v.getId() == R.id.action_b) {
+            AisenUtils.onMenuClicked(this, R.id.repost, mStatusContent);
+        }
+        // 评论
+        else if (v.getId() == R.id.action_c) {
+            AisenUtils.onMenuClicked(this, R.id.comment, mStatusContent);
+        }
+
+        dismissOverlay();
+        action_menu.collapse();
+    }
+
+    private void showOverlay() {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(overlay, "alpha", 0.0f, 1.0f);
+        animator.setDuration(300);
+        animator.addListener(new Animator.AnimatorListener() {
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+                overlay.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+
+        });
+        animator.start();
+    }
+
+    private void dismissOverlay() {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(overlay, "alpha", 1.0f, 0.0f);
+        animator.setDuration(300);
+        animator.addListener(new Animator.AnimatorListener() {
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                overlay.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+
+        });
+        animator.start();
     }
 
 }

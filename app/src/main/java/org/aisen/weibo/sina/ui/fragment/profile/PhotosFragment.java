@@ -142,7 +142,7 @@ public class PhotosFragment extends AGridSwipyRefreshFragment<PhotoBean, PhotosB
     @Override
     public void onTabRequestData() {
         // 如果还没有加载过数据，就开始加载
-        if (getTaskCount("PhotosTask") == 0) {
+        if (getTaskCount(PAGING_TASK_ID) == 0) {
             requestData(RefreshMode.reset);
         }
     }
@@ -152,7 +152,7 @@ public class PhotosFragment extends AGridSwipyRefreshFragment<PhotoBean, PhotosB
         boolean load = true;
 
         // 如果还没有加载过数据，切且显示的是当前的页面
-        if (getTaskCount("PhotosTask") == 0) {
+        if (getTaskCount(PAGING_TASK_ID) == 0) {
             Fragment fragment = getPagerCurrentFragment();
             if (fragment == null || fragment != this)
                 load = false;

@@ -180,7 +180,7 @@ public class CommentHeaderItemView extends ARecycleViewItemView<StatusComment> i
 
                 @Override
                 public void onClick(View v) {
-                    TimelineCommentFragment.launch(fragment.getActivity(), statusContent.getRetweeted_status());
+                    TimelineDetailPagerFragment.launch(fragment.getActivity(), statusContent.getRetweeted_status());
                 }
 
             });
