@@ -31,6 +31,7 @@ public class BasicRecycleViewAdapter<T extends Serializable> extends RecyclerVie
     private int[][] headerItemTypes;
 
     private AdapterView.OnItemClickListener onItemClickListener;
+    private AdapterView.OnItemLongClickListener onItemLongClickListener;
 
     public BasicRecycleViewAdapter(APagingFragment holderFragment, ArrayList<T> datas) {
         if (datas == null)
@@ -158,6 +159,12 @@ public class BasicRecycleViewAdapter<T extends Serializable> extends RecyclerVie
             else {
                 itemView.getConvertView().setOnClickListener(null);
             }
+            if (onItemLongClickListener != null) {
+                itemView.getConvertView().setOnLongClickListener(innerOnLongClickListener);
+            }
+            else {
+                itemView.getConvertView().setOnLongClickListener(null);
+            }
         }
     }
 
@@ -171,6 +178,22 @@ public class BasicRecycleViewAdapter<T extends Serializable> extends RecyclerVie
                 onItemClickListener.onItemClick(null, itemView.getConvertView(),
                                                     itemView.itemPosition(), getItemId(itemView.itemPosition()));
             }
+        }
+
+    };
+
+    View.OnLongClickListener innerOnLongClickListener = new View.OnLongClickListener() {
+
+        @Override
+        public boolean onLongClick(View v) {
+            IITemView<T> itemView = (IITemView<T>) v.getTag();
+
+            if (onItemLongClickListener != null) {
+                return onItemLongClickListener.onItemLongClick(null, itemView.getConvertView(),
+                        itemView.itemPosition(), getItemId(itemView.itemPosition()));
+            }
+
+            return false;
         }
 
     };
@@ -194,6 +217,14 @@ public class BasicRecycleViewAdapter<T extends Serializable> extends RecyclerVie
 
     public void setOnItemClickListener(AdapterView.OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
+    }
+
+    public AdapterView.OnItemLongClickListener getOnItemLongClickListener() {
+        return onItemLongClickListener;
+    }
+
+    public void setOnItemLongClickListener(AdapterView.OnItemLongClickListener onItemLongClickListener) {
+        this.onItemLongClickListener = onItemLongClickListener;
     }
 
 }

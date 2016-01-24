@@ -1,6 +1,7 @@
 package org.aisen.weibo.sina.support.utils;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -42,6 +43,7 @@ import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.fragment.ABaseFragment;
 import org.aisen.android.ui.fragment.APagingFragment;
+import org.aisen.android.ui.fragment.ATabsFragment;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
@@ -50,9 +52,12 @@ import org.aisen.weibo.sina.sinasdk.bean.GroupSortResult;
 import org.aisen.weibo.sina.sinasdk.bean.StatusComment;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
+import org.aisen.weibo.sina.ui.activity.base.MainActivity;
+import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.fragment.comment.TimelineCommentFragment;
+import org.aisen.weibo.sina.ui.fragment.comment.TimelineDetailPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.ATimelineFragment;
 
 import java.io.ByteArrayOutputStream;
@@ -376,7 +381,7 @@ public class AisenUtils {
             switch (position) {
                 // 原微博
                 case 0:
-                    TimelineCommentFragment.launch(fragment.getActivity(), status.getRetweeted_status());
+                    TimelineDetailPagerFragment.launch(fragment.getActivity(), status.getRetweeted_status());
                     break;
                 // 复制
                 case 1:
@@ -386,19 +391,19 @@ public class AisenUtils {
                     break;
                 // 转发
                 case 2:
-                    BizFragment.getBizFragment(fragment).statusRepost(status);
+                    BizFragment.createBizFragment(fragment).statusRepost(status);
                     break;
                 // 评论
                 case 3:
-                    BizFragment.getBizFragment(fragment).commentCreate(status);
+                    BizFragment.createBizFragment(fragment).commentCreate(status);
                     break;
                 // 收藏
                 case 4:
-                    BizFragment.getBizFragment(fragment).favorityCreate(status.getId() + "", null);
+                    BizFragment.createBizFragment(fragment).favorityCreate(status.getId() + "", null);
                     break;
                 // 取消收藏
                 case 5:
-                    BizFragment.getBizFragment(fragment).favorityDestory(status.getId() + "", null);
+                    BizFragment.createBizFragment(fragment).favorityDestory(status.getId() + "", null);
                     break;
                 // 删除微博
                 case 6:
@@ -426,7 +431,7 @@ public class AisenUtils {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        BizFragment.getBizFragment(fragment).statusDestory(status.getId() + "", new BizFragment.OnStatusDestoryCallback() {
+                        BizFragment.createBizFragment(fragment).statusDestory(status.getId() + "", new BizFragment.OnStatusDestoryCallback() {
 
                             @SuppressWarnings({ "rawtypes" })
                             @Override
@@ -578,7 +583,7 @@ public class AisenUtils {
                     break;
                 // 转发
                 case 1:
-                    BizFragment.getBizFragment(fragment).commentRepost(comment);
+                    BizFragment.createBizFragment(fragment).commentRepost(comment);
                     break;
                 // 删除
                 case 2:
@@ -588,7 +593,7 @@ public class AisenUtils {
 
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    BizFragment.getBizFragment(fragment).commentDestory(comment, new BizFragment.OnCommentDestoryCallback() {
+                                    BizFragment.createBizFragment(fragment).commentDestory(comment, new BizFragment.OnCommentDestoryCallback() {
 
                                         @SuppressWarnings("unchecked")
                                         @Override
@@ -613,7 +618,7 @@ public class AisenUtils {
                     break;
                 // 评论
                 case 3:
-                    BizFragment.getBizFragment(fragment).replyComment(comment.getStatus(), comment);
+                    BizFragment.createBizFragment(fragment).replyComment(comment.getStatus(), comment);
                     break;
             }
         } catch (Exception e) {
@@ -662,16 +667,16 @@ public class AisenUtils {
     public static void onMenuClicked(ABaseFragment fragment, int menuId, StatusContent status) {
         switch (menuId) {
             case R.id.comment:
-                BizFragment.getBizFragment(fragment).commentCreate(status);
+                BizFragment.createBizFragment(fragment).commentCreate(status);
                 break;
             case R.id.repost:
-                BizFragment.getBizFragment(fragment).statusRepost(status);
+                BizFragment.createBizFragment(fragment).statusRepost(status);
                 break;
             case R.id.fav:
-                BizFragment.getBizFragment(fragment).favorityCreate(status.getId() + "", null);
+                BizFragment.createBizFragment(fragment).favorityCreate(status.getId() + "", null);
                 break;
             case R.id.fav_destory:
-                BizFragment.getBizFragment(fragment).favorityDestory(status.getId() + "", null);
+                BizFragment.createBizFragment(fragment).favorityDestory(status.getId() + "", null);
                 break;
             case R.id.copy:
                 copyToClipboard(status.getText());
@@ -783,6 +788,26 @@ public class AisenUtils {
 //            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 //            window.setStatusBarColor(Color.TRANSPARENT);
 //        }
+    }
+
+    public static boolean checkTabsFragmentCanRequestData(Fragment checkedFragment) {
+        if (checkedFragment.getActivity() == null)
+            return false;
+
+        ABaseFragment aFragment = null;
+        if (checkedFragment.getActivity() instanceof SinaCommonActivity) {
+            aFragment = (ABaseFragment) checkedFragment.getActivity().getFragmentManager().findFragmentByTag(SinaCommonActivity.FRAGMENT_TAG);
+        }
+        else if (checkedFragment.getActivity() instanceof MainActivity) {
+            aFragment = (ABaseFragment) checkedFragment.getActivity().getFragmentManager().findFragmentByTag("MainFragment");
+        }
+
+        if (aFragment != null && aFragment instanceof ATabsFragment) {
+            ATabsFragment fragment = (ATabsFragment) aFragment;
+            return fragment.getCurrentFragment() == checkedFragment;
+        }
+
+        return false;
     }
 
 }

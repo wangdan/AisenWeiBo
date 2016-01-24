@@ -1,6 +1,5 @@
 package org.aisen.weibo.sina.ui.fragment.comment;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,7 +14,6 @@ import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.support.paging.IPaging;
-import org.aisen.android.ui.activity.container.FragmentArgs;
 import org.aisen.android.ui.fragment.ARecycleViewSwipeRefreshFragment;
 import org.aisen.android.ui.fragment.itemview.BasicFooterView;
 import org.aisen.android.ui.fragment.itemview.DefDividerItemView;
@@ -31,7 +29,6 @@ import org.aisen.weibo.sina.sinasdk.bean.StatusComments;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.support.paging.CommentPaging;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
-import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,13 +39,6 @@ import java.util.List;
  * Created by wangdan on 16/1/7.
  */
 public class TimelineCommentFragment extends ARecycleViewSwipeRefreshFragment<StatusComment, StatusComments> {
-
-    public static void launch(Activity from, StatusContent status) {
-        FragmentArgs args = new FragmentArgs();
-        args.add("status", status);
-
-        SinaCommonActivity.launch(from, TimelineCommentFragment.class, args);
-    }
 
     public static TimelineCommentFragment newInstance(StatusContent status) {
         Bundle arts = new Bundle();
@@ -193,6 +183,19 @@ public class TimelineCommentFragment extends ARecycleViewSwipeRefreshFragment<St
         }
 
         @Override
+        protected boolean handleResult(RefreshMode mode, List<StatusComment> datas) {
+            // 如果是重置或者刷新数据，加载数据大于分页大小，则清空之前的数据
+            if (mode == RefreshMode.reset || mode == RefreshMode.refresh)
+                // 目前微博加载分页大小是默认大小
+                if (datas.size() >= AppSettings.getCommentCount()) {
+                    setAdapterItems(new ArrayList<StatusComment>());
+                    return true;
+                }
+
+            return super.handleResult(mode, datas);
+        }
+
+        @Override
         protected StatusComments workInBackground(RefreshMode mode, String previousPage, String nextPage, Void... p) throws TaskException {
             Params params = new Params();
 
@@ -210,6 +213,13 @@ public class TimelineCommentFragment extends ARecycleViewSwipeRefreshFragment<St
             statusComments.setEndPaging(statusComments.getComments().size() <= 10);
 
             return statusComments;
+        }
+
+        @Override
+        protected void onFailure(TaskException exception) {
+            super.onFailure(exception);
+
+            showMessage(exception.getMessage());
         }
 
     }

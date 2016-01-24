@@ -97,7 +97,7 @@ public class TimelineItemView extends ARecycleViewItemView<StatusContent> implem
         super(convertView);
 
         this.fragment = fragment;
-        bizFragment = BizFragment.getBizFragment(fragment);
+        bizFragment = BizFragment.createBizFragment(fragment);
 
         textSize = AppSettings.getTextSize();
         vPadding = GlobalContext.getInstance().getResources().getDimensionPixelSize(R.dimen.comm_v_gap);

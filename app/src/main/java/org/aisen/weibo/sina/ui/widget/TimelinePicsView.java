@@ -634,7 +634,7 @@ public class TimelinePicsView extends ViewGroup implements BitmapOwner {
                 }
 				BitmapLoader.getInstance().display(this, url, imgView, config);
 				
-				BizFragment.getBizFragment((Activity) getContext()).previousPics(imgView, mStatusContent, i);
+				BizFragment.createBizFragment((Activity) getContext()).previousPics(imgView, mStatusContent, i);
 			}
 		}
 	}

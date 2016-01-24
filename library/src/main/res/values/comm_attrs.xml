@@ -15,6 +15,10 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="ScrimInsetsView">
+        <attr name="appInsetForeground" format="reference|color" />
+    </declare-styleable>
+
     <declare-styleable name="FitWindowsFrameLayout">
         <attr name="fitType">
             <enum name="top" value="0" />

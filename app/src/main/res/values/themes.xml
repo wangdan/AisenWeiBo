@@ -19,7 +19,6 @@
         <item name="fitSystemWindows">false</item>
         <item name="menuHeaderHeight">165dip</item>
         <item name="menuHeaderPaddingTop">20dip</item>
-        <item name="toolbarSize">@dimen/abc_action_bar_default_height_material</item>
 
         <!--timeline-->
         <item name="text_title">@color/text_100</item>

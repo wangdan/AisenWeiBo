@@ -127,7 +127,7 @@ public class ProfileAboutFragment extends ABaseFragment
         if (mFriendship != null) {
             TextView txtRemark = (TextView) remarkView.findViewById(R.id.txtBody);
             try {
-                BizFragment.getBizFragment(this).modifyUserMark(remarkView.findViewById(R.id.btnItem), mUser, this);
+                BizFragment.createBizFragment(this).modifyUserMark(remarkView.findViewById(R.id.btnItem), mUser, this);
             } catch (Exception e) {
             }
             if (!TextUtils.isEmpty(mUser.getRemark()))
@@ -241,7 +241,7 @@ public class ProfileAboutFragment extends ABaseFragment
         }
         // @Ta
         else if (v == btnMention) {
-            BizFragment.getBizFragment(this).mentionUser(getActivity(), mUser);
+            BizFragment.createBizFragment(this).mentionUser(getActivity(), mUser);
         }
         // 私信
         else if (v == btnDM) {

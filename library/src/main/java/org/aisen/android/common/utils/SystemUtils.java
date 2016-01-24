@@ -1,26 +1,29 @@
 package org.aisen.android.common.utils;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.res.TypedArray;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.DhcpInfo;
 import android.net.NetworkInfo;
-import android.net.Proxy;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -28,6 +31,7 @@ import android.view.inputmethod.InputMethodManager;
 import org.aisen.android.common.context.GlobalContext;
 
 import java.io.File;
+import java.lang.reflect.Method;
 
 @SuppressLint("SdCardPath") public class SystemUtils {
 
@@ -36,6 +40,34 @@ import java.io.File;
 	private static int screenHeight;
 
 	private static float density;
+
+	private static final String STATUS_BAR_HEIGHT_RES_NAME = "status_bar_height";
+	private static final String NAV_BAR_HEIGHT_RES_NAME = "navigation_bar_height";
+	private static final String NAV_BAR_HEIGHT_LANDSCAPE_RES_NAME = "navigation_bar_height_landscape";
+	private static final String SHOW_NAV_BAR_RES_NAME = "config_showNavigationBar";
+	private static final String NAV_BAR_WIDTH_RES_NAME = "navigation_bar_width";
+
+	private static String sNavBarOverride;
+
+	static {
+		// Android allows a system property to override the presence of the
+		// navigation bar.
+		// Used by the emulator.
+		// See
+		// https://github.com/android/platform_frameworks_base/blob/master/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java#L1076
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+			try {
+				@SuppressWarnings("rawtypes")
+				Class c = Class.forName("android.os.SystemProperties");
+				@SuppressWarnings("unchecked")
+				Method m = c.getDeclaredMethod("get", String.class);
+				m.setAccessible(true);
+				sNavBarOverride = (String) m.invoke(null, "qemu.hw.mainkeys");
+			} catch (Throwable e) {
+				sNavBarOverride = null;
+			}
+		}
+	}
 
 	public enum NetWorkType {
 		none, mobile, wifi
@@ -241,43 +273,6 @@ import java.io.File;
 		return metrics.heightPixels;
 	}
 
-	public static int getStatusBarHeight(Activity paramActivity) {
-		Rect localRect = new Rect();
-		paramActivity.getWindow().getDecorView().getWindowVisibleDisplayFrame(localRect);
-		return localRect.top;
-
-	}
-
-	@SuppressWarnings("unused")
-	public static int getActionBarHeight(Activity paramActivity) {
-        if (true) return Utils.dip2px(56);
-
-		// test on samsung 9300 android 4.1.2, this value is 96px
-		// but on galaxy nexus android 4.2, this value is 146px
-		// statusbar height is 50px
-		// I guess 4.1 Window.ID_ANDROID_CONTENT contain statusbar
-//		int contentViewTop = paramActivity.getWindow().findViewById(Window.ID_ANDROID_CONTENT).getTop();
-
-//        return contentViewTop - getStatusBarHeight(paramActivity);
-        
-		int[] attrs = new int[] { android.R.attr.actionBarSize };
-		TypedArray ta = paramActivity.obtainStyledAttributes(attrs);
-		return ta.getDimensionPixelSize(0, Utils.dip2px(56));
-	}
-
-	// below status bar,include actionbar, above softkeyboard
-	public static int getAppHeight(Activity paramActivity) {
-		Rect localRect = new Rect();
-		paramActivity.getWindow().getDecorView().getWindowVisibleDisplayFrame(localRect);
-		return localRect.height();
-	}
-
-	// below actionbar, above softkeyboard
-	public static int getAppContentHeight(Activity paramActivity) {
-		return SystemUtils.getScreenHeight(paramActivity) - SystemUtils.getStatusBarHeight(paramActivity)
-				- SystemUtils.getActionBarHeight(paramActivity) - SystemUtils.getKeyboardHeight(paramActivity);
-	}
-
 	public static int getKeyboardHeight(Activity paramActivity) {
 
 		int height = SystemUtils.getScreenHeight(paramActivity) - SystemUtils.getStatusBarHeight(paramActivity)
@@ -297,6 +292,95 @@ import java.io.File;
 		int height = SystemUtils.getScreenHeight(paramActivity) - SystemUtils.getStatusBarHeight(paramActivity)
 				- SystemUtils.getAppHeight(paramActivity);
 		return height != 0;
+	}
+
+	@TargetApi(14)
+	public static int getActionBarHeight(Context context) {
+		int result = 0;
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+			TypedValue tv = new TypedValue();
+			context.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true);
+			result = TypedValue.complexToDimensionPixelSize(tv.data, context.getResources().getDisplayMetrics());
+		}
+		return result;
+	}
+
+	public static boolean inPortarit(Resources res) {
+		return (res.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT);
+	}
+
+	@TargetApi(14)
+	public static int getNavigationBarHeight(Context context) {
+		Resources res = context.getResources();
+		int result = 0;
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+			if (hasNavigationBar(context)) {
+				String key;
+				if (inPortarit(res)) {
+					key = NAV_BAR_HEIGHT_RES_NAME;
+				} else {
+					key = NAV_BAR_HEIGHT_LANDSCAPE_RES_NAME;
+				}
+				return getInternalDimensionSize(res, key);
+			}
+		}
+		return result;
+	}
+
+	@TargetApi(14)
+	public static int getNavigationBarWidth(Context context) {
+		Resources res = context.getResources();
+		int result = 0;
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+			if (hasNavigationBar(context)) {
+				return getInternalDimensionSize(res, NAV_BAR_WIDTH_RES_NAME);
+			}
+		}
+		return result;
+	}
+
+	@TargetApi(14)
+	public static boolean hasNavigationBar(Context context) {
+		Resources res = context.getResources();
+		int resourceId = res.getIdentifier(SHOW_NAV_BAR_RES_NAME, "bool", "android");
+		if (resourceId != 0) {
+			boolean hasNav = res.getBoolean(resourceId);
+			// check override flag (see static block)
+			if ("1".equals(sNavBarOverride)) {
+				hasNav = false;
+			} else if ("0".equals(sNavBarOverride)) {
+				hasNav = true;
+			}
+			return hasNav;
+		} else { // fallback
+			return !ViewConfiguration.get(context).hasPermanentMenuKey();
+		}
+	}
+
+	public static int getStatusBarHeight(Context context) {
+		return getInternalDimensionSize(context.getResources(), STATUS_BAR_HEIGHT_RES_NAME);
+	}
+
+	// below actionbar, above softkeyboard
+	public static int getAppContentHeight(Activity paramActivity) {
+		return SystemUtils.getScreenHeight(paramActivity) - SystemUtils.getStatusBarHeight(paramActivity)
+				- getActionBarHeight(paramActivity) - SystemUtils.getKeyboardHeight(paramActivity);
+	}
+
+	// below status bar,include actionbar, above softkeyboard
+	public static int getAppHeight(Activity paramActivity) {
+		Rect localRect = new Rect();
+		paramActivity.getWindow().getDecorView().getWindowVisibleDisplayFrame(localRect);
+		return localRect.height();
+	}
+
+	private static int getInternalDimensionSize(Resources res, String key) {
+		int result = 0;
+		int resourceId = res.getIdentifier(key, "dimen", "android");
+		if (resourceId > 0) {
+			result = res.getDimensionPixelSize(resourceId);
+		}
+		return result;
 	}
 
 }

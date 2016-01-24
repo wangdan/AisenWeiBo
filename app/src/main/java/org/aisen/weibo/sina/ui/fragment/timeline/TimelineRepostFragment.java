@@ -1,9 +1,7 @@
 package org.aisen.weibo.sina.ui.fragment.timeline;
 
-import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +13,6 @@ import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.support.inject.ViewInject;
-import org.aisen.android.ui.fragment.ABaseFragment;
 import org.aisen.android.ui.fragment.ATabsFragment;
 import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
 import org.aisen.android.ui.fragment.itemview.DefDividerItemView;
@@ -25,14 +22,12 @@ import org.aisen.android.ui.fragment.itemview.NormalItemViewCreator;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
-import org.aisen.weibo.sina.sinasdk.bean.StatusComment;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContents;
 import org.aisen.weibo.sina.sinasdk.bean.StatusRepost;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
-import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.widget.AisenTextView;
 
@@ -68,7 +63,7 @@ public class TimelineRepostFragment extends ATimelineFragment implements ATabsFr
         statusContent = savedInstanceState == null ? (StatusContent) getArguments().getSerializable("status")
                                                    : (StatusContent) savedInstanceState.getSerializable("status");
 
-        bizFragment = BizFragment.getBizFragment(this);
+        bizFragment = BizFragment.createBizFragment(this);
     }
 
     @Override
@@ -113,29 +108,11 @@ public class TimelineRepostFragment extends ATimelineFragment implements ATabsFr
 
         // 如果还没有加载过数据，切且显示的是当前的页面
         if (getTaskCount(PAGING_TASK_ID) == 0) {
-            Fragment fragment = getPagerCurrentFragment();
-            if (fragment == null || fragment != this)
-                load = false;
+            load = AisenUtils.checkTabsFragmentCanRequestData(this);
         }
 
         if (load)
             new RepostTask(mode).execute();
-    }
-
-    private Fragment getPagerCurrentFragment() {
-        if (getActivity() == null)
-            return null;
-
-        ABaseFragment aFragment = null;
-        if (getActivity() instanceof SinaCommonActivity) {
-            aFragment = (ABaseFragment) getActivity().getFragmentManager().findFragmentByTag(SinaCommonActivity.FRAGMENT_TAG);
-        }
-        if (aFragment != null && aFragment instanceof ATabsFragment) {
-            ATabsFragment fragment = (ATabsFragment) aFragment;
-            return fragment.getCurrentFragment();
-        }
-
-        return null;
     }
 
     @Override

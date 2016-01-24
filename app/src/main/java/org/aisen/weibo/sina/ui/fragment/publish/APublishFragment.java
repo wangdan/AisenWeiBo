@@ -42,7 +42,6 @@ import org.aisen.android.common.utils.BitmapUtil;
 import org.aisen.android.common.utils.FileUtils;
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.common.utils.PhotoChoice;
-import org.aisen.android.common.utils.SystemBarUtils;
 import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.common.utils.Utils;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
@@ -609,7 +608,7 @@ public abstract class APublishFragment extends ABaseFragment
             transitioner.setDuration(0);
         }
 
-        int statusBarHeight = SystemBarUtils.getStatusBarHeight(getActivity());
+        int statusBarHeight = SystemUtils.getStatusBarHeight(getActivity());
 		emotionHeight = SystemUtils.getKeyboardHeight(getActivity());
 
         SystemUtils.hideSoftInput(editContent);

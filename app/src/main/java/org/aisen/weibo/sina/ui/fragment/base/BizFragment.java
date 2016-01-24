@@ -94,7 +94,7 @@ public class BizFragment extends ABaseFragment {
         return -1;
     }
 
-    public static BizFragment getBizFragment(ABaseFragment fragment) {
+    public static BizFragment createBizFragment(ABaseFragment fragment) {
         if (fragment != null && fragment.getActivity() != null) {
             BizFragment bizFragment = (BizFragment) fragment.getActivity().getFragmentManager().findFragmentByTag("org.aisen.android.ui.BizFragment");
 
@@ -110,7 +110,7 @@ public class BizFragment extends ABaseFragment {
         return null;
     }
 
-    public static BizFragment getBizFragment(Activity activity) {
+    public static BizFragment createBizFragment(Activity activity) {
         BizFragment bizFragment = (BizFragment) activity.getFragmentManager().findFragmentByTag("BizFragment");
         if (bizFragment == null) {
             bizFragment = new BizFragment();

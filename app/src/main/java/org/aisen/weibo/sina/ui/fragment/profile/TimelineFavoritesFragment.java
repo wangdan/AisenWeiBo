@@ -1,7 +1,6 @@
 package org.aisen.weibo.sina.ui.fragment.profile;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -29,6 +28,7 @@ import org.aisen.weibo.sina.sinasdk.bean.Favority;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContents;
 import org.aisen.weibo.sina.support.cache.FavoritesCacheUtility;
+import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 import org.aisen.weibo.sina.ui.fragment.timeline.ATimelineFragment;
 
@@ -116,29 +116,11 @@ public class TimelineFavoritesFragment extends ATimelineFragment
 
         // 如果还没有加载过数据，切且显示的是当前的页面
         if (getTaskCount(PAGING_TASK_ID) == 0) {
-            Fragment fragment = getPagerCurrentFragment();
-            if (fragment != null && fragment != this)
-                load = false;
+            load = AisenUtils.checkTabsFragmentCanRequestData(this);
         }
 
         if (load)
             new FavoritesTask(mode == RefreshMode.refresh ? RefreshMode.reset : mode).execute();
-    }
-
-    private Fragment getPagerCurrentFragment() {
-        if (getActivity() == null)
-            return null;
-
-        ABaseFragment aFragment = null;
-        if (getActivity() instanceof SinaCommonActivity) {
-            aFragment = (ABaseFragment) getActivity().getFragmentManager().findFragmentByTag(SinaCommonActivity.FRAGMENT_TAG);
-        }
-        if (aFragment != null && aFragment instanceof ATabsFragment) {
-            ATabsFragment fragment = (ATabsFragment) aFragment;
-            return fragment.getCurrentFragment();
-        }
-
-        return null;
     }
 
     @Override

@@ -74,10 +74,20 @@
         <item name="android:layout_marginBottom">@dimen/fab_spacing</item>
         <item name="android:layout_marginLeft">@dimen/fab_spacing</item>
         <item name="android:layout_marginRight">@dimen/fab_spacing</item>
+        <!--默认状态下FAB的阴影大小-->
         <item name="android:elevation" tools:ignore="NewApi">@dimen/fab_elevation</item>
+        <!--设置FAB的图标，Google建议符合Design设计的该图标大小为24dp-->
         <item name="android:src">@drawable/ic_drawer_at</item>
+        <!--设置FAB的大小，该属性有两个值，分别为normal和mini，对应的FAB大小分别为56dp和40dp-->
         <item name="fabSize">normal</item>
+        <!--该属性尤为重要，如果不设置0dp，那么在4.1的sdk上FAB会显示为正方形，而且在5.0以后的sdk没有阴影效果-->
         <item name="borderWidth">0dp</item>
+        <!--FAB的背景颜色-->
+        <!--<item name="backgroundTint"></item>-->
+        <!--FAB点击时的背景颜色-->
+        <!--<item name="rippleColor"></item>-->
+        <!--点击时候FAB的阴影大小-->
+        <!--<item name="pressedTranslationZ"></item>-->
     </style>
 
     <style name="Widget.MaterialSheetFab.Sheet" parent="">

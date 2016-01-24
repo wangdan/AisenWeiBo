@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.aisen.android.common.utils.KeyGenerator;
-import org.aisen.android.common.utils.SystemBarUtils;
+import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.fragment.ABaseFragment;
@@ -24,7 +24,7 @@ import org.aisen.weibo.sina.sinasdk.bean.PicUrls;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.support.bean.PhotosBean;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
-import org.aisen.weibo.sina.ui.fragment.comment.TimelineCommentFragment;
+import org.aisen.weibo.sina.ui.fragment.comment.TimelineDetailPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.picture.PictureFragment;
 import org.aisen.weibo.sina.ui.fragment.profile.PhotosFragment;
 
@@ -87,10 +87,10 @@ public class PhotosActivity extends BaseActivity implements OnPageChangeListener
 		txtStatus.setText(getStatus(index).getText());
 
         if (Build.VERSION.SDK_INT >= 19) {
-            layToolbar.setPadding(0, layToolbar.getPaddingTop() + SystemBarUtils.getStatusBarHeight(this), 0, 0);
+            layToolbar.setPadding(0, layToolbar.getPaddingTop() + SystemUtils.getStatusBarHeight(this), 0, 0);
 
-            if (SystemBarUtils.hasNavigationBar(this)) {
-                layStatus.setPadding(0, 0, 0, SystemBarUtils.getNavigationBarHeight(this));
+            if (SystemUtils.hasNavigationBar(this)) {
+                layStatus.setPadding(0, 0, 0, SystemUtils.getNavigationBarHeight(this));
             }
         }
 
@@ -127,7 +127,7 @@ public class PhotosActivity extends BaseActivity implements OnPageChangeListener
 	}
 	
 	void launchStatus(View v) {
-        TimelineCommentFragment.launch(this, getStatus(index));
+		TimelineDetailPagerFragment.launch(this, getStatus(index));
 	}
 	
 	protected Fragment newFragment(int position) {

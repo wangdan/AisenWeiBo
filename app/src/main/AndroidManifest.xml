@@ -57,6 +57,35 @@
                   android:screenOrientation="user"/>
         <!-- 相册详情 -->
         <activity android:name=".ui.activity.picture.PhotosActivity"/>
+
+        <!-- 发布服务 -->
+        <service android:name=".service.PublishService"/>
+        <!-- 离线服务 -->
+        <!--<service android:name="org.aisen.weibo.sina.sys.service.OfflineService"/>-->
+        <!-- 未读消息服务 -->
+        <service android:name=".service.UnreadService" android:exported="true">
+            <intent-filter>
+                <action android:name="org.aisen.weibo.sina.ACTION_GET"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </service>
+        <!-- 定时发布广播 -->
+        <receiver android:name=".receiver.TimingBroadcastReceiver">
+            <intent-filter>
+                <action android:name="org.aisen.weibo.sina.ACTION_TIMING_PUBLISH"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </receiver>
+        <!-- 开机自启动 -->
+        <receiver android:name=".receiver.BootCompletedReceiver"
+                  android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

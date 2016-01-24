@@ -205,7 +205,7 @@ public class CommentHeaderItemView extends ARecycleViewItemView<StatusComment> i
 
             if (imgPhoto != null) {
                 BitmapLoader.getInstance().display(fragment, AisenUtils.getUserPhoto(user), imgPhoto, ImageConfigUtils.getLargePhotoConfig());
-                BizFragment.getBizFragment(fragment).userShow(imgPhoto, user);
+                BizFragment.createBizFragment(fragment).userShow(imgPhoto, user);
             }
 
             AisenUtils.setImageVerified(imgVerified, user);
@@ -213,7 +213,7 @@ public class CommentHeaderItemView extends ARecycleViewItemView<StatusComment> i
         else {
             if (imgPhoto != null) {
                 imgPhoto.setImageDrawable(new ColorDrawable(Color.GRAY));
-                BizFragment.getBizFragment(fragment).userShow(imgPhoto, user);
+                BizFragment.createBizFragment(fragment).userShow(imgPhoto, user);
             }
 
             imgVerified.setVisibility(View.GONE);

@@ -14,7 +14,7 @@
             android:id="@+id/collapsingToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:background="#00000000"
-            android:fitsSystemWindows="true" android:minHeight="?attr/toolbarSize"
+            android:fitsSystemWindows="true" android:minHeight="?attr/actionBarSize"
             app:contentScrim="#00000000" app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
             app:statusBarScrim="#00000000">
 
@@ -84,12 +84,12 @@
 
                 <View
                     android:id="@+id/viewToolbarBg"
-                    android:layout_width="match_parent" android:layout_height="?attr/toolbarSize"
+                    android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
                     android:alpha="0" android:background="?attr/colorPrimary"/>
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
-                    android:layout_width="match_parent" android:layout_height="?attr/toolbarSize"
+                    android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
             </FrameLayout>
         </android.support.design.widget.CollapsingToolbarLayout>

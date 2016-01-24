@@ -42,7 +42,7 @@ public class TimelineCommentItemView extends ARecycleViewItemView<StatusComment>
         super(itemView);
 
         this.mFragment = fragment;
-        bizFragment = BizFragment.getBizFragment(fragment);
+        bizFragment = BizFragment.createBizFragment(fragment);
 
         firstTop = Utils.dip2px(16);
         normalTop = Utils.dip2px(8);

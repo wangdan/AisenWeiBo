@@ -1,7 +1,6 @@
 package org.aisen.weibo.sina.ui.fragment.profile;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -17,7 +16,6 @@ import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.support.paging.IPaging;
-import org.aisen.android.ui.fragment.ABaseFragment;
 import org.aisen.android.ui.fragment.AGridSwipyRefreshFragment;
 import org.aisen.android.ui.fragment.ATabsFragment;
 import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
@@ -37,7 +35,6 @@ import org.aisen.weibo.sina.support.bean.PhotosBean;
 import org.aisen.weibo.sina.support.compress.TimelineThumbBitmapCompress;
 import org.aisen.weibo.sina.support.paging.PhotosPaging;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
-import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 import org.aisen.weibo.sina.ui.activity.picture.PhotosActivity;
 import org.aisen.weibo.sina.ui.widget.GifHintImageView;
 import org.aisen.weibo.sina.ui.widget.TimelinePicsView;
@@ -153,29 +150,11 @@ public class PhotosFragment extends AGridSwipyRefreshFragment<PhotoBean, PhotosB
 
         // 如果还没有加载过数据，切且显示的是当前的页面
         if (getTaskCount(PAGING_TASK_ID) == 0) {
-            Fragment fragment = getPagerCurrentFragment();
-            if (fragment == null || fragment != this)
-                load = false;
+            load = AisenUtils.checkTabsFragmentCanRequestData(this);
         }
 
         if (load)
             new PhotosTask(mode == RefreshMode.refresh ? RefreshMode.reset : mode).execute();
-    }
-
-    private Fragment getPagerCurrentFragment() {
-        if (getActivity() == null)
-            return null;
-
-        ABaseFragment aFragment = null;
-        if (getActivity() instanceof SinaCommonActivity) {
-            aFragment = (ABaseFragment) getActivity().getFragmentManager().findFragmentByTag(SinaCommonActivity.FRAGMENT_TAG);
-        }
-        if (aFragment != null && aFragment instanceof ATabsFragment) {
-            ATabsFragment fragment = (ATabsFragment) aFragment;
-            return fragment.getCurrentFragment();
-        }
-
-        return null;
     }
 
     class PhotosTask extends APagingTask<Void, Void, PhotosBean> {

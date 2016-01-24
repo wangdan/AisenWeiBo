@@ -297,15 +297,15 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
     public boolean onOptionsItemSelected(MenuItem item) {
         // 关注
         if (item.getItemId() == R.id.create) {
-            BizFragment.getBizFragment(this).createFriendship(mUser, this);
+            BizFragment.createBizFragment(this).createFriendship(mUser, this);
         }
         // 取消关注
         else if (item.getItemId() == R.id.destory) {
-            BizFragment.getBizFragment(this).destoryFriendship(mUser, this);
+            BizFragment.createBizFragment(this).destoryFriendship(mUser, this);
         }
         // 移除粉丝
         else if (item.getItemId() == R.id.followDestory) {
-            BizFragment.getBizFragment(this).destoryFollower(mUser, this);
+            BizFragment.createBizFragment(this).destoryFollower(mUser, this);
         }
 
         return super.onOptionsItemSelected(item);

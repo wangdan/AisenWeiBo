@@ -186,7 +186,7 @@ public abstract class AFriendshipFragment extends AListSwipeRefreshFragment<WeiB
 				    requestDataDelay(AppSettings.REQUEST_DATA_DELAY);
 
 				if (getActivity() != null)
-					BizFragment.getBizFragment(AFriendshipFragment.this).remindSetCount(BizFragment.RemindType.follower);
+					BizFragment.createBizFragment(AFriendshipFragment.this).remindSetCount(BizFragment.RemindType.follower);
 			}
 		}
 		

@@ -34,6 +34,7 @@ public abstract class ATabsTabLayoutFragment<T extends TabItem> extends ATabsFra
 
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabLayout.setTabTextColors(Color.parseColor("#b3ffffff"), Color.WHITE);
+        tabLayout.setSelectedTabIndicatorColor(Color.WHITE);
         tabLayout.setupWithViewPager(getViewPager());
         new Handler().postDelayed(new Runnable() {
 
@@ -47,6 +48,10 @@ public abstract class ATabsTabLayoutFragment<T extends TabItem> extends ATabsFra
 
     public TabLayout getTablayout() {
         return mTabLayout;
+    }
+
+    protected void setTabLayout(TabLayout tabLayout) {
+        mTabLayout = tabLayout;
     }
 
 }

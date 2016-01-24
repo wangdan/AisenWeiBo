@@ -5,6 +5,8 @@
     <dimen name="spacing_micro">4dp</dimen>
     <dimen name="padding_normal">16dp</dimen>
 
+    <dimen name="tab_margin_left">8dip</dimen>
+
     <!--表情的大小-->
     <dimen name="emotion_size">18dip</dimen>
     <dimen name="publish_emotion_size">22dip</dimen>

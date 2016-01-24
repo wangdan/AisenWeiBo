@@ -108,7 +108,7 @@ public class SinaCommonActivity extends BaseActivity {
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayShowHomeEnabled(false);
 
-        BizFragment.getBizFragment(this);
+        BizFragment.createBizFragment(this);
     }
 
     @Override

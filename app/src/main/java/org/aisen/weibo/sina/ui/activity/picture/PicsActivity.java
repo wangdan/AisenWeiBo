@@ -12,7 +12,7 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.ViewGroup;
 
 import org.aisen.android.common.utils.KeyGenerator;
-import org.aisen.android.common.utils.SystemBarUtils;
+import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.fragment.adapter.FragmentPagerAdapter;
@@ -66,7 +66,7 @@ public class PicsActivity extends BaseActivity implements OnPageChangeListener {
 
         if (Build.VERSION.SDK_INT >= 19) {
             layToolbar.setPadding(layToolbar.getPaddingLeft(),
-                                        layToolbar.getPaddingTop() + SystemBarUtils.getStatusBarHeight(this),
+                                        layToolbar.getPaddingTop() + SystemUtils.getStatusBarHeight(this),
                                         layToolbar.getPaddingRight(),
                                         layToolbar.getPaddingBottom());
         }

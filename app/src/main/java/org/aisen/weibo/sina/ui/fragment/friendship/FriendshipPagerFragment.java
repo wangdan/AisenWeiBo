@@ -3,12 +3,10 @@ package org.aisen.weibo.sina.ui.fragment.friendship;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.aisen.android.common.utils.Utils;
 import org.aisen.android.support.bean.TabItem;
 import org.aisen.android.support.inject.InjectUtility;
 import org.aisen.android.ui.activity.basic.BaseActivity;
@@ -83,13 +81,6 @@ public class FriendshipPagerFragment extends ATabsTabLayoutFragment<TabItem> {
 
         outState.putSerializable("user", mUser);
         outState.putInt("index", type);
-    }
-
-    @Override
-    protected void setupTabLayout(Bundle savedInstanceSate, TabLayout tabLayout) {
-        super.setupTabLayout(savedInstanceSate, tabLayout);
-
-        tabLayout.setPadding(Utils.dip2px(16), tabLayout.getPaddingTop(), tabLayout.getPaddingRight(), tabLayout.getPaddingBottom());
     }
 
     @Override

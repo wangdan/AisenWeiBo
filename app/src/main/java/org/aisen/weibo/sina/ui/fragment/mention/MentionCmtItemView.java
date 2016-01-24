@@ -1,17 +1,20 @@
-package org.aisen.weibo.sina.ui.fragment.comment;
+package org.aisen.weibo.sina.ui.fragment.mention;
 
+import android.content.DialogInterface;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.component.bitmaploader.core.ImageConfig;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.fragment.ABaseFragment;
 import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
 import org.aisen.weibo.sina.R;
+import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.sinasdk.bean.StatusComment;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
@@ -19,14 +22,18 @@ import org.aisen.weibo.sina.support.compress.TimelineThumbBitmapCompress;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
+import org.aisen.weibo.sina.ui.fragment.comment.TimelineDetailPagerFragment;
 import org.aisen.weibo.sina.ui.widget.AisenTextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * 评论列表ItemView
- *
- * Created by wangdan on 16/1/7.
+ * Created by wangdan on 16/1/24.
  */
-public class CommentItemView extends ARecycleViewItemView<StatusComment> implements View.OnClickListener {
+public class MentionCmtItemView extends ARecycleViewItemView<StatusComment> implements View.OnClickListener {
+
+    public static final int RES_LAYOUT_ID = R.layout.item_mention_cmt;
 
     @ViewInject(id = R.id.imgPhoto)
     ImageView imgPhoto;
@@ -44,27 +51,28 @@ public class CommentItemView extends ARecycleViewItemView<StatusComment> impleme
     @ViewInject(id = R.id.txtReContent)
     AisenTextView txtReContent;
 
-//    @ViewInject(id = R.id.layStatus)
+    @ViewInject(id = R.id.layStatus)
     View layStatus;
-//    @ViewInject(id = R.id.layDivider)
+    @ViewInject(id = R.id.layDivider)
     View layDivider;
-//    @ViewInject(id = R.id.txtStatusContent)
+    @ViewInject(id = R.id.txtStatusContent)
     AisenTextView txtStatusContent;
-//    @ViewInject(id = R.id.img)
+    @ViewInject(id = R.id.img)
     ImageView imgView;
 
     @ViewInject(id = R.id.btnMenus)
     protected View btnMenus;
 
+    private BizFragment bizFragment;
     private ABaseFragment fragment;
 
-    private StatusContent mStatus;
-
-    public CommentItemView(ABaseFragment fragment, View itemView) {
+    public MentionCmtItemView(View itemView, ABaseFragment fragment, BizFragment bizFragment) {
         super(itemView);
 
         this.fragment = fragment;
+        this.bizFragment = bizFragment;
     }
+
 
     @Override
     public void onBindData(View convertView, StatusComment data, int position) {
@@ -73,11 +81,11 @@ public class CommentItemView extends ARecycleViewItemView<StatusComment> impleme
             BitmapLoader.getInstance().display(fragment,
                     AisenUtils.getUserPhoto(user),
                     imgPhoto, ImageConfigUtils.getLargePhotoConfig());
-            BizFragment.createBizFragment(fragment).userShow(imgPhoto, user);
+            bizFragment.userShow(imgPhoto, user);
             txtName.setText(AisenUtils.getUserScreenName(user));
         }
         else {
-            BizFragment.createBizFragment(fragment).userShow(imgPhoto, null);
+            bizFragment.userShow(imgPhoto, null);
             txtName.setText(R.string.error_cmts);
             imgPhoto.setImageResource(R.drawable.user_placeholder);
         }
@@ -101,10 +109,10 @@ public class CommentItemView extends ARecycleViewItemView<StatusComment> impleme
                 BitmapLoader.getInstance().display(fragment,
                         AisenUtils.getUserPhoto(data.getReply_comment().getUser()),
                         imgRePhoto, ImageConfigUtils.getLargePhotoConfig());
-                BizFragment.createBizFragment(fragment).userShow(imgRePhoto, data.getReply_comment().getUser());
+                bizFragment.userShow(imgRePhoto, data.getReply_comment().getUser());
             }
             else {
-                BizFragment.createBizFragment(fragment).userShow(imgRePhoto, null);
+                bizFragment.userShow(imgRePhoto, null);
             }
         }
         else {
@@ -112,7 +120,7 @@ public class CommentItemView extends ARecycleViewItemView<StatusComment> impleme
         }
 
         if (layStatus != null) {
-            if (data.getStatus() != null && mStatus == null) {
+            if (data.getStatus() != null) {
                 layDivider.setVisibility(View.VISIBLE);
                 layStatus.setVisibility(View.VISIBLE);
                 layStatus.setTag(data.getStatus());
@@ -152,7 +160,7 @@ public class CommentItemView extends ARecycleViewItemView<StatusComment> impleme
                     imgView.setVisibility(View.GONE);
                 }
 
-                BizFragment.createBizFragment(fragment).bindOnTouchListener(txtStatusContent);
+                bizFragment.bindOnTouchListener(txtStatusContent);
             }
             else {
                 layDivider.setVisibility(View.GONE);
@@ -168,7 +176,40 @@ public class CommentItemView extends ARecycleViewItemView<StatusComment> impleme
 
     @Override
     public void onClick(View v) {
+        if (v.getId() == R.id.layStatus) {
+            final StatusContent status = (StatusContent) v.getTag();
+            TimelineDetailPagerFragment.launch(fragment.getActivity(), status);
+        }
+        else if (v.getId() == R.id.btnMenus) {
+            final String[] commentMenuArr = GlobalContext.getInstance().getResources().getStringArray(R.array.cmt_menus);
+            final StatusComment comment = (StatusComment) v.getTag();
 
+            List<String> menuList = new ArrayList<String>();
+            // 转发
+            if (comment.getStatus() != null &&
+                    (comment.getUser() != null && !comment.getUser().getIdstr().equals(AppContext.getAccount().getUser().getIdstr())))
+                menuList.add(commentMenuArr[1]);
+            // 复制
+            menuList.add(commentMenuArr[0]);
+            // 删除
+            if (comment.getUser() != null && AppContext.getAccount().getUser().getIdstr().equals(comment.getUser().getIdstr()))
+                menuList.add(commentMenuArr[2]);
+
+            final String[] menus = new String[menuList.size()];
+            for (int i = 0; i < menuList.size(); i++)
+                menus[i] = menuList.get(i);
+
+            AisenUtils.showMenuDialog(fragment,
+                    v,
+                    menus,
+                    new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            AisenUtils.commentMenuSelected(fragment, menus[which], comment);
+                        }
+                    });
+        }
     }
 
 }

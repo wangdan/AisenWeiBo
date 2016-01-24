@@ -1,9 +1,12 @@
 package org.aisen.weibo.sina.ui.fragment.timeline;
 
+import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 
+import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.support.paging.IPaging;
@@ -19,7 +22,9 @@ import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContents;
 import org.aisen.weibo.sina.support.paging.TimelinePaging;
 import org.aisen.weibo.sina.ui.fragment.comment.TimelineDetailPagerFragment;
+import org.aisen.weibo.sina.ui.fragment.mention.MentionTimelineFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,6 +33,23 @@ import java.util.List;
  * Created by wangdan on 16/1/2.
  */
 public abstract class ATimelineFragment extends ARecycleViewSwipeRefreshFragment<StatusContent, StatusContents> {
+
+    @Override
+    protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
+        super.layoutInit(inflater, savedInstanceSate);
+
+        if (this instanceof TimelineDefFragment || this instanceof TimelineGroupsFragment ||
+                this instanceof MentionTimelineFragment) {
+            setViewPadding(getEmptyLayout());
+            setViewPadding(getLoadFailureLayout());
+            setViewPadding(getLoadingLayout());
+        }
+    }
+    
+    private void setViewPadding(View viewGroup) {
+        viewGroup.setPadding(viewGroup.getPaddingLeft(), viewGroup.getPaddingTop(),
+                viewGroup.getPaddingRight(), SystemUtils.getNavigationBarHeight(getActivity()));
+    }
 
     @Override
     public IItemViewCreator<StatusContent> configItemViewCreator() {
@@ -101,6 +123,28 @@ public abstract class ATimelineFragment extends ARecycleViewSwipeRefreshFragment
             params.addParameter("count", String.valueOf(AppSettings.getTimelineCount()));
 
             return getStatusContents(params);
+        }
+
+        @Override
+        protected boolean handleResult(RefreshMode mode, List<StatusContent> datas) {
+            // 如果是重置或者刷新数据，加载数据大于分页大小，则清空之前的数据
+            if (mode == RefreshMode.refresh) {
+                // 目前微博加载分页大小是默认大小
+                if (datas.size() >= AppSettings.getTimelineCount()) {
+                    setAdapterItems(new ArrayList<StatusContent>());
+                    return true;
+                }
+            }
+
+            return super.handleResult(mode, datas);
+        }
+
+        @Override
+        protected void onFailure(TaskException exception) {
+            super.onFailure(exception);
+
+            if (!isContentEmpty())
+                showMessage(exception.getMessage());
         }
 
         public abstract StatusContents getStatusContents(Params params) throws TaskException;
