@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.aisen.weibo.sina.ui.widget.KitkatViewGroup xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent"
+                                                android:background="?attr/colorPrimary" android:orientation="vertical">
+
+    <include
+        layout="@layout/comm_lay_toolbar" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent" android:layout_height="match_parent">
+
+        <WebView
+            android:id="@+id/webview" android:layout_width="match_parent" android:layout_height="match_parent"/>
+
+        <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
+            android:id="@+id/progress" style="@style/GNowProgressBar"
+            android:layout_width="match_parent" android:layout_height="10dip" android:indeterminate="true"/>
+    </RelativeLayout>
+</org.aisen.weibo.sina.ui.widget.KitkatViewGroup>

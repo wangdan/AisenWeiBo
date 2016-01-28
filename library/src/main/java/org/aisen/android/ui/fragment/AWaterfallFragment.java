@@ -75,7 +75,7 @@ public abstract class AWaterfallFragment<T extends Serializable, Ts extends Seri
     }
 
     @Override
-    IPagingAdapter<T> newAdapter(ArrayList<T> datas) {
+    protected IPagingAdapter<T> newAdapter(ArrayList<T> datas) {
         return new BasicListAdapter<>(this, datas);
     }
 

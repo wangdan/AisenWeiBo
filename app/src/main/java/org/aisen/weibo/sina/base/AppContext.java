@@ -13,6 +13,10 @@ public class AppContext {
         return mAccount != null;
     }
 
+    public static void logout() {
+        mAccount = null;
+    }
+
     public static void setAccount(AccountBean account) {
         mAccount = account;
     }

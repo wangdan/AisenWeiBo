@@ -3,8 +3,6 @@
     <!--主题颜色-->
     <attr name="themeColor" format="reference|color"/>
     <attr name="themeStatusbarColor" format="reference|color"/>
-    <!--状态栏颜色-->
-    <attr name="statusbarColor" format="reference|color"/>
     <!--是否适配Windows-->
     <attr name="fitSystemWindows" format="boolean"/>
     <!--Draw的Header高度-->

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/title_ad_common">
+        <Preference
+            android:key="pAccount" android:title="@string/settings_manage_account"/>
+
+        <Preference
+            android:key="pNotification" android:title="@string/settings_notify"/>
+
+        <Preference
+            android:key="pFlow" android:title="@string/settings_flow"/>
+
+        <Preference
+            android:key="pOffline" android:title="@string/settings_offline"/>
+
+        <!--<Preference-->
+            <!--android:key="pGroupsOffline" android:title="@string/settings_offline"/>-->
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/title_ad_habit">
+        <!--<CheckBoxPreference-->
+            <!--android:defaultValue="false" android:key="pDrawlayoutFull" android:title="@string/settings_drawlayout_full"/>-->
+
+        <CheckBoxPreference
+            android:defaultValue="false" android:key="pSendDelay" android:summary="@string/settings_publish_delay_summary"
+            android:title="@string/settings_publish_delay"/>
+
+        <!--<CheckBoxPreference android:key="pTabBarAutoHide" android:title="@string/settings_tabbar_auto_hide" android:defaultValue="false"-->
+        <!--android:summary="@string/settings_tabbar_auto_hide_summary" />-->
+
+        <CheckBoxPreference
+            android:defaultValue="true" android:key="pInnerBrowser" android:title="@string/settings_inner_browser"/>
+
+        <CheckBoxPreference
+            android:defaultValue="true" android:key="pAppResident" android:title="@string/settings_app_resident"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/title_rom_adaptive">
+
+        <CheckBoxPreference
+            android:defaultValue="false" android:key="pRotatePic" android:summary="@string/settings_pic_rotate_summary" android:title="@string/settings_pic_rotate"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>

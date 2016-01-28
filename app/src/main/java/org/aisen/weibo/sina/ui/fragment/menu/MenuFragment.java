@@ -1,20 +1,32 @@
 package org.aisen.weibo.sina.ui.fragment.menu;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.aisen.android.common.md.MDHelper;
+import org.aisen.android.network.task.TaskException;
+import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.fragment.ABaseFragment;
 import org.aisen.weibo.sina.R;
+import org.aisen.weibo.sina.base.AppContext;
+import org.aisen.weibo.sina.service.UnreadService;
+import org.aisen.weibo.sina.service.publisher.PublishManager;
+import org.aisen.weibo.sina.support.sqlit.PublishDB;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,17 +39,27 @@ import java.util.List;
  */
 public class MenuFragment extends ABaseFragment {
 
+    public static final int MENU_MAIN = 1;
+    public static final int MENU_MENTION = 2;
+    public static final int MENU_CMT = 3;
+    public static final int MENU_FRIENDSHIP = 4;
+    public static final int MENU_MD = 10;
+    public static final int MENU_HOT_STATUS = 11;
+    public static final int MENU_DRAT = 6;
+    public static final int MENU_SETTINGS = 5;
+    public static final int MNU_PROFIL = 0;
+
     public static MenuFragment newInstance() {
         return new MenuFragment();
     }
 
-    @ViewInject(id = R.id.layHeader)
-    View mHeaderView;
+    private OnMenuCallback onMenuCallback;
+    private int selectedId;
+
     @ViewInject(id = R.id.layMenuItems)
     LinearLayout layMenuItems;
 
-    private OnMenuCallback onMenuCallback;
-    private int selectedId;
+    private MenuHeaderView menuHeaderView;
 
     @Override
     public int inflateContentView() {
@@ -57,8 +79,15 @@ public class MenuFragment extends ABaseFragment {
     protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
         super.layoutInit(inflater, savedInstanceSate);
 
-        setupHeader(savedInstanceSate);
         setupMenuItems(savedInstanceSate);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        menuHeaderView = new MenuHeaderView(this);
+        menuHeaderView.setupHeaderView((FrameLayout) findViewById(R.id.layHeaderContainer));
     }
 
     @Override
@@ -66,11 +95,6 @@ public class MenuFragment extends ABaseFragment {
         super.onSaveInstanceState(outState);
 
         outState.putInt("selectedId", selectedId);
-    }
-
-    private void setupHeader(Bundle savedInstanceSate) {
-        ImageView imgCover = (ImageView) mHeaderView.findViewById(R.id.imgCover);
-        ImageView imgPhoto = (ImageView) mHeaderView.findViewById(R.id.imgPhoto);
     }
 
     private void setupMenuItems(Bundle savedInstanceSate) {
@@ -141,7 +165,7 @@ public class MenuFragment extends ABaseFragment {
         }
     }
 
-    private void setSelectedMenuItem(int itemId) {
+    public void setSelectedMenuItem(int itemId) {
         int selectedColor = MDHelper.resolveColor(getActivity(), R.attr.colorPrimary, getResources().getColor(R.color.menu_color));
         int defColor = getResources().getColor(R.color.menu_color);
 
@@ -180,16 +204,88 @@ public class MenuFragment extends ABaseFragment {
     public List<NavMenuItem> generateMenuItems() {
         List<NavMenuItem> items = new ArrayList<>();
 
-        items.add(new NavMenuItem(1, R.drawable.ic_view_day_grey600_24dp, R.string.menu_sinaweibo));
-        items.add(new NavMenuItem(2, R.drawable.ic_drawer_at, R.string.draw_message, R.string.mention_title));
-        items.add(new NavMenuItem(3, R.drawable.ic_question_answer_grey600_24dp, R.string.draw_comment));
-        items.add(new NavMenuItem(4, R.drawable.ic_email_grey600_24dp, R.string.draw_private_msg));
+        items.add(new NavMenuItem(MENU_MAIN, R.drawable.ic_view_day_grey600_24dp, R.string.menu_sinaweibo));
+        items.add(new NavMenuItem(MENU_MENTION, R.drawable.ic_drawer_at, R.string.draw_message, R.string.mention_title));
+        items.add(new NavMenuItem(MENU_CMT, R.drawable.ic_question_answer_grey600_24dp, R.string.draw_comment));
+        items.add(new NavMenuItem(MENU_MD, R.drawable.ic_email_grey600_24dp, R.string.draw_private_msg));
         items.add(new NavMenuSeparator());
-        items.add(new NavMenuItem(5, -1, R.string.draw_hot_statuses));
-        items.add(new NavMenuItem(6, -1, R.string.draw_draft));
-        items.add(new NavMenuItem(7, -1, R.string.draw_settings));
+        items.add(new NavMenuItem(MENU_HOT_STATUS, -1, R.string.draw_hot_statuses));
+        items.add(new NavMenuItem(MENU_DRAT, -1, R.string.draw_draft));
+        items.add(new NavMenuItem(MENU_SETTINGS, -1, R.string.draw_settings));
 
         return items;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        menuHeaderView.setUnreadFollowers();
+
+        new RefreshDraftTask().execute();
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(UnreadService.ACTION_UNREAD_CHANGED);
+        filter.addAction(PublishManager.ACTION_PUBLISH_CHANNGED);
+        getActivity().registerReceiver(receiver, filter);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        getActivity().unregisterReceiver(receiver);
+    }
+
+    public boolean backToMain() {
+        if (selectedId != MENU_MAIN) {
+            setSelectedMenuItem(MENU_MAIN);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    BroadcastReceiver receiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null && !TextUtils.isEmpty(intent.getAction())) {
+                if (UnreadService.ACTION_UNREAD_CHANGED.equals(intent.getAction())) {
+                    menuHeaderView.setUnreadFollowers();
+                }
+                else if (PublishManager.ACTION_PUBLISH_CHANNGED.equals(intent.getAction())) {
+                    new RefreshDraftTask().execute();
+                }
+            }
+        }
+
+    };
+
+    class RefreshDraftTask extends WorkTask<Void, Void, Integer> {
+
+        @Override
+        public Integer workInBackground(Void... params) throws TaskException {
+            return PublishDB.getPublishList(AppContext.getAccount().getUser()).size();
+        }
+
+        @Override
+        protected void onSuccess(Integer result) {
+            super.onSuccess(result);
+
+            // 刷新草稿的显示
+            refreshDraftMenu(result);
+        }
+
+    }
+
+    private void refreshDraftMenu(int count) {
+        View viewItem = layMenuItems.findViewById(Integer.parseInt("6"));
+
+        TextView txtCounter = (TextView) viewItem.findViewById(R.id.txtCounter);
+        txtCounter.setVisibility(count == 0 ? View.GONE : View.VISIBLE);
+        txtCounter.setText(String.valueOf(count));
     }
 
     public static class NavMenuItem implements Serializable {

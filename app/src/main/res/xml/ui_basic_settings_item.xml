@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/category_color_theme_item">
+
+        <Preference
+            android:key="pTheme" android:title="@string/settings_md_colors"/>
+
+        <!--<Preference android:key="pThemeCustom" android:title="@string/settings_custom_colors" />-->
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/category_read">
+        <org.aisen.weibo.sina.ui.widget.AisenListPreference
+            android:defaultValue="4" android:dialogTitle="@string/settings_text_size" android:entries="@array/txtSizeNum"
+            android:entryValues="@array/prefValues" android:key="pTextSize" android:title="@string/settings_text_size"/>
+
+        <!-- <org.aisen.weibo.sina.ui.widget.AisenListPreference android:key="pPicLargeMode" android:entries="@array/picLargeMode" android:entryValues="@array/prefValues"
+			android:dialogTitle="@string/settings_dt_pic_style" android:title="@string/settings_pic_style" android:defaultValue="1" /> -->
+
+        <!-- <org.aisen.weibo.sina.ui.widget.AisenListPreference android:key="pListViewAnim" android:entries="@array/pListViewAnim" android:entryValues="@array/prefValues"
+			android:dialogTitle="设置列表动画" android:title="列表动画" android:defaultValue="0" /> -->
+
+        <CheckBoxPreference
+            android:defaultValue="true" android:key="pShowRemark" android:title="@string/settings_remark"/>
+
+        <CheckBoxPreference
+            android:defaultValue="false" android:key="pLoadOrigPic" android:summary="@string/settings_load_origpic_summary"
+            android:title="@string/settings_load_origpic"/>
+
+        <!-- <CheckBoxPreference android:key="pFastScrollBar" android:title="列表快速滚动条" android:defaultValue="true"/> -->
+
+        <!-- <CheckBoxPreference android:key="pShowDefGroup" android:title="@string/settings_def_group" android:defaultValue="true"
+            android:summary="@string/settings_def_group_summary" /> -->
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/category_operation">
+        <org.aisen.weibo.sina.ui.widget.AisenListPreference
+            android:defaultValue="0" android:dialogTitle="@string/settings_dt_swipeback_edgemode" android:entries="@array/swipebackEdgeMode"
+            android:entryValues="@array/prefValues" android:key="pSwipebackEdgeMode" android:title="@string/settings_swipeback_edgemode"/>
+
+        <org.aisen.weibo.sina.ui.widget.AisenListPreference
+            android:defaultValue="1" android:dialogTitle="@string/settings_fab_type" android:entries="@array/fabTypes"
+            android:entryValues="@array/prefValues" android:key="pFabType" android:title="@string/settings_fab_type"/>
+
+        <org.aisen.weibo.sina.ui.widget.AisenListPreference
+            android:defaultValue="1" android:dialogTitle="@string/settings_fab_position" android:entries="@array/fabPosition"
+            android:entryValues="@array/prefValues" android:key="pFabPosition" android:title="@string/settings_fab_position"/>
+
+        <CheckBoxPreference
+            android:defaultValue="true" android:key="pAutoRefresh"
+            android:summary="@string/settings_list_auto_update_summary" android:title="@string/settings_list_auto_update"/>
+
+        <!-- <org.aisen.weibo.sina.ui.widget.AisenListPreference android:key="pRefreshViewType" android:entries="@array/pRefreshViewType" android:entryValues="@array/prefValues"
+           android:dialogTitle="@string/settings_dt_list_widget" android:title="@string/settings_list_widget" android:defaultValue="0" /> -->
+
+        <!--<CheckBoxPreference android:key="pDoubleClickToRefresh" android:title="@string/settings_doubleclick_update" android:defaultValue="true"-->
+        <!--android:summary="@string/settings_doubleclick_update_summary" />-->
+
+        <CheckBoxPreference
+            android:defaultValue="true" android:key="pSendVibrate" android:summary="@string/settings_vibrate_summary"
+            android:title="@string/settings_vibrate"/>
+    </PreferenceCategory>
+
+    <!--<PreferenceCategory android:title="@string/category_feedback">-->
+    <!-- <CheckBoxPreference android:key="pRefreshSound" android:title="@string/settings_sound" android:defaultValue="false"
+         android:summary="@string/settings_sound_summary" /> -->
+
+    <!--<CheckBoxPreference android:key="pListAnim" android:title="@string/settings_list_anim" android:defaultValue="true"-->
+    <!--android:summary="@string/settings_list_anim_summary" />-->
+
+
+    <!--</PreferenceCategory>-->
+
+    <PreferenceCategory android:title="@string/category_other">
+        <Preference
+            android:key="pPicSavePath" android:summary="/sdcard/" android:title="@string/settings_pic_path"/>
+
+        <Preference
+            android:key="pClearRecentMention" android:title="@string/settings_mention_history"/>
+
+        <Preference android:key="pClearCache" android:title="@string/settings_clear_cache" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -34,7 +34,7 @@ public abstract class AGridFragment<T extends Serializable, Ts extends Serializa
     }
 
     @Override
-    IPagingAdapter<T> newAdapter(ArrayList<T> datas) {
+    protected IPagingAdapter<T> newAdapter(ArrayList<T> datas) {
         return new BasicListAdapter<>(this, datas);
     }
 

@@ -4,6 +4,7 @@
 
     <string name="draw_open">打开</string>
     <string name="draw_close">关闭</string>
+    <string name="hint_exit">再按一次退出</string>
 
     <string name="menu_sinaweibo">首页</string>
     <string name="menu_mention">提及</string>

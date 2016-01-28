@@ -243,7 +243,7 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 	 * @param datas
 	 * @return
 	 */
-	abstract IPagingAdapter<T> newAdapter(ArrayList<T> datas);
+	abstract protected IPagingAdapter<T> newAdapter(ArrayList<T> datas);
 
 	/**
 	 * 绑定Adapter到RefreshView

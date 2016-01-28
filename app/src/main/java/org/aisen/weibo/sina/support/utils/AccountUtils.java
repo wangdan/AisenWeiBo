@@ -14,7 +14,15 @@ import java.util.List;
 public class AccountUtils {
 
     public static void newAccount(AccountBean account) {
-        SinaDB.getDB().insertOrReplace(null, account);
+        SinaDB.getDB().insert(null, account);
+    }
+
+    public static List<AccountBean> queryAccount() {
+        return SinaDB.getDB().select(null, AccountBean.class);
+    }
+
+    public static void remove(String id) {
+        SinaDB.getDB().deleteById(null, AccountBean.class, id);
     }
 
     public static void setLogedinAccount(AccountBean account) {

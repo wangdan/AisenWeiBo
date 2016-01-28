@@ -221,7 +221,7 @@ public class BizFragment extends ABaseFragment {
 //			FragmentArgs args = new FragmentArgs();
 //			args.add(UserTimelineFragment.KEY_USER, user);
 //			args.add(ABaseFragment.SHOW_ACTIONBAR, true);
-//			FragmentContainerActivity.launch(BizFragment.this, UserTimelineFragment.class, args);
+//			SinaCommonActivity.launch(BizFragment.this, UserTimelineFragment.class, args);
         }
     };
 

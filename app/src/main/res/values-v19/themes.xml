@@ -6,7 +6,7 @@
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:windowTranslucentStatus">true</item>
         <!--4.4的系统，状态栏有条黑色，修改为同ActionBar一样的颜色-->
-        <item name="statusbarColor">@color/md_teal_500</item>
+        <item name="themeStatusbarColor">@color/md_teal_500</item>
         <!--在4.4的时候，适配Windows-->
         <item name="fitSystemWindows">true</item>
         <item name="menuHeaderHeight">185dip</item>

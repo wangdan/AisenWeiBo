@@ -7,6 +7,33 @@
 
     <dimen name="tab_margin_left">8dip</dimen>
 
+    <!-- 主要文本字体大小 -->
+    <dimen name="textsize_primary">16sp</dimen>
+    <!-- 次要文本字体大小 -->
+    <dimen name="textsize_secondary">14sp</dimen>
+    <!-- 文本图片左内边距 -->
+    <dimen name="insert_left_text_with_icon">72dip</dimen>
+    <!-- 左侧图片大小 -->
+    <dimen name="lefticon_size">48dip</dimen>
+    <!-- 右侧图片大小 -->
+    <dimen name="righticon_size">22dip</dimen>
+    <dimen name="righticon_padding">16dip</dimen>
+
+    <!--DrawLayoutHeader-->
+    <dimen name="material_drawer_account_header_height">148dp</dimen>
+    <dimen name="material_drawer_account_header_height_compact">72dp</dimen>
+    <dimen name="material_drawer_account_header_horizontal_top">16dp</dimen>
+    <dimen name="material_drawer_account_header_horizontal_bottom">4dp</dimen>
+    <dimen name="material_drawer_account_header_selected">64dp</dimen>
+    <dimen name="material_drawer_account_header_secondary">40dp</dimen>
+    <dimen name="material_drawer_account_header_compact">56dp</dimen>
+    <dimen name="material_drawer_account_header_text">14sp</dimen>
+    <dimen name="material_drawer_account_header_dropdown">22dp</dimen>
+    <dimen name="material_drawer_account_header_dropdown_padding">5dp</dimen>
+    <dimen name="material_drawer_account_header_dropdown_margin_bottom">14dp</dimen>
+    <dimen name="material_drawer_vertical_padding">16dp</dimen>
+    <dimen name="material_drawer_padding">8dp</dimen>
+
     <!--表情的大小-->
     <dimen name="emotion_size">18dip</dimen>
     <dimen name="publish_emotion_size">22dip</dimen>

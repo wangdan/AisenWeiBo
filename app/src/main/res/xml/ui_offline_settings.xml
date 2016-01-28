@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+        android:key="pOfflineGroups" android:title="@string/offline_groups"/>
+
+    <org.aisen.weibo.sina.ui.widget.AisenListPreference
+        android:defaultValue="0" android:dialogTitle="@string/offline_status_size" android:entries="@array/offlineTimelineCount"
+        android:entryValues="@array/prefValues" android:key="pOfflineStatusSize" android:title="@string/offline_status_size"/>
+
+    <CheckBoxPreference
+        android:defaultValue="true" android:key="pLoadMidPicture" android:summary="@string/settings_load_midpic_summary"
+        android:title="@string/settings_load_midpic"/>
+
+    <org.aisen.weibo.sina.ui.widget.AisenListPreference
+        android:defaultValue="2" android:dialogTitle="@string/offline_pic_task_count_title" android:entries="@array/picTaskCount"
+        android:entryValues="@array/prefValues" android:key="pOfflinePicTaskCount" android:title="@string/offline_pic_task_count_title"/>
+
+    <!--<ListPreference-->
+        <!--android:defaultValue="1" android:dialogTitle="@string/offline_pic_mode" android:entries="@array/offline_pic_mode_items"-->
+        <!--android:entryValues="@array/prefValues" android:key="pOfflinePicMode" android:title="@string/offline_pic_mode"/>-->
+
+    <!--<CheckBoxPreference-->
+    <!--android:defaultValue="true" android:key="pOfflinePicEncrypt" android:summary="@string/offline_pic_encrypt_summary"-->
+    <!--android:title="@string/offline_pic_encrypt"/>-->
+
+    <!--<Preference-->
+    <!--android:key="pOfflineCacheClear" android:title="@string/offline_clear_cache"/>-->
+
+
+</PreferenceScreen>

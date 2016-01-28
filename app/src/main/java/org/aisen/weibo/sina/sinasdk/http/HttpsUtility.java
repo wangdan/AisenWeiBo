@@ -20,6 +20,8 @@ import org.aisen.android.network.http.IHttpUtility;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.http.ParamsUtil;
 import org.aisen.android.network.task.TaskException;
+import org.aisen.weibo.sina.service.OfflineService;
+import org.aisen.weibo.sina.sinasdk.bean.BaseSinaBean;
 
 import java.io.File;
 import java.io.IOException;
@@ -157,9 +159,27 @@ public class HttpsUtility implements IHttpUtility {
 					if (responseCls.getSimpleName().equals("String"))
 						return (T) responseStr;
 
-					return JSON.parseObject(responseStr, responseCls);
+					T result = JSON.parseObject(responseStr, responseCls);
+
+					if (result instanceof OfflineService.OfflineLength) {
+						OfflineService.OfflineLength iLength = (OfflineService.OfflineLength) result;
+						iLength.setLength(responseStr.length());
+					}
+
+					if (result instanceof BaseSinaBean) {
+						BaseSinaBean sinaBean = (BaseSinaBean) result;
+						if (sinaBean.getError_code() > 0 && !TextUtils.isEmpty(sinaBean.getError())) {
+							throw new TaskException(String.valueOf(sinaBean.getError_code()), sinaBean.getError());
+						}
+					}
+
+					return result;
 				} catch (Exception e) {
 					Logger.printExc(HttpsUtility.class, e);
+
+					if (e instanceof TaskException) {
+						throw e;
+					}
 
 					throw new TaskException(TaskException.TaskError.resultIllegal.toString());
 				}

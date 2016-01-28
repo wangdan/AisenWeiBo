@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <CheckBoxPreference android:key="pNotificationEnable" android:title="@string/title_notification_enable" android:defaultValue="true" />
+
+    <PreferenceCategory android:title="@string/category_general">
+    	<org.aisen.weibo.sina.ui.widget.AisenListPreference android:key="pInterval" android:entries="@array/txtUnread" android:entryValues="@array/prefValues"
+			android:dialogTitle="@string/settings_dt_notify_interval" android:title="@string/settings_dt_notify_interval" android:defaultValue="0" />
+    	
+    	<CheckBoxPreference android:key="pNightClose" android:title="@string/settings_bother" android:defaultValue="true"
+    	    android:summary="@string/settings_bother_summary" />
+    	
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="@string/category_notify_type">
+        <CheckBoxPreference android:key="pStatusMention" android:title="@string/settings_status_mention" android:defaultValue="true" />
+        
+        <CheckBoxPreference android:key="pCommentMention" android:title="@string/settings_cmt_mention" android:defaultValue="true" />
+        
+        <CheckBoxPreference android:key="pFollower" android:title="@string/settings_followers_notify" android:defaultValue="true" />
+        
+        <CheckBoxPreference android:key="pComment" android:title="@string/settings_cmt_notify" android:defaultValue="true" />
+        
+        <CheckBoxPreference android:key="pDm" android:title="@string/settings_dm_notify" android:defaultValue="true" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="@string/category_notify_feedback">
+        <CheckBoxPreference android:key="pNotifySound" android:title="@string/settings_notify_sound" android:defaultValue="true" />
+        
+        <CheckBoxPreference android:key="pNotifyVibrate" android:title="@string/settings_notify_virate" android:defaultValue="true" />
+        
+        <CheckBoxPreference android:key="pNotifyLED" android:title="@string/settings_notify_led" android:defaultValue="true" />
+    </PreferenceCategory>
+    
+</PreferenceScreen>

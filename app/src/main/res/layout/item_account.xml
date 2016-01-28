@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+              android:layout_height="wrap_content" android:orientation="vertical"
+              android:paddingLeft="16dip" android:paddingTop="16dip">
+
+    <LinearLayout android:paddingRight="16dip" android:paddingBottom="16dip"
+                  android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dip" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="@dimen/lefticon_size" android:layout_height="@dimen/lefticon_size">
+
+                <org.aisen.android.ui.widget.CircleImageView
+                    android:id="@+id/imgPhoto" android:layout_width="match_parent" android:layout_height="match_parent" android:scaleType="centerCrop" android:src="@drawable/a_icon_b"
+                    app:border_color="@color/comm_white" app:border_width="1dp"/>
+
+                <org.aisen.android.ui.widget.CircleImageView
+                    android:id="@+id/viewCover" android:layout_width="match_parent" android:layout_height="match_parent"
+                    android:alpha="0.5" android:visibility="gone"/>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/insert_left_text_with_icon"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtName" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dip"
+                    android:ellipsize="end" android:singleLine="true" android:text="名字"
+                    android:textColor="?android:attr/textColorPrimary" android:textSize="@dimen/textsize_primary"/>
+
+                <TextView
+                    android:id="@+id/txtDesc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:ellipsize="end" android:singleLine="true"
+                    android:text="我是一段很长的描述" android:textColor="?android:attr/textColorSecondary"
+                    android:textSize="@dimen/textsize_secondary"/>
+
+                <TextView
+                    android:id="@+id/txtTokenInfo" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginTop="8dip" android:text="账号过期了" android:textColor="@color/comm_red"
+                    android:textSize="@dimen/textsize_secondary"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/btnRight"
+            android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingLeft="@dimen/righticon_padding">
+
+            <ImageView
+                android:layout_width="@dimen/righticon_size"
+                android:layout_height="@dimen/righticon_size" android:background="?android:attr/selectableItemBackground"
+                android:duplicateParentState="true"
+                android:src="@drawable/ic_delete_dark"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider" android:layout_width="match_parent"
+        android:layout_height="1.0dip" android:layout_marginLeft="72dip"
+        android:background="@drawable/divider_horizontal_bright_opaque"/>
+
+</LinearLayout>

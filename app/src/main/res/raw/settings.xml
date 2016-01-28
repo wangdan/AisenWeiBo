@@ -130,7 +130,7 @@
 
 	<setting type="activity_helper">
 		<des>Activity帮助类</des>
-		<value>org.aisen.weibo.sina.ui.activity.basic.AisenActivityHelper</value>
+		<value>org.aisen.weibo.sina.ui.activity.base.AisenActivityHelper</value>
 	</setting>
 
     <setting type="weico_key">

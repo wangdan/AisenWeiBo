@@ -21,7 +21,7 @@ import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.support.bean.PublishBean;
 import org.aisen.weibo.sina.support.bean.PublishType;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
-import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
+import org.aisen.weibo.sina.ui.activity.base.AisenActivityHelper;
 import org.aisen.weibo.sina.ui.fragment.publish.APublishFragment;
 import org.aisen.weibo.sina.ui.fragment.publish.PublishCommentReplyFragment;
 import org.aisen.weibo.sina.ui.fragment.publish.PublishStatusCommentFragment;
@@ -40,7 +40,7 @@ import org.aisen.weibo.sina.ui.fragment.publish.PublishStatusRepostFragment;
  * @author wangdan
  *
  */
-public class PublishActivity extends BaseActivity {
+public class PublishActivity extends BaseActivity implements AisenActivityHelper.EnableSwipeback {
 
 	/**
 	 * 发布微博
@@ -195,7 +195,7 @@ public class PublishActivity extends BaseActivity {
             if (!TextUtils.isEmpty(action)) {
                 if (action.equals(Intent.ACTION_SEND) && !TextUtils.isEmpty(type)) {
                 	if (!AppContext.isLoggedIn()) {
-                		AccountFragment.launch(this);
+//                		AccountFragment.launch(this);
                 		
                 		showMessage(R.string.publish_please_login);
                 		
@@ -309,5 +309,10 @@ public class PublishActivity extends BaseActivity {
     protected int configTheme() {
         return ThemeUtils.themeArr[AppSettings.getThemeColor()][0];
     }
+
+	@Override
+	public boolean canSwipe() {
+		return false;
+	}
 
 }

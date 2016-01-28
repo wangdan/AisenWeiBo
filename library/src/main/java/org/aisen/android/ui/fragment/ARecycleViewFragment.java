@@ -62,7 +62,7 @@ public abstract class ARecycleViewFragment<T extends Serializable, Ts extends Se
     }
 
     @Override
-    IPagingAdapter<T> newAdapter(ArrayList<T> datas) {
+    protected IPagingAdapter<T> newAdapter(ArrayList<T> datas) {
         return new BasicRecycleViewAdapter<>(this, datas);
     }
 

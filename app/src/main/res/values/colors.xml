@@ -25,6 +25,8 @@
 
     <color name="menu_color">#ff676767</color>
 
+    <color name="bg_followers_counter">#ff5656</color>
+
     <!--timeline-->
     <color name="divider_timeline_item">#ebeef4</color>
 

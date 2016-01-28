@@ -47,8 +47,8 @@
                 android:layout_height="2dip" android:layout_gravity="bottom" android:background="@color/divider_timeline_item"/>
 
             <android.support.design.widget.TabLayout
-                android:id="@+id/tabLayout"
-                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:id="@+id/tabLayout" android:layout_width="match_parent"
+                android:layout_height="wrap_content" app:tabIndicatorColor="?attr/colorPrimary"
                 />
 
             <TextView

@@ -72,6 +72,7 @@ public class DraftFragment extends ARecycleViewFragment<PublishBean, ArrayList<P
         super.setupRefreshConfig(config);
 
         config.emptyHint = getString(R.string.empty_draft);
+        config.footerMoreEnable = false;
     }
 
     @Override

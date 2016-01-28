@@ -22,6 +22,7 @@ public class SinaDB {
 
             new SqliteUtilityBuilder().configVersion(DB_VERSION).configDBName(DB_NAME).build(GlobalContext.getInstance());
             new SqliteUtilityBuilder().configVersion(DB_VERSION).configDBName("sina_timeline_db").build(GlobalContext.getInstance());
+            new SqliteUtilityBuilder().configVersion(DB_VERSION).configDBName("sina_timeline_offline_db").build(GlobalContext.getInstance());
         } catch (Throwable e) {
             Logger.printExc(SinaDB.class, e);
         }
@@ -33,6 +34,10 @@ public class SinaDB {
 
     public static SqliteUtility getTimelineDB() {
         return SqliteUtility.getInstance("sina_timeline_db");
+    }
+
+    public static SqliteUtility getOfflineSqlite() {
+        return SqliteUtility.getInstance("sina_timeline_offline_db");
     }
 
 }

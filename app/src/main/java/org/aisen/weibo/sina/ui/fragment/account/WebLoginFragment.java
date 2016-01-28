@@ -304,6 +304,8 @@ public class WebLoginFragment extends ABaseFragment {
             else {
                 accessToken = SinaSDK.getInstance(null).getWeicoAccessToken(params[0]);
             }
+            accessToken.setAppKey(getClientKey());
+            accessToken.setAppScreet(getClientScreet());
             account.setAccessToken(accessToken);
             Logger.d(TAG, "加载Token[%s]", accessToken.getToken());
 
@@ -384,6 +386,14 @@ public class WebLoginFragment extends ABaseFragment {
         }
 
         return "2362431378";
+    }
+
+    public String getClientScreet() {
+        if (mClient == Client.weico) {
+            return SettingUtility.getStringSetting("weico_screet");
+        }
+
+        return "582ce3cdcdeb8a3b45087073d0dbcadf";
     }
 
     private String getClientCallback() {

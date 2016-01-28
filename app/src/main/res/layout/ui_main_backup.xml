@@ -6,7 +6,7 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:fitsSystemWindows="?attr/fitSystemWindows"
     android:orientation="vertical" app:fitType="bottom"
-    app:navigationBarColor="?attr/themeColor" app:statusBarColor="?attr/statusbarColor">
+    app:navigationBarColor="?attr/themeColor" app:statusBarColor="?attr/themeStatusbarColor">
 
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer"
@@ -17,7 +17,7 @@
             android:id="@+id/layMainContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent" app:fitType="top"
-            app:statusBarColor="?attr/statusbarColor">
+            app:statusBarColor="?attr/themeStatusbarColor">
 
             <RelativeLayout
                 android:layout_width="match_parent" android:layout_height="match_parent">

@@ -1,12 +1,13 @@
 package org.aisen.weibo.sina.sinasdk.bean;
 
 import org.aisen.android.support.bean.ResultBean;
+import org.aisen.weibo.sina.service.OfflineService;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StatusContents extends ResultBean implements Serializable {
+public class StatusContents extends ResultBean implements Serializable, OfflineService.OfflineLength {
 
 	private static final long serialVersionUID = 2115103214814709009L;
 
@@ -15,6 +16,8 @@ public class StatusContents extends ResultBean implements Serializable {
 	private Long selectedGroupId;
 
 	private int total_number;
+
+	private long length;
 	
 	public StatusContents() {
 		statuses = new ArrayList<StatusContent>();
@@ -52,4 +55,12 @@ public class StatusContents extends ResultBean implements Serializable {
 		this.total_number = total_number;
 	}
 
+	public long getLength() {
+		return length;
+	}
+
+	@Override
+	public void setLength(long length) {
+		this.length = length;
+	}
 }

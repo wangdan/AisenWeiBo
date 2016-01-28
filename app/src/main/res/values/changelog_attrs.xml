@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ChangeLogListView">
+
+        <!-- Layout resource id for changelog item rows. -->
+        <attr name="rowLayoutId" format="reference" />
+
+        <!-- Layout resource id for changelog item header rows. -->
+        <attr name="rowHeaderLayoutId" format="reference" />
+
+        <!-- Resource id for changelog.xml file. -->
+        <attr name="changeLogFileResourceId" format="reference" />
+
+        <!-- Resource url for changelog.xml file. -->
+        <attr name="changeLogFileResourceUrl" format="string" />
+
+    </declare-styleable>
+</resources>

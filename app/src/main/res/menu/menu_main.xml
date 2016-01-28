@@ -5,39 +5,31 @@
     <group
         android:id="@+id/mainMenus" android:orderInCategory="100">
         <item
-        android:id="@+id/search" android:icon="@drawable/ic_menu_search" android:title="@string/main_search"
-        app:showAsAction="always" android:orderInCategory="1">
-            <menu >
-                <item android:id="@+id/search_user" android:title="@string/search_user"/>
-                <item android:id="@+id/search_status" android:title="@string/search_status"/>
-            </menu>
-        </item>
-
+            android:id="@+id/publish" android:icon="@drawable/ic_menu_edit_white"
+            android:orderInCategory="2"
+            android:title="@string/publish" app:showAsAction="never"/>
         <item
-            android:id="@+id/publish" android:orderInCategory="2" android:title="@string/publish"
-            app:showAsAction="never" android:icon="@drawable/ic_menu_edit_white" />
-
-        <item
-            android:id="@+id/friendGroups" android:orderInCategory="3" android:title="@string/timeline_groups"
+            android:id="@+id/toggle_offline" android:orderInCategory="4"
+            android:title="@string/toggle_offline"
             app:showAsAction="never"/>
 
         <item
-            android:id="@+id/toggle_offline" android:orderInCategory="4" app:showAsAction="never"
-            android:title="@string/toggle_offline"/>
+            android:id="@+id/stop_offline" android:orderInCategory="4"
+            android:title="@string/stop_offline"
+            app:showAsAction="never"/>
 
         <item
-            android:id="@+id/stop_offline" android:orderInCategory="4" app:showAsAction="never"
-            android:title="@string/stop_offline"/>
+            android:id="@+id/feedback" android:orderInCategory="10"
+            android:title="@string/main_feedback"
+            app:showAsAction="never"/>
 
         <item
-            android:id="@+id/feedback" android:orderInCategory="10" app:showAsAction="never"
-            android:title="@string/main_feedback"/>
+            android:id="@+id/about" android:orderInCategory="11" android:title="@string/title_about"
+            app:showAsAction="never"/>
 
         <item
-            android:id="@+id/about" android:orderInCategory="11" app:showAsAction="never" android:title="@string/title_about"/>
-
-        <item
-            android:id="@+id/exitapp" android:orderInCategory="12" app:showAsAction="never" android:title="@string/exitapp"/>
+            android:id="@+id/exitapp" android:orderInCategory="12" android:title="@string/exitapp"
+            app:showAsAction="never"/>
     </group>
 
     <!--<group-->

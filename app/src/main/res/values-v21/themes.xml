@@ -4,13 +4,14 @@
     <style name="AppBaseTheme" parent="AppCommonTheme">
         <!--v21直接指定状态栏和导航栏颜色-->
         <item name="android:navigationBarColor">?attr/themeColor</item>
-        <item name="android:statusBarColor">?attr/statusbarColor</item>
+        <item name="android:statusBarColor">?attr/themeStatusbarColor</item>
         <item name="menuHeaderHeight">185dip</item>
         <item name="menuHeaderPaddingTop">40dip</item>
         <item name="MDbuttonSelector">?attr/selectableItemBackground</item>
     </style>
 
     <style name="AppTheme.Main">
+        <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>

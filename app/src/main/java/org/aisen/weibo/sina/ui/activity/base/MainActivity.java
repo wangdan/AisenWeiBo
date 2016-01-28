@@ -1,16 +1,24 @@
 package org.aisen.weibo.sina.ui.activity.base;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.md.MDHelper;
+import org.aisen.android.common.utils.ActivityHelper;
 import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.component.sheetfab.MaterialSheetFab;
 import org.aisen.android.component.sheetfab.MaterialSheetFabEventListener;
@@ -20,13 +28,21 @@ import org.aisen.android.ui.fragment.ABaseFragment;
 import org.aisen.android.ui.fragment.ATabsFragment;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
+import org.aisen.weibo.sina.base.AppSettings;
+import org.aisen.weibo.sina.service.OfflineService;
 import org.aisen.weibo.sina.sinasdk.bean.Group;
+import org.aisen.weibo.sina.support.utils.OfflineUtils;
+import org.aisen.weibo.sina.support.utils.ThemeUtils;
+import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
+import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.fragment.comment.CommentPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.draft.DraftFragment;
 import org.aisen.weibo.sina.ui.fragment.mention.MentionPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.menu.FabGroupsFragment;
 import org.aisen.weibo.sina.ui.fragment.menu.MenuFragment;
+import org.aisen.weibo.sina.ui.fragment.settings.AboutWebFragment;
+import org.aisen.weibo.sina.ui.fragment.settings.SettingsPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineDefFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineGroupsFragment;
 import org.aisen.weibo.sina.ui.widget.MainFloatingActionButton;
@@ -48,6 +64,8 @@ public class MainActivity extends BaseActivity implements FabGroupsFragment.OnFa
     public static final String ACTION_NOTIFICATION_MS = "org.aisen.sina.weibo.ACTION_NOTIFICATION_MS";
     public static final String ACTION_NOTIFICATION_MC = "org.aisen.sina.weibo.ACTION_NOTIFICATION_MC";
 
+    private static MainActivity mInstance;
+
     @ViewInject(id = R.id.drawer)
     private DrawerLayout mDrawerLayout;
     @ViewInject(id = R.id.fab)
@@ -64,6 +82,24 @@ public class MainActivity extends BaseActivity implements FabGroupsFragment.OnFa
     private MenuFragment menuFragment;
     private FabGroupsFragment fabGroupsFragment;
 
+    public static void login() {
+        Intent intent = new Intent(GlobalContext.getInstance(), MainActivity.class);
+        intent.setAction(ACTION_LOGIN);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        GlobalContext.getInstance().startActivity(intent);
+    }
+
+    public static MainActivity getInstance() {
+        return mInstance;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        mInstance = null;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +114,47 @@ public class MainActivity extends BaseActivity implements FabGroupsFragment.OnFa
         setupMenu(savedInstanceState);
         setupFab(savedInstanceState);
         setupAppBarLayout(savedInstanceState);
+
+        mInstance = this;
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        if (intent == null)
+            return;
+
+        String action = intent.getAction();
+
+        int menuId = getActionType(intent, action);
+
+        menuFragment.setSelectedMenuItem(menuId);
+
+        if (isDrawerOpened())
+            closeDrawer();
+    }
+
+    private int getActionType(Intent intent, String action) {
+        int type = 1;
+        // 处理点击Notification时，设置显示菜单
+        if (ACTION_LOGIN.equals(action)) {
+            type = 1;
+        }
+        else if (ACTION_NOTIFICATION.equals(action)) {
+            type = Integer.parseInt(intent.getStringExtra("type"));
+        }
+        else if (ACTION_NOTIFICATION_MS.equals(action)) {
+            ActivityHelper.putShareData("showMensitonType", "showMentionStatus");
+
+            type = 2;
+        }
+        else if (ACTION_NOTIFICATION_MC.equals(action)) {
+            ActivityHelper.putShareData("showMensitonType", "showMentionCmt");
+
+            type = 2;
+        }
+        return type;
     }
 
     private void setupDrawer(Bundle savedInstanceState) {
@@ -87,22 +164,10 @@ public class MainActivity extends BaseActivity implements FabGroupsFragment.OnFa
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
 
-//                if (materialSheetFab != null) {
-//                    materialSheetFab.showFab();
-//                }
             }
 
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-
-//                if (materialSheetFab != null) {
-//                    if (materialSheetFab.isSheetVisible()) {
-//                        materialSheetFab.hideSheetThenFab();
-//                    }
-//                    else if (fabBtn.isShown()) {
-//                        fabBtn.hide();
-//                    }
-//                }
             }
 
         };
@@ -189,29 +254,30 @@ public class MainActivity extends BaseActivity implements FabGroupsFragment.OnFa
         // 切换ContentFragment，或者跳转到新的界面
         switch (item.id) {
         // 首页
-        case 1:
+        case MenuFragment.MENU_MAIN:
             fabGroupsFragment.triggerLastPosition();
             break;
         // 提及
-        case 2:
+        case MenuFragment.MENU_MENTION:
             fragment = MentionPagerFragment.newInstance();
             break;
         // 评论
-        case 3:
+        case MenuFragment.MENU_CMT:
             fragment = CommentPagerFragment.newInstance();
             break;
         // 私信
-        case 4:
+        case MenuFragment.MENU_MD:
             break;
         // 热门微博
-        case 5:
+        case MenuFragment.MENU_HOT_STATUS:
             break;
         // 草稿箱
-        case 6:
+        case MenuFragment.MENU_DRAT:
             fragment = DraftFragment.newInstance();
             break;
         // 设置
-        case 7:
+        case MenuFragment.MENU_SETTINGS:
+            SettingsPagerFragment.launch(this);
             break;
         }
 
@@ -232,13 +298,13 @@ public class MainActivity extends BaseActivity implements FabGroupsFragment.OnFa
         // 设置可以选中的菜单项
         switch (item.id) {
         // 首页
-        case 1:
+        case MenuFragment.MENU_MAIN:
         // 提及
-        case 2:
+        case MenuFragment.MENU_MENTION:
         // 评论
-        case 3:
+        case MenuFragment.MENU_CMT:
         // 草稿箱
-        case 6:
+        case MenuFragment.MENU_DRAT:
             return true;
         default:
             return false;
@@ -304,8 +370,141 @@ public class MainActivity extends BaseActivity implements FabGroupsFragment.OnFa
             drawerToggle.syncState();
     }
 
+    public boolean isDrawerOpened() {
+        return mDrawerLayout.isDrawerOpen(Gravity.LEFT) || mDrawerLayout.isDrawerOpen(Gravity.RIGHT);
+    }
+
     public void closeDrawer() {
         mDrawerLayout.closeDrawers();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.publish).setVisible(AppSettings.getFabBtnType() == 1);
+
+        menu.findItem(R.id.about).setVisible(false);
+        menu.findItem(R.id.feedback).setVisible(false);
+
+        if (OfflineService.getInstance() == null || OfflineService.getInstance().getStatus() == OfflineService.OfflineStatus.init ||
+                OfflineService.getInstance().getStatus() == OfflineService.OfflineStatus.finished) {
+            menu.findItem(R.id.toggle_offline).setVisible(true);
+            menu.findItem(R.id.stop_offline).setVisible(false);
+        }
+        else {
+            menu.findItem(R.id.toggle_offline).setVisible(false);
+            menu.findItem(R.id.stop_offline).setVisible(true);
+        }
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (drawerToggle != null && drawerToggle.onOptionsItemSelected(item))
+            return true;
+
+        if (android.R.id.home == item.getItemId()) {
+            if (mDrawerLayout.isDrawerVisible(GravityCompat.START))
+                mDrawerLayout.closeDrawers();
+            else
+                mDrawerLayout.openDrawer(GravityCompat.START);
+
+            return true;
+        }
+
+        // 关于
+        if (item.getItemId() == R.id.about)
+            AboutWebFragment.launchAbout(this);
+        // 意见反馈
+        else if (item.getItemId() == R.id.feedback)
+            PublishActivity.publishFeedback(this);
+            // 退出
+        else if (item.getItemId() == R.id.exitapp)
+            finish();
+            // 新微博
+        else if (item.getItemId() == R.id.publish)
+            PublishActivity.publishStatus(this, null);
+            // 开始离线
+        else if (item.getItemId() == R.id.toggle_offline)
+            OfflineUtils.toggleOffline(this);
+            // 停止离线
+        else if (item.getItemId() == R.id.stop_offline)
+            OfflineService.stopOffline();
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private boolean canFinish = false;
+
+    @Override
+    public boolean onBackClick() {
+        if (AppSettings.isAppResident()) {
+            if (menuFragment.backToMain()) {
+                return true;
+            } else {
+                if (isDrawerOpened()) {
+                    closeDrawer();
+
+                    return true;
+                }
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                startActivity(intent);
+            }
+            return true;
+        }
+        else {
+            if (!canFinish) {
+                canFinish = true;
+
+                showMessage(R.string.hint_exit);
+
+                new Handler().postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        canFinish = false;
+                    }
+
+                }, 1500);
+
+                return true;
+            }
+
+            return super.onBackClick();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (!AppContext.isLoggedIn()) {
+            finish();
+
+            return;
+        }
+
+        if (AppContext.getAccount().getAccessToken().isExpired()) {
+            AccountFragment.launch(MainActivity.this);
+
+            finish();
+        }
+
+        invalidateOptionsMenu();
+    }
+
+    @Override
+    protected int configTheme() {
+        return ThemeUtils.themeArr[AppSettings.getThemeColor()][1];
     }
 
 }
