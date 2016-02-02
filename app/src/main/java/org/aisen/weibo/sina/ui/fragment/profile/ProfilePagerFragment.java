@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.aisen.android.common.utils.Utils;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.component.bitmaploader.core.ImageConfig;
 import org.aisen.android.component.bitmaploader.display.DefaultDisplayer;
@@ -125,7 +124,8 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
     protected void setupTabLayout(Bundle savedInstanceSate, TabLayout tabLayout) {
         super.setupTabLayout(savedInstanceSate, tabLayout);
 
-        tabLayout.setPadding(Utils.dip2px(16), tabLayout.getPaddingTop(), tabLayout.getPaddingRight(), tabLayout.getPaddingBottom());
+        tabLayout.setTabTextColors(getResources().getColor(R.color.text_87_inverse), Color.WHITE);
+        tabLayout.setSelectedTabIndicatorColor(Color.WHITE);
     }
 
     @Override
