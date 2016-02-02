@@ -24,15 +24,13 @@ import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
 import java.net.URLEncoder;
 import java.util.List;
 
-import im.fir.sdk.FIR;
-
 public class MyApplication extends GlobalContext {
 	
 	@Override
 	public void onCreate() {
         // 初始化
         if (AppSettings.isCrashLogUpload()) {
-            FIR.init(this);
+//            FIR.init(this);
         }
 		super.onCreate();
 
@@ -123,8 +121,8 @@ public class MyApplication extends GlobalContext {
 
     public static void setDebugAccount(AccountBean account) {
         try {
-            FIR.addCustomizeValue("uid", account.getUserId());
-            FIR.addCustomizeValue("screen_name", URLEncoder.encode(account.getUser().getScreen_name(), "utf-8"));
+//            FIR.addCustomizeValue("uid", account.getUserId());
+//            FIR.addCustomizeValue("screen_name", URLEncoder.encode(account.getUser().getScreen_name(), "utf-8"));
         } catch (Throwable e) {
             e.printStackTrace();
         }

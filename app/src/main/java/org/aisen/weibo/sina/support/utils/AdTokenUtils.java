@@ -11,7 +11,6 @@ import org.aisen.android.network.task.WorkTask;
 
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.support.biz.BaseBizlogic;
-import org.aisen.weibo.sina.support.biz.GithubResourceDownloadHttpUtility;
 import org.aisen.weibo.sina.support.db.SinaDB;
 import org.aisen.weibo.sina.sinasdk.bean.AccessToken;
 
@@ -64,7 +63,6 @@ public class AdTokenUtils {
             if (aBoolean) {
                 try {
                     String json = new String(FileUtils.readFileToBytes(new File(path + "ad_token.json")), "utf-8");
-                    Logger.d(GithubResourceDownloadHttpUtility.TAG, json + "");
                     AccessToken token = JSON.parseObject(json, AccessToken.class);
                     token.setAppKey(SettingUtility.getStringSetting("weico_key"));
                     token.setAppScreet(SettingUtility.getStringSetting("weico_screet"));

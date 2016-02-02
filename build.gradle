@@ -20,5 +20,6 @@ allprojects {
         maven {
             url "http://dl.bintray.com/fir/maven"
         }
+        maven { url "https://jitpack.io" }
     }
 }

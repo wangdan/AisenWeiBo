@@ -292,8 +292,8 @@ public class PublishManager extends Handler implements PublishQueue.PublishQueue
 					
 					bean.setStatus(PublishStatus.faild);
 					SinaErrorMsgUtil util = new SinaErrorMsgUtil();
-					if (util.declareMessage(exception.getCode()) != null)
-						bean.setErrorMsg(util.declareMessage(exception.getCode()));
+					if (util.checkCode(exception.getCode()) != null)
+						bean.setErrorMsg(util.checkCode(exception.getCode()));
 					else
 						bean.setErrorMsg(exception.getMessage());
 					PublishDB.updatePublish(bean, loggedIn);

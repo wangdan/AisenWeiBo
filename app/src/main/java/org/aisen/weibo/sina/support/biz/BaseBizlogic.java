@@ -25,7 +25,6 @@ public class BaseBizlogic extends ABizLogic {
 	protected HttpConfig configHttpConfig() {
 		HttpConfig httpConfig = new HttpConfig();
 //		httpConfig.baseUrl = getSetting("meizt_base_url").getValue();
-		httpConfig.contentType = "application/x-www-form-urlencoded";
 		httpConfig.cookie = String.format("pck=%s;", GlobalContext.getInstance().getPackageName().replace(".", "_"));
 		return httpConfig;
 	}

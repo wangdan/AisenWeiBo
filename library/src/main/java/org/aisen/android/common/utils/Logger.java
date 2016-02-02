@@ -1,12 +1,12 @@
 package org.aisen.android.common.utils;
 
-import com.alibaba.fastjson.JSON;
-
 import android.util.Log;
+
+import com.alibaba.fastjson.JSON;
 
 public class Logger {
 
-	private final static String TAG = "Logger";
+	public final static String TAG = "Logger";
 
 	public static boolean DEBUG = true;
 
@@ -39,7 +39,7 @@ public class Logger {
 		if (DEBUG)
 			Log.d(tag, String.format(format, args));
 	}
-	
+
 	public static void i(Object o) {
 		if (DEBUG)
 			Log.i(TAG, toJson(o));
@@ -49,7 +49,7 @@ public class Logger {
 		if (DEBUG)
 			Log.i(tag, toJson(msg));
 	}
-	
+
 	public static void i(String tag, String format, Object... args) {
 		if (DEBUG)
 			Log.i(tag, String.format(format, args));
@@ -79,21 +79,43 @@ public class Logger {
 		if (DEBUG)
 			Log.e(tag, toJson(msg));
 	}
-	
+
 	public static void e(String tag, String format, Object... msg) {
 		if (DEBUG)
-			Log.w(tag, String.format(format, msg));
+			Log.e(tag, String.format(format, msg));
 	}
 
-	public static void logExc(Exception e) {
-		if (DEBUG)
-			e.printStackTrace();
+	// 这个日志会打印，不会因为release版本屏蔽
+	public static void sysout(String msg) {
+		try {
+			Log.v(TAG, msg);
+		} catch (Throwable e) {
+		}
+	}
+
+	public static void printExc(Class<?> clazz, Throwable e) {
+		try {
+			if (DEBUG) {
+				e.printStackTrace();
+			}
+			else {
+				String clazzName = clazz == null ? "Unknow" : clazz.getSimpleName();
+
+				Log.v(TAG, String.format("class[%s], %s", clazzName, e + ""));
+			}
+		} catch (Throwable ee) {
+			ee.printStackTrace();
+		}
+	}
+
+	public static void logExc(Throwable e) {
+		printExc(Logger.class, e);
 	}
 
 	public static String toJson(Object msg) {
 		if (msg instanceof String)
 			return msg.toString();
-		
+
 		String json = JSON.toJSONString(msg);
 		if (json.length() > 500)
 			json = json.substring(0, 500);

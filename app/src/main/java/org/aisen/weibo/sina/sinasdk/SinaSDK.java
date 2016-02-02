@@ -73,9 +73,9 @@ public class SinaSDK extends ABizLogic {
 	protected HttpConfig configHttpConfig() {
 		HttpConfig httpConfig = new HttpConfig();
 		httpConfig.baseUrl = getSetting(Consts.BASE_URL).getValue();
-		if (token != null)
-			httpConfig.authrization = "OAuth2 " + token.getToken();
-		httpConfig.contentType = "application/x-www-form-urlencoded";
+		if (token != null) {
+			httpConfig.addHeader("Authorization", "OAuth2 " + token.getToken());
+		}
 		return httpConfig;
 	}
 
@@ -1151,7 +1151,6 @@ public class SinaSDK extends ABizLogic {
 		params.addParameter("list_ids", sb.toString());
 		
 		HttpConfig config = getHttpConfig();
-		config.contentType = "application/x-www-form-urlencoded";
 		return doPost(config, getSetting("friendshipGroupsOrder"), params, GroupSortResult.class, null);
 	}
 	
@@ -1227,8 +1226,7 @@ public class SinaSDK extends ABizLogic {
 		}
 		
 		HttpConfig config = getHttpConfig();
-		config.contentType = "application/json";
-		
+
 		Params params = new Params();
 		params.addParameter("json", JSON.toJSONString(requestMap));
 		

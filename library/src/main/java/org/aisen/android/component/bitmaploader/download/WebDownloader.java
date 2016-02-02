@@ -1,35 +1,18 @@
 package org.aisen.android.component.bitmaploader.download;
 
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
+import org.aisen.android.common.context.GlobalContext;
+import org.aisen.android.common.utils.Logger;
+import org.aisen.android.component.bitmaploader.core.ImageConfig;
+import org.aisen.android.network.task.TaskException;
+
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-
-import org.apache.http.Header;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.conn.params.ConnRouteParams;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-
-import org.aisen.android.common.utils.Logger;
-import org.aisen.android.common.utils.SystemUtils;
-import org.aisen.android.component.bitmaploader.core.ImageConfig;
+import java.net.HttpURLConnection;
 
 public class WebDownloader implements Downloader {
-
-	private DefaultHttpClient httpClient;
-
-	public WebDownloader() {
-		BasicHttpParams httpParameters = new BasicHttpParams();
-		HttpConnectionParams.setConnectionTimeout(httpParameters, 10 * 1000);
-		HttpConnectionParams.setSoTimeout(httpParameters, 20 * 1000);
-		httpClient = new DefaultHttpClient(httpParameters);
-		// 设置网络代理
-		HttpHost proxy = SystemUtils.getProxy();
-		if (proxy != null)
-			httpClient.getParams().setParameter(ConnRouteParams.DEFAULT_PROXY, proxy);
-	}
 
 	@Override
 	public byte[] downloadBitmap(String url, ImageConfig config) throws Exception {
@@ -43,23 +26,26 @@ public class WebDownloader implements Downloader {
 			if (progress != null)
 				progress.sendPrepareDownload(url);
 
-			HttpGet httpGet = new HttpGet(url);
+			Request request = new Request.Builder().url(url).build();
 //			httpGet.addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:27.0) Gecko/20100101 Firefox/27.0");
 
-			HttpResponse response = httpClient.execute(httpGet);
-			if (200 == response.getStatusLine().getStatusCode()) {
+			Response response = GlobalContext.getInstance().getOkHttpClient().newCall(request).execute();
+			if (!(response.code() == HttpURLConnection.HTTP_OK || response.code() == HttpURLConnection.HTTP_PARTIAL)) {
+				throw new TaskException(String.valueOf(TaskException.TaskError.failIOError));
+			}
+			else {
 				// 图片大小
 				int length = 0;
 				try {
-					Header header = response.getFirstHeader("Content-Length");
-					length = Integer.parseInt(header.getValue());
+					String header = response.header("Content-Length");
+					length = Integer.parseInt(header);
 				} catch (Exception e) {
 				}
 
 				if (progress != null) {
 					progress.sendLength(length);
 				}
-				InputStream in = response.getEntity().getContent();
+				InputStream in = response.body().byteStream();
 
 				// 获取图片数据
 				byte[] buffer = new byte[1024 * 8];
@@ -87,7 +73,6 @@ public class WebDownloader implements Downloader {
 				config.getProgress().sendException(e);
 			throw new Exception(e.getCause());
 		}
-		return null;
 	}
 
 }

@@ -6,6 +6,9 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.ActivityHelper;
 import org.aisen.android.common.utils.KeyGenerator;
@@ -31,13 +34,6 @@ import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.ui.activity.basic.MainActivity;
 import org.aisen.weibo.sina.ui.fragment.basic.MenuGenerator;
 import org.aisen.weibo.sina.ui.fragment.timeline.ATimelineFragment;
-import org.apache.http.Header;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.conn.params.ConnRouteParams;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 
 import java.io.File;
@@ -418,23 +414,11 @@ public class OfflineService extends Service {
                     try {
 //                        Logger.v(TAG, "开始离线图片 ---> %s", url);
 
-                        HttpGet httpGet = new HttpGet(url);
-                        DefaultHttpClient httpClient = null;
-                        BasicHttpParams httpParameters = new BasicHttpParams();
-                        HttpConnectionParams.setConnectionTimeout(httpParameters, 10 * 1000);
-                        HttpConnectionParams.setSoTimeout(httpParameters, 20 * 1000);
-                        httpClient = new DefaultHttpClient(httpParameters);
-                        // 设置网络代理
-                        HttpHost proxy = SystemUtils.getProxy();
-                        if (proxy != null)
-                            httpClient.getParams().setParameter(ConnRouteParams.DEFAULT_PROXY, proxy);
-                        HttpResponse response = httpClient.execute(httpGet);
-                        // 图片大小
-                        int length = 0;
-                        Header header = response.getFirstHeader("Content-Length");
-                        length = Integer.parseInt(header.getValue());
+                        Request request = new Request.Builder().url(url).build();
 
-                        InputStream in = response.getEntity().getContent();
+                        Response response = GlobalContext.getInstance().getOkHttpClient().newCall(request).execute();
+
+                        InputStream in = response.body().byteStream();
 
                         FileOutputStream out = new FileOutputStream(fileTemp);
                         // 获取图片数据

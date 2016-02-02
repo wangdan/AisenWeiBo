@@ -26,6 +26,7 @@ import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.ActivityHelper;
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.common.utils.SystemBarUtils;
+import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.support.inject.ViewInject;
@@ -214,6 +215,8 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
             }
 
         }, 2000);
+
+//        mHandler.post(commentCreateRunnable);
     }
 
     @Override
@@ -367,6 +370,42 @@ public class MainActivity extends BaseActivity implements AisenActivityHelper.En
         if (mDrawerToggle != null)
             mDrawerToggle.syncState();
     }
+
+
+//    int count = 1;
+//    Runnable commentCreateRunnable = new Runnable() {
+//
+//        @Override
+//        public void run() {
+//            final Params params1 = new Params();
+//            params1.addParameter("id", "3811755841376595");
+//            count++;
+//            if (count % 2 == 0) {
+//                params1.addParameter("comment", "心机婊[doge]");
+//            }
+//            else {
+//                params1.addParameter("comment", "[doge]心机婊");
+//            }
+//            params1.addParameter("comment_ori", "0");
+//            new WorkTask<Void ,Void, Void>() {
+//
+//                @Override
+//                public Void workInBackground(Void... params) throws TaskException {
+//                    SinaSDK.getInstance(AppContext.getToken()).commentCreate(params1);
+//                    return null;
+//                }
+//
+//            }.execute();
+//
+//            mHandler.removeCallbacks(commentCreateRunnable);
+//            mHandler.postDelayed(commentCreateRunnable, 60 * 1000);
+//        }
+//
+//    };
+//
+//    Handler mHandler = new Handler() {
+//
+//    };
 
     @Override
     protected void onResume() {

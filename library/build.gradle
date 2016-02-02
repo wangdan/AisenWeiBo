@@ -9,8 +9,8 @@ android {
             storePassword '123456'
         }
     }
-    compileSdkVersion 22
-    buildToolsVersion "23.0.0 rc2"
+    compileSdkVersion 23
+    buildToolsVersion '23.0.1'
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 22
@@ -35,4 +35,5 @@ dependencies {
     compile 'com.nhaarman.listviewanimations:lib-core:3.1.0@aar'
     compile 'com.nhaarman.listviewanimations:lib-manipulation:3.1.0@aar'
     compile 'com.nhaarman.listviewanimations:lib-core-slh:3.1.0@aar'
+    compile 'com.squareup.okhttp:okhttp:2.6.0'
 }

@@ -2,8 +2,6 @@ package org.aisen.android.common.utils;
 
 import java.io.File;
 
-import org.apache.http.HttpHost;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -145,17 +143,6 @@ import org.aisen.android.common.context.GlobalContext;
 		}
 
 		return NetWorkType.none;
-	}
-
-	@SuppressWarnings("deprecation")
-	public static HttpHost getProxy() {
-		String host = Proxy.getDefaultHost();
-		if (!TextUtils.isEmpty(host)) {
-			int port = Proxy.getDefaultPort();
-			HttpHost proxy = new HttpHost(host, port);
-			return proxy;
-		}
-		return null;
 	}
 
 	/**

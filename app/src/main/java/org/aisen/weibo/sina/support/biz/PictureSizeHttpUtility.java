@@ -2,6 +2,10 @@ package org.aisen.weibo.sina.support.biz;
 
 import android.net.Proxy;
 
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
+import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.setting.Setting;
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.common.utils.SystemUtils;
@@ -12,14 +16,9 @@ import org.aisen.android.network.task.TaskException;
 
 import org.aisen.weibo.sina.support.bean.PictureSize;
 import org.aisen.weibo.sina.support.db.SinaDB;
-import org.apache.http.Header;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.conn.params.ConnRouteParams;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.File;
+import java.net.HttpURLConnection;
 
 /**
  * Created by wangdan on 15/5/2.
@@ -38,24 +37,25 @@ public class PictureSizeHttpUtility implements IHttpUtility {
         PictureSize size = new PictureSize();
         size.setUrl(url);
 
-        DefaultHttpClient httpClient = new DefaultHttpClient();
-        String host = Proxy.getDefaultHost();
-        if (host != null) {
-            httpClient.getParams().setParameter(ConnRouteParams.DEFAULT_PROXY, new HttpHost(host, Proxy.getDefaultPort()));
-        }
+        Request request = new Request.Builder().url(url).build();
+//			httpGet.addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:27.0) Gecko/20100101 Firefox/27.0");
+
         try {
-            HttpGet get = new HttpGet(url);
-            HttpResponse response = httpClient.execute(get);
-            if (200 == response.getStatusLine().getStatusCode()) {
-                Header lengthHeader = response.getLastHeader("Content-Length");
-                if (lengthHeader != null) {
-                    size.setSize(Long.parseLong(lengthHeader.getValue()));
-                    SinaDB.getSqlite().insert(null, size);
-                    Logger.d(TAG, String.format("图片大小 %s", String.valueOf(size.getSize())));
-                }
-                get.abort();
+            Response response = GlobalContext.getInstance().getOkHttpClient().newCall(request).execute();
+            if (!(response.code() == HttpURLConnection.HTTP_OK || response.code() == HttpURLConnection.HTTP_PARTIAL)) {
+                throw new TaskException(String.valueOf(TaskException.TaskError.failIOError));
+            }
+            else {
+                // 图片大小
+                String header = response.header("Content-Length");
+                int length = Integer.parseInt(header);
+
+                size.setSize(length);
+                SinaDB.getSqlite().insert(null, size);
+                Logger.d(TAG, String.format("图片大小 %s", String.valueOf(size.getSize())));
             }
         } catch (Exception e) {
+            throw new TaskException(String.valueOf(TaskException.TaskError.failIOError));
         }
 
         return (T) size;
