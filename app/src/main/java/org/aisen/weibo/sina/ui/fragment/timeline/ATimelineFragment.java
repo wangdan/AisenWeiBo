@@ -21,6 +21,8 @@ import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContents;
 import org.aisen.weibo.sina.support.paging.TimelinePaging;
+import org.aisen.weibo.sina.ui.activity.base.MainActivity;
+import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.fragment.comment.TimelineDetailPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.mention.MentionTimelineFragment;
 
@@ -33,6 +35,15 @@ import java.util.List;
  * Created by wangdan on 16/1/2.
  */
 public abstract class ATimelineFragment extends ARecycleViewSwipeRefreshFragment<StatusContent, StatusContents> {
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (getActivity() instanceof MainActivity) {
+            BizFragment.createBizFragment(getActivity()).getFabAnimator().attachToRecyclerView(getRefreshView(), null, null);
+        }
+    }
 
     @Override
     protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {

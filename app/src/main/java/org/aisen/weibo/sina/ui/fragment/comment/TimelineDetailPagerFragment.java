@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.Toolbar;
@@ -27,13 +28,16 @@ import org.aisen.android.support.inject.InjectUtility;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.activity.container.FragmentArgs;
+import org.aisen.android.ui.fragment.APagingFragment;
 import org.aisen.android.ui.fragment.ATabsTabLayoutFragment;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
+import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineRepostFragment;
+import org.aisen.weibo.sina.ui.widget.TimelineDetailScrollView;
 
 import java.util.ArrayList;
 
@@ -72,6 +76,8 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
     FloatingActionButton action_c;
     @ViewInject(id = R.id.overlay)
     View overlay;
+    @ViewInject(id = R.id.laySroll)
+    TimelineDetailScrollView laySroll;
 
     private StatusContent mStatusContent;
 
@@ -93,8 +99,10 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
         // 添加HeaderView
         View itemConvertView = inflater.inflate(CommentHeaderItemView.COMMENT_HEADER_01_RES, layHeader, false);
         CommentHeaderItemView headerItemView = new CommentHeaderItemView(this, itemConvertView, mStatusContent);
-        headerItemView.onBindData(itemConvertView, null, 0);
+        headerItemView.onBindData(layHeader, null, 0);
         layHeader.addView(itemConvertView, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+
+        BizFragment.createBizFragment(getActivity()).createFabAnimator(action_menu);
 
         return null;
     }
@@ -117,7 +125,7 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
     protected void setupTabLayout(Bundle savedInstanceSate, TabLayout tabLayout) {
         super.setupTabLayout(savedInstanceSate, tabLayout);
 
-        tabLayout.setPadding(Utils.dip2px(16), tabLayout.getPaddingTop(), tabLayout.getPaddingRight(), tabLayout.getPaddingBottom());
+        tabLayout.setPadding(Utils.dip2px(8), tabLayout.getPaddingTop(), tabLayout.getPaddingRight(), tabLayout.getPaddingBottom());
         tabLayout.setTabTextColors(getResources().getColor(R.color.text_54),
                 getResources().getColor(R.color.text_80));
     }
@@ -154,7 +162,39 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
                 break;
             }
         }
+
+        mHandler.postDelayed(initCurrentFragment, 100);
     }
+
+    @Override
+    public void onPageSelected(int position) {
+        super.onPageSelected(position);
+
+        if (getCurrentFragment() != null && getCurrentFragment() instanceof APagingFragment &&
+                ((APagingFragment) getCurrentFragment()).getRefreshView() != null) {
+            laySroll.setRefreshView(((APagingFragment) getCurrentFragment()).getRefreshView());
+        }
+
+        // 切换了Page就显示Fab
+        BizFragment.createBizFragment(getActivity()).getFabAnimator().show();
+    }
+
+    private Handler mHandler = new Handler();
+
+    Runnable initCurrentFragment = new Runnable() {
+
+        @Override
+        public void run() {
+            if (getCurrentFragment() != null && getCurrentFragment() instanceof APagingFragment &&
+                    ((APagingFragment) getCurrentFragment()).getRefreshView() != null) {
+                laySroll.setRefreshView(((APagingFragment) getCurrentFragment()).getRefreshView());
+            }
+            else {
+                mHandler.postDelayed(initCurrentFragment, 100);
+            }
+        }
+
+    };
 
     @Override
     protected ArrayList<TabItem> generateTabs() {

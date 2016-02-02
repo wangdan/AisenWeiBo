@@ -154,7 +154,7 @@ public class CommentHeaderItemView extends ARecycleViewItemView<StatusComment> i
         }
         else {
             txtPics.setVisibility(View.GONE);
-            layPicturs.setPics(statusContent, fragment);
+            layPicturs.setPics(s, fragment);
         }
 
         // group visiable

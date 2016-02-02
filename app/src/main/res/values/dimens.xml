@@ -19,6 +19,8 @@
     <dimen name="righticon_size">22dip</dimen>
     <dimen name="righticon_padding">16dip</dimen>
 
+    <dimen name="fab_scrollthreshold">4dip</dimen>
+
     <!--DrawLayoutHeader-->
     <dimen name="material_drawer_account_header_height">148dp</dimen>
     <dimen name="material_drawer_account_header_height_compact">72dp</dimen>

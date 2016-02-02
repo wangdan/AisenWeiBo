@@ -206,7 +206,7 @@ public class TimelineItemView extends ARecycleViewItemView<StatusContent> implem
         }
         else {
             txtPics.setVisibility(View.GONE);
-            layPicturs.setPics(data, fragment);
+            layPicturs.setPics(s, fragment);
         }
 
         // group visiable

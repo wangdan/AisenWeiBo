@@ -37,6 +37,7 @@ import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.sqlit.SinaDB;
 import org.aisen.weibo.sina.support.utils.AccountUtils;
+import org.aisen.weibo.sina.support.utils.FabAnimator;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
 import org.aisen.weibo.sina.ui.activity.base.MainActivity;
 import org.aisen.weibo.sina.ui.activity.picture.PicsActivity;
@@ -47,6 +48,8 @@ import org.aisen.weibo.sina.ui.fragment.profile.ProfilePagerFragment;
 import java.util.List;
 
 /**
+ * Fragment是一个神器，是跨Activity和Fragment之前通讯的重要的桥梁
+ *
  * 程序一系列业务逻辑处理，如下:<br/>
  * <br/>
  * 1、预览图片<br/>
@@ -73,6 +76,16 @@ import java.util.List;
 public class BizFragment extends ABaseFragment {
 
     private Activity mActivity;
+
+    private FabAnimator fabAnimator;
+
+    public void createFabAnimator(View fabBtn) {
+        fabAnimator = FabAnimator.create(fabBtn, GlobalContext.getInstance().getResources().getDimensionPixelSize(R.dimen.fab_scrollthreshold));
+    }
+
+    public FabAnimator getFabAnimator() {
+        return fabAnimator;
+    }
     
     private Activity getRealActivity() {
         if (getActivity() != null)

@@ -19,7 +19,6 @@ import android.widget.FrameLayout;
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.md.MDHelper;
 import org.aisen.android.common.utils.ActivityHelper;
-import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.component.sheetfab.MaterialSheetFab;
 import org.aisen.android.component.sheetfab.MaterialSheetFabEventListener;
 import org.aisen.android.support.inject.ViewInject;
@@ -105,7 +104,9 @@ public class MainActivity extends BaseActivity implements FabGroupsFragment.OnFa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ui_main);
 
-        BizFragment.createBizFragment(this);
+        BizFragment bizFragment = BizFragment.createBizFragment(this);
+        bizFragment.createFabAnimator(fabBtn);
+        bizFragment.getFabAnimator().setDuration(200);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
@@ -228,17 +229,17 @@ public class MainActivity extends BaseActivity implements FabGroupsFragment.OnFa
 
     private void setupAppBarLayout(Bundle savedInstanceState) {
         // 随着ToolBar的移动，来控制Fab的显示和隐藏
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                float percent = Math.abs(verticalOffset) * 1.0f / SystemUtils.getActionBarHeight(MainActivity.this);
-
-                int translationY = fabBtn.getHeight() + getResources().getDimensionPixelSize(R.dimen.fab_spacing);
-                fabBtn.setTranslationY(translationY * (percent));
-            }
-
-        });
+//        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+//
+//            @Override
+//            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+//                float percent = Math.abs(verticalOffset) * 1.0f / SystemUtils.getActionBarHeight(MainActivity.this);
+//
+//                int translationY = fabBtn.getHeight() + getResources().getDimensionPixelSize(R.dimen.fab_spacing);
+//                fabBtn.setTranslationY(translationY * (percent));
+//            }
+//
+//        });
     }
 
     /**
@@ -288,6 +289,9 @@ public class MainActivity extends BaseActivity implements FabGroupsFragment.OnFa
         // 隐藏Fab按钮
         if (item.id == 1) {
             fabBtn.setVisibility(View.VISIBLE);
+
+            // 显示Fab
+            BizFragment.createBizFragment(this).getFabAnimator().show();
         }
         else {
             fabBtn.setVisibility(View.GONE);

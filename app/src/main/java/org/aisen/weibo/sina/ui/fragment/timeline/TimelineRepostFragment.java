@@ -1,10 +1,11 @@
 package org.aisen.weibo.sina.ui.fragment.timeline;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,30 +14,40 @@ import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.support.inject.ViewInject;
+import org.aisen.android.support.paging.IPaging;
+import org.aisen.android.ui.fragment.AListFragment;
+import org.aisen.android.ui.fragment.APagingFragment;
 import org.aisen.android.ui.fragment.ATabsFragment;
 import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
-import org.aisen.android.ui.fragment.itemview.DefDividerItemView;
+import org.aisen.android.ui.fragment.itemview.BasicFooterView;
 import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
 import org.aisen.android.ui.fragment.itemview.NormalItemViewCreator;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
+import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContents;
 import org.aisen.weibo.sina.sinasdk.bean.StatusRepost;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
+import org.aisen.weibo.sina.support.paging.TimelinePaging;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
+import org.aisen.weibo.sina.ui.fragment.comment.TimelineCommentItemView;
+import org.aisen.weibo.sina.ui.fragment.comment.TimelineDetailPagerFragment;
 import org.aisen.weibo.sina.ui.widget.AisenTextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 某条原创微博的转发微博
  *
  * Created by wangdan on 16/1/22.
  */
-public class TimelineRepostFragment extends ATimelineFragment implements ATabsFragment.ITabInitData {
+public class TimelineRepostFragment extends AListFragment<StatusContent, StatusContents> implements ATabsFragment.ITabInitData {
 
     public static TimelineRepostFragment newInstance(StatusContent statusContent) {
         Bundle args = new Bundle();
@@ -74,32 +85,17 @@ public class TimelineRepostFragment extends ATimelineFragment implements ATabsFr
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        BizFragment.createBizFragment(getActivity()).getFabAnimator().attachToListView(getRefreshView(), null, this);
+    }
+
+    @Override
     protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
         super.layoutInit(inflater, savedInstanceSate);
 
         bindAdapter(getAdapter());
-        getContentView().setBackgroundColor(Color.WHITE);
-    }
-
-    @Override
-    protected void setupRefreshView(Bundle savedInstanceSate) {
-        super.setupRefreshView(savedInstanceSate);
-
-        int color = getResources().getColor(R.color.divider_timeline_item);
-        getRefreshView().addItemDecoration(new DefDividerItemView(color));
-        getRefreshView().setBackgroundColor(Color.WHITE);
-    }
-
-    @Override
-    public IItemViewCreator<StatusContent> configItemViewCreator() {
-        return new NormalItemViewCreator<StatusContent>(R.layout.item_timeline_comment) {
-
-            @Override
-            public IITemView<StatusContent> newItemView(View convertView, int viewType) {
-                return new RepostItemView(convertView);
-            }
-
-        };
     }
 
     @Override
@@ -194,6 +190,108 @@ public class TimelineRepostFragment extends ATimelineFragment implements ATabsFr
             int top = position == 0 ? firstTop : normalTop;
             convertView.setPadding(convertView.getPaddingLeft(), top, convertView.getPaddingRight(), convertView.getPaddingBottom());
         }
+
+    }
+
+
+
+    @Override
+    public IItemViewCreator<StatusContent> configItemViewCreator() {
+        return new NormalItemViewCreator<StatusContent>(TimelineCommentItemView.LAYOUT_RES) {
+
+            @Override
+            public IITemView<StatusContent> newItemView(View convertView, int viewType) {
+                return new RepostItemView(convertView);
+            }
+
+        };
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        super.onItemClick(parent, view, position, id);
+
+        TimelineDetailPagerFragment.launch(getActivity(), getAdapterItems().get(position));
+    }
+
+    @Override
+    protected IPaging<StatusContent, StatusContents> newPaging() {
+        return new TimelinePaging();
+    }
+
+    @Override
+    protected IItemViewCreator<StatusContent> configFooterViewCreator() {
+        return new NormalItemViewCreator<StatusContent>(BasicFooterView.LAYOUT_RES) {
+
+            @Override
+            public IITemView<StatusContent> newItemView(View convertView, int viewType) {
+                return new BasicFooterView<StatusContent>(convertView, TimelineRepostFragment.this) {
+
+                    @Override
+                    protected String endpagingText() {
+                        return getString(R.string.disable_status);
+                    }
+
+                    @Override
+                    protected String loadingText() {
+                        return String.format(getString(R.string.loading_status), AppSettings.getCommentCount());
+                    }
+
+                };
+            }
+
+        };
+    }
+
+    abstract public class ATimelineTask extends APagingTask<Void, Void, StatusContents> {
+
+        public ATimelineTask(RefreshMode mode) {
+            super(mode);
+        }
+
+        @Override
+        protected List<StatusContent> parseResult(StatusContents statusContents) {
+            return statusContents.getStatuses();
+        }
+
+        @Override
+        protected StatusContents workInBackground(RefreshMode mode, String previousPage, String nextPage, Void... p) throws TaskException {
+            Params params = new Params();
+
+            if (mode == APagingFragment.RefreshMode.refresh && !TextUtils.isEmpty(previousPage))
+                params.addParameter("since_id", previousPage);
+
+            if (mode == APagingFragment.RefreshMode.update && !TextUtils.isEmpty(nextPage))
+                params.addParameter("max_id", nextPage);
+
+            params.addParameter("count", String.valueOf(AppSettings.getTimelineCount()));
+
+            return getStatusContents(params);
+        }
+
+        @Override
+        protected boolean handleResult(RefreshMode mode, List<StatusContent> datas) {
+            // 如果是重置或者刷新数据，加载数据大于分页大小，则清空之前的数据
+            if (mode == RefreshMode.refresh) {
+                // 目前微博加载分页大小是默认大小
+                if (datas.size() >= AppSettings.getTimelineCount()) {
+                    setAdapterItems(new ArrayList<StatusContent>());
+                    return true;
+                }
+            }
+
+            return super.handleResult(mode, datas);
+        }
+
+        @Override
+        protected void onFailure(TaskException exception) {
+            super.onFailure(exception);
+
+            if (!isContentEmpty())
+                showMessage(exception.getMessage());
+        }
+
+        public abstract StatusContents getStatusContents(Params params) throws TaskException;
 
     }
 

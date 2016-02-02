@@ -14,9 +14,8 @@ import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.support.paging.IPaging;
-import org.aisen.android.ui.fragment.ARecycleViewSwipeRefreshFragment;
+import org.aisen.android.ui.fragment.AListFragment;
 import org.aisen.android.ui.fragment.itemview.BasicFooterView;
-import org.aisen.android.ui.fragment.itemview.DefDividerItemView;
 import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
 import org.aisen.android.ui.fragment.itemview.NormalItemViewCreator;
@@ -29,6 +28,7 @@ import org.aisen.weibo.sina.sinasdk.bean.StatusComments;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.support.paging.CommentPaging;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,7 @@ import java.util.List;
  *
  * Created by wangdan on 16/1/7.
  */
-public class TimelineCommentFragment extends ARecycleViewSwipeRefreshFragment<StatusComment, StatusComments> {
+public class TimelineCommentFragment extends AListFragment<StatusComment, StatusComments> {
 
     public static TimelineCommentFragment newInstance(StatusContent status) {
         Bundle arts = new Bundle();
@@ -73,18 +73,17 @@ public class TimelineCommentFragment extends ARecycleViewSwipeRefreshFragment<St
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        BizFragment.createBizFragment(getActivity()).getFabAnimator().attachToListView(getRefreshView(), null, this);
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
         outState.putSerializable("status", mStatusContent);
-    }
-
-    @Override
-    protected void setupRefreshView(Bundle savedInstanceSate) {
-        super.setupRefreshView(savedInstanceSate);
-
-        int color = getResources().getColor(R.color.divider_timeline_item);
-        getRefreshView().addItemDecoration(new DefDividerItemView(color));
     }
 
     @Override
