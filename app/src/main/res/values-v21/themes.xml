@@ -11,6 +11,7 @@
     </style>
 
     <style name="AppTheme.Main">
+        <!--这两个属性要一起用，忘记为什么了-->
         <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>

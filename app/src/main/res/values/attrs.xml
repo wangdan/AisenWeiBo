@@ -16,6 +16,10 @@
     <!--主题背景色-->
     <attr name="theme_background" format="reference|color"/>
 
+    <declare-styleable name="ProfileCollapsingToolbarLayout">
+        <attr name="profileInsetForeground" format="reference|color" />
+    </declare-styleable>
+
     <declare-styleable name="ActionIconThemedTextView">
         <attr name="iabColor" format="color"/>
         <attr name="iabActivatedColor" format="color"/>

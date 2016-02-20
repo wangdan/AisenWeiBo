@@ -1,15 +1,21 @@
 package org.aisen.weibo.sina.ui.fragment.profile;
 
 import android.content.Context;
+import android.graphics.Rect;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 
+import org.aisen.android.common.utils.Logger;
 import org.aisen.android.ui.widget.CircleImageView;
 import org.aisen.weibo.sina.R;
+import org.aisen.weibo.sina.ui.widget.ProfileCollapsingToolbarLayout;
 
 /**
  * Created by wangdan on 16/1/20.
@@ -23,14 +29,13 @@ public class AvatarBehavior extends CoordinatorLayout.Behavior<CircleImageView> 
     private ImageView imgAvatar;
     private ImageView imgCover;
     private Toolbar toolbar;
-    private View layRef;
+    private TabLayout tabLayout;
+    private AppBarLayout appBarLayout;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
     private View layDetail;
-    private View viewToolbarBg;
 
-    private float avatarMinY = 0.0f;
-    private float scaleHeight = 0.0f;
+    private float multiplier;
     private int avatarSize = 0;
-    private float avatarX = 0;
     private int coverHeight;
 
     public AvatarBehavior(Context context, AttributeSet attrs) {
@@ -46,14 +51,14 @@ public class AvatarBehavior extends CoordinatorLayout.Behavior<CircleImageView> 
         if (imgAvatar == null) {
             imgAvatar = (ImageView) child.findViewById(R.id.imgAvatar);
             toolbar = (Toolbar) parent.findViewById(R.id.toolbar);
-            layRef = parent.findViewById(R.id.layRef);
             layDetail = parent.findViewById(R.id.layDetail);
+            appBarLayout = (AppBarLayout) parent.findViewById(R.id.appbar);
+            collapsingToolbarLayout = (CollapsingToolbarLayout) parent.findViewById(R.id.collapsingToolbar);
             imgCover = (ImageView) parent.findViewById(R.id.imgCover);
-            viewToolbarBg = parent.findViewById(R.id.viewToolbarBg);
-            viewToolbarBg.setAlpha(0);
+            tabLayout = (TabLayout) parent.findViewById(R.id.tabLayout);
         }
 
-        if (avatarMinY == 0.0f && toolbar.getHeight() > 0) {
+        if (avatarSize == 0 && toolbar.getHeight() > 0) {
             int defHeight = layDetail.getHeight();
             CollapsingToolbarLayout.LayoutParams lp = (CollapsingToolbarLayout.LayoutParams) imgCover.getLayoutParams();
             if (lp.height != defHeight + coverHeight) {
@@ -64,22 +69,25 @@ public class AvatarBehavior extends CoordinatorLayout.Behavior<CircleImageView> 
                 return false;
             }
 
-            avatarMinY = toolbar.getHeight() + getStatusBarHeight();
             avatarSize = imgAvatar.getWidth();
-            avatarX = context.getResources().getDimensionPixelSize(R.dimen.padding_normal);
-            scaleHeight = avatarSize * 3.0f / 4;
-            avatarX = coverHeight - scaleHeight - avatarMinY;
         }
 
-        return avatarMinY > 0;
+        // 计算Detail的layout_collapseParallaxMultiplier，使其收起来时刚好高度为ToolBar的高度
+        CollapsingToolbarLayout.LayoutParams params = (CollapsingToolbarLayout.LayoutParams) layDetail.getLayoutParams();
+        // 最大移动的距离
+        int maxOffset = appBarLayout.getHeight() - (getStatusBarHeight() + toolbar.getHeight() + tabLayout.getHeight());
+        // 计算移动后的top减去移动前的top就是需要offset，再用offset计算出multiplier
+        multiplier = ((maxOffset + getStatusBarHeight()) -
+                (collapsingToolbarLayout.getHeight() - layDetail.getHeight())) * 1.0f / maxOffset;
+        if (params.getParallaxMultiplier() != multiplier) {
+            params.setParallaxMultiplier(multiplier);
+        }
+
+        return dependency == layDetail;
     }
 
     @Override
     public boolean onDependentViewChanged(CoordinatorLayout parent, CircleImageView child, View dependency) {
-        child.setY(layRef.getY() - avatarSize * 3.0f / 4);
-
-        child.setAlpha((imgAvatar.getY() - avatarMinY) * 1.0f / avatarX);
-        viewToolbarBg.setAlpha(1.0f - (layRef.getY() - avatarMinY) * 1.0f / (coverHeight - avatarMinY));
 
         return true;
     }

@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -94,6 +95,15 @@ public class ProfileAboutFragment extends ABaseFragment
     @Override
     public int inflateContentView() {
         return R.layout.ui_profile_about;
+    }
+
+    @Override
+    protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
+        super.layoutInit(inflater, savedInstanceSate);
+
+        if (savedInstanceSate == null) {
+            loadFriendship();
+        }
     }
 
     void setProfile() {

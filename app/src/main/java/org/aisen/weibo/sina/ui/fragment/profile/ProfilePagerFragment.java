@@ -2,6 +2,8 @@ package org.aisen.weibo.sina.ui.fragment.profile;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.component.bitmaploader.core.ImageConfig;
 import org.aisen.android.component.bitmaploader.display.DefaultDisplayer;
+import org.aisen.android.component.bitmaploader.download.DownloadProcess;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.support.bean.TabItem;
@@ -41,7 +44,9 @@ import org.aisen.weibo.sina.support.utils.ThemeUtils;
 import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.fragment.friendship.FriendshipPagerFragment;
+import org.aisen.weibo.sina.ui.widget.ProfileCollapsingToolbarLayout;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -62,6 +67,8 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
         SinaCommonActivity.launch(from, ProfilePagerFragment.class, args);
     }
 
+    @ViewInject(id = R.id.collapsingToolbar)
+    ProfileCollapsingToolbarLayout collapsingToolbarLayout;
     // 封面
     @ViewInject(id = R.id.imgCover)
     ImageView imgCover;
@@ -138,10 +145,10 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
         setProfile();
 
         BaseActivity activity = (BaseActivity) getActivity();
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         activity.getSupportActionBar().setDisplayShowHomeEnabled(false);
         activity.getSupportActionBar().setTitle("");
-        activity.getToolbar().setBackgroundColor(Color.TRANSPARENT);
+//        activity.getToolbar().setBackgroundColor(Color.TRANSPARENT);
 
         setHasOptionsMenu(true);
     }
@@ -199,8 +206,9 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
         coverConfig.setDisplayer(new DefaultDisplayer());
         BitmapLoader.getInstance().display(this, mUser.getCover_image_phone(), imgCover, coverConfig);
         // 名字
-        // fuck 2014-09-04 当名字过长大于8个字时，截取部分文字
-        int maxLength = AisenUtils.getStrLength("一二三四五六七八九十");
+        // fuck 2014-09-04 当名字过长大于10个字时，截取部分文字
+//        int maxLength = AisenUtils.getStrLength("一二三四五六七八九十");
+        int maxLength = AisenUtils.getStrLength("一二三四五");
         if (AisenUtils.getStrLength(mUser.getName()) > maxLength) {
             StringBuffer sb = new StringBuffer();
             int index = 0;
@@ -218,7 +226,30 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
             txtName.setText(mUser.getScreen_name());
         }
         // 头像
-        BitmapLoader.getInstance().display(this, AisenUtils.getUserPhoto(mUser), imgAvatar, ImageConfigUtils.getLargePhotoConfig());
+        File avatarFile = BitmapLoader.getInstance().getCacheFile(AisenUtils.getUserPhoto(mUser));
+        if (avatarFile.exists()) {
+            Bitmap bitmap = BitmapFactory.decodeFile(avatarFile.getAbsolutePath());
+            imgAvatar.setImageBitmap(bitmap);
+            collapsingToolbarLayout.setAvatarBitmap(bitmap);
+        }
+        else {
+            ImageConfig config = new ImageConfig();
+            config.setId("large");
+            config.setDisplayer(new DefaultDisplayer());
+            config.setLoadingRes(R.drawable.user_placeholder);
+            config.setLoadfaildRes(R.drawable.user_placeholder);
+            config.setProgress(new DownloadProcess() {
+
+                @Override
+                public void finishedDownload(byte[] bytes) {
+                    super.finishedDownload(bytes);
+
+                    collapsingToolbarLayout.setAvatarBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
+                }
+
+            });
+            BitmapLoader.getInstance().display(this, AisenUtils.getUserPhoto(mUser), imgAvatar, config);
+        }
         // 性别
         imgGender.setVisibility(View.VISIBLE);
         if ("m".equals(mUser.getGender()))
@@ -313,17 +344,26 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
 
     @Override
     public void onFriendshipCreated(WeiBoUser targetUser) {
-        getProfileFragment().onFriendshipCreated(targetUser);
+        ProfileAboutFragment fragment = getProfileFragment();
+        if (fragment != null) {
+            fragment.onFriendshipCreated(targetUser);
+        }
     }
 
     @Override
     public void onFriendshipDestoryed(WeiBoUser targetUser) {
-        getProfileFragment().onFriendshipDestoryed(targetUser);
+        ProfileAboutFragment fragment = getProfileFragment();
+        if (fragment != null) {
+            fragment.onFriendshipDestoryed(targetUser);
+        }
     }
 
     @Override
     public void onDestoryFollower(WeiBoUser user) {
-        getProfileFragment().onDestoryFollower(user);
+        ProfileAboutFragment fragment = getProfileFragment();
+        if (fragment != null) {
+            fragment.onDestoryFollower(user);
+        }
     }
 
     private ProfileAboutFragment getProfileFragment() {

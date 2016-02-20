@@ -10,13 +10,14 @@
         android:id="@+id/appbar" android:layout_width="match_parent" android:layout_height="wrap_content"
         android:background="#00000000" android:fitsSystemWindows="true" android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <android.support.design.widget.CollapsingToolbarLayout
+        <org.aisen.weibo.sina.ui.widget.ProfileCollapsingToolbarLayout
             android:id="@+id/collapsingToolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:background="#00000000"
-            android:fitsSystemWindows="true" android:minHeight="?attr/actionBarSize"
-            app:contentScrim="#00000000" app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-            app:statusBarScrim="#00000000">
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            android:minHeight="?attr/actionBarSize" app:contentScrim="#00000000"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap" app:profileInsetForeground="#40000000"
+            app:statusBarScrim="?attr/colorPrimaryDark">
 
             <ImageView
                 android:id="@+id/imgCover"
@@ -29,70 +30,75 @@
                 android:id="@+id/layDetail"
                 android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="bottom"
                 android:background="?attr/colorPrimary" android:orientation="vertical"
-                android:paddingBottom="@dimen/padding_normal" android:paddingLeft="@dimen/padding_normal"
-                android:paddingRight="@dimen/padding_normal" android:paddingTop="32dip"
-                app:layout_collapseMode="parallax" app:layout_collapseParallaxMultiplier="0.4">
-
-                <TextView
-                    android:id="@+id/txtName" style="@style/TextTitle.Inverse" android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:layout_marginBottom="8dip"
-                    android:text="王丹" android:textColor="@color/comm_white" android:textSize="24sp"/>
-
-                <ImageView
-                    android:id="@+id/imgVerified" android:layout_width="20dip"
-                    android:layout_height="20dip" android:layout_below="@id/imgPhoto"
-                    android:layout_marginLeft="8dip" android:layout_marginTop="6dip"
-                    android:layout_toRightOf="@id/txtName" android:src="@drawable/avatar_grassroot"/>
-
-                <ImageView
-                    android:id="@+id/imgGender" android:layout_width="20dip" android:layout_height="20dip"
-                    android:layout_below="@id/imgPhoto" android:layout_marginLeft="8dip"
-                    android:layout_marginTop="6dip" android:layout_toRightOf="@id/imgVerified"
-                    android:src="@drawable/list_female"/>
-
-                <TextView
-                    android:id="@+id/txtFriendsCounter" style="@style/TextBody.Inverse" android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:layout_below="@id/txtName"
-                    android:layout_marginLeft="-8dip" android:background="?attr/selectableItemBackground"
-                    android:paddingBottom="4dip" android:paddingLeft="8dip" android:paddingRight="8dip"
-                    android:paddingTop="4dip" android:text="1.2万 关注"/>
-
-                <TextView
-                    android:id="@+id/divider_01"
-                    android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:layout_below="@id/txtName" android:layout_marginLeft="4dip" android:layout_marginRight="4dip"
-                    android:layout_toRightOf="@id/txtFriendsCounter" android:paddingBottom="4dip" android:paddingTop="4dip" android:text="|"
-                    android:textColor="@color/text_54_inverse"/>
-
-                <TextView
-                    android:id="@+id/txtFollowersCounter" style="@style/TextBody.Inverse" android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:layout_below="@id/txtName"
-                    android:layout_toRightOf="@id/divider_01" android:background="?attr/selectableItemBackground" android:paddingBottom="4dip"
-                    android:paddingLeft="8dip"
-                    android:paddingRight="8dip" android:paddingTop="4dip" android:text="1.2万 粉丝"/>
-
-                <TextView
-                    android:id="@+id/txtDesc"
-                    style="@style/TextBody.Inverse" android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:layout_below="@id/txtFollowersCounter"
-                    android:layout_marginTop="8dip" android:lineSpacingExtra="2dip" android:text="今天真的是个好日子"/>
-            </RelativeLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" app:layout_collapseMode="pin">
-
-                <View
-                    android:id="@+id/viewToolbarBg"
-                    android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
-                    android:alpha="0" android:background="?attr/colorPrimary"/>
+                app:layout_collapseMode="parallax" app:layout_collapseParallaxMultiplier="1.0">
 
                 <android.support.v7.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
+                    android:id="@+id/toolbar" android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
-            </FrameLayout>
-        </android.support.design.widget.CollapsingToolbarLayout>
+
+                <RelativeLayout
+                    android:id="@+id/layRealDetail"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/padding_normal" android:paddingLeft="@dimen/padding_normal"
+                    android:paddingRight="@dimen/padding_normal" android:paddingTop="32dip">
+
+                    <LinearLayout
+                        android:id="@+id/layName"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/txtName" style="@style/TextTitle.Inverse" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="王丹" android:textColor="@color/comm_white" android:textSize="24sp"/>
+
+                        <ImageView
+                            android:id="@+id/imgVerified" android:layout_width="20dip"
+                            android:layout_height="20dip"
+                            android:layout_marginLeft="8dip" android:layout_marginTop="2dip"
+                            android:src="@drawable/avatar_grassroot"/>
+
+                        <ImageView
+                            android:id="@+id/imgGender" android:layout_width="20dip" android:layout_height="20dip"
+                            android:layout_marginLeft="8dip" android:layout_marginTop="2dip"
+                            android:src="@drawable/list_female"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/txtFriendsCounter"
+                        style="@style/TextBody.Inverse" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_below="@id/layName" android:layout_marginLeft="-8dip"
+                        android:layout_marginTop="8dip" android:background="?attr/selectableItemBackground"
+                        android:paddingBottom="4dip" android:paddingLeft="8dip" android:paddingRight="8dip"
+                        android:paddingTop="4dip" android:text="1.2万 关注"/>
+
+                    <TextView
+                        android:id="@+id/divider_01"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:layout_below="@id/layName"
+                        android:layout_marginLeft="4dip" android:layout_marginRight="4dip" android:layout_marginTop="8dip"
+                        android:layout_toRightOf="@id/txtFriendsCounter" android:paddingBottom="4dip" android:paddingTop="4dip" android:text="|"
+                        android:textColor="@color/text_54_inverse"/>
+
+                    <TextView
+                        android:id="@+id/txtFollowersCounter"
+                        style="@style/TextBody.Inverse" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_below="@id/layName" android:layout_marginTop="8dip"
+                        android:layout_toRightOf="@id/divider_01" android:background="?attr/selectableItemBackground" android:paddingBottom="4dip"
+                        android:paddingLeft="8dip"
+                        android:paddingRight="8dip" android:paddingTop="4dip" android:text="1.2万 粉丝"/>
+
+                    <TextView
+                        android:id="@+id/txtDesc"
+                        style="@style/TextBody.Inverse" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:layout_below="@id/txtFollowersCounter"
+                        android:layout_marginTop="8dip" android:lineSpacingExtra="2dip" android:text="今天真的是个好日子"/>
+                </RelativeLayout>
+            </RelativeLayout>
+
+        </org.aisen.weibo.sina.ui.widget.ProfileCollapsingToolbarLayout>
 
         <LinearLayout
             android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -111,14 +117,9 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-    <View
-        android:id="@+id/layRef"
-        android:layout_width="match_parent" android:layout_height="0.02dip"
-        app:layout_anchor="@id/layDetail"/>
-
     <org.aisen.android.ui.widget.CircleImageView
-        android:id="@+id/imgAvatar"
-        android:layout_width="100dip" android:layout_height="100dip" android:layout_marginLeft="@dimen/padding_normal"
-        app:layout_behavior="org.aisen.weibo.sina.ui.fragment.profile.AvatarBehavior"/>
+        android:id="@+id/imgAvatar" android:layout_width="100dip"
+        android:layout_height="100dip" android:layout_marginLeft="@dimen/padding_normal" android:visibility="invisible"
+        />
 
 </android.support.design.widget.CoordinatorLayout>
