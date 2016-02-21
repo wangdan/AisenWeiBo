@@ -52,9 +52,20 @@
                 <data android:mimeType="text/plain"/>
             </intent-filter>
         </activity>
+        <!-- 用户信息、搜索 -->
+        <activity android:name="org.aisen.weibo.sina.ui.activity.profile.UserProfileActivity"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/AppTheme.Profile">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.intent.action.VIEW"/>
+                <data android:scheme="org.aisen.weibo.sina.userinfo"/>
+            </intent-filter>
+        </activity>
+        <!--网页版-->
+        <activity android:name=".ui.activity.profile.WeiboClientActivity"/>
         <!-- 图片详情 -->
-        <activity android:name=".ui.activity.picture.PicsActivity"
-                  android:screenOrientation="user"/>
+        <activity android:name=".ui.activity.picture.PicsActivity"/>
         <!-- 相册详情 -->
         <activity android:name=".ui.activity.picture.PhotosActivity"/>
         <!-- 浏览器 -->
@@ -85,13 +96,14 @@
             </intent-filter>
         </activity>
         <!-- 话题 -->
-        <!--<activity android:name="org.aisen.weibo.sina.ui.activity.topics.TopicsActivity" android:screenOrientation="portrait">-->
-            <!--<intent-filter>-->
-                <!--<category android:name="android.intent.category.DEFAULT"/>-->
-                <!--<action android:name="android.intent.action.VIEW"/>-->
-                <!--<data android:scheme="org.aisen.weibo.sina.topics"/>-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
+        <activity android:name="org.aisen.weibo.sina.ui.activity.topics.TopicsActivity"
+                  android:screenOrientation="portrait">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.intent.action.VIEW"/>
+                <data android:scheme="org.aisen.weibo.sina.topics"/>
+            </intent-filter>
+        </activity>
 
         <!-- 发布服务 -->
         <service android:name=".service.PublishService"/>

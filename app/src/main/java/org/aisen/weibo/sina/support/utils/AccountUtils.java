@@ -17,6 +17,10 @@ public class AccountUtils {
         SinaDB.getDB().insert(null, account);
     }
 
+    public static void updateAccount(AccountBean account) {
+        SinaDB.getDB().update(null, account);
+    }
+
     public static List<AccountBean> queryAccount() {
         return SinaDB.getDB().select(null, AccountBean.class);
     }

@@ -33,6 +33,7 @@ import org.aisen.android.ui.widget.CircleImageView;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.MyApplication;
+import org.aisen.weibo.sina.service.OfflineService;
 import org.aisen.weibo.sina.service.PublishService;
 import org.aisen.weibo.sina.service.UnreadService;
 import org.aisen.weibo.sina.service.notifier.UnreadCountNotifier;
@@ -41,6 +42,7 @@ import org.aisen.weibo.sina.sinasdk.SinaSDK;
 import org.aisen.weibo.sina.sinasdk.bean.TokenInfo;
 import org.aisen.weibo.sina.sinasdk.bean.UnreadCount;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
+import org.aisen.weibo.sina.support.action.DoLikeAction;
 import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.utils.AccountUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
@@ -82,6 +84,28 @@ public class AccountFragment extends ARecycleViewFragment<AccountBean, ArrayList
         // 登录该账号
         AppContext.setAccount(accountBean);
         AccountUtils.setLogedinAccount(accountBean);
+
+        boolean startUnreadService = AppContext.getAccount() == null ||
+                !AppContext.getAccount().getUser().getIdstr().equals(accountBean.getUser().getIdstr());
+        // 未读消息重置
+        if (AppContext.getAccount().getUnreadCount() == null || startUnreadService) {
+            AppContext.getAccount().setUnreadCount(UnreadService.getUnreadCount());
+        }
+        if (AppContext.getAccount() == null)
+            AppContext.getAccount().setUnreadCount(new UnreadCount());
+        // 开启未读服务
+        if (startUnreadService)
+            UnreadService.startService();
+
+        // 刷新定时任务
+        MyApplication.refreshPublishAlarm();
+
+        // 处理点赞数据
+        DoLikeAction.refreshLikeCache();
+
+        // 停止离线服务
+        if (OfflineService.getInstance() != null)
+            OfflineService.stopOffline();
 
         // 进入首页
         if (toMain)

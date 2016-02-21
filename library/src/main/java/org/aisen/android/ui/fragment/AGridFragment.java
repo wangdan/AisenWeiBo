@@ -1,6 +1,8 @@
 package org.aisen.android.ui.fragment;
 
+import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import org.aisen.android.R;
@@ -18,7 +20,9 @@ import java.util.ArrayList;
  *
  * Created by wangdan on 16/1/21.
  */
-public abstract class AGridFragment<T extends Serializable, Ts extends Serializable> extends APagingFragment<T, Ts, GridView> {
+public abstract class AGridFragment<T extends Serializable, Ts extends Serializable>
+                        extends APagingFragment<T, Ts, GridView>
+                        implements AdapterView.OnItemClickListener {
 
     @ViewInject(idStr = "gridview")
     private GridView gridView;
@@ -31,6 +35,19 @@ public abstract class AGridFragment<T extends Serializable, Ts extends Serializa
     @Override
     public GridView getRefreshView() {
         return gridView;
+    }
+
+    @Override
+    protected void setupRefreshView(Bundle savedInstanceSate) {
+        super.setupRefreshView(savedInstanceSate);
+
+        // 设置事件
+        getRefreshView().setOnItemClickListener(this);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
     }
 
     @Override

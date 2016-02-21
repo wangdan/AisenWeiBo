@@ -162,4 +162,19 @@ public abstract class ATimelineFragment extends ARecycleViewSwipeRefreshFragment
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // 刷新点赞数据
+        if (getRefreshView() != null && getRefreshView().getChildCount() > 0) {
+            for (int i = 0; i < getRefreshView().getChildCount(); i++) {
+                View view = getRefreshView().getChildAt(i);
+                if (view.getTag(R.id.itemview) != null && view.getTag(R.id.itemview) instanceof TimelineItemView) {
+                    ((TimelineItemView) view.getTag(R.id.itemview)).setLikeView();
+                }
+            }
+        }
+    }
+
 }

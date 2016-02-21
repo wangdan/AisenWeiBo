@@ -24,8 +24,15 @@ public abstract class IAction {
         return false;
     }
 
+    public void doInterrupt() {
+
+    }
+
     public void run() {
-        if (parent == null || !parent.interrupt()) {
+        if (parent != null && parent.interrupt()) {
+            parent.doInterrupt();
+        }
+        else {
             doAction();
         }
     }

@@ -4,6 +4,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import org.aisen.android.R;
 import org.aisen.android.ui.fragment.APagingFragment;
 import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
@@ -63,9 +64,9 @@ public class BasicListAdapter<T extends Serializable> extends BaseAdapter implem
             itemView = itemViewCreator.newItemView(convertView, itemType);
             itemView.onBindView(convertView);
 
-            convertView.setTag(itemView);
+            convertView.setTag(R.id.itemview, itemView);
         } else {
-            itemView = (IITemView<T>) convertView.getTag();
+            itemView = (IITemView<T>) convertView.getTag(R.id.itemview);
         }
 
         itemView.reset(datas.size(), position);

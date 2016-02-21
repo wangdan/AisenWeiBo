@@ -45,6 +45,9 @@ public class MyApplication extends GlobalContext {
         }
         // 设置登录账号
         AppContext.setAccount(AccountUtils.getLogedinAccount());
+        if (AppContext.isLoggedIn()) {
+            AccountFragment.login(AppContext.getAccount(), false);
+        }
     }
 
     // 刷新定时发布任务

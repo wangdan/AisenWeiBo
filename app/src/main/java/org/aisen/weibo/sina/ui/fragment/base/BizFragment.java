@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -20,6 +22,7 @@ import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.support.action.IAction;
 import org.aisen.android.support.textspan.ClickableTextViewMentionLinkOnTouchListener;
+import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.fragment.ABaseFragment;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
@@ -34,6 +37,7 @@ import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.sinasdk.bean.Token;
 import org.aisen.weibo.sina.sinasdk.bean.UnreadCount;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
+import org.aisen.weibo.sina.support.action.DoLikeAction;
 import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.sqlit.SinaDB;
 import org.aisen.weibo.sina.support.utils.AccountUtils;
@@ -41,11 +45,15 @@ import org.aisen.weibo.sina.support.utils.FabAnimator;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
 import org.aisen.weibo.sina.ui.activity.base.MainActivity;
 import org.aisen.weibo.sina.ui.activity.picture.PicsActivity;
+import org.aisen.weibo.sina.ui.activity.profile.WeiboClientActivity;
 import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
 import org.aisen.weibo.sina.ui.fragment.account.WebLoginFragment;
 import org.aisen.weibo.sina.ui.fragment.profile.ProfilePagerFragment;
 
+import java.lang.ref.WeakReference;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Fragment是一个神器，是跨Activity和Fragment之前通讯的重要的桥梁
@@ -128,6 +136,13 @@ public class BizFragment extends ABaseFragment {
         if (bizFragment == null) {
             bizFragment = new BizFragment();
             bizFragment.mActivity = activity;
+
+            if (activity instanceof BaseActivity) {
+                if (((BaseActivity) activity).isDestory()) {
+                    return bizFragment;
+                }
+            }
+
             activity.getFragmentManager().beginTransaction().add(bizFragment, "BizFragment").commit();
         }
         return bizFragment;
@@ -159,24 +174,54 @@ public class BizFragment extends ABaseFragment {
         @Override
         public void onClick(View v) {
             final WeiBoUser user = (WeiBoUser) v.getTag();
-            if (user != null) {
-                new IAction(getRealActivity(), new CheckAdTokenAction(getRealActivity(), null)) {
 
-                    @Override
-                    public void doAction() {
-                        ProfilePagerFragment.launch(getRealActivity(), user);
-                    }
-
-                }.run();
-            }
+            launchProfile(user);
         }
     };
+
+    public void launchProfile(final WeiBoUser user) {
+        if (user != null) {
+            new IAction(getRealActivity(), new CheckAdTokenAction(getRealActivity(), null, null)) {
+
+                @Override
+                public void doAction() {
+                    ProfilePagerFragment.launch(getRealActivity(), user);
+                }
+
+            }.run();
+        }
+    }
+
+    public void checkProfile(final CheckProfileCallback callback) {
+        new IAction(getRealActivity(), new CheckAdTokenAction(getRealActivity(), null, callback)) {
+
+            @Override
+            public void doAction() {
+                if (callback != null) {
+                    callback.onCheckProfileSuccess();
+                }
+            }
+
+        }.run();
+    }
+
+    public interface CheckProfileCallback {
+
+        void onCheckProfileSuccess();
+
+        void onCheckProfileFaild();
+
+    }
 
     CheckAdTokenAction checkAdTokenAction;
     class CheckAdTokenAction extends IAction {
 
-        public CheckAdTokenAction(Activity context, IAction parent) {
+        private CheckProfileCallback callback;
+
+        public CheckAdTokenAction(Activity context, IAction parent, CheckProfileCallback callback) {
             super(context, parent);
+
+            this.callback = callback;
         }
 
         @Override
@@ -201,7 +246,15 @@ public class BizFragment extends ABaseFragment {
                             }
 
                         })
-                        .setNegativeButton(R.string.no, null)
+                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (callback != null)
+                                    callback.onCheckProfileFaild();
+                            }
+
+                        })
                         .show();
             }
             else {
@@ -958,6 +1011,53 @@ public class BizFragment extends ABaseFragment {
         PublishActivity.publishStatusWithMention(from, user);
     }
 
+    /******************以下是点赞的逻辑***************/
+
+    private Map<String, WeakReference<DoLikeAction>> likeActionMap = new HashMap<>();
+
+    /**
+     * 点赞或者取消点赞
+     *
+     */
+    public void doLike(final StatusContent data, final boolean like, View likeView, final DoLikeAction.OnLikeCallback callback) {
+        String key = String.valueOf(data.getId());
+        DoLikeAction action = likeActionMap.containsKey(key) ? likeActionMap.get(key).get() : null;
+        if (action != null && action.isRunning())
+            return;
+
+        action = new DoLikeAction(getActivity(), this, likeView, data, like, callback);
+        likeActionMap.put(key, new WeakReference<DoLikeAction>(action));
+        action.run();
+    }
+
+    private IAction requestWebLoginAction;
+    public void requestWebLogin(IAction action) {
+        requestWebLoginAction = action;
+
+        WeiboClientActivity.launchForAuth(this, 123123);
+    }
+
+    public void animScale(final View likeView) {
+        ScaleAnimation scaleAnimation = new ScaleAnimation(1.0f, 1.5f, 1.0f, 1.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        scaleAnimation.setDuration(200);
+        scaleAnimation.setFillAfter(true);
+        scaleAnimation.start();
+        likeView.startAnimation(scaleAnimation);
+        likeView.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                ScaleAnimation scaleAnimation = new ScaleAnimation(1.5f, 1.0f, 1.5f, 1.0f,
+                        Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                scaleAnimation.setDuration(200);
+                scaleAnimation.setFillAfter(true);
+                likeView.startAnimation(scaleAnimation);
+            }
+
+        }, 200);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -976,8 +1076,16 @@ public class BizFragment extends ABaseFragment {
                     checkAdTokenAction.run();
                 }
             }
+            // 处理点赞
+            else if (123123 == requestCode) {
+                if (requestWebLoginAction != null) {
+                    requestWebLoginAction.run();
+                }
+            }
         }
 
+        checkAdTokenAction = null;
+        requestWebLoginAction = null;
     }
 
 }

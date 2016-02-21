@@ -91,8 +91,8 @@ public class FabGroupsFragment extends AListFragment<Group, Groups> {
         if (width > SystemUtils.getScreenWidth() / 2) {
             width = SystemUtils.getScreenWidth() / 2;
         }
-        if (items.size() > 5) {
-            getContentView().setLayoutParams(new FrameLayout.LayoutParams(width, Utils.dip2px(250)));
+        if (items.size() > 7) {
+            getContentView().setLayoutParams(new FrameLayout.LayoutParams(width, Utils.dip2px(340)));
         }
         else {
             getContentView().setLayoutParams(new FrameLayout.LayoutParams(width, FrameLayout.LayoutParams.WRAP_CONTENT));

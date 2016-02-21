@@ -31,6 +31,8 @@ public class AccountBean extends BaseSinaBean {
 
     private UnreadCount unreadCount;
 
+    private String cookie;// 网页授权的cookie
+
     public AccessToken getAccessToken() {
         return accessToken;
     }
@@ -93,5 +95,13 @@ public class AccountBean extends BaseSinaBean {
 
     public void setUnreadCount(UnreadCount unreadCount) {
         this.unreadCount = unreadCount;
+    }
+
+    public String getCookie() {
+        return cookie;
+    }
+
+    public void setCookie(String cookie) {
+        this.cookie = cookie;
     }
 }

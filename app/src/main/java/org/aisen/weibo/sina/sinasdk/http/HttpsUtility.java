@@ -126,8 +126,8 @@ public class HttpsUtility implements IHttpUtility {
 
 	private <T> T executeRequest(Request request, Class<T> responseCls) throws TaskException {
 		try {
-			if (SettingUtility.getIntSetting("http_delay") > 0) {
-				Thread.sleep(SettingUtility.getIntSetting("http_delay"));
+			if (SettingUtility.getPermanentSettingAsInt("http_delay") > 0) {
+				Thread.sleep(SettingUtility.getPermanentSettingAsInt("http_delay"));
 			}
 		} catch (Throwable e) {
 		}

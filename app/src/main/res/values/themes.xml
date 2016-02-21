@@ -43,6 +43,7 @@
     </style>
 
     <style name="AppTheme.Pics">
+        <item name="themeColor">@color/comm_black</item>
     </style>
 
 

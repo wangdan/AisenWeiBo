@@ -23,7 +23,6 @@ import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.sinasdk.bean.PicUrls;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.support.bean.PhotosBean;
-import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.ui.fragment.comment.TimelineDetailPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.picture.PictureFragment;
 import org.aisen.weibo.sina.ui.fragment.profile.PhotosFragment;
@@ -61,7 +60,6 @@ public class PhotosActivity extends BaseActivity implements OnPageChangeListener
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-        AisenUtils.setPicStatusBar(this);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.ui_picture_pager);
 		

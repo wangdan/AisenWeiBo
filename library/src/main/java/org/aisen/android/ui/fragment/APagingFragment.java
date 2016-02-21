@@ -15,13 +15,13 @@ import org.aisen.android.common.utils.ViewUtils;
 import org.aisen.android.network.biz.IResult;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.support.paging.IPaging;
-import org.aisen.android.ui.fragment.itemview.AHeaderItemViewCreator;
-import org.aisen.android.ui.fragment.itemview.NormalItemViewCreator;
-import org.aisen.android.ui.fragment.itemview.IITemView;
-import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
 import org.aisen.android.ui.fragment.adapter.IPagingAdapter;
 import org.aisen.android.ui.fragment.itemview.AFooterItemView;
+import org.aisen.android.ui.fragment.itemview.AHeaderItemViewCreator;
 import org.aisen.android.ui.fragment.itemview.BasicFooterView;
+import org.aisen.android.ui.fragment.itemview.IITemView;
+import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
+import org.aisen.android.ui.fragment.itemview.NormalItemViewCreator;
 import org.aisen.android.ui.fragment.itemview.OnFooterViewListener;
 import org.aisen.android.ui.widget.AsToolbar;
 
@@ -137,9 +137,7 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 
         setupRefreshViewWithConfig(refreshConfig);
 
-		if (savedInstanceSate != null && getAdapter().getDatas() != null) {
-			bindAdapter(getAdapter());
-		}
+		bindAdapter(getAdapter());
 	}
 	
 	public IPagingAdapter getAdapter() {
@@ -356,6 +354,21 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 		// 如果没有正在刷新，设置刷新控件，且子类没有自动刷新
 		if (!isRefreshing() && !setRefreshViewToLoading())
 			requestData(RefreshMode.reset);
+	}
+
+	public void requestDataDelaySetRefreshing(long delay) {
+		Runnable requestDelayRunnable = new Runnable() {
+
+			@Override
+			public void run() {
+				Logger.d(TAG, "延迟刷新，开始刷新, " + toString());
+
+				requestDataSetRefreshing();
+			}
+
+		};
+
+		runUIRunnable(requestDelayRunnable, delay);
 	}
 
 	/**

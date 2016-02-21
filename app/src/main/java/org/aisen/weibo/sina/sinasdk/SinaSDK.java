@@ -13,7 +13,6 @@ import com.alibaba.fastjson.JSON;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.setting.SettingUtility;
-import org.aisen.android.common.utils.Consts;
 import org.aisen.android.network.biz.ABizLogic;
 import org.aisen.android.network.http.HttpConfig;
 import org.aisen.android.network.http.IHttpUtility;
@@ -72,7 +71,7 @@ public class SinaSDK extends ABizLogic {
 	@Override
 	protected HttpConfig configHttpConfig() {
 		HttpConfig httpConfig = new HttpConfig();
-		httpConfig.baseUrl = getSetting(Consts.BASE_URL).getValue();
+		httpConfig.baseUrl = getSetting(BASE_URL).getValue();
 		if (token != null) {
 			httpConfig.addHeader("Authorization", "OAuth2 " + token.getToken());
 		}

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
+import org.aisen.android.R;
 import org.aisen.android.ui.fragment.APagingFragment;
 import org.aisen.android.ui.fragment.itemview.AHeaderItemViewCreator;
 import org.aisen.android.ui.fragment.itemview.IITemView;
@@ -122,13 +123,13 @@ public class BasicRecycleViewAdapter<T extends Serializable> extends RecyclerVie
             convertView = LayoutInflater.from(holderFragment.getActivity()).inflate(itemRes, parent, false);
 
             itemView = headerItemViewCreator.newItemView(convertView, viewType);
-            convertView.setTag(itemView);
+            convertView.setTag(R.id.itemview, itemView);
         }
         else {
             convertView = LayoutInflater.from(holderFragment.getActivity()).inflate(itemRes, parent, false);
 
             itemView = itemViewCreator.newItemView(convertView, viewType);
-            convertView.setTag(itemView);
+            convertView.setTag(R.id.itemview, itemView);
         }
         itemView.onBindView(convertView);
 
@@ -172,7 +173,7 @@ public class BasicRecycleViewAdapter<T extends Serializable> extends RecyclerVie
 
         @Override
         public void onClick(View v) {
-            IITemView<T> itemView = (IITemView<T>) v.getTag();
+            IITemView<T> itemView = (IITemView<T>) v.getTag(R.id.itemview);
 
             if (onItemClickListener != null) {
                 onItemClickListener.onItemClick(null, itemView.getConvertView(),
@@ -186,7 +187,7 @@ public class BasicRecycleViewAdapter<T extends Serializable> extends RecyclerVie
 
         @Override
         public boolean onLongClick(View v) {
-            IITemView<T> itemView = (IITemView<T>) v.getTag();
+            IITemView<T> itemView = (IITemView<T>) v.getTag(R.id.itemview);
 
             if (onItemLongClickListener != null) {
                 return onItemLongClickListener.onItemLongClick(null, itemView.getConvertView(),

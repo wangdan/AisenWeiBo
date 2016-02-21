@@ -27,6 +27,13 @@ public abstract class ABizLogic implements IHttpUtility {
 
 	public static final String TAG = "BizLogic";
 
+	// 服务地址
+	public static final String BASE_URL = "base_url";
+	// 缓存类型
+	public static final String CACHE_UTILITY = "cache_utility";
+	// 网络协议
+	public static final String HTTP_UTILITY = "http";
+
 	public enum CacheMode {
 		/**
 		 * 有缓存且有效，返回缓存<br/>
@@ -68,6 +75,16 @@ public abstract class ABizLogic implements IHttpUtility {
 		return SettingUtility.getSetting(type);
 	}
 
+	protected Setting newSetting(String type, String value, String desc) {
+		Setting extra = new Setting();
+
+		extra.setType(type);
+		extra.setValue(value);
+		extra.setDescription(desc);
+
+		return extra;
+	}
+
 	protected SettingExtra newSettingExtra(String type, String value, String desc) {
 		SettingExtra extra = new SettingExtra();
 
@@ -88,7 +105,7 @@ public abstract class ABizLogic implements IHttpUtility {
 
 		ICacheUtility cacheUtility = null;
 		// 配置的缓存模式
-		String cacheUtilityStr = SettingUtil.getSettingValue(actionSetting, Consts.CACHE_UTILITY);
+		String cacheUtilityStr = SettingUtil.getSettingValue(actionSetting, CACHE_UTILITY);
 		if (!TextUtils.isEmpty(cacheUtilityStr)) {
 			try {
 				cacheUtility = (ICacheUtility) Class.forName(cacheUtilityStr).newInstance();
@@ -245,9 +262,9 @@ public abstract class ABizLogic implements IHttpUtility {
 	}
 
 	private IHttpUtility getHttpUtility(Setting action) {
-		if (action.getExtras().get("http") != null && !TextUtils.isEmpty(action.getExtras().get("http").getValue())) {
+		if (action.getExtras().get(HTTP_UTILITY) != null && !TextUtils.isEmpty(action.getExtras().get(HTTP_UTILITY).getValue())) {
 			try {
-				IHttpUtility httpUtility = (IHttpUtility) Class.forName(action.getExtras().get("http").getValue()).newInstance();
+				IHttpUtility httpUtility = (IHttpUtility) Class.forName(action.getExtras().get(HTTP_UTILITY).getValue()).newInstance();
 				return httpUtility;
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -292,8 +309,8 @@ public abstract class ABizLogic implements IHttpUtility {
 		try {
 			HttpConfig mConfig = config;
 			
-			if (actionSetting != null && actionSetting.getExtras().containsKey(Consts.BASE_URL))
-				mConfig.baseUrl = actionSetting.getExtras().get(Consts.BASE_URL).getValue().toString();
+			if (actionSetting != null && actionSetting.getExtras().containsKey(BASE_URL))
+				mConfig.baseUrl = actionSetting.getExtras().get(BASE_URL).getValue().toString();
 
 			return mConfig;
 		} catch (Exception e) {

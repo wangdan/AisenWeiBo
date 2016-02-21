@@ -11,6 +11,7 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
 
 import org.aisen.android.common.context.GlobalContext;
+import org.aisen.android.common.setting.SettingUtility;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
@@ -36,6 +37,7 @@ public class OtherItemFragment extends VersionSettingsFragment
 	private Preference pGithub;// Github
 	private CheckBoxPreference pScreenRotate;// 屏幕旋转
 	private CheckBoxPreference pDisableCache;// 禁用缓存
+	private CheckBoxPreference pNetworkDelay;// 网络请求延迟
 	private ListPreference pCacheValidity;// 业务数据有效期
 
 	@Override
@@ -61,6 +63,9 @@ public class OtherItemFragment extends VersionSettingsFragment
 		
 		pDisableCache = (CheckBoxPreference) findPreference("pDisableCache");
 		pDisableCache.setOnPreferenceChangeListener(this);
+
+		pNetworkDelay = (CheckBoxPreference) findPreference("pNetworkDelay");
+		pNetworkDelay.setOnPreferenceChangeListener(this);
 		
 		pOpensource = (Preference) findPreference("pOpensource");
 		pOpensource.setOnPreferenceClickListener(this);
@@ -93,6 +98,9 @@ public class OtherItemFragment extends VersionSettingsFragment
 		}
 		else if ("pCacheValidity".equals(preference.getKey())) {
 			setListSetting(Integer.parseInt(newValue.toString()), R.array.pCacheValidity, pCacheValidity);
+		}
+		else if ("pNetworkDelay".equals(preference.getKey())) {
+			SettingUtility.setPermanentSetting("http_delay", Boolean.parseBoolean(newValue.toString()) ? 10 * 1000 : 0);
 		}
 		return true;
 	}

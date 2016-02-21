@@ -100,9 +100,10 @@ public class ProfileCollapsingToolbarLayout extends CollapsingToolbarLayout {
         avatarBitmap = BitmapUtil.setImageCorner(sourceBitmap, sourceBitmap.getWidth());
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    private void maybeSetup() {
+        if (appBarLayout == null) {
+            return;
+        }
 
         // 将Cover的高度重新Measure一次
         if (!onCoverSet && appBarLayout.getHeight() > 0) {
@@ -120,7 +121,7 @@ public class ProfileCollapsingToolbarLayout extends CollapsingToolbarLayout {
             // 计算Detail的layout_collapseParallaxMultiplier，使其收起来时刚好高度为ToolBar的高度
             CollapsingToolbarLayout.LayoutParams params = (CollapsingToolbarLayout.LayoutParams) layDetail.getLayoutParams();
             // 最大移动的距离
-            maxVerticalOffset = appBarLayout.getHeight() - (statusbarHeight + toolbar.getHeight() + tabLayout.getHeight());
+            maxVerticalOffset = appBarLayout.getHeight() - (statusbarHeight + toolbar.getHeight() + tabLayout.getHeight()) - 2;
             // 计算移动后的top减去移动前的top就是需要offset，再用offset计算出multiplier
             float multiplier = ((maxVerticalOffset + statusbarHeight) -
                     (collapsingToolbarLayout.getHeight() - layDetail.getHeight())) * 1.0f / maxVerticalOffset;
@@ -130,12 +131,22 @@ public class ProfileCollapsingToolbarLayout extends CollapsingToolbarLayout {
 
             avatarMatrix = new Matrix();
 
-            layNameBitmap = Bitmap.createBitmap(layName.getWidth(), layName.getHeight(), Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(layNameBitmap);
-            layName.draw(canvas);
-            layName.setVisibility(View.INVISIBLE);
-            layNameMatrix = new Matrix();
+            setNameBitmap();
         }
+    }
+
+    private void setNameBitmap() {
+        layNameBitmap = Bitmap.createBitmap(layName.getWidth(), layName.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(layNameBitmap);
+        layName.draw(canvas);
+        layName.setVisibility(View.INVISIBLE);
+        layNameMatrix = new Matrix();
+    }
+
+    public void resetNameBitmap() {
+        layName.setVisibility(View.VISIBLE);
+        onCoverSet = false;
+        layNameBitmap = null;
     }
 
     public void setAvatarBitmap(Bitmap bitmap) {
@@ -213,6 +224,12 @@ public class ProfileCollapsingToolbarLayout extends CollapsingToolbarLayout {
 
         @Override
         public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+            maybeSetup();
+
+            if (layNameBitmap == null) {
+                setNameBitmap();
+            }
+
             ProfileCollapsingToolbarLayout.this.verticalOffset = verticalOffset;
 
             // offset移动的比例

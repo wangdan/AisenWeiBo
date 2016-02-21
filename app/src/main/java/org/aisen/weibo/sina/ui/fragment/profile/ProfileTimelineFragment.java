@@ -2,9 +2,16 @@ package org.aisen.weibo.sina.ui.fragment.profile;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
 
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
+import org.aisen.android.ui.fragment.itemview.AHeaderItemViewCreator;
+import org.aisen.android.ui.fragment.itemview.IITemView;
+import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
+import org.aisen.android.ui.fragment.itemview.NormalItemViewCreator;
+import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
@@ -13,6 +20,9 @@ import org.aisen.weibo.sina.sinasdk.bean.StatusContents;
 import org.aisen.weibo.sina.sinasdk.bean.Token;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.ui.fragment.timeline.ATimelineFragment;
+import org.aisen.weibo.sina.ui.fragment.timeline.TimelineItemView;
+
+import java.util.ArrayList;
 
 /**
  * 用户的微博
@@ -34,6 +44,11 @@ public class ProfileTimelineFragment extends ATimelineFragment {
     private String feature;
 
     @Override
+    public int inflateContentView() {
+        return R.layout.ui_timeline_profile;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -49,6 +64,35 @@ public class ProfileTimelineFragment extends ATimelineFragment {
 
         outState.putSerializable("mUser", mUser);
         outState.putString("feature", feature);
+    }
+
+    @Override
+    public IItemViewCreator<StatusContent> configItemViewCreator() {
+        return new NormalItemViewCreator<StatusContent>(R.layout.item_profile_timeline) {
+
+            @Override
+            public IITemView<StatusContent> newItemView(View convertView, int viewType) {
+                return new TimelineItemView(convertView, ProfileTimelineFragment.this);
+            }
+
+        };
+    }
+
+    @Override
+    protected AHeaderItemViewCreator<StatusContent> configHeaderViewCreator() {
+        return new AHeaderItemViewCreator<StatusContent>() {
+
+            @Override
+            public int[][] setHeaderLayoutRes() {
+                return new int[][]{ { ProfileTimelineHeaderView.LAYOUT_RES, 100 } };
+            }
+
+            @Override
+            public IITemView<StatusContent> newItemView(View convertView, int viewType) {
+                return new ProfileTimelineHeaderView(ProfileTimelineFragment.this, convertView);
+            }
+
+        };
     }
 
     @Override
@@ -92,6 +136,14 @@ public class ProfileTimelineFragment extends ATimelineFragment {
             return statusContents;
         }
 
+    }
+
+    public String getFeature() {
+        return feature;
+    }
+
+    public void setFeature(String feature) {
+        this.feature = feature;
     }
 
 }

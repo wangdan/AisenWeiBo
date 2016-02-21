@@ -19,7 +19,8 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
         </android.support.design.widget.AppBarLayout>
 
@@ -51,10 +52,12 @@
                         android:layout_height="wrap_content" app:tabIndicatorColor="?attr/colorPrimary"
                         />
 
-                    <TextView
-                        android:id="@+id/txtAttitudes"
+                    <org.aisen.android.ui.widget.MDButton
+                        android:id="@+id/txtAttitudes" style="@style/TextSubhead"
                         android:layout_width="wrap_content" android:layout_height="wrap_content"
                         android:layout_gravity="right|center_vertical" android:layout_marginRight="24dip"
+                        android:gravity="center" android:minHeight="30dip"
+                        android:paddingLeft="8dip" android:paddingRight="8dip"
                         android:textColor="@color/text_54" android:textSize="@dimen/design_tab_text_size"/>
                 </FrameLayout>
 

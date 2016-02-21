@@ -60,7 +60,6 @@ public class TimelineCommentFragment extends AListFragment<StatusComment, Status
     protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
         super.layoutInit(inflater, savedInstanceSate);
 
-        bindAdapter(getAdapter());
         getContentView().setBackgroundColor(Color.WHITE);
     }
 

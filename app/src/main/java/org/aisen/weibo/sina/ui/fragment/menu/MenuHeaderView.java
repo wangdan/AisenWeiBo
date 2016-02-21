@@ -19,8 +19,8 @@ import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
 import org.aisen.weibo.sina.ui.activity.base.MainActivity;
 import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
+import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.fragment.friendship.FriendshipPagerFragment;
-import org.aisen.weibo.sina.ui.fragment.profile.ProfilePagerFragment;
 
 /**
  * Created by wangdan on 16/1/25.
@@ -67,20 +67,17 @@ public class MenuHeaderView implements View.OnClickListener {
 
             @Override
             public void onClick(View v) {
-                if (v.getId() == R.id.imgPhoto) {
-                    if (txtFollowersNewHint != null && txtFollowersNewHint.getVisibility() == View.VISIBLE) {
-                        ((MainActivity) menuFragment.getActivity()).closeDrawer();
+                if (txtFollowersNewHint != null && txtFollowersNewHint.getVisibility() == View.VISIBLE) {
+                    ((MainActivity) menuFragment.getActivity()).closeDrawer();
 
-                        FriendshipPagerFragment.launch(menuFragment.getActivity(), AppContext.getAccount().getUser(), 1);
-                    }
-                    else {
-                        ProfilePagerFragment.launch(menuFragment.getActivity(), AppContext.getAccount().getUser());;
-                    }
+                    FriendshipPagerFragment.launch(menuFragment.getActivity(), AppContext.getAccount().getUser(), 1);
+                }
+                else {
+                    BizFragment.createBizFragment(menuFragment).launchProfile(AppContext.getAccount().getUser());
                 }
             }
 
         });
-//        imgPhoto.setOnLongClickListener(viewOnLongClickListener);
         BitmapLoader.getInstance().display(menuFragment,
                 user.getAvatar_large(), imgPhoto, ImageConfigUtils.getLargePhotoConfig());
         // 名字

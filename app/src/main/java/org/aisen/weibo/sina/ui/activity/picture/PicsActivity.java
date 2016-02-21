@@ -103,7 +103,7 @@ public class PicsActivity extends BaseActivity implements OnPageChangeListener {
 	protected Fragment newFragment(int position) {
 		return PictureFragment.newInstance(getPicture(position));
 	}
-	
+
 	class MyViewPagerAdapter extends FragmentPagerAdapter {
 
 		public MyViewPagerAdapter(FragmentManager fm) {
@@ -162,9 +162,9 @@ public class PicsActivity extends BaseActivity implements OnPageChangeListener {
             fragment.onTabRequestData();
 	}
 
-    @Override
-    protected int configTheme() {
-        return R.style.AppTheme_Pics;
-    }
+	@Override
+	protected int configTheme() {
+		return R.style.AppTheme_Pics;
+	}
 
 }

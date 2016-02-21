@@ -33,6 +33,8 @@ import org.aisen.android.ui.fragment.ATabsTabLayoutFragment;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
+import org.aisen.weibo.sina.support.action.DoLikeAction;
+import org.aisen.weibo.sina.support.bean.LikeBean;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
@@ -47,7 +49,7 @@ import java.util.ArrayList;
  * Created by wangdan on 16/1/22.
  */
 public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
-                                            implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener {
+                                            implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener, DoLikeAction.OnLikeCallback {
 
     public static void launch(Activity from, StatusContent status) {
         FragmentArgs args = new FragmentArgs();
@@ -80,6 +82,8 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
     TimelineDetailScrollView laySroll;
 
     private StatusContent mStatusContent;
+
+    private BizFragment bizFragment;
 
     @Override
     public int inflateContentView() {
@@ -122,6 +126,13 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        bizFragment = BizFragment.createBizFragment(this);
+    }
+
+    @Override
     protected void setupTabLayout(Bundle savedInstanceSate, TabLayout tabLayout) {
         super.setupTabLayout(savedInstanceSate, tabLayout);
 
@@ -143,14 +154,6 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
 
         appBarLayout.addOnOffsetChangedListener(this);
 
-        // 点赞数
-        if (mStatusContent.getAttitudes_count() == 0) {
-            txtAttitudes.setText("");
-        }
-        else {
-            txtAttitudes.setText(String.format(getString(R.string.attitudes_format), AisenUtils.getCounter(mStatusContent.getAttitudes_count())));
-        }
-
         action_a.setOnClickListener(this);
         action_b.setOnClickListener(this);
         action_c.setOnClickListener(this);
@@ -164,6 +167,45 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
         }
 
         mHandler.postDelayed(initCurrentFragment, 100);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        setLikeText();
+    }
+
+    private void setLikeText() {
+        // 点赞数
+        LikeBean likeBean = DoLikeAction.likeCache.get(mStatusContent.getId() + "");
+        if (txtAttitudes != null) {
+            txtAttitudes.setTag(mStatusContent);
+            txtAttitudes.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    LikeBean likeBean = DoLikeAction.likeCache.get(mStatusContent.getId() + "");
+                    boolean like = likeBean == null || !likeBean.isLiked();
+
+                    bizFragment.doLike(mStatusContent, like, v, TimelineDetailPagerFragment.this);
+                }
+
+            });
+
+            if (likeBean != null && likeBean.isLiked()) {
+                if (mStatusContent.getAttitudes_count() > 0)
+                    txtAttitudes.setText(String.format(getString(R.string.attitudes_format), AisenUtils.getCounter(mStatusContent.getAttitudes_count()) + "+1"));
+                else
+                    txtAttitudes.setText(String.format(getString(R.string.attitudes_format), "+1"));
+            }
+            else {
+                if (mStatusContent.getAttitudes_count() > 0)
+                    txtAttitudes.setText(String.format(getString(R.string.attitudes_format), AisenUtils.getCounter(mStatusContent.getAttitudes_count())));
+                else
+                    txtAttitudes.setText("");
+            }
+        }
     }
 
     @Override
@@ -348,6 +390,23 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
 
         });
         animator.start();
+    }
+
+    @Override
+    public void onLikeFaild() {
+        setLikeText();
+    }
+
+    @Override
+    public void onLikeSuccess(StatusContent data, View likeView) {
+        if (getActivity() == null)
+            return;
+
+        setLikeText();
+
+        if (likeView.getTag() == data) {
+            bizFragment.animScale(likeView);
+        }
     }
 
 }

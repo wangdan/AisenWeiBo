@@ -21,6 +21,7 @@ import org.aisen.android.common.md.MDHelper;
 import org.aisen.android.common.utils.ActivityHelper;
 import org.aisen.android.component.sheetfab.MaterialSheetFab;
 import org.aisen.android.component.sheetfab.MaterialSheetFabEventListener;
+import org.aisen.android.support.action.IAction;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.fragment.ABaseFragment;
@@ -30,8 +31,10 @@ import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.service.OfflineService;
 import org.aisen.weibo.sina.sinasdk.bean.Group;
+import org.aisen.weibo.sina.support.action.WebLoginAction;
 import org.aisen.weibo.sina.support.utils.OfflineUtils;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
+import org.aisen.weibo.sina.ui.activity.profile.WeiboClientActivity;
 import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
 import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
@@ -56,7 +59,8 @@ import java.util.ArrayList;
  *
  * Created by wangdan on 15/4/23.
  */
-public class MainActivity extends BaseActivity implements FabGroupsFragment.OnFabGroupSelectedCallback, MenuFragment.OnMenuCallback {
+public class MainActivity extends BaseActivity
+                            implements FabGroupsFragment.OnFabGroupSelectedCallback, MenuFragment.OnMenuCallback, AisenActivityHelper.EnableSwipeback {
 
     public static final String ACTION_LOGIN = "org.aisen.sina.weibo.ACTION_LOGIN";
     public static final String ACTION_NOTIFICATION = "org.aisen.sina.weibo.ACTION_NOTIFICATION";
@@ -268,6 +272,14 @@ public class MainActivity extends BaseActivity implements FabGroupsFragment.OnFa
             break;
         // 私信
         case MenuFragment.MENU_MD:
+            new IAction(MainActivity.this, new WebLoginAction(MainActivity.this, BizFragment.createBizFragment(this))) {
+
+                @Override
+                public void doAction() {
+                    WeiboClientActivity.launchDM(MainActivity.this);
+                }
+
+            }.run();
             break;
         // 热门微博
         case MenuFragment.MENU_HOT_STATUS:
@@ -509,6 +521,11 @@ public class MainActivity extends BaseActivity implements FabGroupsFragment.OnFa
     @Override
     protected int configTheme() {
         return ThemeUtils.themeArr[AppSettings.getThemeColor()][1];
+    }
+
+    @Override
+    public boolean canSwipe() {
+        return false;
     }
 
 }

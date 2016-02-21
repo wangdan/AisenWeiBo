@@ -22,4 +22,5 @@
 	<item name="recycleview" type="id"></item>
     <item name="drag_handle" type="id"></item>
     <item name="click_remove" type="id"></item>
+	<item name="itemview" type="id"></item>
 </resources>

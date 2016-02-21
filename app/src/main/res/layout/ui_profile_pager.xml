@@ -52,7 +52,7 @@
                         <TextView
                             android:id="@+id/txtName" style="@style/TextTitle.Inverse" android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="王丹" android:textColor="@color/comm_white" android:textSize="24sp"/>
+                            android:text="-" android:textColor="@color/comm_white" android:textSize="24sp"/>
 
                         <ImageView
                             android:id="@+id/imgVerified" android:layout_width="20dip"
@@ -72,7 +72,7 @@
                         android:layout_below="@id/layName" android:layout_marginLeft="-8dip"
                         android:layout_marginTop="8dip" android:background="?attr/selectableItemBackground"
                         android:paddingBottom="4dip" android:paddingLeft="8dip" android:paddingRight="8dip"
-                        android:paddingTop="4dip" android:text="1.2万 关注"/>
+                        android:paddingTop="4dip" android:text="- 关注"/>
 
                     <TextView
                         android:id="@+id/divider_01"
@@ -88,13 +88,13 @@
                         android:layout_below="@id/layName" android:layout_marginTop="8dip"
                         android:layout_toRightOf="@id/divider_01" android:background="?attr/selectableItemBackground" android:paddingBottom="4dip"
                         android:paddingLeft="8dip"
-                        android:paddingRight="8dip" android:paddingTop="4dip" android:text="1.2万 粉丝"/>
+                        android:paddingRight="8dip" android:paddingTop="4dip" android:text="- 粉丝"/>
 
                     <TextView
                         android:id="@+id/txtDesc"
                         style="@style/TextBody.Inverse" android:layout_width="wrap_content"
                         android:layout_height="wrap_content" android:layout_below="@id/txtFollowersCounter"
-                        android:layout_marginTop="8dip" android:lineSpacingExtra="2dip" android:text="今天真的是个好日子"/>
+                        android:layout_marginTop="8dip" android:lineSpacingExtra="2dip" android:text="-"/>
                 </RelativeLayout>
             </RelativeLayout>
 

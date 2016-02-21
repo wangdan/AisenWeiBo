@@ -3,7 +3,6 @@ package org.aisen.weibo.sina.ui.fragment.timeline;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -89,13 +88,6 @@ public class TimelineRepostFragment extends AListFragment<StatusContent, StatusC
         super.onActivityCreated(savedInstanceState);
 
         BizFragment.createBizFragment(getActivity()).getFabAnimator().attachToListView(getRefreshView(), null, this);
-    }
-
-    @Override
-    protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
-        super.layoutInit(inflater, savedInstanceSate);
-
-        bindAdapter(getAdapter());
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.aisen.weibo.sina.ui.fragment.timeline;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.CardView;
@@ -7,6 +8,8 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,20 +25,26 @@ import org.aisen.weibo.sina.sinasdk.bean.Group;
 import org.aisen.weibo.sina.sinasdk.bean.Groups;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
+import org.aisen.weibo.sina.support.action.DoLikeAction;
+import org.aisen.weibo.sina.support.bean.LikeBean;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.fragment.comment.TimelineCommentFragment;
+import org.aisen.weibo.sina.ui.fragment.comment.TimelineDetailPagerFragment;
+import org.aisen.weibo.sina.ui.fragment.mention.MentionTimelineFragment;
 import org.aisen.weibo.sina.ui.widget.AisenTextView;
 import org.aisen.weibo.sina.ui.widget.TimelinePicsView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Created by wangdan on 16/1/4.
  */
-public class TimelineItemView extends ARecycleViewItemView<StatusContent> implements View.OnClickListener {
+public class TimelineItemView extends ARecycleViewItemView<StatusContent> implements View.OnClickListener, DoLikeAction.OnLikeCallback  {
 
     public static final int LAYOUT_RES = R.layout.item_timeline;
 
@@ -93,6 +102,8 @@ public class TimelineItemView extends ARecycleViewItemView<StatusContent> implem
     private ABaseFragment fragment;
     private BizFragment bizFragment;
 
+    private StatusContent data;
+
     public TimelineItemView(View convertView, ABaseFragment fragment) {
         super(convertView);
 
@@ -113,6 +124,8 @@ public class TimelineItemView extends ARecycleViewItemView<StatusContent> implem
 
     @Override
     public void onBindData(View convertView, StatusContent data, int position) {
+        this.data = data;
+
         WeiBoUser user = data.getUser();
 
         // userInfo
@@ -156,17 +169,7 @@ public class TimelineItemView extends ARecycleViewItemView<StatusContent> implem
             btnComment.setTag(data);
             btnComment.setOnClickListener(this);
         }
-//        LikeBean likeBean = DoLikeAction.likeCache.get(data.getId() + "");
-        if (btnLike != null) {
-            btnLike.setTag(data);
-            btnLike.setOnClickListener(this);
-
-            if (data.getAttitudes_count() > 0)
-                txtLike.setText(data.getAttitudes_count() + "");
-            else
-                txtLike.setText("");
-//            imgLike.setSelected(likeBean != null && likeBean.isLiked());
-        }
+        setLikeView();
         // 文本
 //		txtContent.setText(data.getText());
         txtContent.setContent(data.getText());
@@ -230,6 +233,31 @@ public class TimelineItemView extends ARecycleViewItemView<StatusContent> implem
         btnMenus.setOnClickListener(this);
     }
 
+    public void setLikeView() {
+        LikeBean likeBean = DoLikeAction.likeCache.get(data.getId() + "");
+        if (btnLike != null) {
+            btnLike.setTag(data);
+            btnLike.setOnClickListener(this);
+
+            if (likeBean != null && likeBean.isLiked()) {
+                imgLike.setSelected(true);
+
+                if (data.getAttitudes_count() > 0)
+                    txtLike.setText(data.getAttitudes_count() + "+1");
+                else
+                    txtLike.setText("+1");
+            }
+            else {
+                imgLike.setSelected(false);
+
+                if (data.getAttitudes_count() > 0)
+                    txtLike.setText(data.getAttitudes_count() + "");
+                else
+                    txtLike.setText("");
+            }
+        }
+    }
+
     private void setUserInfo(WeiBoUser user, TextView txtName, ImageView imgPhoto, ImageView imgVerified) {
         if (user != null) {
             txtName.setText(AisenUtils.getUserScreenName(user));
@@ -257,7 +285,83 @@ public class TimelineItemView extends ARecycleViewItemView<StatusContent> implem
 
     @Override
     public void onClick(View v) {
+        // 查看转发微博信息
+        if (v.getId() == R.id.layRe) {
+            StatusContent reContent = (StatusContent) v.getTag();
+            TimelineDetailPagerFragment.launch(fragment.getActivity(), reContent);
+        }
+        // 转发
+        else if (v.getId() == R.id.btnRepost) {
+            StatusContent status = (StatusContent) v.getTag();
+            bizFragment.statusRepost(status);
+        }
+        // 评论
+        else if (v.getId() == R.id.btnCmt) {
+            StatusContent status = (StatusContent) v.getTag();
+            bizFragment.commentCreate(status);
+        }
+        // 点赞
+        else if (v.getId() == R.id.btnLike) {
+            StatusContent status = (StatusContent) v.getTag();
 
+            LikeBean likeBean = DoLikeAction.likeCache.get(status.getId() + "");
+            boolean like = likeBean == null || !likeBean.isLiked();
+
+            v.findViewById(R.id.imgLike).setSelected(like);
+
+            bizFragment.doLike(status, like, v, this);
+        }
+        // 溢出菜单
+        else if (v.getId() == R.id.btnMenus) {
+            final String[] timelineMenuArr = GlobalContext.getInstance().getResources().getStringArray(R.array.timeline_menus);
+            final StatusContent status = (StatusContent) v.getTag();
+
+            List<String> menuList = new ArrayList<String>();
+            if (status.getRetweeted_status() != null && status.getRetweeted_status().getUser() != null)
+                menuList.add(timelineMenuArr[0]);
+//			menuList.add(timelineMenuArr[3]);
+//			if (status.getVisible() == null || "0".equals(status.getVisible().getType()))
+//				menuList.add(timelineMenuArr[2]);
+            menuList.add(timelineMenuArr[4]);
+            menuList.add(timelineMenuArr[5]);
+            menuList.add(timelineMenuArr[1]);
+            if (status.getUser() != null && status.getUser().getIdstr().equals(AppContext.getAccount().getUser().getIdstr()))
+                menuList.add(timelineMenuArr[6]);
+            if (fragment instanceof MentionTimelineFragment)
+                menuList.add(timelineMenuArr[7]);
+
+            final String[] menus = new String[menuList.size()];
+            for (int i = 0; i < menuList.size(); i++)
+                menus[i] = menuList.get(i);
+
+            AisenUtils.showMenuDialog(fragment,
+                    v,
+                    menus,
+                    new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            AisenUtils.timelineMenuSelected(fragment, menus[which], status);
+                        }
+                    });
+        }
+    }
+
+    @Override
+    public void onLikeFaild() {
+        setLikeView();
+    }
+
+    @Override
+    public void onLikeSuccess(StatusContent data, View likeView) {
+        if (fragment.getActivity() == null)
+            return;
+
+        setLikeView();
+
+        if (likeView.getTag() == data) {
+            bizFragment.animScale(likeView);
+        }
     }
 
 }

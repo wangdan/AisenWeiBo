@@ -39,7 +39,6 @@ import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.utils.AccountUtils;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
-import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
 import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
@@ -65,6 +64,16 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
         args.add(SET_INDEX, String.valueOf(1));
 
         SinaCommonActivity.launch(from, ProfilePagerFragment.class, args);
+    }
+
+    public static ProfilePagerFragment newInstance() {
+        ProfilePagerFragment fragment = new ProfilePagerFragment();
+
+        Bundle args = new Bundle();
+        args.putString(SET_INDEX, String.valueOf(1));
+        fragment.setArguments(args);
+
+        return fragment;
     }
 
     @ViewInject(id = R.id.collapsingToolbar)
@@ -135,8 +144,20 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
         tabLayout.setSelectedTabIndicatorColor(Color.WHITE);
     }
 
+    public void setUser(WeiBoUser user) {
+        mUser = user;
+
+        layoutInit(LayoutInflater.from(getActivity()), null);
+
+        collapsingToolbarLayout.resetNameBitmap();
+    }
+
     @Override
     protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
+        if (mUser == null) {
+            return;
+        }
+
         super.layoutInit(inflater, savedInstanceSate);
 
         if (savedInstanceSate == null)

@@ -2,6 +2,7 @@ package org.aisen.weibo.sina.ui.fragment.profile;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -48,9 +49,7 @@ import java.util.List;
  * Created by wangdan on 15/4/15.
  */
 public class PhotosFragment extends AGridSwipyRefreshFragment<PhotoBean, PhotosBean>
-                                implements AdapterView.OnItemClickListener,
-                                ProfilePagerFragment.IUserProfileRefresh,
-                                ATabsFragment.ITabInitData {
+                                implements ProfilePagerFragment.IUserProfileRefresh, ATabsFragment.ITabInitData {
 
     public static PhotosFragment newInstance(WeiBoUser user) {
         PhotosFragment fragment = new PhotosFragment();
@@ -100,6 +99,9 @@ public class PhotosFragment extends AGridSwipyRefreshFragment<PhotoBean, PhotosB
 
         setViewVisiable(getLoadingLayout(), View.VISIBLE);
         setViewVisiable(getEmptyLayout(), View.GONE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getRefreshView().setNestedScrollingEnabled(true);
+        }
     }
 
     @Override
