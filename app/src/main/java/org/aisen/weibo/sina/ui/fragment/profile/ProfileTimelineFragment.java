@@ -1,5 +1,6 @@
 package org.aisen.weibo.sina.ui.fragment.profile;
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -19,6 +20,9 @@ import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContents;
 import org.aisen.weibo.sina.sinasdk.bean.Token;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
+import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
+import org.aisen.weibo.sina.ui.fragment.comment.TimelineDetailPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.ATimelineFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineItemView;
 
@@ -96,7 +100,7 @@ public class ProfileTimelineFragment extends ATimelineFragment {
     }
 
     @Override
-    protected void requestData(RefreshMode mode) {
+    public void requestData(RefreshMode mode) {
         new ProfileTimelineTask(mode).execute();
     }
 
@@ -144,6 +148,18 @@ public class ProfileTimelineFragment extends ATimelineFragment {
 
     public void setFeature(String feature) {
         this.feature = feature;
+    }
+
+    @Override
+    public boolean onToolbarDoubleClick() {
+        if (AisenUtils.checkTabsFragmentCanRequestData(this)) {
+            requestDataDelaySetRefreshing(AppSettings.REQUEST_DATA_DELAY);
+            getRefreshView().scrollToPosition(0);
+
+            return true;
+        }
+
+        return false;
     }
 
 }

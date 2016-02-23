@@ -243,7 +243,7 @@ public class TimelineItemView extends ARecycleViewItemView<StatusContent> implem
                 imgLike.setSelected(true);
 
                 if (data.getAttitudes_count() > 0)
-                    txtLike.setText(data.getAttitudes_count() + "+1");
+                    txtLike.setText(AisenUtils.getCounter(data.getAttitudes_count(), "+1"));
                 else
                     txtLike.setText("+1");
             }
@@ -251,7 +251,7 @@ public class TimelineItemView extends ARecycleViewItemView<StatusContent> implem
                 imgLike.setSelected(false);
 
                 if (data.getAttitudes_count() > 0)
-                    txtLike.setText(data.getAttitudes_count() + "");
+                    txtLike.setText(AisenUtils.getCounter(data.getAttitudes_count()) + "");
                 else
                     txtLike.setText("");
             }

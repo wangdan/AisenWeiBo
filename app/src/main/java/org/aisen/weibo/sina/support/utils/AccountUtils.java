@@ -14,7 +14,7 @@ import java.util.List;
 public class AccountUtils {
 
     public static void newAccount(AccountBean account) {
-        SinaDB.getDB().insert(null, account);
+        SinaDB.getDB().insertOrReplace(null, account);
     }
 
     public static void updateAccount(AccountBean account) {

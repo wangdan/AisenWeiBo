@@ -391,7 +391,7 @@ public abstract class APublishFragment extends ABaseFragment
 
 	};
 	
-	private void send() {
+	protected void send() {
 		if (AppSettings.isSendDelay())
 			getPublishBean().setDelay(AppSettings.getPublishDelay());
 		else 

@@ -4,10 +4,15 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -49,7 +54,7 @@ import java.util.ArrayList;
  * Created by wangdan on 16/1/22.
  */
 public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
-                                            implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener, DoLikeAction.OnLikeCallback {
+                                            implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener, DoLikeAction.OnLikeCallback, SwipeRefreshLayout.OnRefreshListener {
 
     public static void launch(Activity from, StatusContent status) {
         FragmentArgs args = new FragmentArgs();
@@ -58,6 +63,12 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
         SinaCommonActivity.launch(from, TimelineDetailPagerFragment.class, args);
     }
 
+    public static final String ACTION_REFRESH_CMT_REPLY = "org.aisen.weibo.sina.ACTION_REFRESH_CMT_REPLY";
+    public static final String ACTION_REFRESH_CMT_CREATE = "org.aisen.weibo.sina.ACTION_REFRESH_CMT_CREATE";
+    public static final String ACTION_REFRESH_REPOST = "org.aisen.weibo.sina.ACTION_REFRESH_ACTION_REFRESH_REPOST";
+
+    @ViewInject(id = R.id.swipeRefreshLayout)
+    public SwipeRefreshLayout swipeRefreshLayout;
     @ViewInject(id = R.id.layHeader)
     RelativeLayout layHeader;
     @ViewInject(id = R.id.appbar)
@@ -154,6 +165,12 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
 
         appBarLayout.addOnOffsetChangedListener(this);
 
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
         action_a.setOnClickListener(this);
         action_b.setOnClickListener(this);
         action_c.setOnClickListener(this);
@@ -173,7 +190,20 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
     public void onResume() {
         super.onResume();
 
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ACTION_REFRESH_CMT_CREATE);
+        filter.addAction(ACTION_REFRESH_CMT_REPLY);
+        filter.addAction(ACTION_REFRESH_REPOST);
+        getActivity().registerReceiver(receiver, filter);
+
         setLikeText();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        getActivity().unregisterReceiver(receiver);
     }
 
     private void setLikeText() {
@@ -195,7 +225,7 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
 
             if (likeBean != null && likeBean.isLiked()) {
                 if (mStatusContent.getAttitudes_count() > 0)
-                    txtAttitudes.setText(String.format(getString(R.string.attitudes_format), AisenUtils.getCounter(mStatusContent.getAttitudes_count()) + "+1"));
+                    txtAttitudes.setText(String.format(getString(R.string.attitudes_format), AisenUtils.getCounter(mStatusContent.getAttitudes_count(), "+1")));
                 else
                     txtAttitudes.setText(String.format(getString(R.string.attitudes_format), "+1"));
             }
@@ -408,5 +438,42 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
             bizFragment.animScale(likeView);
         }
     }
+
+    @Override
+    public void onRefresh() {
+        APagingFragment fragment = (APagingFragment) getCurrentFragment();
+
+        onRefresh(fragment);
+    }
+
+    private void onRefresh(APagingFragment fragment) {
+        if (!fragment.isRefreshing()) {
+            fragment.requestData(APagingFragment.RefreshMode.refresh);
+        }
+    }
+
+    public void refreshEnd() {
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    BroadcastReceiver receiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent != null ? intent.getAction() : "";
+
+            if (ACTION_REFRESH_CMT_CREATE.equals(action) || ACTION_REFRESH_CMT_REPLY.equals(action)) {
+                swipeRefreshLayout.setRefreshing(true);
+
+                onRefresh((APagingFragment) getFragment(0));
+            }
+            else if (ACTION_REFRESH_REPOST.equals(action)) {
+                swipeRefreshLayout.setRefreshing(true);
+
+                onRefresh((APagingFragment) getFragment(1));
+            }
+        }
+
+    };
 
 }

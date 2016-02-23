@@ -1,5 +1,6 @@
 package org.aisen.weibo.sina.ui.fragment.timeline;
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
@@ -33,6 +34,7 @@ import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.support.paging.TimelinePaging;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
+import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.fragment.comment.TimelineCommentItemView;
 import org.aisen.weibo.sina.ui.fragment.comment.TimelineDetailPagerFragment;
@@ -91,7 +93,7 @@ public class TimelineRepostFragment extends AListFragment<StatusContent, StatusC
     }
 
     @Override
-    protected void requestData(RefreshMode mode) {
+    public void requestData(RefreshMode mode) {
         boolean load = true;
 
         // 如果还没有加载过数据，切且显示的是当前的页面
@@ -283,8 +285,37 @@ public class TimelineRepostFragment extends AListFragment<StatusContent, StatusC
                 showMessage(exception.getMessage());
         }
 
+        @Override
+        protected void onFinished() {
+            super.onFinished();
+
+            if (getActivity() != null) {
+                Fragment fragment = getActivity().getFragmentManager().findFragmentByTag(SinaCommonActivity.FRAGMENT_TAG);
+                if (fragment != null && fragment instanceof TimelineDetailPagerFragment) {
+                    ((TimelineDetailPagerFragment) fragment).refreshEnd();
+                }
+            }
+        }
+
         public abstract StatusContents getStatusContents(Params params) throws TaskException;
 
+    }
+
+    @Override
+    public boolean onToolbarDoubleClick() {
+        if (AisenUtils.checkTabsFragmentCanRequestData(this)) {
+            Fragment fragment = getActivity().getFragmentManager().findFragmentByTag(SinaCommonActivity.FRAGMENT_TAG);
+            if (fragment != null && fragment instanceof TimelineDetailPagerFragment) {
+                ((TimelineDetailPagerFragment) fragment).swipeRefreshLayout.setRefreshing(true);
+            }
+
+            requestDataDelaySetRefreshing(AppSettings.REQUEST_DATA_DELAY);
+            getRefreshView().setSelectionFromTop(0, 0);
+
+            return true;
+        }
+
+        return false;
     }
 
 }

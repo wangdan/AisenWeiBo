@@ -31,8 +31,8 @@
             </intent-filter>
         </activity>
         <!--首页-->
-        <activity android:name=".ui.activity.base.MainActivity" android:screenOrientation="portrait"
-                  android:theme="@style/AppTheme.Main"/>
+        <activity android:name=".ui.activity.base.MainActivity" android:launchMode="singleTask"
+                  android:screenOrientation="portrait" android:theme="@style/AppTheme.Main"/>
         <!--公共页-->
         <activity android:name=".ui.activity.base.SinaCommonActivity"
                   android:screenOrientation="portrait"

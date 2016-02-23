@@ -14,9 +14,7 @@
 
     <LinearLayout
         android:id="@+id/container" android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:layout_marginBottom="4dip" android:layout_marginLeft="8dip"
-        android:layout_marginRight="8dip" android:layout_marginTop="4dip"
-        android:background="?attr/selectableItemBackground" android:minHeight="70dip"
+        android:minHeight="70dip"
         android:orientation="vertical"
         android:paddingLeft="@dimen/item_padding" android:paddingRight="@dimen/item_padding" android:paddingTop="@dimen/item_padding">
 

@@ -66,7 +66,7 @@ public abstract class AListFragment<T extends Serializable, Ts extends Serializa
     }
 
     @Override
-    protected void requestDataOutofdate() {
+    public void requestDataOutofdate() {
         getRefreshView().setSelectionFromTop(0, 0);
 
         super.requestDataOutofdate();

@@ -86,7 +86,7 @@ public class DefHttpUtility implements IHttpUtility {
 		return builder;
 	}
 
-	public <T> T uploadFile(HttpConfig config, Setting action, Params params, File file, Params headers, Class<T> responseClazz) throws TaskException {
+	public <T> T uploadFile(HttpConfig config, Setting action, Params params, MultipartFile[] files, Params headers, Class<T> responseClazz) throws TaskException {
 		return null;
 	}
 

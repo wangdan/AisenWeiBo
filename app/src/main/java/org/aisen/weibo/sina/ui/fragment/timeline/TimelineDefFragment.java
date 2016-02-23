@@ -6,6 +6,7 @@ import org.aisen.android.common.utils.Logger;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.weibo.sina.base.AppContext;
+import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContents;
 
@@ -46,7 +47,7 @@ public class TimelineDefFragment extends ATimelineFragment {
     }
 
     @Override
-    protected void requestData(RefreshMode mode) {
+    public void requestData(RefreshMode mode) {
         new DefTimelineTask(mode).execute();
     }
 
@@ -73,6 +74,14 @@ public class TimelineDefFragment extends ATimelineFragment {
             throw new TaskException(TaskException.TaskError.resultIllegal.toString());
         }
 
+    }
+
+    @Override
+    public boolean onToolbarDoubleClick() {
+        requestDataDelaySetRefreshing(AppSettings.REQUEST_DATA_DELAY);
+        getRefreshView().scrollToPosition(0);
+
+        return true;
     }
 
 }

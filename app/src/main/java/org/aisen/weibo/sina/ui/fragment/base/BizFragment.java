@@ -26,6 +26,7 @@ import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.fragment.ABaseFragment;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
+import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.service.UnreadService;
 import org.aisen.weibo.sina.service.notifier.Notifier;
 import org.aisen.weibo.sina.service.notifier.UnreadCountNotifier;
@@ -82,6 +83,9 @@ import java.util.Map;
  * @author wangdan
  */
 public class BizFragment extends ABaseFragment {
+
+    public static final int REQUEST_CODE_AD_AUTH = 52231;
+    public static final int REQUEST_CODE_AUTH = 52232;
 
     private Activity mActivity;
 
@@ -231,8 +235,9 @@ public class BizFragment extends ABaseFragment {
 
             if (interrupt) {
                 new AlertDialogWrapper.Builder(getRealActivity())
-                        .setTitle(R.string.profile_ad_title)
-                        .setMessage(R.string.profile_ad_message)
+//                        .setTitle(R.string.profile_ad_title)
+//                        .setMessage(R.string.profile_ad_message)
+                        .setMessage(R.string.profile_ad_title)
                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 
                             @Override
@@ -242,7 +247,7 @@ public class BizFragment extends ABaseFragment {
                                 String account = AppContext.getAccount().getAccount();
                                 String password = AppContext.getAccount().getPassword();
 
-                                WebLoginFragment.launch(BizFragment.this, WebLoginFragment.Client.weico, account, password);
+                                WebLoginFragment.launch(BizFragment.this, WebLoginFragment.Client.weico, account, password, REQUEST_CODE_AD_AUTH);
                             }
 
                         })
@@ -941,6 +946,11 @@ public class BizFragment extends ABaseFragment {
     }
 
     public void remindSetCount(final RemindType remindType) {
+        // 测试通知功能时，不清零
+        if (AppSettings.ignoreUnread()) {
+            return;
+        }
+
         final String uid = AppContext.getAccount().getUser().getIdstr();
         new WorkTask<RemindType, Void, SetCount>() {
 
@@ -1064,7 +1074,7 @@ public class BizFragment extends ABaseFragment {
 
         if (resultCode == Activity.RESULT_OK) {
             // 请求授权
-            if (requestCode == WebLoginFragment.REQUEST_CODE_AUTH) {
+            if (requestCode == REQUEST_CODE_AD_AUTH) {
                 AccountBean accountBean = (AccountBean) data.getSerializableExtra("account");
 
                 AppContext.getAccount().setAdvancedToken(accountBean.getAccessToken());

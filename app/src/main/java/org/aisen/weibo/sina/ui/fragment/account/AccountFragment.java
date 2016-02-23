@@ -33,22 +33,19 @@ import org.aisen.android.ui.widget.CircleImageView;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.MyApplication;
-import org.aisen.weibo.sina.service.OfflineService;
 import org.aisen.weibo.sina.service.PublishService;
 import org.aisen.weibo.sina.service.UnreadService;
 import org.aisen.weibo.sina.service.notifier.UnreadCountNotifier;
 import org.aisen.weibo.sina.service.publisher.PublishNotifier;
-import org.aisen.weibo.sina.sinasdk.SinaSDK;
-import org.aisen.weibo.sina.sinasdk.bean.TokenInfo;
 import org.aisen.weibo.sina.sinasdk.bean.UnreadCount;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
-import org.aisen.weibo.sina.support.action.DoLikeAction;
 import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.utils.AccountUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
 import org.aisen.weibo.sina.ui.activity.base.MainActivity;
 import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
+import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,34 +79,15 @@ public class AccountFragment extends ARecycleViewFragment<AccountBean, ArrayList
         }
 
         // 登录该账号
-        AppContext.setAccount(accountBean);
+        AppContext.login(accountBean);
         AccountUtils.setLogedinAccount(accountBean);
 
-        boolean startUnreadService = AppContext.getAccount() == null ||
-                !AppContext.getAccount().getUser().getIdstr().equals(accountBean.getUser().getIdstr());
-        // 未读消息重置
-        if (AppContext.getAccount().getUnreadCount() == null || startUnreadService) {
-            AppContext.getAccount().setUnreadCount(UnreadService.getUnreadCount());
-        }
-        if (AppContext.getAccount() == null)
-            AppContext.getAccount().setUnreadCount(new UnreadCount());
-        // 开启未读服务
-        if (startUnreadService)
-            UnreadService.startService();
-
-        // 刷新定时任务
-        MyApplication.refreshPublishAlarm();
-
-        // 处理点赞数据
-        DoLikeAction.refreshLikeCache();
-
-        // 停止离线服务
-        if (OfflineService.getInstance() != null)
-            OfflineService.stopOffline();
-
         // 进入首页
-        if (toMain)
+        if (toMain) {
             MainActivity.login();
+
+            MainActivity.runCheckAccountTask(accountBean);
+        }
     }
 
     @ViewInject(id = R.id.btnAccountAdd, click = "addAccount")
@@ -136,8 +114,6 @@ public class AccountFragment extends ARecycleViewFragment<AccountBean, ArrayList
         activity.getSupportActionBar().setTitle(R.string.title_acount);
 
         setHasOptionsMenu(true);
-
-        new CheckTokenInfoTask().execute();
     }
 
     @Override
@@ -153,7 +129,7 @@ public class AccountFragment extends ARecycleViewFragment<AccountBean, ArrayList
     }
 
     @Override
-    protected void requestData(RefreshMode mode) {
+    public void requestData(RefreshMode mode) {
         new AccountTask().execute();
     }
 
@@ -161,7 +137,7 @@ public class AccountFragment extends ARecycleViewFragment<AccountBean, ArrayList
     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
         final AccountBean account = getAdapterItems().get(position);
         // 重新授权Aisen
-        if (account.getAccessToken().isExpired()) {
+        if (account.getAccessToken() == null || account.getAccessToken().isExpired()) {
             new AlertDialogWrapper.Builder(getActivity())
                     .setTitle(R.string.remind)
                     .setMessage(R.string.account_expired)
@@ -169,7 +145,7 @@ public class AccountFragment extends ARecycleViewFragment<AccountBean, ArrayList
 
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            WebLoginFragment.launch(AccountFragment.this, WebLoginFragment.Client.aisen, account.getAccount(), account.getPassword());
+                            WebLoginFragment.launch(AccountFragment.this, WebLoginFragment.Client.aisen, account.getAccount(), account.getPassword(), BizFragment.REQUEST_CODE_AUTH);
                         }
 
                     })
@@ -201,14 +177,14 @@ public class AccountFragment extends ARecycleViewFragment<AccountBean, ArrayList
     }
 
     void addAccount(View v) {
-        WebLoginFragment.launch(this, WebLoginFragment.Client.aisen, null, null);
+        WebLoginFragment.launch(this, WebLoginFragment.Client.aisen, null, null, BizFragment.REQUEST_CODE_AUTH);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == WebLoginFragment.REQUEST_CODE_AUTH) {
+        if (requestCode == BizFragment.REQUEST_CODE_AUTH) {
             if (resultCode == Activity.RESULT_CANCELED) {
 
             }
@@ -258,7 +234,7 @@ public class AccountFragment extends ARecycleViewFragment<AccountBean, ArrayList
             txtName.setText(user.getScreen_name());
             txtDesc.setText(user.getDescription() + "");
             txtTokenInfo.setText(R.string.account_relogin_remind);
-            if (data.getAccessToken().isExpired()) {
+            if (data.getAccessToken() == null || data.getAccessToken().isExpired()) {
                 txtTokenInfo.setVisibility(View.VISIBLE);
             } else {
                 txtTokenInfo.setVisibility(View.GONE);
@@ -366,56 +342,6 @@ public class AccountFragment extends ARecycleViewFragment<AccountBean, ArrayList
         }
 
         return super.onBackClick();
-    }
-
-    class CheckTokenInfoTask extends WorkTask<Void, Void, Boolean> {
-
-        @Override
-        public Boolean workInBackground(Void... params) throws TaskException {
-            for (AccountBean account : AccountUtils.queryAccount()) {
-                TokenInfo tokenInfo = null;
-                // Aisen授权
-                try {
-                    tokenInfo = SinaSDK.getInstance(account.getAccessToken()).getTokenInfo(account.getAccessToken().getAccess_token());
-                } catch (TaskException e) {
-                    e.printStackTrace();
-                    if ("21327".equals(e.getCode()) ||
-                            "21317".equals(e.getCode())) {
-                        tokenInfo = new TokenInfo();
-                        tokenInfo.setExpire_in(0);
-                    }
-                    else {
-                        return false;
-                    }
-                }
-                account.getAccessToken().setExpires_in(tokenInfo.getExpire_in());
-
-                if (account.getAdvancedToken() != null)
-                    account.getAdvancedToken().setExpires_in(tokenInfo.getExpire_in());
-
-                // 刷新用户信息
-                AccountUtils.newAccount(account);
-                if (AppContext.getAccount() != null && AppContext.getAccount().getUid().equals(account.getUid())) {
-                    AppContext.getAccount().setAdvancedToken(account.getAccessToken());
-                    AccountUtils.setLogedinAccount(AppContext.getAccount());
-
-                    if (account.getAccessToken().isExpired()) {
-                        AppContext.logout();
-                    }
-                }
-
-                publishProgress();
-            }
-
-            return true;
-        }
-
-        @Override
-        protected void onProgressUpdate(Void... values) {
-            super.onProgressUpdate(values);
-
-            requestData(RefreshMode.reset);
-        }
     }
 
 }

@@ -3,6 +3,7 @@ package org.aisen.weibo.sina.ui.fragment.mention;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.ui.fragment.ATabsFragment;
+import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
@@ -25,7 +26,7 @@ public class MentionTimelineFragment extends ATimelineFragment implements ATabsF
     }
 
     @Override
-    protected void requestData(RefreshMode mode) {
+    public void requestData(RefreshMode mode) {
         boolean load = true;
 
         // 如果还没有加载过数据，切且显示的是当前的页面
@@ -68,7 +69,7 @@ public class MentionTimelineFragment extends ATimelineFragment implements ATabsF
             try {
                 if (AppContext.getAccount().getUnreadCount() != null && AppContext.getAccount().getUnreadCount().getMention_status() > 0
                         && result.fromCache()) {
-                    requestDataDelay(AppSettings.REQUEST_DATA_DELAY);
+                    requestDataDelaySetRefreshing(AppSettings.REQUEST_DATA_DELAY);
 
                     BizFragment.createBizFragment(MentionTimelineFragment.this).remindSetCount(BizFragment.RemindType.mention_status);
                 }
@@ -77,6 +78,18 @@ public class MentionTimelineFragment extends ATimelineFragment implements ATabsF
             }
         }
 
+    }
+
+    @Override
+    public boolean onToolbarDoubleClick() {
+        if (AisenUtils.checkTabsFragmentCanRequestData(this)) {
+            requestDataDelaySetRefreshing(AppSettings.REQUEST_DATA_DELAY);
+            getRefreshView().scrollToPosition(0);
+
+            return true;
+        }
+
+        return false;
     }
 
 }

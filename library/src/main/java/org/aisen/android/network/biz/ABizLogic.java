@@ -247,16 +247,16 @@ public abstract class ABizLogic implements IHttpUtility {
 	}
 
 	@Override
-	public <T> T uploadFile(HttpConfig config, Setting action, Params params, File file, Params headers, Class<T> responseClass) throws TaskException {
+	public <T> T uploadFile(HttpConfig config, Setting action, Params params, MultipartFile[] files, Params headers, Class<T> responseClass) throws TaskException {
 		HttpConfig mConfig = cloneHttpConfig(config, action);
 
-		Logger.d(TAG, String.format("uploadFile(config --->%s, \naction--->%s, \nparams --->%s, \nfilePath --->%s)", toJson(mConfig), toJson(action),
-				toJson(params), file.getAbsoluteFile()));
+//		Logger.d(TAG, String.format("uploadFile(config --->%s, \naction--->%s, \nparams --->%s, \nfilePath --->%s)", toJson(mConfig), toJson(action),
+//				toJson(params), file.getAbsoluteFile()));
 
 		String key = generateMD5(action.getValue(), params);
 		Logger.d(TAG, String.format("cacheKey = %s", key));
 
-		T result = getHttpUtility(action).uploadFile(mConfig, action, params, file, headers, responseClass);
+		T result = getHttpUtility(action).uploadFile(mConfig, action, params, files, headers, responseClass);
 
 		return result;
 	}

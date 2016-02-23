@@ -91,7 +91,7 @@ public abstract class AWaterfallFragment<T extends Serializable, Ts extends Seri
     }
 
     @Override
-    protected void requestDataOutofdate() {
+    public void requestDataOutofdate() {
         getRefreshView().setSelectionFromTop(0, 0);
 
         super.requestDataOutofdate();

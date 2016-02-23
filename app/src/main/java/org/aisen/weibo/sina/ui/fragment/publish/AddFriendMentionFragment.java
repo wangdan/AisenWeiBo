@@ -130,7 +130,7 @@ public class AddFriendMentionFragment extends AListSwipeRefreshFragment<WeiBoUse
     }
 
     @Override
-    protected void requestData(RefreshMode mode) {
+    public void requestData(RefreshMode mode) {
         new FriendTask(mode == RefreshMode.refresh ? RefreshMode.reset : mode).execute();
     }
 

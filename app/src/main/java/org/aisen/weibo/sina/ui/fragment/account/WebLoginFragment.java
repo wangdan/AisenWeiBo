@@ -48,14 +48,12 @@ public class WebLoginFragment extends ABaseFragment {
 
     public static final String TAG = "Fragment-Login";
 
-    public static final int REQUEST_CODE_AUTH = 3331;
-
     public enum Client {
         aisen,
         weico
     }
 
-    public static void launch(Activity from, Client client, String account, String password) {
+    public static void launch(Activity from, Client client, String account, String password, int requestCode) {
         FragmentArgs args = new FragmentArgs();
         args.add("client", client.toString());
 
@@ -64,10 +62,10 @@ public class WebLoginFragment extends ABaseFragment {
             args.add("password", password);
         }
 
-        SinaCommonActivity.launchForResult(from, WebLoginFragment.class, args, REQUEST_CODE_AUTH);
+        SinaCommonActivity.launchForResult(from, WebLoginFragment.class, args, requestCode);
     }
 
-    public static void launch(Fragment from, Client client, String account, String password) {
+    public static void launch(Fragment from, Client client, String account, String password, int requestCode) {
         FragmentArgs args = new FragmentArgs();
         args.add("client", client.toString());
 
@@ -76,7 +74,7 @@ public class WebLoginFragment extends ABaseFragment {
             args.add("password", password);
         }
 
-        SinaCommonActivity.launchForResult(from, WebLoginFragment.class, args, REQUEST_CODE_AUTH);
+        SinaCommonActivity.launchForResult(from, WebLoginFragment.class, args, requestCode);
     }
 
     @ViewInject(id = R.id.webview)

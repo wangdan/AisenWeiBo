@@ -5,6 +5,7 @@ import android.os.Bundle;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.weibo.sina.base.AppContext;
+import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
 import org.aisen.weibo.sina.sinasdk.bean.Group;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContents;
@@ -44,7 +45,7 @@ public class TimelineGroupsFragment extends ATimelineFragment {
     }
 
     @Override
-    protected void requestData(RefreshMode mode) {
+    public void requestData(RefreshMode mode) {
         new GroupsTimelineTask(mode).execute();
     }
 
@@ -61,6 +62,14 @@ public class TimelineGroupsFragment extends ATimelineFragment {
             return SinaSDK.getInstance(AppContext.getAccount().getAccessToken(), getTaskCacheMode(this)).friendshipGroupsTimeline(params);
         }
 
+    }
+
+    @Override
+    public boolean onToolbarDoubleClick() {
+        requestDataDelaySetRefreshing(AppSettings.REQUEST_DATA_DELAY);
+        getRefreshView().scrollToPosition(0);
+
+        return true;
     }
 
 }

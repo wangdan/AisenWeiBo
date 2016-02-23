@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<FrameLayout
     android:id="@+id/layMenuHeader"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -9,8 +9,8 @@
     <ImageView
         android:id="@+id/material_drawer_account_header_background"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY"/>
+        android:layout_height="match_parent" android:scaleType="fitXY"
+        android:src="@drawable/bg_banner_dialog"/>
 
     <RelativeLayout
         android:id="@+id/material_drawer_account_header"
@@ -27,7 +27,8 @@
             android:layout_marginLeft="@dimen/material_drawer_vertical_padding"
             android:layout_marginTop="@dimen/material_drawer_account_header_horizontal_top"
             android:clickable="true"
-            android:elevation="2dp"/>
+            app:border_color="@color/comm_white"
+            app:border_width="1dp"/>
 
         <TextView
             android:id="@+id/txtFollowersNewHint" android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -43,31 +44,31 @@
             android:layout_alignTop="@+id/material_drawer_account_header_current"
             android:gravity="right">
 
-            <org.aisen.android.ui.widget.CircleImageView
-                android:id="@+id/material_drawer_account_header_small_first"
+            <include
+                android:id="@+id/layAccountFirst"
+                layout="@layout/item_account_more"
                 android:layout_width="@dimen/material_drawer_account_header_secondary"
                 android:layout_height="@dimen/material_drawer_account_header_secondary"
                 android:layout_marginRight="@dimen/material_drawer_vertical_padding"
                 android:clickable="true"
-                android:elevation="2dp"
+                android:visibility="visible"/>
+
+            <include
+                android:id="@+id/layAccountSecond"
+                layout="@layout/item_account_more"
+                android:layout_width="@dimen/material_drawer_account_header_secondary"
+                android:layout_height="@dimen/material_drawer_account_header_secondary"
+                android:layout_marginRight="@dimen/material_drawer_vertical_padding"
+                android:clickable="true"
                 android:visibility="gone"/>
 
-            <org.aisen.android.ui.widget.CircleImageView
-                android:id="@+id/material_drawer_account_header_small_second"
+            <include
+                android:id="@+id/layAccountThird"
+                layout="@layout/item_account_more"
                 android:layout_width="@dimen/material_drawer_account_header_secondary"
                 android:layout_height="@dimen/material_drawer_account_header_secondary"
                 android:layout_marginRight="@dimen/material_drawer_vertical_padding"
                 android:clickable="true"
-                android:elevation="2dp"
-                android:visibility="gone"/>
-
-            <org.aisen.android.ui.widget.CircleImageView
-                android:id="@+id/material_drawer_account_header_small_third"
-                android:layout_width="@dimen/material_drawer_account_header_secondary"
-                android:layout_height="@dimen/material_drawer_account_header_secondary"
-                android:layout_marginRight="@dimen/material_drawer_vertical_padding"
-                android:clickable="true"
-                android:elevation="2dp"
                 android:visibility="gone"/>
         </LinearLayout>
 
@@ -105,4 +106,8 @@
 
     </RelativeLayout>
 
-</RelativeLayout>
+    <ImageView
+        android:id="@+id/imgMove"
+        android:layout_width="@dimen/material_drawer_account_header_secondary" android:layout_height="@dimen/material_drawer_account_header_secondary"/>
+
+</FrameLayout>

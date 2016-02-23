@@ -172,7 +172,9 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/btnMenus" android:layout_width="40dip" android:layout_height="40dip" android:layout_alignParentRight="true"
-        android:paddingBottom="8dip" android:src="@drawable/selector_card_menu"/>
+        android:id="@+id/btnMenus" android:layout_width="40dip"
+        android:layout_height="40dip" android:layout_gravity="right" android:background="?attr/selectableItemBackgroundBorderless"
+        android:paddingBottom="8dip"
+        android:src="@drawable/ic_menu_moreoverflow_card_dark_normal"/>
 
 </android.support.v7.widget.CardView>

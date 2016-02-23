@@ -26,7 +26,9 @@ import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.service.UnreadService;
 import org.aisen.weibo.sina.service.publisher.PublishManager;
+import org.aisen.weibo.sina.sinasdk.bean.UnreadCount;
 import org.aisen.weibo.sina.support.sqlit.PublishDB;
+import org.aisen.weibo.sina.support.utils.AisenUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -47,10 +49,19 @@ public class MenuFragment extends ABaseFragment {
     public static final int MENU_HOT_STATUS = 11;
     public static final int MENU_DRAT = 6;
     public static final int MENU_SETTINGS = 5;
-    public static final int MNU_PROFIL = 0;
+    public static final int MENU_PROFIL = 0;
+    public static final int MENU_NOTIFICATION = 12;
 
-    public static MenuFragment newInstance() {
-        return new MenuFragment();
+    public static MenuFragment newInstance(int menuId) {
+        MenuFragment fragment = new MenuFragment();
+
+        Bundle args = new Bundle();
+        if (menuId > 0) {
+            args.putInt("menuId", menuId);
+        }
+        fragment.setArguments(args);
+
+        return fragment;
     }
 
     private OnMenuCallback onMenuCallback;
@@ -97,10 +108,46 @@ public class MenuFragment extends ABaseFragment {
         outState.putInt("selectedId", selectedId);
     }
 
+    /**
+     * 点击某个菜单
+     *
+     * @param menuId
+     */
+    public void triggerMenuClick(int menuId) {
+        View itemView = layMenuItems.findViewById(menuId);
+        if (itemView != null) {
+            itemView.performClick();
+        }
+    }
+
+    /**
+     * 切换用户
+     *
+     */
+    public void changeAccount() {
+
+        menuHeaderView.setupHeaderView((FrameLayout) findViewById(R.id.layHeaderContainer));
+
+        int menuId = MENU_MAIN;
+        View viewItem = layMenuItems.findViewById(menuId);
+        NavMenuItem menuItem = (NavMenuItem) viewItem.getTag();
+        boolean selected = false;
+        if (onMenuCallback != null) {
+            selected = onMenuCallback.onMenuClicked(menuItem, false);
+        }
+
+        // 只记录选中项ID
+        if (selected) {
+            setSelectedMenuItem(menuItem.id);
+
+            selectedId = menuItem.id;
+        }
+    }
+
     private void setupMenuItems(Bundle savedInstanceSate) {
         List<NavMenuItem> items = generateMenuItems();
 
-        selectedId = savedInstanceSate == null ? items.get(0).id : savedInstanceSate.getInt("selectedId", selectedId);
+        selectedId = savedInstanceSate == null ? getArguments().getInt("menuId", items.get(0).id) : savedInstanceSate.getInt("selectedId", selectedId);
 
         for (int i = 0; i < items.size(); i++) {
             final NavMenuItem item = items.get(i);
@@ -122,14 +169,14 @@ public class MenuFragment extends ABaseFragment {
                         // 选择相同项时处理
                         if (selectedId == menuItem.id) {
                             if (onMenuCallback != null) {
-                                onMenuCallback.onMenuSameClicked();
+                                onMenuCallback.onMenuSameClicked(menuItem);
                             }
                             return;
                         }
 
                         boolean selected = false;
                         if (onMenuCallback != null) {
-                            selected = onMenuCallback.onMenuClicked(menuItem);
+                            selected = onMenuCallback.onMenuClicked(menuItem, true);
                         }
 
                         // 只记录选中项ID
@@ -158,7 +205,9 @@ public class MenuFragment extends ABaseFragment {
         }
 
         if (savedInstanceSate == null && onMenuCallback != null) {
-            boolean selected = onMenuCallback.onMenuClicked(items.get(0));
+            View viewItem = layMenuItems.findViewById(selectedId);
+            NavMenuItem item = (NavMenuItem) viewItem.getTag();
+            boolean selected = onMenuCallback.onMenuClicked(item, true);
             if (selected) {
                 setSelectedMenuItem(selectedId);
             }
@@ -201,12 +250,26 @@ public class MenuFragment extends ABaseFragment {
         txtTitle.setTextColor(mIconTints);
     }
 
+    private void setNavMenuUnread(int itemId, int count) {
+        View viewItem = layMenuItems.findViewById(itemId);
+
+        TextView txtCounter = (TextView) viewItem.findViewById(R.id.txtCounter);
+        if (count > 0) {
+            txtCounter.setVisibility(View.VISIBLE);
+            txtCounter.setText(AisenUtils.getCounter(count));
+        }
+        else {
+            txtCounter.setVisibility(View.GONE);
+        }
+    }
+
     public List<NavMenuItem> generateMenuItems() {
         List<NavMenuItem> items = new ArrayList<>();
 
-        items.add(new NavMenuItem(MENU_MAIN, R.drawable.ic_view_day_grey600_24dp, R.string.menu_sinaweibo));
-        items.add(new NavMenuItem(MENU_MENTION, R.drawable.ic_drawer_at, R.string.draw_message, R.string.mention_title));
-        items.add(new NavMenuItem(MENU_CMT, R.drawable.ic_question_answer_grey600_24dp, R.string.draw_comment));
+        items.add(new NavMenuItem(MENU_MAIN, R.drawable.ic_weibo_grey, R.string.menu_sinaweibo));
+//        items.add(new NavMenuItem(MENU_MENTION, R.drawable.ic_drawer_at, R.string.draw_message, R.string.mention_title));
+//        items.add(new NavMenuItem(MENU_CMT, R.drawable.ic_question_answer_grey600_24dp, R.string.draw_comment));
+        items.add(new NavMenuItem(MENU_NOTIFICATION, R.drawable.ic_notification_gray_24, R.string.draw_private_notification));
         items.add(new NavMenuItem(MENU_MD, R.drawable.ic_email_grey600_24dp, R.string.draw_private_msg));
         items.add(new NavMenuSeparator());
         items.add(new NavMenuItem(MENU_HOT_STATUS, -1, R.string.draw_hot_statuses));
@@ -221,13 +284,34 @@ public class MenuFragment extends ABaseFragment {
         super.onResume();
 
         menuHeaderView.setUnreadFollowers();
+        menuHeaderView.setAccounts();
 
+        // 刷新草稿
         new RefreshDraftTask().execute();
+        // 刷新通知
+        setUnreadNotification();
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(UnreadService.ACTION_UNREAD_CHANGED);
         filter.addAction(PublishManager.ACTION_PUBLISH_CHANNGED);
         getActivity().registerReceiver(receiver, filter);
+    }
+
+    private void setUnreadNotification() {
+        // 通知
+        UnreadCount unreadCount = AppContext.getAccount().getUnreadCount();
+        int count = 0;
+        if (unreadCount != null) {
+            count = unreadCount.getCmt() + unreadCount.getMention_cmt() + unreadCount.getMention_status();
+        }
+        setNavMenuUnread(MENU_NOTIFICATION, count);
+
+        // 私信
+        count = 0;
+        if (unreadCount != null) {
+            count = unreadCount.getDm();
+        }
+        setNavMenuUnread(MENU_MD, count);
     }
 
     @Override
@@ -253,7 +337,11 @@ public class MenuFragment extends ABaseFragment {
         public void onReceive(Context context, Intent intent) {
             if (intent != null && !TextUtils.isEmpty(intent.getAction())) {
                 if (UnreadService.ACTION_UNREAD_CHANGED.equals(intent.getAction())) {
+                    // 粉丝
                     menuHeaderView.setUnreadFollowers();
+
+                    // 通知
+                    setUnreadNotification();
                 }
                 else if (PublishManager.ACTION_PUBLISH_CHANNGED.equals(intent.getAction())) {
                     new RefreshDraftTask().execute();
@@ -286,6 +374,10 @@ public class MenuFragment extends ABaseFragment {
         TextView txtCounter = (TextView) viewItem.findViewById(R.id.txtCounter);
         txtCounter.setVisibility(count == 0 ? View.GONE : View.VISIBLE);
         txtCounter.setText(String.valueOf(count));
+    }
+
+    public int getSelectedId() {
+        return selectedId;
     }
 
     public static class NavMenuItem implements Serializable {
@@ -329,9 +421,9 @@ public class MenuFragment extends ABaseFragment {
          * @param item
          * @return 是否可以选中
          */
-        boolean onMenuClicked(NavMenuItem item);
+        boolean onMenuClicked(NavMenuItem item, boolean closeDrawer);
 
-        boolean onMenuSameClicked();
+        boolean onMenuSameClicked(NavMenuItem item);
 
     }
 

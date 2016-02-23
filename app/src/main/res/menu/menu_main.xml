@@ -7,7 +7,11 @@
         <item
             android:id="@+id/publish" android:icon="@drawable/ic_menu_edit_white"
             android:orderInCategory="2"
-            android:title="@string/publish" app:showAsAction="always"/>
+            android:title="@string/publish" app:showAsAction="never"/>
+        <item
+            android:id="@+id/notification_settings" android:icon="@drawable/ic_notifications_settings_light"
+            android:orderInCategory="2"
+            android:title="@string/notification_settings" app:showAsAction="always"/>
         <item
             android:id="@+id/toggle_offline" android:orderInCategory="4"
             android:title="@string/toggle_offline"

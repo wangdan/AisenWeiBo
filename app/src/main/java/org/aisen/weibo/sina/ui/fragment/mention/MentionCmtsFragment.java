@@ -104,7 +104,7 @@ public class MentionCmtsFragment extends ARecycleViewSwipeRefreshFragment<Status
     }
 
     @Override
-    protected void requestData(RefreshMode mode) {
+    public void requestData(RefreshMode mode) {
         boolean load = true;
 
         // 如果还没有加载过数据，切且显示的是当前的页面
@@ -183,12 +183,24 @@ public class MentionCmtsFragment extends ARecycleViewSwipeRefreshFragment<Status
 
             if (result.fromCache() &&
                     AppContext.getAccount().getUnreadCount() != null && AppContext.getAccount().getUnreadCount().getMention_cmt() > 0) {
-                requestDataDelay(AppSettings.REQUEST_DATA_DELAY);
+                requestDataDelaySetRefreshing(AppSettings.REQUEST_DATA_DELAY);
 
                 bizFragment.remindSetCount(BizFragment.RemindType.mention_cmt);
             }
         }
 
+    }
+
+    @Override
+    public boolean onToolbarDoubleClick() {
+        if (AisenUtils.checkTabsFragmentCanRequestData(this)) {
+            requestDataDelaySetRefreshing(AppSettings.REQUEST_DATA_DELAY);
+            getRefreshView().scrollToPosition(0);
+
+            return true;
+        }
+
+        return false;
     }
 
 }

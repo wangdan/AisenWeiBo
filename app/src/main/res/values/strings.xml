@@ -6,7 +6,7 @@
     <string name="draw_close">关闭</string>
     <string name="hint_exit">再按一次退出</string>
 
-    <string name="menu_sinaweibo">首页</string>
+    <string name="menu_sinaweibo">微博</string>
     <string name="menu_mention">提及</string>
     <string name="menu_comments">评论</string>
     <string name="menu_dm">私信</string>
@@ -35,6 +35,7 @@
     <string name="exitapp">退出</string>
     <string name="group_add">新增分组</string>
     <string name="publish">写微博</string>
+    <string name="notification_settings">设置通知</string>
     <string name="toggle_offline">开始离线</string>
     <string name="stop_offline">停止离线</string>
 
@@ -76,8 +77,10 @@
     <!-- 账号管理 -->
     <string name="title_acount">账号管理</string>
     <string name="account_expired">Aisen授权过期，需要重新授权才能正常使用</string>
+    <string name="account_relogin">登录</string>
     <string name="account_ad_expired">高级授权过期或未授权，需要重新授权才能正常使用</string>
     <string name="account_newaccount_remind">请注意，根据新浪微博的平台政策，刚添加的帐号会在 %s 天后过期，到时需要重新登录</string>
+    <string name="account_account_expired">授权已过期，是否重新授权</string>
     <string name="account_relogin_remind">授权过期或者未高级授权</string>
     <string name="account_destory_account_remind">确定删除选中的账号吗？</string>
     <string name="account_delete_account_loading">正在删除账号</string>
@@ -185,6 +188,7 @@
     <string name="draw_topic_title">热门话题</string>
     <string name="draw_private_msg">私信</string>
     <string name="draw_private_msg_title">私信</string>
+    <string name="draw_private_notification">通知</string>
     <string name="draw_hot_statuses_title">热门微博</string>
     <string name="draw_hot_statuses">热门微博</string>
     <string name="draw_weibo_square">微博广场</string>
@@ -193,6 +197,15 @@
     <string name="draw_weibo_top_title">微博头条</string>
     <string name="draw_weibo_offline_read">离线阅读</string>
     <string name="draw_my_liked">我赞过的</string>
+
+    <!--通知-->
+    <string name="notification_cmt">评论</string>
+    <string name="notification_cmt_format">评论 %d </string>
+    <string name="notification_mention_status">\@我</string>
+    <string name="notification_mention_status_format">\@我 %d </string>
+    <string name="notification_mention_cmt">\@我的评论</string>
+    <string name="notification_mention_cmt_format">\@我的评论 %d </string>
+    <string name="notification_cmt_sendbyme">发出的评论</string>
 
     <!--no more-->
     <string name="disable_status">没有更多微博了</string>
@@ -271,6 +284,7 @@
     <string name="dm_pic_notexist">图片不存在</string>
     <string name="title_mobile_photos">手机相册</string>
     <string name="publish_delete_pic">确定删除这个图片</string>
+    <string name="publish_request_ad_auth_faild">获取高级权限失败</string>
 
     <!-- 提及 -->
     <string name="mention_status">微博</string>

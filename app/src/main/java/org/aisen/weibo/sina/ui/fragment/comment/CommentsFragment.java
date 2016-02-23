@@ -152,7 +152,7 @@ public class CommentsFragment extends ARecycleViewSwipeRefreshFragment<StatusCom
     }
 
     @Override
-    protected void requestData(RefreshMode mode) {
+    public void requestData(RefreshMode mode) {
         boolean load = true;
 
         // 如果还没有加载过数据，切且显示的是当前的页面
@@ -207,7 +207,7 @@ public class CommentsFragment extends ARecycleViewSwipeRefreshFragment<StatusCom
                     return;
 
                 if (result.fromCache())
-                    requestDataDelay(AppSettings.REQUEST_DATA_DELAY);
+                    requestDataDelaySetRefreshing(AppSettings.REQUEST_DATA_DELAY);
 
                 bizFragment.remindSetCount(BizFragment.RemindType.cmt);
             }
@@ -269,6 +269,18 @@ public class CommentsFragment extends ARecycleViewSwipeRefreshFragment<StatusCom
                 showMessage(exception.getMessage());
         }
 
+    }
+
+    @Override
+    public boolean onToolbarDoubleClick() {
+        if (AisenUtils.checkTabsFragmentCanRequestData(this)) {
+            requestDataDelaySetRefreshing(AppSettings.REQUEST_DATA_DELAY);
+            getRefreshView().scrollToPosition(0);
+
+            return true;
+        }
+
+        return false;
     }
 
 }

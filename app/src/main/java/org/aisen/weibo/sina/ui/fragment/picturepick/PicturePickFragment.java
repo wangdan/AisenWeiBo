@@ -264,7 +264,7 @@ public class PicturePickFragment extends AGridFragment<String, ArrayList<String>
     }
 
     @Override
-    protected void requestData(RefreshMode mode) {
+    public void requestData(RefreshMode mode) {
         new PicturePickTask().execute();
     }
 

@@ -32,6 +32,7 @@ import org.aisen.weibo.sina.support.sqlit.PublishDB;
 import org.aisen.weibo.sina.support.sqlit.SinaDB;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
+import org.aisen.weibo.sina.ui.fragment.comment.TimelineDetailPagerFragment;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -317,6 +318,17 @@ public class PublishManager extends Handler implements PublishQueue.PublishQueue
 			super.onSuccess(result);
 
 			if (bean != null) {
+				// 回复微博、评论和转发微博时，通知刷新界面
+				if (bean.getType() == PublishType.commentCreate) {
+					GlobalContext.getInstance().sendBroadcast(new Intent(TimelineDetailPagerFragment.ACTION_REFRESH_CMT_CREATE));
+				}
+				else if (bean.getType() == PublishType.commentReply) {
+					GlobalContext.getInstance().sendBroadcast(new Intent(TimelineDetailPagerFragment.ACTION_REFRESH_CMT_REPLY));
+				}
+				else if (bean.getType() == PublishType.statusRepost) {
+					GlobalContext.getInstance().sendBroadcast(new Intent(TimelineDetailPagerFragment.ACTION_REFRESH_REPOST));
+				}
+
 				publishNotifier.notifyPublishSuccess(bean);
 
 				PublishDB.deletePublish(bean, loggedIn);

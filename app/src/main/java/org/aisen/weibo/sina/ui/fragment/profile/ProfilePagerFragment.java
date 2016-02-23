@@ -36,7 +36,6 @@ import org.aisen.weibo.sina.sinasdk.SinaSDK;
 import org.aisen.weibo.sina.sinasdk.bean.FriendshipShow;
 import org.aisen.weibo.sina.sinasdk.bean.Token;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
-import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.utils.AccountUtils;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
@@ -413,15 +412,9 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
             WeiBoUser userInfo = SinaSDK.getInstance(token).userShow(mUser.getIdstr(), null);
 
             if (AppContext.isLoggedIn() && userInfo.getIdstr().equals(AppContext.getAccount().getUser().getIdstr())) {
-                // 更新DB
-                AccountBean bean = new AccountBean();
-                bean.setUid(userInfo.getIdstr());
-                bean.setGroups(AppContext.getAccount().getGroups());
-                bean.setUser(userInfo);
-                AccountUtils.newAccount(bean);
-
                 // 更新内存
                 AppContext.getAccount().setUser(userInfo);
+                AccountUtils.newAccount(AppContext.getAccount());
             }
 
             return userInfo;

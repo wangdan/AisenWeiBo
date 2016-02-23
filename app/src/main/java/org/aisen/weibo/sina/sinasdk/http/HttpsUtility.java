@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.MultipartBuilder;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
@@ -120,8 +121,41 @@ public class HttpsUtility implements IHttpUtility {
 		return builder;
 	}
 
-	public <T> T uploadFile(HttpConfig config, Setting action, Params params, File file, Params headers, Class<T> responseClazz) throws TaskException {
-		return null;
+	@Override
+	public <T> T uploadFile(HttpConfig config, Setting action, Params params, MultipartFile[] files, Params headers, Class<T> responseClazz) throws TaskException {
+		Request.Builder builder = createRequestBuilder(config, action, params);
+		builder.url(config.baseUrl + action.getValue());
+
+		Logger.v(TAG, "UploadFile url = %s%s", config.baseUrl, action.getValue());
+
+		MultipartBuilder multipartBuilder = new MultipartBuilder();
+		multipartBuilder.type(MultipartBuilder.FORM);
+
+		// 处理参数
+		if (params != null) {
+			for (String key : params.getKeys()) {
+				multipartBuilder.addFormDataPart(key, params.getParameter(key));
+			}
+		}
+
+		// 处理文件数据
+		if (files != null && files.length > 0) {
+			for (MultipartFile file : files) {
+				// 普通字节流
+				if (file.getBytes() != null) {
+					multipartBuilder.addFormDataPart(file.getKey(), file.getKey(), RequestBody.create(MediaType.parse("application/octet-stream"), file.getBytes()));
+				}
+				// 文件
+				else if (file.getFile() != null) {
+					multipartBuilder.addFormDataPart(file.getKey(), file.getFile().getName(), RequestBody.create(MediaType.parse(file.getContentType()), file.getFile()));
+				}
+			}
+
+		}
+
+		RequestBody requestBody = multipartBuilder.build();
+		builder.post(requestBody);
+		return executeRequest(builder.build(), responseClazz);
 	}
 
 	private <T> T executeRequest(Request request, Class<T> responseCls) throws TaskException {

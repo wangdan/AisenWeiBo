@@ -136,6 +136,9 @@ public class ProfileCollapsingToolbarLayout extends CollapsingToolbarLayout {
     }
 
     private void setNameBitmap() {
+        if (layName == null)
+            return;
+
         layNameBitmap = Bitmap.createBitmap(layName.getWidth(), layName.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(layNameBitmap);
         layName.draw(canvas);

@@ -77,7 +77,7 @@ public class EmotionFragment extends AGridFragment<Emotion, Emotions>
 	}
 
 	@Override
-	protected void requestData(RefreshMode mode) {
+	public void requestData(RefreshMode mode) {
 		// 浪小花-lxh_
 		new EmotionTask(mode).execute("d_");
 	}

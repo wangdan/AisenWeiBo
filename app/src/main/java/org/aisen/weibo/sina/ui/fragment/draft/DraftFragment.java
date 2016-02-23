@@ -148,7 +148,7 @@ public class DraftFragment extends ARecycleViewFragment<PublishBean, ArrayList<P
     };
 
     @Override
-    protected void requestData(RefreshMode mode) {
+    public void requestData(RefreshMode mode) {
     }
 
     class DraftTask extends APagingTask<Void, Void, ArrayList<PublishBean>> {
@@ -235,14 +235,26 @@ public class DraftFragment extends ARecycleViewFragment<PublishBean, ArrayList<P
 
     @Override
     public void onClick(View v) {
-        PublishBean bean = (PublishBean) v.getTag();
+        final PublishBean bean = (PublishBean) v.getTag();
         // 删除
         if (v.getId() == R.id.btnDel) {
             deleteDraft(bean);
         }
         // 重新发送
         else if (v.getId() == R.id.btnResend) {
-            PublishService.publish(getActivity(), bean);
+            BizFragment.createBizFragment(this).checkProfile(new BizFragment.CheckProfileCallback() {
+
+                @Override
+                public void onCheckProfileSuccess() {
+                    PublishService.publish(getActivity(), bean);
+                }
+
+                @Override
+                public void onCheckProfileFaild() {
+                    showMessage(R.string.publish_request_ad_auth_faild);
+                }
+
+            });
         }
     }
 

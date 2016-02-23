@@ -80,8 +80,10 @@ public class UnreadService extends Service {
 		
 		if (ACTION_GET.equals(action)) {
 			resetTheTime();
-			
-			new UnreadTask().execute();
+
+			if (!AppContext.getAccount().getAccessToken().isExpired()) {
+				new UnreadTask().execute();
+			}
 		}
 		else if (ACTION_UPDATE.equals(action)) {
 			Logger.v(TAG, "刷新时间");
@@ -142,7 +144,7 @@ public class UnreadService extends Service {
 //			result.setCmt(20);
 //			result.setFollower(10);
 
-			AppContext.getAccount().setUnreadCount(new UnreadCount());;
+			AppContext.getAccount().setUnreadCount(new UnreadCount());
 			if (AppSettings.isNotifyComment())
 				AppContext.getAccount().getUnreadCount().setCmt(result.getCmt());
 			if (AppSettings.isNotifyCommentMention())

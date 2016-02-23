@@ -14,7 +14,6 @@ import org.aisen.android.network.task.TaskException;
 import org.aisen.weibo.sina.support.bean.PictureSize;
 import org.aisen.weibo.sina.support.sqlit.SinaDB;
 
-import java.io.File;
 import java.net.HttpURLConnection;
 
 /**
@@ -63,7 +62,7 @@ public class PictureSizeHttpUtility implements IHttpUtility {
     }
 
     @Override
-    public <T> T uploadFile(HttpConfig config, Setting action, Params params, File file, Params headers, Class<T> responseClass) throws TaskException {
+    public <T> T uploadFile(HttpConfig config, Setting action, Params params, MultipartFile[] files, Params headers, Class<T> responseClass) throws TaskException {
         return null;
     }
 

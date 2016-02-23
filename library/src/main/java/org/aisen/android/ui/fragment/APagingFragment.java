@@ -226,7 +226,7 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 	 * 
 	 * @param mode
 	 */
-	abstract protected void requestData(RefreshMode mode);
+	abstract public void requestData(RefreshMode mode);
 	
 	/**
 	 * 列表控件
@@ -339,7 +339,7 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 	}
 
 	@Override
-	protected void requestDataOutofdate() {
+	public void requestDataOutofdate() {
 		putLastReadPosition(0);
 		putLastReadTop(0);
 

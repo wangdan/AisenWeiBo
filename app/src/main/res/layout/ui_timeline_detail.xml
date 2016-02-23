@@ -24,47 +24,52 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <org.aisen.weibo.sina.ui.widget.TimelineDetailScrollView
-            android:id="@+id/laySroll"
-            android:layout_width="match_parent" android:layout_height="match_parent"
-            android:layout_below="@id/appbar" android:scrollbars="none">
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent" android:layout_height="match_parent" android:layout_below="@id/appbar">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:orientation="vertical">
+            <org.aisen.weibo.sina.ui.widget.TimelineDetailScrollView
+                android:id="@+id/laySroll"
+                android:layout_width="match_parent" android:layout_height="match_parent"
+                android:scrollbars="none">
 
-                <RelativeLayout
-                    android:id="@+id/layHeader" android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:minHeight="100dip"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:orientation="vertical">
 
-                <FrameLayout
-                    android:id="@+id/layBar"
-                    android:layout_width="match_parent" android:layout_height="wrap_content"
-                    >
+                    <RelativeLayout
+                        android:id="@+id/layHeader" android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:minHeight="100dip"/>
 
-                    <View
-                        android:id="@+id/layHeaderDivider"
-                        android:layout_width="match_parent"
-                        android:layout_height="2dip" android:layout_gravity="bottom" android:background="@color/divider_timeline_item"/>
+                    <FrameLayout
+                        android:id="@+id/layBar"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        >
 
-                    <android.support.design.widget.TabLayout
-                        android:id="@+id/tabLayout" android:layout_width="match_parent"
-                        android:layout_height="wrap_content" app:tabIndicatorColor="?attr/colorPrimary"
-                        />
+                        <View
+                            android:id="@+id/layHeaderDivider"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dip" android:layout_gravity="bottom" android:background="@color/divider_timeline_item"/>
 
-                    <org.aisen.android.ui.widget.MDButton
-                        android:id="@+id/txtAttitudes" style="@style/TextSubhead"
-                        android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:layout_gravity="right|center_vertical" android:layout_marginRight="24dip"
-                        android:gravity="center" android:minHeight="30dip"
-                        android:paddingLeft="8dip" android:paddingRight="8dip"
-                        android:textColor="@color/text_54" android:textSize="@dimen/design_tab_text_size"/>
-                </FrameLayout>
+                        <android.support.design.widget.TabLayout
+                            android:id="@+id/tabLayout" android:layout_width="match_parent"
+                            android:layout_height="wrap_content" app:tabIndicatorColor="?attr/colorPrimary"
+                            />
 
-                <android.support.v4.view.ViewPager
-                    android:id="@+id/viewPager" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-            </LinearLayout>
-        </org.aisen.weibo.sina.ui.widget.TimelineDetailScrollView>
+                        <org.aisen.android.ui.widget.MDButton
+                            android:id="@+id/txtAttitudes" style="@style/TextSubhead"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:layout_gravity="right|center_vertical" android:layout_marginRight="24dip"
+                            android:gravity="center" android:minHeight="30dip"
+                            android:paddingLeft="8dip" android:paddingRight="8dip"
+                            android:textColor="@color/text_54" android:textSize="@dimen/design_tab_text_size"/>
+                    </FrameLayout>
+
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/viewPager" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                </LinearLayout>
+            </org.aisen.weibo.sina.ui.widget.TimelineDetailScrollView>
+        </android.support.v4.widget.SwipeRefreshLayout>
 
         <org.aisen.android.component.sheetfab.DimOverlayFrameLayout
             android:id="@+id/overlay" android:layout_width="match_parent"

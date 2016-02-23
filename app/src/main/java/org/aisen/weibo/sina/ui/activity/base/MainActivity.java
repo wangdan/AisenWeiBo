@@ -1,6 +1,10 @@
 package org.aisen.weibo.sina.ui.activity.base;
 
+import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,40 +14,55 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.afollestad.materialdialogs.AlertDialogWrapper;
+
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.md.MDHelper;
 import org.aisen.android.common.utils.ActivityHelper;
+import org.aisen.android.common.utils.Logger;
 import org.aisen.android.component.sheetfab.MaterialSheetFab;
 import org.aisen.android.component.sheetfab.MaterialSheetFabEventListener;
+import org.aisen.android.network.task.TaskException;
+import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.support.action.IAction;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.fragment.ABaseFragment;
+import org.aisen.android.ui.fragment.APagingFragment;
 import org.aisen.android.ui.fragment.ATabsFragment;
+import org.aisen.android.ui.fragment.ATabsTabLayoutFragment;
+import org.aisen.android.ui.widget.AsToolbar;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.service.OfflineService;
+import org.aisen.weibo.sina.sinasdk.SinaSDK;
 import org.aisen.weibo.sina.sinasdk.bean.Group;
+import org.aisen.weibo.sina.sinasdk.bean.TokenInfo;
 import org.aisen.weibo.sina.support.action.WebLoginAction;
+import org.aisen.weibo.sina.support.bean.AccountBean;
+import org.aisen.weibo.sina.support.utils.AccountUtils;
 import org.aisen.weibo.sina.support.utils.OfflineUtils;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
 import org.aisen.weibo.sina.ui.activity.profile.WeiboClientActivity;
 import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
-import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
+import org.aisen.weibo.sina.ui.fragment.account.WebLoginFragment;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.fragment.comment.CommentPagerFragment;
+import org.aisen.weibo.sina.ui.fragment.comment.NotificationPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.draft.DraftFragment;
 import org.aisen.weibo.sina.ui.fragment.mention.MentionPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.menu.FabGroupsFragment;
 import org.aisen.weibo.sina.ui.fragment.menu.MenuFragment;
 import org.aisen.weibo.sina.ui.fragment.settings.AboutWebFragment;
+import org.aisen.weibo.sina.ui.fragment.settings.NotificationSettingsFragment;
 import org.aisen.weibo.sina.ui.fragment.settings.SettingsPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineDefFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineGroupsFragment;
@@ -66,6 +85,7 @@ public class MainActivity extends BaseActivity
     public static final String ACTION_NOTIFICATION = "org.aisen.sina.weibo.ACTION_NOTIFICATION";
     public static final String ACTION_NOTIFICATION_MS = "org.aisen.sina.weibo.ACTION_NOTIFICATION_MS";
     public static final String ACTION_NOTIFICATION_MC = "org.aisen.sina.weibo.ACTION_NOTIFICATION_MC";
+    public static final int REQUEST_CODE_AUTH = 11156;
 
     private static MainActivity mInstance;
 
@@ -84,6 +104,8 @@ public class MainActivity extends BaseActivity
     private MaterialSheetFab materialSheetFab;
     private MenuFragment menuFragment;
     private FabGroupsFragment fabGroupsFragment;
+
+    private int newIntentNotificationIndex = -1;
 
     public static void login() {
         Intent intent = new Intent(GlobalContext.getInstance(), MainActivity.class);
@@ -110,6 +132,18 @@ public class MainActivity extends BaseActivity
 
         BizFragment bizFragment = BizFragment.createBizFragment(this);
         bizFragment.createFabAnimator(fabBtn);
+        fabBtn.setOnLongClickListener(new View.OnLongClickListener() {
+
+            @Override
+            public boolean onLongClick(View v) {
+                // 触发一次刷新
+                ((AsToolbar) getToolbar()).performDoublcClick();
+                appBarLayout.setExpanded(true);
+
+                return true;
+            }
+
+        });
         bizFragment.getFabAnimator().setDuration(200);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -132,32 +166,48 @@ public class MainActivity extends BaseActivity
 
         String action = intent.getAction();
 
-        int menuId = getActionType(intent, action);
+        // 切换账号
+        if (ACTION_LOGIN.equals(action)) {
+            setupFab(null);
 
-        menuFragment.setSelectedMenuItem(menuId);
+            menuFragment.changeAccount();
+        }
+        else {
+            int menuId = getActionType(intent, action);
 
-        if (isDrawerOpened())
-            closeDrawer();
+            menuFragment.triggerMenuClick(menuId);
+        }
     }
 
     private int getActionType(Intent intent, String action) {
-        int type = 1;
+        int type = MenuFragment.MENU_MAIN;
         // 处理点击Notification时，设置显示菜单
         if (ACTION_LOGIN.equals(action)) {
-            type = 1;
+            type = MenuFragment.MENU_MAIN;
         }
+        // 新通知
         else if (ACTION_NOTIFICATION.equals(action)) {
             type = Integer.parseInt(intent.getStringExtra("type"));
+
+            if (type == MenuFragment.MENU_CMT) {
+                newIntentNotificationIndex = 0;
+
+                type = MenuFragment.MENU_NOTIFICATION;
+            }
         }
+        // 新提及微博
         else if (ACTION_NOTIFICATION_MS.equals(action)) {
             ActivityHelper.putShareData("showMensitonType", "showMentionStatus");
 
-            type = 2;
+            newIntentNotificationIndex = 1;
+            type = MenuFragment.MENU_NOTIFICATION;
         }
+        // 新提及评论
         else if (ACTION_NOTIFICATION_MC.equals(action)) {
             ActivityHelper.putShareData("showMensitonType", "showMentionCmt");
 
-            type = 2;
+            newIntentNotificationIndex = 2;
+            type = MenuFragment.MENU_NOTIFICATION;
         }
         return type;
     }
@@ -181,7 +231,13 @@ public class MainActivity extends BaseActivity
 
     private void setupMenu(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            menuFragment = MenuFragment.newInstance();
+            int menuId = -1;
+            Intent intent = getIntent();
+            if (intent != null && !TextUtils.isEmpty(intent.getAction())) {
+                menuId = getActionType(intent, intent.getAction());
+            }
+
+            menuFragment = MenuFragment.newInstance(menuId);
             getFragmentManager().beginTransaction().add(R.id.menu_frame, menuFragment, "MenuFragment").commit();
         }
         else {
@@ -210,6 +266,7 @@ public class MainActivity extends BaseActivity
         groupList.addAll(AppContext.getAccount().getGroups().getLists());
 
         fabGroupsFragment = (FabGroupsFragment) getFragmentManager().findFragmentById(R.id.fragmentFabGroups);
+        fabGroupsFragment.resetSelectedPosition();
         fabGroupsFragment.setItems(groupList);
 
         View sheetView = findViewById(R.id.fab_sheet);
@@ -253,7 +310,9 @@ public class MainActivity extends BaseActivity
      * @return
      */
     @Override
-    public boolean onMenuClicked(MenuFragment.NavMenuItem item) {
+    public boolean onMenuClicked(MenuFragment.NavMenuItem item, boolean closeDrawer) {
+        invalidateOptionsMenu();
+
         ABaseFragment fragment = null;
 
         // 切换ContentFragment，或者跳转到新的界面
@@ -261,6 +320,12 @@ public class MainActivity extends BaseActivity
         // 首页
         case MenuFragment.MENU_MAIN:
             fabGroupsFragment.triggerLastPosition();
+            break;
+        // 通知
+        case MenuFragment.MENU_NOTIFICATION:
+            fragment = NotificationPagerFragment.newInstance(newIntentNotificationIndex);
+
+            newIntentNotificationIndex = -1;
             break;
         // 提及
         case MenuFragment.MENU_MENTION:
@@ -310,11 +375,22 @@ public class MainActivity extends BaseActivity
         }
 
         // 关闭侧边栏
-        closeDrawer();
+        if (closeDrawer) {
+            mHandler.postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    closeDrawer();
+                }
+
+            }, 300);
+        }
         // 设置可以选中的菜单项
         switch (item.id) {
         // 首页
         case MenuFragment.MENU_MAIN:
+        // 通知
+        case MenuFragment.MENU_NOTIFICATION:
         // 提及
         case MenuFragment.MENU_MENTION:
         // 评论
@@ -328,7 +404,22 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public boolean onMenuSameClicked() {
+    public boolean onMenuSameClicked(MenuFragment.NavMenuItem item) {
+        invalidateOptionsMenu();
+
+        // 重复点击了通知
+        if (item.id == MenuFragment.MENU_NOTIFICATION) {
+            Fragment fragment = getFragmentManager().findFragmentByTag("MainFragment");
+            if (fragment instanceof ATabsTabLayoutFragment && newIntentNotificationIndex != -1) {
+                ATabsTabLayoutFragment tabsTabLayoutFragment = (ATabsTabLayoutFragment) fragment;
+
+                tabsTabLayoutFragment.getViewPager().setCurrentItem(newIntentNotificationIndex);
+                ((APagingFragment) tabsTabLayoutFragment.getCurrentFragment()).requestDataDelaySetRefreshing(AppSettings.REQUEST_DATA_DELAY);
+
+                newIntentNotificationIndex = -1;
+            }
+        }
+
         closeDrawer();
 
         return true;
@@ -357,11 +448,9 @@ public class MainActivity extends BaseActivity
         }
     }
 
-    private void setFragemnt(Fragment fragment, CharSequence title) {
+    private void setFragemnt(final Fragment fragment, CharSequence title) {
         if (fragment == null)
             return;
-
-        closeDrawer();
 
         getSupportActionBar().setTitle(title);
 
@@ -375,8 +464,16 @@ public class MainActivity extends BaseActivity
         // 显示AppBarLayout
         appBarLayout.setExpanded(true, true);
 
+        // .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+        View view = findViewById(R.id.content_frame);
+        view.setAlpha(0.0f);
+        ObjectAnimator anim = ObjectAnimator.ofFloat(view, "alpha", view.getAlpha(), 1.0f);
+        anim.setDuration(600);
+        anim.start();
         getFragmentManager().beginTransaction().replace(R.id.content_frame, fragment, "MainFragment").commit();
     }
+
+    private Handler mHandler = new Handler();
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -417,6 +514,7 @@ public class MainActivity extends BaseActivity
             menu.findItem(R.id.toggle_offline).setVisible(false);
             menu.findItem(R.id.stop_offline).setVisible(true);
         }
+        menu.findItem(R.id.notification_settings).setVisible(menuFragment.getSelectedId() == MenuFragment.MENU_NOTIFICATION);
 
         return super.onPrepareOptionsMenu(menu);
     }
@@ -441,18 +539,21 @@ public class MainActivity extends BaseActivity
         // 意见反馈
         else if (item.getItemId() == R.id.feedback)
             PublishActivity.publishFeedback(this);
-            // 退出
+        // 退出
         else if (item.getItemId() == R.id.exitapp)
             finish();
-            // 新微博
+        // 新微博
         else if (item.getItemId() == R.id.publish)
             PublishActivity.publishStatus(this, null);
-            // 开始离线
+        // 开始离线
         else if (item.getItemId() == R.id.toggle_offline)
             OfflineUtils.toggleOffline(this);
-            // 停止离线
+        // 停止离线
         else if (item.getItemId() == R.id.stop_offline)
             OfflineService.stopOffline();
+        // 通知设置
+        else if (item.getItemId() == R.id.notification_settings)
+            NotificationSettingsFragment.launch(this);
 
         return super.onOptionsItemSelected(item);
     }
@@ -510,9 +611,7 @@ public class MainActivity extends BaseActivity
         }
 
         if (AppContext.getAccount().getAccessToken().isExpired()) {
-            AccountFragment.launch(MainActivity.this);
-
-            finish();
+            requestLogin(this, AppContext.getAccount());
         }
 
         invalidateOptionsMenu();
@@ -526,6 +625,117 @@ public class MainActivity extends BaseActivity
     @Override
     public boolean canSwipe() {
         return false;
+    }
+
+    public static void runCheckAccountTask(AccountBean account) {
+        // 已经过期了就不用检查了
+        if (!account.getAccessToken().isExpired()) {
+            new CheckAccountValidTask().execute(account);
+        }
+    }
+
+    public static class CheckAccountValidTask extends WorkTask<AccountBean, Void, TokenInfo> {
+
+        @Override
+        public TokenInfo workInBackground(AccountBean... params) throws TaskException {
+            Logger.w("run CheckAccountValidTask");
+
+            TokenInfo token = null;
+            TokenInfo adToken = null;
+
+            try {
+                AccountBean account = params[0];
+                // Aisen授权
+                try {
+                    token = SinaSDK.getInstance(account.getAccessToken()).getTokenInfo(account.getAccessToken().getToken());
+                } catch (TaskException e) {
+                    e.printStackTrace();
+                    if ("21327".equals(e.getCode()) ||
+                            "21317".equals(e.getCode())) {
+                        token = new TokenInfo();
+                        token.setExpire_in(0);
+                    }
+                }
+                if (token != null)
+                    account.getAccessToken().setExpires_in(token.getExpire_in());
+                // Weico授权
+                try {
+                    if (account.getAdvancedToken() != null)
+                        adToken = SinaSDK.getInstance(account.getAdvancedToken()).getTokenInfo(account.getAdvancedToken().getToken());
+                    else {
+                        adToken = new TokenInfo();
+                        adToken.setExpire_in(0);
+                    }
+                } catch (TaskException e) {
+                    e.printStackTrace();
+                    if ("21327".equals(e.getCode()) ||
+                            "21317".equals(e.getCode())) {
+                        adToken = new TokenInfo();
+                        adToken.setExpire_in(0);
+                    }
+                }
+                if (account.getAdvancedToken() != null && adToken != null)
+                    account.getAdvancedToken().setExpires_in(adToken.getExpire_in());
+            } catch (Throwable e) {
+            }
+
+            if (token != null) {
+                token.setUid(params[0].getUid());
+            }
+            return token;
+        }
+
+        @Override
+        protected void onSuccess(TokenInfo tokenInfo) {
+            super.onSuccess(tokenInfo);
+
+            // 同一登录账户
+            if (tokenInfo != null && AppContext.isLoggedIn() && AppContext.getAccount().getUid().equals(tokenInfo.getUid())) {
+                if (BaseActivity.getRunningActivity() != null && BaseActivity.getRunningActivity() instanceof MainActivity) {
+                    if (getParams()[0].getAccessToken().isExpired())
+                        requestLogin(BaseActivity.getRunningActivity(), getParams()[0]);
+                }
+            }
+        }
+
+    }
+
+    private static void requestLogin(final Activity activity, final AccountBean account) {
+        new AlertDialogWrapper.Builder(activity)
+                .setMessage(R.string.account_account_expired)
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.account_relogin, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        WebLoginFragment.launch(activity, WebLoginFragment.Client.aisen, account.getAccount(), account.getPassword(), REQUEST_CODE_AUTH);
+                    }
+                })
+                .show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE_AUTH) {
+            if (resultCode == Activity.RESULT_OK) {
+                AccountBean accountBean = (AccountBean) data.getSerializableExtra("account");
+
+                AppContext.getAccount().setAccessToken(accountBean.getAccessToken());
+                if (accountBean.getUser() != null) {
+                    AppContext.getAccount().setUser(accountBean.getUser());
+                }
+                if (accountBean.getGroups() != null) {
+                    AppContext.getAccount().setGroups(accountBean.getGroups());
+                }
+
+                AccountUtils.newAccount(AppContext.getAccount());
+                AccountUtils.setLogedinAccount(AppContext.getAccount());
+
+                login();
+            }
+        }
     }
 
 }

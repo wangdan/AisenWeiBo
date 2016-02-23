@@ -39,6 +39,10 @@ public class FabGroupsFragment extends AListFragment<Group, Groups> {
                                                       : savedInstanceState.getInt(getPositionKey(), 0);
     }
 
+    public void resetSelectedPosition() {
+        selectedPosition = ActivityHelper.getIntShareData(getPositionKey(), 0);
+    }
+
     @Override
     public int inflateContentView() {
         return R.layout.ui_fab_groups;
@@ -78,7 +82,7 @@ public class FabGroupsFragment extends AListFragment<Group, Groups> {
     }
 
     @Override
-    protected void requestData(RefreshMode mode) {
+    public void requestData(RefreshMode mode) {
 
     }
 
@@ -111,6 +115,10 @@ public class FabGroupsFragment extends AListFragment<Group, Groups> {
     }
 
     public void triggerLastPosition() {
+        if (selectedPosition >= getAdapterItems().size()) {
+            selectedPosition = 0;
+        }
+
         onItemClick(getRefreshView(), null, selectedPosition, 0);
     }
 

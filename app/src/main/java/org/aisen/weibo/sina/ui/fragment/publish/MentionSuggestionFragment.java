@@ -130,7 +130,7 @@ public class MentionSuggestionFragment extends AListFragment<MentionSuggestionBe
 	}
 
 	@Override
-	protected void requestData(RefreshMode mode) {
+	public void requestData(RefreshMode mode) {
 		new LocalTask(RefreshMode.reset).execute("");
 	}
 	

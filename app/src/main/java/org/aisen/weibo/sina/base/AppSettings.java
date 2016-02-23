@@ -505,4 +505,13 @@ public class AppSettings {
         return prefs.getBoolean("pScreenRotate", false);
     }
 
+    /**
+     * 测试用，验证通知模块时，不自动清除数据
+     *
+     * @return
+     */
+    public static boolean ignoreUnread() {
+        return false;
+    }
+
 }

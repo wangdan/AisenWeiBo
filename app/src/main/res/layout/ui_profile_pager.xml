@@ -32,7 +32,7 @@
                 android:background="?attr/colorPrimary" android:orientation="vertical"
                 app:layout_collapseMode="parallax" app:layout_collapseParallaxMultiplier="1.0">
 
-                <android.support.v7.widget.Toolbar
+                <org.aisen.android.ui.widget.AsToolbar
                     android:id="@+id/toolbar" android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>

@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import org.aisen.android.component.bitmaploader.BitmapLoader;
@@ -16,7 +15,6 @@ import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.support.paging.IPaging;
 import org.aisen.android.ui.activity.basic.BaseActivity;
-import org.aisen.android.ui.fragment.ABaseFragment;
 import org.aisen.android.ui.fragment.AListSwipeRefreshFragment;
 import org.aisen.android.ui.fragment.ATabsFragment;
 import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
@@ -32,7 +30,6 @@ import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.support.paging.FriendshipPaging;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
-import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.fragment.profile.ProfilePagerFragment;
 
@@ -45,7 +42,7 @@ import java.util.List;
  * 
  */
 public abstract class AFriendshipFragment extends AListSwipeRefreshFragment<WeiBoUser, Friendship>
-												implements OnItemClickListener {
+												implements OnItemClickListener, ATabsFragment.ITabInitData {
 
 	private WeiBoUser mUser;
 	
@@ -104,8 +101,25 @@ public abstract class AFriendshipFragment extends AListSwipeRefreshFragment<WeiB
 	}
 
 	@Override
-	protected void requestData(RefreshMode mode) {
-		new FriendshipTask(mode == RefreshMode.refresh ? RefreshMode.reset : mode).execute();
+	public void requestData(RefreshMode mode) {
+		boolean load = true;
+
+		// 如果还没有加载过数据，切且显示的是当前的页面
+		if (getTaskCount(PAGING_TASK_ID) == 0) {
+			load = AisenUtils.checkTabsFragmentCanRequestData(this);
+		}
+
+		if (load) {
+			new FriendshipTask(mode == RefreshMode.refresh ? RefreshMode.reset : mode).execute();
+		}
+	}
+
+	@Override
+	public void onTabRequestData() {
+		// 如果还没有加载过数据，就开始加载
+		if (getTaskCount(PAGING_TASK_ID) == 0) {
+			requestData(RefreshMode.reset);
+		}
 	}
 
 	class FriendshipItemView extends ARecycleViewItemView<WeiBoUser> {
@@ -228,36 +242,14 @@ public abstract class AFriendshipFragment extends AListSwipeRefreshFragment<WeiB
 	
     @Override
     public boolean onToolbarDoubleClick() {
-        ABaseFragment aFragment = (ABaseFragment) getActivity().getFragmentManager().findFragmentByTag("MainFragment");
-        if (aFragment instanceof ATabsFragment) {
-            @SuppressWarnings("rawtypes")
-			ATabsFragment tabTitlePagerFragment = (ATabsFragment) aFragment;
-            if (tabTitlePagerFragment.getCurrentFragment() == this) {
-                requestDataDelay(200);
+		if (AisenUtils.checkTabsFragmentCanRequestData(this)) {
+			requestDataDelaySetRefreshing(AppSettings.REQUEST_DATA_DELAY);
+			getRefreshView().setSelectionFromTop(0, 0);
 
-                ((ListView) getRefreshView()).setSelectionFromTop(0, 0);
+			return true;
+		}
 
-                return true;
-            }
-            else
-                return false;
-        }
-
-        if (getActivity() instanceof SinaCommonActivity) {
-            @SuppressWarnings("rawtypes")
-			ATabsFragment aTabTitlePagerFragment = (ATabsFragment) getActivity().getFragmentManager().findFragmentByTag(SinaCommonActivity.FRAGMENT_TAG);
-            if (aTabTitlePagerFragment.getCurrentFragment() == this) {
-                requestDataDelay(200);
-
-                ((ListView) getRefreshView()).setSelectionFromTop(0, 0);
-
-                return true;
-            }
-            else
-                return false;
-        }
-
-        return super.onToolbarDoubleClick();
+		return false;
     }
 
 	abstract Friendship getFriendship(@SuppressWarnings("rawtypes") WorkTask task, RefreshMode mode,

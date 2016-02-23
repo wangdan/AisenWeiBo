@@ -184,7 +184,7 @@ public abstract class ABaseFragment extends Fragment implements ITaskManager, Bi
         runUIRunnable(requestDelayRunnable, delay);
     }
 
-    protected void requestDataOutofdate() {
+    public void requestDataOutofdate() {
         requestData();
     }
 

@@ -245,6 +245,14 @@ public abstract class ATabsFragment<T extends TabItem> extends ABaseFragment
         return null;
     }
 
+    public Fragment getFragment(int index) {
+        if (mItems.size() > index) {
+            return fragments.get(makeFragmentName(index));
+        }
+
+        return null;
+    }
+
     public Map<String, Fragment> getFragments() {
         return fragments;
     }

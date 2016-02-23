@@ -111,7 +111,7 @@ public class TimelineFavoritesFragment extends ATimelineFragment
     }
 
     @Override
-    protected void requestData(RefreshMode mode) {
+    public void requestData(RefreshMode mode) {
         boolean load = true;
 
         // 如果还没有加载过数据，切且显示的是当前的页面
@@ -219,6 +219,18 @@ public class TimelineFavoritesFragment extends ATimelineFragment
     @Override
     public void refreshProfile() {
         requestDataDelay(100);
+    }
+
+    @Override
+    public boolean onToolbarDoubleClick() {
+        if (AisenUtils.checkTabsFragmentCanRequestData(this)) {
+            requestDataDelaySetRefreshing(AppSettings.REQUEST_DATA_DELAY);
+            getRefreshView().scrollToPosition(0);
+
+            return true;
+        }
+
+        return false;
     }
     
 }

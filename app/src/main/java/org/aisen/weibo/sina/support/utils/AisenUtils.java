@@ -44,6 +44,7 @@ import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.fragment.ABaseFragment;
 import org.aisen.android.ui.fragment.APagingFragment;
 import org.aisen.android.ui.fragment.ATabsFragment;
+import org.aisen.android.ui.fragment.ATabsTabLayoutFragment;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
@@ -54,6 +55,7 @@ import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.ui.activity.base.MainActivity;
 import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
+import org.aisen.weibo.sina.ui.activity.profile.UserProfileActivity;
 import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.fragment.comment.TimelineCommentFragment;
@@ -313,15 +315,19 @@ public class AisenUtils {
         }
     }
 
-    public static String getCounter(int count) {
+    public static String getCounter(int count, String append) {
         Resources res = GlobalContext.getInstance().getResources();
 
         if (count < 10000)
-            return String.valueOf(count);
+            return String.valueOf(count) + append;
         else if (count < 100 * 10000)
-            return new DecimalFormat("#.0" + res.getString(R.string.msg_ten_thousand)).format(count * 1.0f / 10000);
+            return new DecimalFormat("#.0").format(count * 1.0f / 10000) + append + res.getString(R.string.msg_ten_thousand);
         else
-            return new DecimalFormat("#" + res.getString(R.string.msg_ten_thousand)).format(count * 1.0f / 10000);
+            return new DecimalFormat("#").format(count * 1.0f / 10000) + append + res.getString(R.string.msg_ten_thousand);
+    }
+
+    public static String getCounter(int count) {
+        return getCounter(count, "");
     }
 
     /**
@@ -433,7 +439,7 @@ public class AisenUtils {
                     public void onClick(DialogInterface dialog, int which) {
                         BizFragment.createBizFragment(fragment).statusDestory(status.getId() + "", new BizFragment.OnStatusDestoryCallback() {
 
-                            @SuppressWarnings({ "rawtypes" })
+                            @SuppressWarnings({"rawtypes"})
                             @Override
                             public void onStatusDestory(StatusContent status) {
                                 if (fragment instanceof ATimelineFragment) {
@@ -446,8 +452,7 @@ public class AisenUtils {
                                             break;
                                         }
                                     }
-                                }
-                                else {
+                                } else {
                                     if (fragment.getActivity() != null && fragment instanceof TimelineCommentFragment) {
                                         Intent data = new Intent();
                                         data.putExtra("status", status.getId());
@@ -801,6 +806,9 @@ public class AisenUtils {
         else if (checkedFragment.getActivity() instanceof MainActivity) {
             aFragment = (ABaseFragment) checkedFragment.getActivity().getFragmentManager().findFragmentByTag("MainFragment");
         }
+        else if (checkedFragment.getActivity() instanceof UserProfileActivity) {
+            aFragment = (ABaseFragment) checkedFragment.getActivity().getFragmentManager().findFragmentByTag(SinaCommonActivity.FRAGMENT_TAG);
+        }
 
         if (aFragment != null && aFragment instanceof ATabsFragment) {
             ATabsFragment fragment = (ATabsFragment) aFragment;
@@ -808,6 +816,25 @@ public class AisenUtils {
         }
 
         return false;
+    }
+
+    public static void setTabsText(Fragment fragment, int index, String text) {
+        if (fragment.getActivity() == null)
+            return;
+
+        ABaseFragment aFragment = null;
+        if (fragment.getActivity() instanceof SinaCommonActivity) {
+            aFragment = (ABaseFragment) fragment.getActivity().getFragmentManager().findFragmentByTag(SinaCommonActivity.FRAGMENT_TAG);
+        }
+        else if (fragment.getActivity() instanceof MainActivity) {
+            aFragment = (ABaseFragment) fragment.getActivity().getFragmentManager().findFragmentByTag("MainFragment");
+        }
+
+        if (aFragment != null && aFragment instanceof ATabsTabLayoutFragment) {
+            ATabsTabLayoutFragment tabsFragment = (ATabsTabLayoutFragment) aFragment;
+
+            tabsFragment.getTablayout().getTabAt(index).setText(text);
+        }
     }
 
 }

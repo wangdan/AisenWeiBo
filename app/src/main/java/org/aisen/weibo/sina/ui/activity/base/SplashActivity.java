@@ -13,7 +13,9 @@ import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.utils.AccountUtils;
+import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
 import org.aisen.weibo.sina.ui.fragment.account.WebLoginFragment;
+import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 
 /**
  * Created by wangdan on 15/12/13.
@@ -48,7 +50,10 @@ public class SplashActivity extends BaseActivity {
 
         @Override
         public void run() {
-            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+            MainActivity.login();
+            if (AppContext.isLoggedIn()) {
+                MainActivity.runCheckAccountTask(AppContext.getAccount());
+            }
 
             finish();
         }
@@ -60,14 +65,21 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void toLogin() {
-        WebLoginFragment.launch(this, WebLoginFragment.Client.aisen, null, null);
+        if (AccountUtils.queryAccount().size() == 0) {
+            WebLoginFragment.launch(this, WebLoginFragment.Client.aisen, null, null, BizFragment.REQUEST_CODE_AUTH);
+        }
+        else {
+            AccountFragment.launch(this);
+
+            finish();
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == WebLoginFragment.REQUEST_CODE_AUTH) {
+        if (requestCode == BizFragment.REQUEST_CODE_AUTH) {
             if (resultCode == Activity.RESULT_CANCELED) {
                 new MaterialDialog.Builder(this)
                         .forceStacking(true)

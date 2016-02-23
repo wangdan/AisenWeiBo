@@ -32,6 +32,7 @@ import org.aisen.weibo.sina.support.bean.PublishBean;
 import org.aisen.weibo.sina.support.bean.PublishBean.PublishStatus;
 import org.aisen.weibo.sina.support.bean.PublishType;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -444,5 +445,29 @@ public class PublishStatusFragment extends APublishFragment {
 		
 		return true;
 	}
-	
+
+	@Override
+	protected void send() {
+		// 单个图片或者没有图片，用aisen发布即可
+		if (getPublishBean().getPics() == null || getPublishBean().getPics().length == 1) {
+			super.send();
+		}
+		// 发送多个图片时，需要高级权限
+		else {
+			BizFragment.createBizFragment(this).checkProfile(new BizFragment.CheckProfileCallback() {
+
+				@Override
+				public void onCheckProfileSuccess() {
+					PublishStatusFragment.super.send();
+				}
+
+				@Override
+				public void onCheckProfileFaild() {
+					showMessage(R.string.publish_request_ad_auth_faild);
+				}
+
+			});
+		}
+	}
+
 }

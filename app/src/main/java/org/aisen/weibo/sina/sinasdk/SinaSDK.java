@@ -877,7 +877,9 @@ public class SinaSDK extends ABizLogic {
 	 * @return
 	 */
 	public StatusContent statusesUpload(Params params, File file) throws TaskException {
-		StatusContent s = uploadFile(getHttpConfig(), getSetting("statusesUpload"), params, file, null, StatusContent.class);
+		MultipartFile[] files = file == null ? null : new MultipartFile[] { new MultipartFile("image/jpge", "pic", file) };
+
+		StatusContent s = uploadFile(getHttpConfig(), getSetting("statusesUpload"), params, files, null, StatusContent.class);
 //		tempFile.delete();
 		return s;
 	}
@@ -1391,7 +1393,9 @@ public class SinaSDK extends ABizLogic {
 	public UploadPictureResultBean uploadPicture(File file) throws TaskException {
 		Params params = new Params();
 
-		return uploadFile(configHttpConfig(), getSetting("publishUploadPicture"), configParams(params), file, null, UploadPictureResultBean.class);
+		MultipartFile[] files = file == null ? null : new MultipartFile[] { new MultipartFile("image/jpge", "pic", file) };
+
+		return uploadFile(configHttpConfig(), getSetting("publishUploadPicture"), configParams(params), files, null, UploadPictureResultBean.class);
 	}
 	
 }

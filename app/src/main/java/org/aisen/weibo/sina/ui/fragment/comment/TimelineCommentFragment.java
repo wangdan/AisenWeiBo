@@ -1,5 +1,6 @@
 package org.aisen.weibo.sina.ui.fragment.comment;
 
+import android.app.Fragment;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import org.aisen.weibo.sina.sinasdk.bean.StatusComments;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.support.paging.CommentPaging;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 
 import java.util.ArrayList;
@@ -165,7 +167,7 @@ public class TimelineCommentFragment extends AListFragment<StatusComment, Status
     }
 
     @Override
-    protected void requestData(RefreshMode mode) {
+    public void requestData(RefreshMode mode) {
         new CommentTask(mode).execute();
     }
 
@@ -220,6 +222,35 @@ public class TimelineCommentFragment extends AListFragment<StatusComment, Status
             showMessage(exception.getMessage());
         }
 
+        @Override
+        protected void onFinished() {
+            super.onFinished();
+
+            if (getActivity() != null) {
+                Fragment fragment = getActivity().getFragmentManager().findFragmentByTag(SinaCommonActivity.FRAGMENT_TAG);
+                if (fragment != null && fragment instanceof TimelineDetailPagerFragment) {
+                    ((TimelineDetailPagerFragment) fragment).refreshEnd();
+                }
+            }
+        }
+
+    }
+
+    @Override
+    public boolean onToolbarDoubleClick() {
+        if (AisenUtils.checkTabsFragmentCanRequestData(this)) {
+            Fragment fragment = getActivity().getFragmentManager().findFragmentByTag(SinaCommonActivity.FRAGMENT_TAG);
+            if (fragment != null && fragment instanceof TimelineDetailPagerFragment) {
+                ((TimelineDetailPagerFragment) fragment).swipeRefreshLayout.setRefreshing(true);
+            }
+
+            requestDataDelaySetRefreshing(AppSettings.REQUEST_DATA_DELAY);
+            getRefreshView().setSelectionFromTop(0, 0);
+
+            return true;
+        }
+
+        return false;
     }
 
 }

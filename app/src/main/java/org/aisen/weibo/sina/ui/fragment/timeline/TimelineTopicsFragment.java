@@ -56,7 +56,7 @@ public class TimelineTopicsFragment extends ATimelineFragment {
 	}
 
 	@Override
-	protected void requestData(RefreshMode mode) {
+	public void requestData(RefreshMode mode) {
 		new TopicsTimelineTask(mode == RefreshMode.refresh ? RefreshMode.reset : mode).execute();
 	}
 

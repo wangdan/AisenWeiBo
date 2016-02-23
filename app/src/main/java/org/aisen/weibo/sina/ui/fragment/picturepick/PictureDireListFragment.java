@@ -89,7 +89,7 @@ public class PictureDireListFragment extends AListFragment<PictureDireListFragme
     }
 
     @Override
-    protected void requestData(RefreshMode mode) {
+    public void requestData(RefreshMode mode) {
         setItems(files);
     }
 
