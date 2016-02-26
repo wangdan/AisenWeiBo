@@ -10,9 +10,12 @@ import android.text.TextUtils;
 import android.webkit.WebView;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 
 import org.aisen.android.common.context.GlobalContext;
+import org.aisen.android.common.setting.Setting;
 import org.aisen.android.common.setting.SettingUtility;
+import org.aisen.android.common.utils.Logger;
 import org.aisen.android.network.biz.ABizLogic;
 import org.aisen.android.network.http.HttpConfig;
 import org.aisen.android.network.http.IHttpUtility;
@@ -46,6 +49,7 @@ import org.aisen.weibo.sina.sinasdk.bean.UnreadCount;
 import org.aisen.weibo.sina.sinasdk.bean.UploadPictureResultBean;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.sinasdk.http.HttpsUtility;
+import org.aisen.weibo.sina.support.utils.AisenUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -1396,6 +1400,47 @@ public class SinaSDK extends ABizLogic {
 		MultipartFile[] files = file == null ? null : new MultipartFile[] { new MultipartFile("image/jpge", "pic", file) };
 
 		return uploadFile(configHttpConfig(), getSetting("publishUploadPicture"), configParams(params), files, null, UploadPictureResultBean.class);
+	}
+
+	/**
+	 * 使用H5页面的接口拉取数据
+	 *
+	 * @param q
+	 * @param cookies
+	 * @return
+	 * @throws TaskException
+	 */
+	public String[] searchsSuggest(String q, String cookies) throws TaskException {
+		// http://m.weibo.cn/searchs/suggest?count=10&q=ann
+		Setting action = newSetting("searchsSuggest", "searchs/suggest", "获取搜索建议");
+		action.getExtras().put(BASE_URL, newSettingExtra(BASE_URL, "http://m.weibo.cn/", ""));
+
+		Params params = new Params();
+		params.addParameter("q", q);
+		params.addParameter("count", "5");
+
+		HttpConfig config = configHttpConfig();
+		config.cookie = cookies;
+		try {
+
+			// ["ana",["anastasia","T-ANA小芹","anastasia 修容","广安门医院官方微博","anastasia 高光"]]
+			String response = doPost(config, action, params, String.class, null);
+			response = AisenUtils.convertUnicode(response);
+
+			Logger.d("SinaSDK", response + "");
+
+			JSONArray jsonArray = JSON.parseArray(response);
+			JSONArray resultArray = jsonArray.getJSONArray(1);
+			String[] result = new String[resultArray.size()];
+			for (int i = 0; i < resultArray.size(); i++) {
+				result[i] = resultArray.getString(i);
+			}
+			return result;
+		} catch (TaskException e) {
+			e.printStackTrace();
+		}
+
+		return new String[0];
 	}
 	
 }

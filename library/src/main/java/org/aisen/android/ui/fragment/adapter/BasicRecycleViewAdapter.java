@@ -175,7 +175,7 @@ public class BasicRecycleViewAdapter<T extends Serializable> extends RecyclerVie
         public void onClick(View v) {
             IITemView<T> itemView = (IITemView<T>) v.getTag(R.id.itemview);
 
-            if (onItemClickListener != null) {
+            if (onItemClickListener != null && itemView != null) {
                 onItemClickListener.onItemClick(null, itemView.getConvertView(),
                                                     itemView.itemPosition(), getItemId(itemView.itemPosition()));
             }

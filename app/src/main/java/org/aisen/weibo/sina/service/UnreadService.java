@@ -43,6 +43,10 @@ public class UnreadService extends Service {
 	
 	public static void stopService() {
 		clearAlarm();
+
+		if (AppContext.isLoggedIn()) {
+			UnreadCountNotifier.mCount = new UnreadCount();
+		}
 		
 		Intent intent = new Intent(GlobalContext.getInstance(), UnreadService.class);
 		GlobalContext.getInstance().stopService(intent);

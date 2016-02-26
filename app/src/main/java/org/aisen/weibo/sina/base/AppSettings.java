@@ -329,7 +329,7 @@ public class AppSettings {
             case 0:
                 return 30 * 1000;
             case 1:
-                return 4 * 60 * 60 * 1000;
+                return 20 * 60 * 1000;
             case 2:
                 return 12 * 60 * 60 * 1000;
             case 3:

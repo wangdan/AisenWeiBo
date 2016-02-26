@@ -104,18 +104,31 @@ public abstract class ABaseFragment extends Fragment implements ITaskManager, Bi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (inflateContentView() > 0) {
-            setContentView((ViewGroup) inflater.inflate(inflateContentView(), null));
-            getContentView().setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                                                                ViewGroup.LayoutParams.MATCH_PARENT));
+            ViewGroup contentView = (ViewGroup) inflater.inflate(inflateContentView(), null);
+            contentView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT));
 
-            _layoutInit(inflater, savedInstanceState);
-
-            layoutInit(inflater, savedInstanceState);
+            setupContentView(inflater, contentView, savedInstanceState);
 
             return getContentView();
         }
 
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    /**
+     * 根据ContentView初始化视图
+     *
+     * @param inflater
+     * @param contentView
+     * @param savedInstanceState
+     */
+    protected void setupContentView(LayoutInflater inflater, ViewGroup contentView, Bundle savedInstanceState) {
+        setContentView(contentView);
+
+        _layoutInit(inflater, savedInstanceState);
+
+        layoutInit(inflater, savedInstanceState);
     }
 
     public void setContentView(ViewGroup view) {
@@ -195,7 +208,7 @@ public abstract class ABaseFragment extends Fragment implements ITaskManager, Bi
      * @param savedInstanceSate
      */
     void _layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
-        InjectUtility.initInjectedView(this, rootView);
+        InjectUtility.initInjectedView(this, getContentView());
 
         if (emptyLayout != null) {
             View reloadView = emptyLayout.findViewById(R.id.layoutReload);

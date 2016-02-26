@@ -1,5 +1,6 @@
 package org.aisen.weibo.sina.ui.activity.base;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +9,12 @@ import android.os.Handler;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.aisen.android.common.utils.Logger;
+import org.aisen.android.support.action.IAction;
+import org.aisen.android.support.permissions.APermissionsAction;
+import org.aisen.android.support.permissions.DefPermissionsSubject;
+import org.aisen.android.support.permissions.IPermissionsObserver;
+import org.aisen.android.support.permissions.IPermissionsSubject;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
@@ -20,13 +27,44 @@ import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 /**
  * Created by wangdan on 15/12/13.
  */
-public class SplashActivity extends BaseActivity {
+public class SplashActivity extends BaseActivity implements IPermissionsSubject {
+
+    private DefPermissionsSubject defPermissionsSubject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.ui_splash);
+
+        defPermissionsSubject = new DefPermissionsSubject();
+
+        APermissionsAction permissionsAction = new APermissionsAction(this, null, this, Manifest.permission.WRITE_EXTERNAL_STORAGE) {
+
+            @Override
+            protected boolean handlePermissionNone() {
+                Logger.d(APermissionsAction.TAG, "没有权限");
+
+                return super.handlePermissionNone();
+            }
+
+            @Override
+            protected void onPermissionDenied(boolean alwaysDenied) {
+                Logger.d(APermissionsAction.TAG, "权限被拒绝了 : " + alwaysDenied);
+            }
+
+        };
+        new IAction(this, permissionsAction) {
+
+            @Override
+            public void doAction() {
+                Logger.d(APermissionsAction.TAG, "权限通过， doit");
+            }
+
+        }.run();
+
+        if (true) return;
+
         if (AppContext.isLoggedIn()) {
-            setContentView(R.layout.ui_splash);
 
             toMain(750);
         }
@@ -114,6 +152,28 @@ public class SplashActivity extends BaseActivity {
                 toMain(0);
             }
         }
+    }
+
+    @Override
+    public void attach(IPermissionsObserver observer) {
+        defPermissionsSubject.attach(observer);
+    }
+
+    @Override
+    public void detach(IPermissionsObserver observer) {
+        defPermissionsSubject.detach(observer);
+    }
+
+    @Override
+    public void notifyActivityResult(int requestCode, String[] permissions, int[] grantResults) {
+        defPermissionsSubject.notifyActivityResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        notifyActivityResult(requestCode, permissions, grantResults);
     }
 
 }

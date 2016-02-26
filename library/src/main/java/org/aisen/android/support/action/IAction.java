@@ -53,6 +53,10 @@ public abstract class IAction {
         return context;
     }
 
-    abstract public void doAction();
+    public void doAction() {
+        if (getChild() != null) {
+            getChild().run();
+        }
+    }
 
 }

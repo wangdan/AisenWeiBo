@@ -3,7 +3,6 @@ package org.aisen.weibo.sina.ui.activity.base;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -22,6 +22,8 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.lapism.searchview.view.SearchCodes;
+import com.lapism.searchview.view.SearchView;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.md.MDHelper;
@@ -61,7 +63,7 @@ import org.aisen.weibo.sina.ui.fragment.draft.DraftFragment;
 import org.aisen.weibo.sina.ui.fragment.mention.MentionPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.menu.FabGroupsFragment;
 import org.aisen.weibo.sina.ui.fragment.menu.MenuFragment;
-import org.aisen.weibo.sina.ui.fragment.settings.AboutWebFragment;
+import org.aisen.weibo.sina.ui.fragment.search.SearchFragment;
 import org.aisen.weibo.sina.ui.fragment.settings.NotificationSettingsFragment;
 import org.aisen.weibo.sina.ui.fragment.settings.SettingsPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineDefFragment;
@@ -99,6 +101,8 @@ public class MainActivity extends BaseActivity
     TabLayout tabLayout;
     @ViewInject(id = R.id.content_frame)
     FrameLayout contentFrame;
+    @ViewInject(id = R.id.searchView)
+    SearchView mSearchView;
 
     private ActionBarDrawerToggle drawerToggle;
     private MaterialSheetFab materialSheetFab;
@@ -153,6 +157,7 @@ public class MainActivity extends BaseActivity
         setupMenu(savedInstanceState);
         setupFab(savedInstanceState);
         setupAppBarLayout(savedInstanceState);
+        setupSearchView();
 
         mInstance = this;
     }
@@ -301,6 +306,51 @@ public class MainActivity extends BaseActivity
 //            }
 //
 //        });
+    }
+
+    private void setupSearchView() {
+        // SearchView basic attributes  ------------------------------------------------------------
+        int mVersion = SearchCodes.VERSION_MENU_ITEM;
+        int mStyle = SearchCodes.STYLE_MENU_ITEM_CLASSIC;
+        int mTheme = SearchCodes.THEME_LIGHT;
+
+        mSearchView.setVersion(mVersion);
+        mSearchView.setStyle(mStyle);
+        mSearchView.setTheme(mTheme);
+        // -----------------------------------------------------------------------------------------
+        mSearchView.setDivider(false);
+        mSearchView.setHint(R.string.search_hint);
+        mSearchView.setHintSize(getResources().getDimension(R.dimen.search_text_medium));
+        mSearchView.setVoice(false);
+        mSearchView.setAnimationDuration(300);
+        mSearchView.setShadowColor(ContextCompat.getColor(this, R.color.background_dim_overlay));
+        mSearchView.hide(false);
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (!TextUtils.isEmpty(query)) {
+                    SearchFragment.launch(MainActivity.this, query);
+
+                    mHandler.postDelayed(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            mSearchView.hide(false);
+                        }
+
+                    }, 200);
+                }
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+
+        });
     }
 
     /**
@@ -502,9 +552,6 @@ public class MainActivity extends BaseActivity
     public boolean onPrepareOptionsMenu(Menu menu) {
         menu.findItem(R.id.publish).setVisible(AppSettings.getFabBtnType() == 1);
 
-        menu.findItem(R.id.about).setVisible(false);
-        menu.findItem(R.id.feedback).setVisible(false);
-
         if (OfflineService.getInstance() == null || OfflineService.getInstance().getStatus() == OfflineService.OfflineStatus.init ||
                 OfflineService.getInstance().getStatus() == OfflineService.OfflineStatus.finished) {
             menu.findItem(R.id.toggle_offline).setVisible(true);
@@ -534,13 +581,13 @@ public class MainActivity extends BaseActivity
         }
 
         // 关于
-        if (item.getItemId() == R.id.about)
-            AboutWebFragment.launchAbout(this);
+//        if (item.getItemId() == R.id.about)
+//            AboutWebFragment.launchAbout(this);
         // 意见反馈
-        else if (item.getItemId() == R.id.feedback)
-            PublishActivity.publishFeedback(this);
+//        else if (item.getItemId() == R.id.feedback)
+//            PublishActivity.publishFeedback(this);
         // 退出
-        else if (item.getItemId() == R.id.exitapp)
+        if (item.getItemId() == R.id.exitapp)
             finish();
         // 新微博
         else if (item.getItemId() == R.id.publish)
@@ -554,6 +601,11 @@ public class MainActivity extends BaseActivity
         // 通知设置
         else if (item.getItemId() == R.id.notification_settings)
             NotificationSettingsFragment.launch(this);
+        // 搜索
+        else if (item.getItemId() == R.id.search)
+            getFragmentManager().beginTransaction().add(R.id.laySearch, new SearchFragment(), "SearchFragment").commit();
+//            SearchFragment.launch(this, "");
+//            mSearchView.show(true);
 
         return super.onOptionsItemSelected(item);
     }

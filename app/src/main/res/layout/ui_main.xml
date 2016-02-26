@@ -34,8 +34,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:layout_scrollFlags="scroll|enterAlways|snap"
+                android:background="?attr/colorPrimary" app:layout_scrollFlags="scroll|enterAlways|snap"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 />
@@ -71,6 +70,14 @@
             android:id="@+id/fab" style="@style/Widget.MaterialSheetFab.MainFab" android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"/>
     </android.support.design.widget.CoordinatorLayout>
+
+    <com.lapism.searchview.view.SearchView
+        android:id="@+id/searchView" android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <FrameLayout
+        android:id="@+id/laySearch"
+        android:layout_width="match_parent" android:layout_height="match_parent"/>
 
     <org.aisen.android.ui.widget.ScrimInsetsFrameLayout
         android:id="@+id/menu_frame" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_gravity="start"
