@@ -1,62 +1,69 @@
 package org.aisen.weibo.sina.ui.fragment.search;
 
-import android.content.Context;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.aisen.android.common.utils.SystemUtils;
+import org.aisen.android.common.utils.Utils;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.support.inject.ViewInject;
+import org.aisen.android.ui.fragment.APagingFragment;
 import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
+import org.aisen.android.ui.fragment.adapter.BasicRecycleViewAdapter;
+import org.aisen.android.ui.fragment.itemview.IITemView;
+import org.aisen.android.ui.fragment.itemview.NormalItemViewCreator;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.sinasdk.bean.SearchsResultUser;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
-import org.aisen.weibo.sina.ui.widget.swipecardview.SwipeFlingAdapterView;
+import org.aisen.weibo.sina.ui.activity.profile.UserProfileActivity;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by wangdan on 16/2/24.
  */
-public class SearchHeaderView extends ARecycleViewItemView<StatusContent> implements SwipeFlingAdapterView.onFlingListener, SwipeFlingAdapterView.OnItemClickListener {
+public class SearchHeaderView extends ARecycleViewItemView<StatusContent> {
 
     @ViewInject(id = R.id.layUsers)
     LinearLayout layUsers;
     @ViewInject(id = R.id.txtEmpty)
     TextView txtEmpty;
-    @ViewInject(id = R.id.swipeView)
-    SwipeFlingAdapterView swipeView;
+    @ViewInject(id = R.id.recycleview)
+    RecyclerView mRecycleView;
 
-    private InnerAdapter adapter;
-    private List<SearchsResultUser> users;
-    private Context context;
+    private APagingFragment fragment;
+    private BasicRecycleViewAdapter<SearchsResultUser> basicRecycleViewAdapter;
 
-    public SearchHeaderView(View itemView, Context context) {
+    public SearchHeaderView(APagingFragment fragment, View itemView) {
         super(itemView);
 
-        this.context = context;
+        this.fragment = fragment;
     }
 
     @Override
     public void onBindView(View convertView) {
         super.onBindView(convertView);
 
-        //swipeView.setIsNeedSwipe(true);
-        swipeView.setFlingListener(this);
-        swipeView.setOnItemClickListener(this);
+        GridLayoutManager linearLayoutManager = new GridLayoutManager(fragment.getActivity(), 2, LinearLayoutManager.HORIZONTAL, false);
+        mRecycleView.setLayoutManager(linearLayoutManager);
+        basicRecycleViewAdapter = new BasicRecycleViewAdapter(fragment, new HeaderItemCreator(), new ArrayList<>());
+        basicRecycleViewAdapter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-        users = new ArrayList<>();
-        adapter = new InnerAdapter();
-        swipeView.setAdapter(adapter);
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                UserProfileActivity.launch(fragment.getActivity(), basicRecycleViewAdapter.getDatas().get(position).getScreen_name());
+            }
+
+        });
+        mRecycleView.setAdapter(basicRecycleViewAdapter);
     }
 
     @Override
@@ -64,102 +71,64 @@ public class SearchHeaderView extends ARecycleViewItemView<StatusContent> implem
 
     }
 
-    public void setUsers(List<SearchsResultUser> users) {
-        this.users = users;
-
+    public void setUsers(ArrayList<SearchsResultUser> users) {
         layUsers.setVisibility(users.size() == 0 ? View.GONE : View.VISIBLE);
         txtEmpty.setVisibility(users.size() == 0 ? View.VISIBLE : View.GONE);
-        adapter.notifyDataSetChanged();
+        basicRecycleViewAdapter.getDatas().clear();
+        basicRecycleViewAdapter.getDatas().addAll(users);
+        basicRecycleViewAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onItemClicked(MotionEvent event, View v, Object dataObject) {
+    class HeaderItemCreator extends NormalItemViewCreator<SearchsResultUser> {
 
-    }
-
-    @Override
-    public void removeFirstObjectInAdapter() {
-
-    }
-
-    @Override
-    public void onLeftCardExit(Object dataObject) {
-
-    }
-
-    @Override
-    public void onRightCardExit(Object dataObject) {
-
-    }
-
-    @Override
-    public void onAdapterAboutToEmpty(int itemsInAdapter) {
-
-    }
-
-    @Override
-    public void onScroll(float progress, float scrollXProgress) {
-
-    }
-
-    private class InnerAdapter extends BaseAdapter {
-
-        public boolean isEmpty() {
-            return users.isEmpty();
-        }
-
-        public void remove(int index) {
-            if (index > -1 && index < users.size()) {
-                users.remove(index);
-                notifyDataSetChanged();
-            }
+        public HeaderItemCreator() {
+            super(R.layout.item_search_headerview);
         }
 
         @Override
-        public int getCount() {
-            return users.size();
-        }
+        public IITemView<SearchsResultUser> newItemView(View convertView, int viewType) {
+            return new ARecycleViewItemView<SearchsResultUser>(convertView) {
 
-        @Override
-        public SearchsResultUser getItem(int position) {
-            if(users == null || users.size()==0) return null;
-            return users.get(position);
-        }
+                @ViewInject(id = R.id.imgPhoto)
+                ImageView imgPhoto;
+                @ViewInject(id = R.id.txtName)
+                TextView txtName;
+                @ViewInject(id = R.id.txtRemark)
+                TextView txtRemark;
 
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
+                @Override
+                public void onBindView(View convertView) {
+                    super.onBindView(convertView);
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = LayoutInflater.from(context).inflate(R.layout.item_search_headerview, parent, false);
-            }
-            convertView.getLayoutParams().width = SystemUtils.getScreenWidth() - 300;
-            convertView.getLayoutParams().height = 200;
-            SearchsResultUser user = users.get(position);
+                    convertView.getLayoutParams().width = SystemUtils.getScreenWidth() * 5 / 6;
+                    convertView.getLayoutParams().height = Utils.dip2px(110);
+                }
 
-            ImageView imgPhoto = (ImageView) convertView.findViewById(R.id.imgPhoto);
-            BitmapLoader.getInstance().display(null,
-                    user.getProfile_image_url(), imgPhoto, ImageConfigUtils.getLargePhotoConfig());
-            String name = user.getScreen_name();
-            if (!TextUtils.isEmpty(user.getRemark()))
-                name = String.format("%s(%s)", name, user.getRemark());
-            TextView txtName = (TextView) convertView.findViewById(R.id.txtName);
-            txtName.setText(name);
-            TextView txtRemark = (TextView) convertView.findViewById(R.id.txtRemark);
-            txtRemark.setVisibility(View.VISIBLE);
-            if (!TextUtils.isEmpty(user.getDesc1()))
-                txtRemark.setText(user.getDesc1());
-            else if (!TextUtils.isEmpty(user.getDescription()))
-                txtRemark.setText(user.getDescription());
-            else {
-                txtRemark.setVisibility(View.GONE);
-                txtRemark.setText("");
-            }
+                @Override
+                public void onBindData(View convertView, SearchsResultUser data, int position) {
+                    RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) convertView.getLayoutParams();
+                    params.leftMargin = position == 0 || position == 1 ? 0 : Utils.dip2px(8);
+                    params.topMargin = position % 2 == 0 ? 0 : Utils.dip2px(8);
 
-            return convertView;
+                    BitmapLoader.getInstance().display(fragment, data.getProfile_image_url(), imgPhoto, ImageConfigUtils.getLargePhotoConfig());
+                    String name = data.getScreen_name();
+                    if (!TextUtils.isEmpty(data.getRemark()))
+                        name = String.format("%s(%s)", name, data.getRemark());
+                    txtName.setText(name);
+                    txtRemark.setVisibility(View.VISIBLE);
+                    if (!TextUtils.isEmpty(data.getDesc1()))
+                        txtRemark.setText(data.getDesc1());
+                    else if (!TextUtils.isEmpty(data.getDesc2()))
+                        txtRemark.setText(data.getDesc2());
+                    else if (!TextUtils.isEmpty(data.getDescription()))
+                        txtRemark.setText(data.getDescription());
+                    else {
+                        txtRemark.setVisibility(View.GONE);
+                        txtRemark.setText("");
+                    }
+                }
+
+            };
         }
 
     }

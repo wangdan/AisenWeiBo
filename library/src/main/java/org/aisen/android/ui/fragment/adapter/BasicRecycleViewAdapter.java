@@ -34,11 +34,11 @@ public class BasicRecycleViewAdapter<T extends Serializable> extends RecyclerVie
     private AdapterView.OnItemClickListener onItemClickListener;
     private AdapterView.OnItemLongClickListener onItemLongClickListener;
 
-    public BasicRecycleViewAdapter(APagingFragment holderFragment, ArrayList<T> datas) {
+    public BasicRecycleViewAdapter(APagingFragment holderFragment, IItemViewCreator<T> itemViewCreator, ArrayList<T> datas) {
         if (datas == null)
             datas = new ArrayList<T>();
         this.holderFragment = holderFragment;
-        this.itemViewCreator = holderFragment.configItemViewCreator();
+        this.itemViewCreator = itemViewCreator;
         this.datas = datas;
         notifyDataSetChanged();
     }
@@ -208,7 +208,7 @@ public class BasicRecycleViewAdapter<T extends Serializable> extends RecyclerVie
     }
 
     @Override
-    public ArrayList getDatas() {
+    public ArrayList<T> getDatas() {
         return datas;
     }
 

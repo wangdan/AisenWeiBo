@@ -130,7 +130,7 @@ public class SearchFragment extends ATimelineFragment {
 
             @Override
             public IITemView<StatusContent> newItemView(View convertView, int viewType) {
-                searchHeaderView = new SearchHeaderView(convertView, getActivity());
+                searchHeaderView = new SearchHeaderView(SearchFragment.this, convertView);
                 return searchHeaderView;
             }
 
@@ -292,7 +292,7 @@ public class SearchFragment extends ATimelineFragment {
         getSwipeRefreshLayout().setEnabled(false);
     }
 
-    private void refreshUsersUI(List<SearchsResultUser> users) {
+    private void refreshUsersUI(ArrayList<SearchsResultUser> users) {
         searchHeaderView.setUsers(users);
     }
 

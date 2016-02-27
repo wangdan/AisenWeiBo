@@ -14,14 +14,9 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <org.aisen.weibo.sina.ui.widget.swipecardview.SwipeFlingAdapterView
-            android:id="@+id/swipeView"
-            android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:background="#33ff0000"
-            android:minHeight="150dip"
-            app:max_visible="4"
-            app:min_adapter_stack="4"
-            app:y_offset_step="28dp"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@id/recycleview"
+            android:layout_width="match_parent" android:layout_height="228dip"/>
     </LinearLayout>
 
     <TextView
