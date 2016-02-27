@@ -6,11 +6,13 @@ import android.net.wifi.WifiManager;
 import android.telephony.NeighboringCellInfo;
 import android.telephony.TelephonyManager;
 import android.telephony.gsm.GsmCellLocation;
+import android.text.Html;
 import android.text.TextUtils;
 import android.webkit.WebView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.setting.Setting;
@@ -32,6 +34,8 @@ import org.aisen.weibo.sina.sinasdk.bean.Group;
 import org.aisen.weibo.sina.sinasdk.bean.GroupMemberListed;
 import org.aisen.weibo.sina.sinasdk.bean.GroupSortResult;
 import org.aisen.weibo.sina.sinasdk.bean.Groups;
+import org.aisen.weibo.sina.sinasdk.bean.PicUrls;
+import org.aisen.weibo.sina.sinasdk.bean.SearchsResultUser;
 import org.aisen.weibo.sina.sinasdk.bean.SetCount;
 import org.aisen.weibo.sina.sinasdk.bean.SinaLocationMap;
 import org.aisen.weibo.sina.sinasdk.bean.StatusComment;
@@ -52,7 +56,10 @@ import org.aisen.weibo.sina.sinasdk.http.HttpsUtility;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1421,13 +1428,30 @@ public class SinaSDK extends ABizLogic {
 
 		HttpConfig config = configHttpConfig();
 		config.cookie = cookies;
+		config.addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+		config.addHeader("Referer", "http://m.weibo.cn/searchs");
 		try {
 
 			// ["ana",["anastasia","T-ANA小芹","anastasia 修容","广安门医院官方微博","anastasia 高光"]]
 			String response = doPost(config, action, params, String.class, null);
 			response = AisenUtils.convertUnicode(response);
 
-			Logger.d("SinaSDK", response + "");
+			Logger.d("SinaSDK", response);
+
+			if (response.toLowerCase().indexOf("<html>") != -1) {
+				throw new TaskException("cookieinvalid", "网页版登录失效了");
+			}
+
+			// {"request":"/search/suggestions/all.php","error_code":"21405","error":"Operation timed out after 300 milliseconds with 0 bytes received url:http://i.api.weibo.com/users/show_batch.json"}
+			if (response.indexOf("error_code") != -1 && response.indexOf("error") != -1) {
+				JSONObject jsonRespone = JSONObject.parseObject(response);
+				throw new TaskException(jsonRespone.getString("error_code"), jsonRespone.getString("error"));
+			}
+			// {"ok":-100,"msg":"请先登录","url":"https://passport.weibo.cn/signin/welcome?entry=mweibo&r=http%3A%2F%2Fm.weibo.cn%2Fsearchs%2Fsuggest"}
+			else if (response.indexOf("ok") != -1 && response.indexOf("msg") != -1) {
+				JSONObject jsonRespone = JSONObject.parseObject(response);
+				throw new TaskException(jsonRespone.getString("ok"), jsonRespone.getString("msg"));
+			}
 
 			JSONArray jsonArray = JSON.parseArray(response);
 			JSONArray resultArray = jsonArray.getJSONArray(1);
@@ -1436,11 +1460,157 @@ public class SinaSDK extends ABizLogic {
 				result[i] = resultArray.getString(i);
 			}
 			return result;
-		} catch (TaskException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
+
+			if (e instanceof TaskException) {
+				throw e;
+			}
 		}
 
 		return new String[0];
+	}
+
+	/**
+	 * 使用H5页面查询用户
+	 *
+	 * @param q
+	 * @param cookies
+	 * @return
+	 * @throws TaskException
+	 */
+	public ArrayList<SearchsResultUser> searchsResultUsers(String q, String cookies) throws TaskException {
+		ArrayList<SearchsResultUser> resultUsers = new ArrayList<>();
+
+		Setting action = newSetting("searchsResultUsers", "page/pageJson", "获取用户");
+		action.getExtras().put(BASE_URL, newSettingExtra(BASE_URL, "http://m.weibo.cn/", ""));
+
+		Params params = new Params();
+//		params.addParameter("containerid", "100103");
+//		params.addParameter("type", "3");
+//		params.addParameter("page", "1");
+//		params.addParameter("q", q);
+		// 我也搞不懂这个脑残接口到底怎么玩的
+		// http://m.weibo.cn/page/pageJson?containerid=100103type%3D3%26q%3Dwang&page=1
+		params.addParameter("containerid", "100103type%3D3%26q%3D" + q + "&page=1");
+
+		try {
+			String response = doGet(getHttpConfig(), action, params, String.class);
+
+			JSONObject responseJSON = JSONObject.parseObject(response);
+			int ok = responseJSON.getInteger("ok");
+			if (ok == 1) {
+				JSONArray cardsArray = responseJSON.getJSONArray("cards");
+				if (cardsArray.size() > 0) {
+					JSONObject cardGroupsObject = cardsArray.getJSONObject(1);
+					JSONArray cardGroupArray = cardGroupsObject.getJSONArray("card_group");
+					for (int i = 0; i < cardGroupArray.size(); i++) {
+						JSONObject cardGroup = cardGroupArray.getJSONObject(i);
+
+						SearchsResultUser user = new SearchsResultUser();
+						user.setDesc1(cardGroup.getString("desc1"));
+						user.setDesc2(cardGroup.getString("desc2"));
+						JSONObject userJSON = cardGroup.getJSONObject("user");
+						user.setId(userJSON.getString("id"));
+						user.setFollowing(userJSON.getBoolean("following"));
+						user.setFollow_me(userJSON.getBoolean("follow_me"));
+						user.setFansNum(userJSON.getString("fansNum"));
+						user.setScreen_name(userJSON.getString("screen_name"));
+						user.setDescription(userJSON.getString("description"));
+						user.setProfile_image_url(userJSON.getString("profile_image_url"));
+						user.setStatuses_count(userJSON.getInteger("statuses_count"));
+						user.setGender(userJSON.getString("gender"));
+						user.setRemark(userJSON.getString("remark"));
+
+						resultUsers.add(user);
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+
+			if (e instanceof TaskException) {
+				throw e;
+			}
+		}
+
+		return resultUsers;
+	}
+
+	/**
+	 * H5接口搜索微博
+	 *
+	 * @param q
+	 * @param page
+	 * @param cookies
+	 * @return
+	 * @throws TaskException
+	 */
+	public ArrayList<StatusContent> searchsResultStatuss(String q, int page, String cookies) throws TaskException {
+		ArrayList<StatusContent> resultUsers = new ArrayList<>();
+
+		Setting action = newSetting("searchsResultUsers", "page/pageJson", "获取用户");
+		action.getExtras().put(BASE_URL, newSettingExtra(BASE_URL, "http://m.weibo.cn/", ""));
+
+		Params params = new Params();
+		params.addParameter("containerid", "100103type%3D2%26q%3D" + q + "&page=" + page);
+
+		try {
+			String response = doGet(getHttpConfig(), action, params, String.class);
+
+			JSONObject responseJSON = JSONObject.parseObject(response);
+			int ok = responseJSON.getInteger("ok");
+			if (ok == 1) {
+				JSONArray cardsArray = responseJSON.getJSONArray("cards");
+				for (int i = 0; i < cardsArray.size(); i++) {
+					JSONObject cardGroupsObject = cardsArray.getJSONObject(i);
+					JSONArray cardGroupArray = cardGroupsObject.getJSONArray("card_group");
+					for (int j = 0; j < cardGroupArray.size(); j++) {
+						JSONObject cardGroup = cardGroupArray.getJSONObject(j);
+
+						JSONObject mblogObject = cardGroup.getJSONObject("mblog");
+
+						StatusContent content = JSON.parseObject(mblogObject.toJSONString(), StatusContent.class);
+						// 图片
+						if (mblogObject.containsKey("pics")) {
+							JSONArray picsArray = mblogObject.getJSONArray("pics");
+							if (picsArray != null && picsArray.size() > 0) {
+								PicUrls picUrls = new PicUrls();
+								picUrls.setThumbnail_pic(picsArray.getJSONObject(0).getString("url"));
+								content.setPic_urls(new PicUrls[]{ picUrls });
+							}
+						}
+						// 把Html5文本转换一下
+						content.setText(Html.fromHtml(content.getText()).toString());
+						// 把时间转换一下
+						try {
+							Calendar calendar = Calendar.getInstance();
+							int year = calendar.get(Calendar.YEAR);
+							SimpleDateFormat format = new SimpleDateFormat("MM-dd HH:mm");
+							calendar.setTimeInMillis(format.parse(content.getCreated_at()).getTime());
+							calendar.set(Calendar.YEAR, year);
+							content.setCreated_at(calendar.getTimeInMillis() + "");
+						} catch (ParseException e) {
+							try {
+								SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+								content.setCreated_at(format.parse(content.getCreated_at()).getTime() + "");
+							} catch (ParseException ewe) {
+							}
+						}
+
+						resultUsers.add(content);
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+
+			if (e instanceof TaskException) {
+				throw (TaskException) e;
+			}
+		}
+
+		return resultUsers;
 	}
 	
 }

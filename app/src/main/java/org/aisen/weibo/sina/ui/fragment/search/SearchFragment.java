@@ -3,18 +3,22 @@ package org.aisen.weibo.sina.ui.fragment.search;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.EditText;
 
 import com.lapism.searchview.adapter.SearchAdapter;
 import com.lapism.searchview.adapter.SearchItem;
 import com.lapism.searchview.view.SearchCodes;
 import com.lapism.searchview.view.SearchView;
 
+import org.aisen.android.common.utils.Logger;
+import org.aisen.android.common.utils.SystemUtils;
+import org.aisen.android.common.utils.ViewUtils;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
@@ -28,18 +32,20 @@ import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
-import org.aisen.weibo.sina.sinasdk.bean.PicUrls;
+import org.aisen.weibo.sina.sinasdk.bean.SearchsResultUser;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContents;
+import org.aisen.weibo.sina.support.utils.ThemeUtils;
 import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 import org.aisen.weibo.sina.ui.fragment.timeline.ATimelineFragment;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 搜索用户或者微博
+ * 搜索用户或者微博，SearchView这个库还是有很多坑，哎
  *
  * Created by wangdan on 16/2/24.
  */
@@ -54,11 +60,17 @@ public class SearchFragment extends ATimelineFragment {
         from.overridePendingTransition(-1, -1);
     }
 
+    static final String TAG = "SearchFragment";
+
     @ViewInject(id = R.id.searchView)
     SearchView mSearchView;
+    private EditText editSearch;
+    private View shadowView;
     private SearchAdapter searchAdapter;
     private String q;
+    private String suggest;
     private List<SearchItem> suggestList;
+    private SearchHeaderView searchHeaderView;
 
     public SearchFragment() {
         setArguments(new Bundle());
@@ -72,6 +84,11 @@ public class SearchFragment extends ATimelineFragment {
     @Override
     public int inflateActivityContentView() {
         return R.layout.ui_search_activity;
+    }
+
+    @Override
+    public int setActivityTheme() {
+        return R.style.AppTheme_Search;
     }
 
     @Override
@@ -113,7 +130,8 @@ public class SearchFragment extends ATimelineFragment {
 
             @Override
             public IITemView<StatusContent> newItemView(View convertView, int viewType) {
-                return new SearchHeaderView(convertView);
+                searchHeaderView = new SearchHeaderView(convertView, getActivity());
+                return searchHeaderView;
             }
 
         };
@@ -147,50 +165,124 @@ public class SearchFragment extends ATimelineFragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                mHander.removeCallbacks(searchsSuggestRunnable);
-                mHander.postDelayed(searchsSuggestRunnable, 1000);
+                if (suggestList != null && searchAdapter != null)
+                    onQuerySuggestChange(newText);
 
                 return true;
             }
 
         });
-        // 修改Back键的点击事件
+        mSearchView.setOnSearchViewListener(new SearchView.SearchViewListener() {
+
+            @Override
+            public void onSearchViewShown() {
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                if (getSwipeRefreshLayout().getVisibility() == View.VISIBLE) {
+                    getSwipeRefreshLayout().setVisibility(View.GONE);
+                }
+
+                getActivity().finish();
+
+                getActivity().overridePendingTransition(0, 0);
+            }
+
+        });
         try {
-            Field backField = SearchView.class.getDeclaredField("mBackImageView");
-            backField.setAccessible(true);
-            ImageView editText = (ImageView) backField.get(mSearchView);
-            editText.setOnClickListener(new View.OnClickListener() {
+            Field editField = SearchView.class.getDeclaredField("mEditText");
+            editField.setAccessible(true);
+            editSearch = (EditText) editField.get(mSearchView);
+            editSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
                 @Override
-                public void onClick(View v) {
-                    getActivity().overridePendingTransition(-1, -1);
+                public void onFocusChange(View v, boolean hasFocus) {
 
-                    getActivity().finish();
                 }
 
             });
+
+            Field shadowField = SearchView.class.getDeclaredField("mShadow");
+            shadowField.setAccessible(true);
+            shadowView = (View) shadowField.get(mSearchView);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        mSearchView.show(true);
         suggestList = new ArrayList<>();
-        searchAdapter = new SearchAdapter(getActivity(), new ArrayList<SearchItem>(), suggestList, SearchCodes.THEME_LIGHT);
+//        searchAdapter = new SearchAdapter(getActivity(), new ArrayList<SearchItem>(), suggestList, SearchCodes.THEME_LIGHT);
+        searchAdapter = new SearchsSuggestAdapter(getActivity(), new ArrayList<SearchItem>(), suggestList, SearchCodes.THEME_LIGHT);
+        searchAdapter.setOnItemClickListener(new SearchAdapter.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(View view, int position) {
+                if (suggestList.size() > position) {
+                    onQuery(suggestList.get(position).get_text().toString());
+
+                    editSearch.setText(q);
+                    editSearch.setSelection(q.length());
+                }
+            }
+
+        });
         mSearchView.setAdapter(searchAdapter);
         if (!TextUtils.isEmpty(q))
             mSearchView.setQuery(q);
+        mSearchView.show(true);
+
+        searchIn();
+    }
+
+    private void searchIn() {
+        mHander.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    Method inMethod = SearchView.class.getDeclaredMethod("in");
+                    inMethod.setAccessible(true);
+                    inMethod.invoke(mSearchView);
+
+                    editSearch.requestFocus();
+                    SystemUtils.showKeyBoard(editSearch);
+                } catch (Exception e) {
+                    Logger.printExc(SearchFragment.class, e);
+                }
+            }
+
+        }, 400);
     }
 
     @Override
     public void requestData(RefreshMode mode) {
-        if (mode == RefreshMode.update) {
-            new SearchTopicsTask(mode).execute();
+        if (mode == RefreshMode.update && !TextUtils.isEmpty(q)) {
+            new SearchStatussTask(mode, false).execute();
         }
     }
 
     private void onQuery(String q) {
         this.q = q;
 
-        new SearchTopicsTask(RefreshMode.reset).execute();
+        if (!TextUtils.isEmpty(q)) {
+            // 搜索之前先停止搜索建议
+            cancelSearchSuggestTask();
+
+            new SearchStatussTask(RefreshMode.reset, true).execute();
+        }
+    }
+
+    private void onQuerySuggestChange(String suggest) {
+        this.suggest = suggest;
+
+        if (!TextUtils.isEmpty(suggest) && !suggest.equals(q)) {
+            mHander.removeCallbacks(searchsSuggestRunnable);
+            mHander.postDelayed(searchsSuggestRunnable, 1000);
+        }
+        // 清除数据
+        else {
+            suggestList.clear();
+            searchAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -198,6 +290,10 @@ public class SearchFragment extends ATimelineFragment {
         super.setupSwipeRefreshLayout();
 
         getSwipeRefreshLayout().setEnabled(false);
+    }
+
+    private void refreshUsersUI(List<SearchsResultUser> users) {
+        searchHeaderView.setUsers(users);
     }
 
     @Override
@@ -209,10 +305,31 @@ public class SearchFragment extends ATimelineFragment {
      * 搜索话题线程
      *
      */
-    class SearchTopicsTask extends ATimelineTask {
+    class SearchStatussTask extends ATimelineTask {
 
-        public SearchTopicsTask(RefreshMode mode) {
+        boolean showDialog = false;
+
+        public SearchStatussTask(RefreshMode mode, boolean showDialog) {
             super(mode);
+
+            this.showDialog = showDialog;
+        }
+
+        @Override
+        protected void onPrepare() {
+            super.onPrepare();
+
+            if (showDialog) {
+                ViewUtils.createProgressDialog(getActivity(), "", ThemeUtils.getThemeColor()).show();
+            }
+        }
+
+        @Override
+        protected void onFinished() {
+            super.onFinished();
+
+            if (showDialog)
+                ViewUtils.dismissProgressDialog();
         }
 
         @Override
@@ -222,36 +339,95 @@ public class SearchFragment extends ATimelineFragment {
                 nextPage = params.getParameter("max_id");
             }
 
-            SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).searchsSuggest("ana", AppContext.getAccount().getCookie());
-
-            StatusContents datas = SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).searchTopics(nextPage, q, "30");
-
-            // 把图片塞进去
-            for (StatusContent data : datas.getStatuses()) {
-                if (data.getPic_urls() == null && !TextUtils.isEmpty(data.getThumbnail_pic())) {
-                    PicUrls picUrls = new PicUrls();
-                    picUrls.setThumbnail_pic(data.getThumbnail_pic());
-
-                    data.setPic_urls(new PicUrls[]{ picUrls });
-                }
+            // 1、搜索用户
+            if ("1".equals(nextPage)) {
+                ArrayList<SearchsResultUser> userList = SinaSDK.getInstance(AppContext.getAccount().getAccessToken())
+                                                                .searchsResultUsers(q, AppContext.getAccount().getCookie());
+                mHander.obtainMessage(100, userList).sendToTarget();
             }
+
+            // 2、搜索微博
+            ArrayList<StatusContent> statusList = SinaSDK.getInstance(AppContext.getAccount().getAccessToken())
+                                            .searchsResultStatuss(q, Integer.parseInt(nextPage), AppContext.getAccount().getCookie());
+
+            StatusContents datas = new StatusContents();
+            datas.setStatuses(statusList);
 
             return datas;
         }
+
+        @Override
+        protected void onSuccess(StatusContents statusContents) {
+            super.onSuccess(statusContents);
+
+            if (mode != RefreshMode.update) {
+                getRefreshView().scrollToPosition(0);
+            }
+            if (getSwipeRefreshLayout().getVisibility() != View.VISIBLE)
+                getSwipeRefreshLayout().setVisibility(View.VISIBLE);
+            if (shadowView.getVisibility() == View.VISIBLE) {
+                outSearchWithData();
+            }
+        }
+
+    }
+
+    private void outSearchWithData() {
+        mSearchView.out();
+        editSearch.clearFocus();
+        editSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    searchIn();
+
+                    editSearch.setOnFocusChangeListener(null);
+                }
+            }
+
+        });
+        shadowView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                outSearchWithData();
+            }
+
+        });
     }
 
     /**
      * 延迟一秒再搜搜建议
      */
-    Handler mHander = new Handler();
+    Handler mHander = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
+            if (msg.what == 100) {
+                ArrayList<SearchsResultUser> userList = (ArrayList<SearchsResultUser>) msg.obj;
+
+                refreshUsersUI(userList);
+            }
+        }
+
+    };
     Runnable searchsSuggestRunnable = new Runnable() {
 
         @Override
         public void run() {
-            new SearchSuggestTask().execute(q);
+            new SearchSuggestTask().execute(suggest);
         }
 
     };
+
+    private void cancelSearchSuggestTask() {
+        if (searchSuggestTask != null) {
+            searchSuggestTask.cancel(true);
+        }
+    }
 
     /**
      * 搜索建议
@@ -261,9 +437,7 @@ public class SearchFragment extends ATimelineFragment {
     class SearchSuggestTask extends WorkTask<String, Void, String[]> {
 
         public SearchSuggestTask() {
-            if (searchSuggestTask != null) {
-                searchSuggestTask.cancel(true);
-            }
+            cancelSearchSuggestTask();
 
             searchSuggestTask = this;
         }
@@ -277,17 +451,22 @@ public class SearchFragment extends ATimelineFragment {
         protected void onSuccess(String[] result) {
             super.onSuccess(result);
 
-            if (isCancelled()) {
+            if (isCancelByUser() || getActivity() == null) {
                 return;
             }
 
             if (result.length > 0) {
                 suggestList.clear();
                 for (String s : result) {
+                    Logger.d(TAG, "suggest = %s", s);
+
                     suggestList.add(new SearchItem(s));
                 }
+                searchAdapter.getFilter().filter(getParams()[0], mSearchView);
                 searchAdapter.notifyDataSetChanged();
             }
+
+            mSearchView.onFilterComplete(result.length);
         }
 
         @Override

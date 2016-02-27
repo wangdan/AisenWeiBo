@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical" android:paddingLeft="@dimen/spacing_normal" android:paddingRight="@dimen/spacing_normal">
@@ -8,11 +9,25 @@
         style="@style/TextSubhead" android:layout_width="wrap_content"
         android:layout_height="48dip" android:gravity="center_vertical" android:text="@string/search_user"/>
 
-    <FrameLayout
-        android:id="@+id/layUsers"
-        android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="150dip">
+    <LinearLayout
+        android:id="@+id/layUsers" android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    </FrameLayout>
+        <org.aisen.weibo.sina.ui.widget.swipecardview.SwipeFlingAdapterView
+            android:id="@+id/swipeView"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:background="#33ff0000"
+            android:minHeight="150dip"
+            app:max_visible="4"
+            app:min_adapter_stack="4"
+            app:y_offset_step="28dp"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtEmpty" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:gravity="center" android:minHeight="50dip" android:text="@string/search_user_empty"
+        />
 
     <TextView
         style="@style/TextSubhead" android:layout_width="wrap_content"

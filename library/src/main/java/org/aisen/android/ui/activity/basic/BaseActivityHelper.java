@@ -6,12 +6,20 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 
+import org.aisen.android.support.permissions.IPermissionsObserver;
+import org.aisen.android.support.permissions.IPermissionsSubject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 用户注册回调BaseActivity的生命周期及相关的方法，自行添加
  *
  * Created by wangdan on 15/4/14.
  */
-public class BaseActivityHelper {
+public class BaseActivityHelper implements IPermissionsSubject {
+
+    private List<IPermissionsObserver> observers;
 
     private BaseActivity mActivity;
 
@@ -24,7 +32,7 @@ public class BaseActivityHelper {
     }
 
     protected void onCreate(Bundle savedInstanceState) {
-
+        observers = new ArrayList<>();
     }
 
     public void onPostCreate(Bundle savedInstanceState) {
@@ -102,6 +110,29 @@ public class BaseActivityHelper {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         return false;
+    }
+
+    @Override
+    public void attach(IPermissionsObserver observer) {
+        if (observer != null && !observers.contains(observer))
+            observers.add(observer);
+    }
+
+    @Override
+    public void detach(IPermissionsObserver observer) {
+        if (observer != null && !observers.contains(observer))
+            observers.remove(observer);
+    }
+
+    @Override
+    public void notifyActivityResult(int requestCode, String[] permissions, int[] grantResults) {
+        for (IPermissionsObserver observer : observers) {
+            observer.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        notifyActivityResult(requestCode, permissions, grantResults);
     }
 
 }

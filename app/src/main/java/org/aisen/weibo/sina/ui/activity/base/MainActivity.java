@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -19,11 +18,8 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
-import com.lapism.searchview.view.SearchCodes;
-import com.lapism.searchview.view.SearchView;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.md.MDHelper;
@@ -99,10 +95,10 @@ public class MainActivity extends BaseActivity
     AppBarLayout appBarLayout;
     @ViewInject(id = R.id.tabLayout)
     TabLayout tabLayout;
-    @ViewInject(id = R.id.content_frame)
-    FrameLayout contentFrame;
-    @ViewInject(id = R.id.searchView)
-    SearchView mSearchView;
+//    @ViewInject(id = R.id.content_frame)
+//    FrameLayout contentFrame;
+//    @ViewInject(id = R.id.searchView)
+//    SearchView mSearchView;
 
     private ActionBarDrawerToggle drawerToggle;
     private MaterialSheetFab materialSheetFab;
@@ -310,47 +306,47 @@ public class MainActivity extends BaseActivity
 
     private void setupSearchView() {
         // SearchView basic attributes  ------------------------------------------------------------
-        int mVersion = SearchCodes.VERSION_MENU_ITEM;
-        int mStyle = SearchCodes.STYLE_MENU_ITEM_CLASSIC;
-        int mTheme = SearchCodes.THEME_LIGHT;
-
-        mSearchView.setVersion(mVersion);
-        mSearchView.setStyle(mStyle);
-        mSearchView.setTheme(mTheme);
-        // -----------------------------------------------------------------------------------------
-        mSearchView.setDivider(false);
-        mSearchView.setHint(R.string.search_hint);
-        mSearchView.setHintSize(getResources().getDimension(R.dimen.search_text_medium));
-        mSearchView.setVoice(false);
-        mSearchView.setAnimationDuration(300);
-        mSearchView.setShadowColor(ContextCompat.getColor(this, R.color.background_dim_overlay));
-        mSearchView.hide(false);
-        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                if (!TextUtils.isEmpty(query)) {
-                    SearchFragment.launch(MainActivity.this, query);
-
-                    mHandler.postDelayed(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            mSearchView.hide(false);
-                        }
-
-                    }, 200);
-                }
-
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-
-        });
+//        int mVersion = SearchCodes.VERSION_MENU_ITEM;
+//        int mStyle = SearchCodes.STYLE_MENU_ITEM_CLASSIC;
+//        int mTheme = SearchCodes.THEME_LIGHT;
+//
+//        mSearchView.setVersion(mVersion);
+//        mSearchView.setStyle(mStyle);
+//        mSearchView.setTheme(mTheme);
+//        // -----------------------------------------------------------------------------------------
+//        mSearchView.setDivider(false);
+//        mSearchView.setHint(R.string.search_hint);
+//        mSearchView.setHintSize(getResources().getDimension(R.dimen.search_text_medium));
+//        mSearchView.setVoice(false);
+//        mSearchView.setAnimationDuration(300);
+//        mSearchView.setShadowColor(ContextCompat.getColor(this, R.color.background_dim_overlay));
+//        mSearchView.hide(false);
+//        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                if (!TextUtils.isEmpty(query)) {
+//                    SearchFragment.launch(MainActivity.this, query);
+//
+//                    mHandler.postDelayed(new Runnable() {
+//
+//                        @Override
+//                        public void run() {
+//                            mSearchView.hide(false);
+//                        }
+//
+//                    }, 200);
+//                }
+//
+//                return true;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                return false;
+//            }
+//
+//        });
     }
 
     /**
@@ -602,9 +598,17 @@ public class MainActivity extends BaseActivity
         else if (item.getItemId() == R.id.notification_settings)
             NotificationSettingsFragment.launch(this);
         // 搜索
-        else if (item.getItemId() == R.id.search)
-            getFragmentManager().beginTransaction().add(R.id.laySearch, new SearchFragment(), "SearchFragment").commit();
-//            SearchFragment.launch(this, "");
+        else if (item.getItemId() == R.id.search) {
+            new IAction(MainActivity.this, new WebLoginAction(MainActivity.this, BizFragment.createBizFragment(this))) {
+
+                @Override
+                public void doAction() {
+                    SearchFragment.launch(MainActivity.this, "");
+                }
+
+            }.run();
+        }
+//            getFragmentManager().beginTransaction().add(R.id.laySearch, new SearchFragment(), "SearchFragment").commit();
 //            mSearchView.show(true);
 
         return super.onOptionsItemSelected(item);

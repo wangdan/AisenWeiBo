@@ -71,14 +71,6 @@
             android:layout_gravity="end|bottom"/>
     </android.support.design.widget.CoordinatorLayout>
 
-    <com.lapism.searchview.view.SearchView
-        android:id="@+id/searchView" android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-    <FrameLayout
-        android:id="@+id/laySearch"
-        android:layout_width="match_parent" android:layout_height="match_parent"/>
-
     <org.aisen.android.ui.widget.ScrimInsetsFrameLayout
         android:id="@+id/menu_frame" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_gravity="start"
         android:layout_marginRight="10dip" android:background="@color/comm_white" android:fitsSystemWindows="true" android:orientation="vertical" app:appInsetForeground="#40000000"

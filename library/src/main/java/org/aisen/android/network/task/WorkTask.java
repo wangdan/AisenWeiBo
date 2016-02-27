@@ -42,6 +42,8 @@ public abstract class WorkTask<Params, Progress, Result> {
 
 	private TaskException exception;
 
+	private boolean cancelByUser;
+
 	private static final ThreadFactory sThreadFactory = new ThreadFactory() {
 		private final AtomicInteger mCount = new AtomicInteger(1);
 
@@ -295,7 +297,13 @@ public abstract class WorkTask<Params, Progress, Result> {
 		return mFuture.isCancelled();
 	}
 
+	public boolean isCancelByUser() {
+		return cancelByUser;
+	}
+
 	public final boolean cancel(boolean mayInterruptIfRunning) {
+		cancelByUser = true;
+
 		return mFuture.cancel(mayInterruptIfRunning);
 	}
 

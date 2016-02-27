@@ -8,8 +8,6 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,10 +27,12 @@ import org.aisen.weibo.sina.support.action.DoLikeAction;
 import org.aisen.weibo.sina.support.bean.LikeBean;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
+import org.aisen.weibo.sina.ui.activity.profile.UserProfileActivity;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.fragment.comment.TimelineCommentFragment;
 import org.aisen.weibo.sina.ui.fragment.comment.TimelineDetailPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.mention.MentionTimelineFragment;
+import org.aisen.weibo.sina.ui.fragment.search.SearchFragment;
 import org.aisen.weibo.sina.ui.widget.AisenTextView;
 import org.aisen.weibo.sina.ui.widget.TimelinePicsView;
 
@@ -258,13 +258,32 @@ public class TimelineItemView extends ARecycleViewItemView<StatusContent> implem
         }
     }
 
+    private View.OnClickListener searchProfileOnClickListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            WeiBoUser user = (WeiBoUser) v.getTag();
+
+            UserProfileActivity.launch(fragment.getActivity(), user.getScreen_name());
+        }
+
+    };
+
     private void setUserInfo(WeiBoUser user, TextView txtName, ImageView imgPhoto, ImageView imgVerified) {
         if (user != null) {
             txtName.setText(AisenUtils.getUserScreenName(user));
 
             if (imgPhoto != null) {
                 BitmapLoader.getInstance().display(fragment, AisenUtils.getUserPhoto(user), imgPhoto, ImageConfigUtils.getLargePhotoConfig());
-                bizFragment.userShow(imgPhoto, user);
+
+                if (fragment instanceof SearchFragment) {
+                    imgPhoto.setTag(user);
+                    imgPhoto.setOnClickListener(searchProfileOnClickListener);
+                }
+                else {
+
+                    bizFragment.userShow(imgPhoto, user);
+                }
             }
 
             AisenUtils.setImageVerified(imgVerified, user);

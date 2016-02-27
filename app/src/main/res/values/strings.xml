@@ -569,6 +569,7 @@
 
     <!--搜索-->
     <string name="search_user">用户</string>
+    <string name="search_user_empty">没有相关用户</string>
     <string name="search_status">微博</string>
 
     <string-array name="user_headers">
