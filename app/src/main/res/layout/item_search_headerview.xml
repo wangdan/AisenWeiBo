@@ -17,7 +17,7 @@
 
         <ImageView
             android:id="@+id/imgPhoto" android:layout_width="110dip" android:layout_height="110dip"
-            android:src="@drawable/a_icon_b"/>
+            android:scaleType="fitCenter"/>
 
         <TextView
             android:id="@+id/txtName" style="@style/TextBody"

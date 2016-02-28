@@ -141,7 +141,7 @@ public class CommentHeaderItemView extends ARecycleViewItemView<StatusComment> i
 
         // pictures
         StatusContent s = statusContent.getRetweeted_status() != null ? statusContent.getRetweeted_status() : statusContent;
-        if (AppSettings.isPicNone() && !(fragment instanceof TimelineCommentFragment)) {
+        if (AppSettings.isPicNone() && !(fragment instanceof TimelineDetailPagerFragment)) {
             layPicturs.setVisibility(View.GONE);
             if (s.getPic_urls() != null && s.getPic_urls().length > 0) {
                 txtPics.setText(String.format("%dPics", s.getPic_urls().length));

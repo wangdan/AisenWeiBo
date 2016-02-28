@@ -66,7 +66,7 @@ public class SearchFragment extends ATimelineFragment {
     SearchView mSearchView;
     private EditText editSearch;
     private View shadowView;
-    private SearchAdapter searchAdapter;
+    private SearchsSuggestAdapter searchAdapter;
     private String q;
     private String suggest;
     private List<SearchItem> suggestList;
@@ -276,7 +276,7 @@ public class SearchFragment extends ATimelineFragment {
 
         if (!TextUtils.isEmpty(suggest) && !suggest.equals(q)) {
             mHander.removeCallbacks(searchsSuggestRunnable);
-            mHander.postDelayed(searchsSuggestRunnable, 1000);
+            mHander.postDelayed(searchsSuggestRunnable, 500);
         }
         // 清除数据
         else {
@@ -451,7 +451,7 @@ public class SearchFragment extends ATimelineFragment {
         protected void onSuccess(String[] result) {
             super.onSuccess(result);
 
-            if (isCancelByUser() || getActivity() == null) {
+            if (isCancelByUser() || getActivity() == null || shadowView.getVisibility() != View.VISIBLE) {
                 return;
             }
 
@@ -462,8 +462,8 @@ public class SearchFragment extends ATimelineFragment {
 
                     suggestList.add(new SearchItem(s));
                 }
-                searchAdapter.getFilter().filter(getParams()[0], mSearchView);
-                searchAdapter.notifyDataSetChanged();
+//                searchAdapter.getFilter().filter(getParams()[0], mSearchView);
+                searchAdapter.setSearchList(suggestList);
             }
 
             mSearchView.onFilterComplete(result.length);

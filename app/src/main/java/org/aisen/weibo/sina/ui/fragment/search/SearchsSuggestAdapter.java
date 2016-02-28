@@ -4,15 +4,16 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.style.ForegroundColorSpan;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Filter;
 import android.widget.TextView;
 
 import com.lapism.searchview.adapter.SearchAdapter;
 import com.lapism.searchview.adapter.SearchItem;
 import com.lapism.searchview.view.SearchCodes;
 
-import org.aisen.android.common.utils.Logger;
-
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,64 +22,82 @@ import java.util.List;
  */
 public class SearchsSuggestAdapter extends SearchAdapter {
 
-    private Context context;
-    private int theme;
-    private List<SearchItem> searchList = new ArrayList<>();
-    private List<Integer> startList = new ArrayList<>();
-    private int keyLength = 0;
+    private final List<Integer> mStartList = new ArrayList<>();
+    private final Context mContext;
+    private final int mTheme;
+    private List<SearchItem> mSearchList = new ArrayList<>();
+    private List<SearchItem> mDataList = new ArrayList<>();
 
     public SearchsSuggestAdapter(Context context, List<SearchItem> searchList, List<SearchItem> dataList, int theme) {
         super(context, searchList, dataList, theme);
-        
-        this.context = context;
-        this.theme = theme;
-        this.searchList = searchList;
+        this.mContext = context;
+        this.mSearchList = searchList;
+        this.mDataList = dataList;
+        this.mTheme = theme;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                FilterResults filterResults = new FilterResults();
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+            }
+        };
+    }
+
+    @Override
+    public ResultViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
+        final LayoutInflater mInflater = LayoutInflater.from(parent.getContext());
+        final View sView = mInflater.inflate(com.lapism.searchview.R.layout.search_item, parent, false);
+        return new ResultViewHolder(sView);
     }
 
     @Override
     public void onBindViewHolder(ResultViewHolder viewHolder, int position) {
-//        super.onBindViewHolder(viewHolder, position);
-        SearchItem item = searchList.get(position);
-
-        if (startList == null) {
-            try {
-                Field startListField = SearchsSuggestAdapter.class.getSuperclass().getDeclaredField("mStartList");
-                startListField.setAccessible(true);
-                startList = (List<Integer>) startListField.get(this);
-
-                Field keyLengthField = SearchsSuggestAdapter.class.getSuperclass().getDeclaredField("mKeyLength");
-                keyLengthField.setAccessible(true);
-                keyLength = Integer.parseInt(keyLengthField.get(this).toString());
-            } catch (Exception e) {
-                Logger.printExc(SearchsSuggestAdapter.class, e);
-            }
-        }
+        SearchItem item = mSearchList.get(position);
 
         int start = 0;
         int end = 0;
-        if (startList.size() > 0) {
-            start = startList.get(position);
-            end = start + keyLength;
-        }
 
         viewHolder.icon_left.setImageResource(item.get_icon());
 
-        if (theme == SearchCodes.THEME_LIGHT) {
-            viewHolder.icon_left.setColorFilter(ContextCompat.getColor(context, com.lapism.searchview.R.color.search_light_icon));
-            viewHolder.text.setTextColor(ContextCompat.getColor(context, com.lapism.searchview.R.color.search_light_text));
+        if (mTheme == SearchCodes.THEME_LIGHT) {
+            viewHolder.icon_left.setColorFilter(ContextCompat.getColor(mContext, com.lapism.searchview.R.color.search_light_icon));
+            viewHolder.text.setTextColor(ContextCompat.getColor(mContext, com.lapism.searchview.R.color.search_light_text));
 
             viewHolder.text.setText(item.get_text(), TextView.BufferType.SPANNABLE);
             Spannable s = (Spannable) viewHolder.text.getText();
-            s.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, com.lapism.searchview.R.color.search_light_text_highlight)), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//            s.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, com.lapism.searchview.R.color.search_light_text_highlight)), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
-        if (theme == SearchCodes.THEME_DARK) {
-            viewHolder.icon_left.setColorFilter(ContextCompat.getColor(context, com.lapism.searchview.R.color.search_dark_icon));
-            viewHolder.text.setTextColor(ContextCompat.getColor(context, com.lapism.searchview.R.color.search_dark_text));
+        if (mTheme == SearchCodes.THEME_DARK) {
+            viewHolder.icon_left.setColorFilter(ContextCompat.getColor(mContext, com.lapism.searchview.R.color.search_dark_icon));
+            viewHolder.text.setTextColor(ContextCompat.getColor(mContext, com.lapism.searchview.R.color.search_dark_text));
 
             viewHolder.text.setText(item.get_text(), TextView.BufferType.SPANNABLE);
             Spannable s = (Spannable) viewHolder.text.getText();
-            s.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, com.lapism.searchview.R.color.search_dark_text_highlight)), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            s.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, com.lapism.searchview.R.color.search_dark_text_highlight)), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
+    }
+
+    @Override
+    public int getItemCount() {
+        return mSearchList.size();
+    }
+
+    public void setSearchList(List<SearchItem> searchList) {
+        this.mSearchList = searchList;
+        notifyDataSetChanged();
     }
 
 }

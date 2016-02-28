@@ -1582,6 +1582,9 @@ public class SinaSDK extends ABizLogic {
 						}
 						// 把Html5文本转换一下
 						content.setText(Html.fromHtml(content.getText()).toString());
+						if (content.getRetweeted_status() != null) {
+							content.getRetweeted_status().setText(Html.fromHtml(content.getRetweeted_status().getText()).toString());
+						}
 						// 把时间转换一下
 						try {
 							Calendar calendar = Calendar.getInstance();

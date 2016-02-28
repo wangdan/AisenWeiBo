@@ -55,8 +55,6 @@ public class DraftFragment extends ARecycleViewFragment<PublishBean, ArrayList<P
         return new DraftFragment();
     }
 
-    private BizFragment bizFragment;
-
     @Override
     public int inflateContentView() {
         return R.layout.ui_draft;
@@ -78,8 +76,6 @@ public class DraftFragment extends ARecycleViewFragment<PublishBean, ArrayList<P
     @Override
     protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
         super.layoutInit(inflater, savedInstanceSate);
-
-        bizFragment = BizFragment.createBizFragment(this);
 
         setViewPadding(getEmptyLayout());
         setViewPadding(getLoadingLayout());
@@ -223,7 +219,7 @@ public class DraftFragment extends ARecycleViewFragment<PublishBean, ArrayList<P
                 txtError.setVisibility(TextUtils.isEmpty(data.getErrorMsg()) ? View.GONE : View.VISIBLE);
             }
 
-            bizFragment.bindOnTouchListener(txtContent);
+            BizFragment.createBizFragment(DraftFragment.this).bindOnTouchListener(txtContent);
 
             btnDel.setTag(data);
             btnDel.setOnClickListener(DraftFragment.this);
