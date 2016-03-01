@@ -42,6 +42,7 @@ import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.service.OfflineService;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
+import org.aisen.weibo.sina.sinasdk.bean.Friendship;
 import org.aisen.weibo.sina.sinasdk.bean.Group;
 import org.aisen.weibo.sina.sinasdk.bean.TokenInfo;
 import org.aisen.weibo.sina.support.action.WebLoginAction;
@@ -56,6 +57,7 @@ import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.fragment.comment.CommentPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.comment.NotificationPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.draft.DraftFragment;
+import org.aisen.weibo.sina.ui.fragment.friendship.FriendshipPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.mention.MentionPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.menu.FabGroupsFragment;
 import org.aisen.weibo.sina.ui.fragment.menu.MenuFragment;
@@ -153,7 +155,6 @@ public class MainActivity extends BaseActivity
         setupMenu(savedInstanceState);
         setupFab(savedInstanceState);
         setupAppBarLayout(savedInstanceState);
-        setupSearchView();
 
         mInstance = this;
     }
@@ -174,9 +175,14 @@ public class MainActivity extends BaseActivity
             menuFragment.changeAccount();
         }
         else {
-            int menuId = getActionType(intent, action);
+            if (ACTION_NOTIFICATION.equals(action) && MenuFragment.MENU_FRIENDSHIP == Integer.parseInt(intent.getStringExtra("type"))) {
+                FriendshipPagerFragment.launch(this, AppContext.getAccount().getUser(), 1);
+            }
+            else {
+                int menuId = getActionType(intent, action);
 
-            menuFragment.triggerMenuClick(menuId);
+                menuFragment.triggerMenuClick(menuId);
+            }
         }
     }
 
@@ -232,14 +238,26 @@ public class MainActivity extends BaseActivity
 
     private void setupMenu(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            int menuId = -1;
+            int menuId = MenuFragment.MENU_MAIN;
             Intent intent = getIntent();
             if (intent != null && !TextUtils.isEmpty(intent.getAction())) {
                 menuId = getActionType(intent, intent.getAction());
             }
 
-            menuFragment = MenuFragment.newInstance(menuId);
-            getFragmentManager().beginTransaction().add(R.id.menu_frame, menuFragment, "MenuFragment").commit();
+            if (menuId == MenuFragment.MENU_MD) {
+                menuFragment = MenuFragment.newInstance(MenuFragment.MENU_MAIN);
+                getFragmentManager().beginTransaction().add(R.id.menu_frame, menuFragment, "MenuFragment").commit();
+                menuFragment.triggerMenuClick(MenuFragment.MENU_MD);
+            }
+            else if (menuId == MenuFragment.MENU_FRIENDSHIP) {
+                menuFragment = MenuFragment.newInstance(MenuFragment.MENU_MAIN);
+                getFragmentManager().beginTransaction().add(R.id.menu_frame, menuFragment, "MenuFragment").commit();
+                FriendshipPagerFragment.launch(this, AppContext.getAccount().getUser(), 1);
+            }
+            else {
+                menuFragment = MenuFragment.newInstance(menuId);
+                getFragmentManager().beginTransaction().add(R.id.menu_frame, menuFragment, "MenuFragment").commit();
+            }
         }
         else {
             menuFragment = (MenuFragment) getFragmentManager().findFragmentByTag("MenuFragment");
@@ -304,51 +322,6 @@ public class MainActivity extends BaseActivity
 //        });
     }
 
-    private void setupSearchView() {
-        // SearchView basic attributes  ------------------------------------------------------------
-//        int mVersion = SearchCodes.VERSION_MENU_ITEM;
-//        int mStyle = SearchCodes.STYLE_MENU_ITEM_CLASSIC;
-//        int mTheme = SearchCodes.THEME_LIGHT;
-//
-//        mSearchView.setVersion(mVersion);
-//        mSearchView.setStyle(mStyle);
-//        mSearchView.setTheme(mTheme);
-//        // -----------------------------------------------------------------------------------------
-//        mSearchView.setDivider(false);
-//        mSearchView.setHint(R.string.search_hint);
-//        mSearchView.setHintSize(getResources().getDimension(R.dimen.search_text_medium));
-//        mSearchView.setVoice(false);
-//        mSearchView.setAnimationDuration(300);
-//        mSearchView.setShadowColor(ContextCompat.getColor(this, R.color.background_dim_overlay));
-//        mSearchView.hide(false);
-//        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                if (!TextUtils.isEmpty(query)) {
-//                    SearchFragment.launch(MainActivity.this, query);
-//
-//                    mHandler.postDelayed(new Runnable() {
-//
-//                        @Override
-//                        public void run() {
-//                            mSearchView.hide(false);
-//                        }
-//
-//                    }, 200);
-//                }
-//
-//                return true;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                return false;
-//            }
-//
-//        });
-    }
-
     /**
      * 选择了侧边栏，切换侧边栏菜单
      *
@@ -394,6 +367,7 @@ public class MainActivity extends BaseActivity
             break;
         // 热门微博
         case MenuFragment.MENU_HOT_STATUS:
+            WeiboClientActivity.launchHotStatuses(this);
             break;
         // 草稿箱
         case MenuFragment.MENU_DRAT:

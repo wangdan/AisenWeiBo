@@ -20,6 +20,7 @@
     <string name="cancel_timing">取消定时</string>
     <string name="profile_friendship_create">关注</string>
     <string name="profile_friendship_destory">取消关注</string>
+    <string name="profile_friendship_each">互相关注</string>
     <string name="profile_follower_destory">移除粉丝</string>
     <string name="refresh">刷新</string>
     <string name="save_pic">保存</string>
@@ -512,6 +513,7 @@
     <string name="settings_pic_path">图片保存路径</string>
     <string name="settings_mention_history">清理@好友历史记录</string>
     <string name="settings_fab_type">Fab按钮功能</string>
+    <string name="settings_fab_type_summary">点击切换微博分组，长按可刷新列表</string>
     <string name="settings_fab_position">Fab按钮位置</string>
 
     <!-- 通知设置 -->

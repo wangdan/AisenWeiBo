@@ -19,18 +19,21 @@ import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
 import org.aisen.android.ui.fragment.adapter.BasicRecycleViewAdapter;
 import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.android.ui.fragment.itemview.NormalItemViewCreator;
+import org.aisen.android.ui.widget.MDButton;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.sinasdk.bean.SearchsResultUser;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
+import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
 import org.aisen.weibo.sina.ui.activity.profile.UserProfileActivity;
+import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 
 import java.util.ArrayList;
 
 /**
  * Created by wangdan on 16/2/24.
  */
-public class SearchHeaderView extends ARecycleViewItemView<StatusContent> {
+public class SearchHeaderView extends ARecycleViewItemView<StatusContent> implements View.OnClickListener {
 
     @ViewInject(id = R.id.layUsers)
     LinearLayout layUsers;
@@ -79,6 +82,39 @@ public class SearchHeaderView extends ARecycleViewItemView<StatusContent> {
         basicRecycleViewAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onClick(View v) {
+        final SearchsResultUser data = (SearchsResultUser) v.getTag();
+        WeiBoUser user = new WeiBoUser();
+        user.setId(data.getId());
+        user.setIdstr(data.getId());
+
+        if (data.isFollowing()) {
+            BizFragment.createBizFragment(fragment).destoryFriendship(user, new BizFragment.OnDestoryFriendshipCallback() {
+
+                @Override
+                public void onFriendshipDestoryed(WeiBoUser targetUser) {
+                    data.setFollowing(false);
+
+                    basicRecycleViewAdapter.notifyDataSetChanged();
+                }
+
+            });
+        }
+        else {
+            BizFragment.createBizFragment(fragment).createFriendship(user, new BizFragment.OnCreateFriendshipCallback() {
+
+                @Override
+                public void onFriendshipCreated(WeiBoUser targetUser) {
+                    data.setFollowing(true);
+
+                    basicRecycleViewAdapter.notifyDataSetChanged();
+                }
+
+            });
+        }
+    }
+
     class HeaderItemCreator extends NormalItemViewCreator<SearchsResultUser> {
 
         public HeaderItemCreator() {
@@ -95,20 +131,16 @@ public class SearchHeaderView extends ARecycleViewItemView<StatusContent> {
                 TextView txtName;
                 @ViewInject(id = R.id.txtRemark)
                 TextView txtRemark;
-
-                @Override
-                public void onBindView(View convertView) {
-                    super.onBindView(convertView);
-
-                    convertView.getLayoutParams().width = SystemUtils.getScreenWidth() * 5 / 6;
-                    convertView.getLayoutParams().height = Utils.dip2px(110);
-                }
+                @ViewInject(id = R.id.btn)
+                MDButton btn;
 
                 @Override
                 public void onBindData(View convertView, SearchsResultUser data, int position) {
                     RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) convertView.getLayoutParams();
-                    params.leftMargin = position == 0 || position == 1 ? 0 : Utils.dip2px(8);
-                    params.topMargin = position % 2 == 0 ? 0 : Utils.dip2px(8);
+//                    params.leftMargin = position == 0 || position == 1 ? 0 : Utils.dip2px(8);
+//                    params.topMargin = position % 2 == 0 ? 0 : Utils.dip2px(8);
+                    params.width = SystemUtils.getScreenWidth() * 5 / 6;
+                    params.height = Utils.dip2px(110);
 
                     BitmapLoader.getInstance().display(fragment, data.getProfile_image_url(), imgPhoto, ImageConfigUtils.getLargePhotoConfig());
                     String name = data.getScreen_name();
@@ -126,6 +158,17 @@ public class SearchHeaderView extends ARecycleViewItemView<StatusContent> {
                         txtRemark.setVisibility(View.GONE);
                         txtRemark.setText("");
                     }
+                    if (data.isFollow_me() && data.isFollowing()) {
+                        btn.setText(R.string.profile_friendship_each);
+                    }
+                    else if (data.isFollowing()) {
+                        btn.setText(R.string.profile_friendship_destory);
+                    }
+                    else {
+                        btn.setText(R.string.profile_friendship_create);
+                    }
+                    btn.setTag(data);
+                    btn.setOnClickListener(SearchHeaderView.this);
                 }
 
             };

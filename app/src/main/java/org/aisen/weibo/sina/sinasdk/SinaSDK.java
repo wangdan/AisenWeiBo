@@ -1495,7 +1495,11 @@ public class SinaSDK extends ABizLogic {
 		params.addParameter("containerid", "100103type%3D3%26q%3D" + q + "&page=1");
 
 		try {
-			String response = doGet(getHttpConfig(), action, params, String.class);
+			HttpConfig config = getHttpConfig();
+			config.cookie = cookies;
+			config.addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+			config.addHeader("Referer", "http://m.weibo.cn/searchs");
+			String response = doGet(config, action, params, String.class);
 
 			JSONObject responseJSON = JSONObject.parseObject(response);
 			int ok = responseJSON.getInteger("ok");

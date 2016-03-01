@@ -28,6 +28,7 @@ import org.aisen.weibo.sina.sinasdk.bean.GroupMemberListed;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
 import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
+import org.aisen.weibo.sina.ui.activity.profile.WeiboClientActivity;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 
 import java.util.ArrayList;
@@ -255,11 +256,11 @@ public class ProfileAboutFragment extends ABaseFragment
         }
         // 私信
         else if (v == btnDM) {
-//            WeiboClientActivity.launchChat(getActivity(), mUser.getIdstr());
+            WeiboClientActivity.launchChat(getActivity(), mUser.getIdstr());
         }
         // 详细信息
         else if (v == btnDetail) {
-//            WeiboClientActivity.launchProfile(getActivity(), mUser.getIdstr());
+            WeiboClientActivity.launchProfile(getActivity(), mUser.getIdstr());
         }
     }
 

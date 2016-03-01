@@ -107,10 +107,10 @@ import java.io.File;
 		value = Integer.parseInt(prefs.getString("pSwipebackEdgeMode", "0"));
 		setListSetting(value, R.array.swipebackEdgeMode, pSwipebackEdgeMode);
 
-        pFabType = (ListPreference) findPreference("pFabType");
-        pFabType.setOnPreferenceChangeListener(this);
-        value = Integer.parseInt(prefs.getString("pFabType", "0"));
-        setListSetting(value, R.array.fabTypes, pFabType);
+//        pFabType = (ListPreference) findPreference("pFabType");
+//        pFabType.setOnPreferenceChangeListener(this);
+//        value = Integer.parseInt(prefs.getString("pFabType", "0"));
+//        setListSetting(value, R.array.fabTypes, pFabType);
 
         pFabPosition = (ListPreference) findPreference("pFabPosition");
         pFabPosition.setOnPreferenceChangeListener(this);

@@ -27,10 +27,15 @@ public class SettingsPagerFragment extends ATabsTabLayoutFragment<TabItem> {
 	}
 
 	@Override
+	public int inflateContentView() {
+		return R.layout.ui_settings_tabs;
+	}
+
+	@Override
 	protected void setupTabLayout(Bundle savedInstanceSate, TabLayout tabLayout) {
 		super.setupTabLayout(savedInstanceSate, tabLayout);
 
-		tabLayout.setTabMode(TabLayout.MODE_FIXED);
+		tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
 	}
 
 	@Override
