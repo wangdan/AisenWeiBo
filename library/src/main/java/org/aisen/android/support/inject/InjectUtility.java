@@ -1,7 +1,5 @@
 package org.aisen.android.support.inject;
 
-import java.lang.reflect.Field;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
@@ -10,8 +8,13 @@ import android.view.View;
 import android.widget.AbsListView;
 
 import org.aisen.android.common.context.GlobalContext;
+import org.aisen.android.common.utils.Logger;
+
+import java.lang.reflect.Field;
 
 public class InjectUtility {
+
+	static final String TAG = "InjectUtility";
 
     public static void initInjectedView(Activity sourceActivity) {
 		initInjectedView(sourceActivity, sourceActivity.getWindow().getDecorView());
@@ -53,11 +56,15 @@ public class InjectUtility {
 								 */
 								if (field.get(injectedSource) == null) {
 									field.set(injectedSource, sourceView.findViewById(viewId));
+
+									if (Logger.DEBUG) {
+										Logger.v(TAG, "id = %d, view = %s", viewId, field.get(injectedSource).toString());
+									}
 								} else {
 									continue;
 								}
 							} catch (Exception e) {
-//								e.printStackTrace();
+								Logger.printExc(InjectUtility.class, e);
 							}
 						}
 

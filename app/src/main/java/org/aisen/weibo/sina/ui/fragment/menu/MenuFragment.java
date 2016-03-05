@@ -134,7 +134,9 @@ public class MenuFragment extends ABaseFragment {
         NavMenuItem menuItem = (NavMenuItem) viewItem.getTag();
         boolean selected = false;
         if (onMenuCallback != null) {
-            selected = onMenuCallback.onMenuClicked(menuItem, false);
+            onMenuCallback.onMenuClicked(menuItem, false);
+
+            selected = onMenuCallback.onMenuSelected(menuItem);
         }
 
         // 只记录选中项ID
@@ -177,7 +179,9 @@ public class MenuFragment extends ABaseFragment {
 
                         boolean selected = false;
                         if (onMenuCallback != null) {
-                            selected = onMenuCallback.onMenuClicked(menuItem, true);
+                            onMenuCallback.onMenuClicked(menuItem, true);
+
+                            selected = onMenuCallback.onMenuSelected(menuItem);
                         }
 
                         // 只记录选中项ID
@@ -205,10 +209,13 @@ public class MenuFragment extends ABaseFragment {
             }
         }
 
-        if (savedInstanceSate == null && onMenuCallback != null) {
+        if (onMenuCallback != null) {
             View viewItem = layMenuItems.findViewById(selectedId);
             NavMenuItem item = (NavMenuItem) viewItem.getTag();
-            boolean selected = onMenuCallback.onMenuClicked(item, true);
+            if (savedInstanceSate == null) {
+                onMenuCallback.onMenuClicked(item, true);
+            }
+            boolean selected = onMenuCallback.onMenuSelected(item);
             if (selected) {
                 setSelectedMenuItem(selectedId);
             }
@@ -424,7 +431,9 @@ public class MenuFragment extends ABaseFragment {
          * @param item
          * @return 是否可以选中
          */
-        boolean onMenuClicked(NavMenuItem item, boolean closeDrawer);
+        void onMenuClicked(NavMenuItem item, boolean closeDrawer);
+
+        boolean onMenuSelected(NavMenuItem item);
 
         boolean onMenuSameClicked(NavMenuItem item);
 

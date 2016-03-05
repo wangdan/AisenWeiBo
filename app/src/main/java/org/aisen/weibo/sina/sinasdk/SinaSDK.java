@@ -1496,9 +1496,9 @@ public class SinaSDK extends ABizLogic {
 
 		try {
 			HttpConfig config = getHttpConfig();
-			config.cookie = cookies;
-			config.addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-			config.addHeader("Referer", "http://m.weibo.cn/searchs");
+//			config.cookie = cookies;
+//			config.addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+//			config.addHeader("Referer", "http://m.weibo.cn/searchs");
 			String response = doGet(config, action, params, String.class);
 
 			JSONObject responseJSON = JSONObject.parseObject(response);

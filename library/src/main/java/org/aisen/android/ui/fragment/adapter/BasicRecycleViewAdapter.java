@@ -40,7 +40,6 @@ public class BasicRecycleViewAdapter<T extends Serializable> extends RecyclerVie
         this.holderFragment = holderFragment;
         this.itemViewCreator = itemViewCreator;
         this.datas = datas;
-        notifyDataSetChanged();
     }
 
     public void addFooterView(IITemView<T> footerItemView) {

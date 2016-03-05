@@ -3,12 +3,15 @@ package org.aisen.weibo.sina.base;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 
+import com.tencent.bugly.crashreport.CrashReport;
+
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.DateUtils;
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
+import org.aisen.weibo.sina.BuildConfig;
 import org.aisen.weibo.sina.receiver.TimingBroadcastReceiver;
 import org.aisen.weibo.sina.receiver.TimingIntent;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
@@ -47,6 +50,11 @@ public class MyApplication extends GlobalContext {
         AppContext.setAccount(AccountUtils.getLogedinAccount());
         if (AppContext.isLoggedIn())
             AppContext.login(AppContext.getAccount());
+
+        // 打开Debug日志
+        Logger.DEBUG = BuildConfig.LOG_DEBUG;
+        // BUGLY日志上报
+        CrashReport.initCrashReport(this, BuildConfig.BUGLY_APP_ID, Logger.DEBUG);
     }
 
     // 刷新定时发布任务

@@ -69,6 +69,11 @@ public class FriendshipPagerFragment extends ATabsTabLayoutFragment<TabItem> {
                                            : (WeiBoUser) savedInstanceState.getSerializable("user");
         type = savedInstanceState == null ? getArguments().getInt("index", type)
                                           : savedInstanceState.getInt("index");
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         BaseActivity activity = (BaseActivity) getActivity();
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);

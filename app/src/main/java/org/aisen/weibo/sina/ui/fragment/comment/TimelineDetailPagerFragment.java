@@ -128,19 +128,18 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
 
         mStatusContent = savedInstanceState != null ? (StatusContent) savedInstanceState.getSerializable("status")
                                                     : (StatusContent) getArguments().getSerializable("status");
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        bizFragment = BizFragment.createBizFragment(this);
 
         BaseActivity activity = (BaseActivity) getActivity();
         activity.getSupportActionBar().setTitle(R.string.timeline_detail);
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        bizFragment = BizFragment.createBizFragment(this);
     }
 
     @Override

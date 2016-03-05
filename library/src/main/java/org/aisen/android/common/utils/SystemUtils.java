@@ -3,10 +3,12 @@ package org.aisen.android.common.utils;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Rect;
@@ -20,6 +22,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
@@ -32,6 +35,7 @@ import org.aisen.android.common.context.GlobalContext;
 
 import java.io.File;
 import java.lang.reflect.Method;
+import java.util.List;
 
 @SuppressLint("SdCardPath") public class SystemUtils {
 
@@ -381,6 +385,51 @@ import java.lang.reflect.Method;
 			result = res.getDimensionPixelSize(resourceId);
 		}
 		return result;
+	}
+
+	public static void startActivity(Activity context, String packageName) {
+		try {
+			Log.e("startActivity", packageName);
+			// 获取目标应用安装包的Intent
+			Intent intent = context.getPackageManager().getLaunchIntentForPackage(packageName);
+			if (intent == null) {
+				startActivityByApplication(context, packageName);
+				return;
+			}
+			context.startActivity(intent);
+		} catch (Exception e) {
+			// e.printStackTrace();
+			Logger.printExc(SystemUtils.class, e);
+		}
+	}
+
+	private static void startActivityByApplication(Context context, String packageNameStr) {
+		try {
+			PackageManager pm = context.getPackageManager();
+			PackageInfo pi = pm.getPackageInfo(packageNameStr, 0);
+
+			Intent resolveIntent = new Intent(Intent.ACTION_MAIN, null);
+			resolveIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+			resolveIntent.setPackage(pi.packageName);
+
+			List<ResolveInfo> apps = pm.queryIntentActivities(resolveIntent, 0);
+
+			ResolveInfo ri = apps.iterator().next();
+			if (ri != null) {
+				String packageName = ri.activityInfo.packageName;
+				String className = ri.activityInfo.name;
+
+				Intent intent = new Intent(Intent.ACTION_MAIN);
+				intent.addCategory(Intent.CATEGORY_LAUNCHER);
+
+				ComponentName cn = new ComponentName(packageName, className);
+
+				intent.setComponent(cn);
+				context.startActivity(intent);
+				return;
+			}
+		} catch (Exception e) {
+		}
 	}
 
 }

@@ -52,11 +52,11 @@
         <!--android:defaultValue="1" android:dialogTitle="@string/settings_fab_type" android:entries="@array/fabTypes"-->
         <!--android:entryValues="@array/prefValues" android:key="pFabType" android:title="@string/settings_fab_type"/>-->
 
-        <org.aisen.weibo.sina.ui.widget.AisenListPreference
-            android:defaultValue="1" android:dialogTitle="@string/settings_fab_position"
-            android:entries="@array/fabPosition"
-            android:entryValues="@array/prefValues" android:key="pFabPosition"
-            android:title="@string/settings_fab_position"/>
+        <!--<org.aisen.weibo.sina.ui.widget.AisenListPreference-->
+            <!--android:defaultValue="1" android:dialogTitle="@string/settings_fab_position"-->
+            <!--android:entries="@array/fabPosition"-->
+            <!--android:entryValues="@array/prefValues" android:key="pFabPosition"-->
+            <!--android:title="@string/settings_fab_position"/>-->
 
         <CheckBoxPreference
             android:defaultValue="true" android:key="pAutoRefresh"

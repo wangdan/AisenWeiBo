@@ -559,8 +559,12 @@ import uk.co.senab.photoview.PhotoViewAttacher;
             protected void onPrepare() {
                 super.onPrepare();
 
-                ViewUtils.createProgressDialog(getActivity(), "msg_save_pic_loading", ThemeUtils.getThemeColor()).show();
+                ViewUtils.createProgressDialog(getActivity(), getString(R.string.msg_save_pic_loading), ThemeUtils.getThemeColor()).show();
             }
+
+			private void notifyFileSys(File file) {
+				SystemUtils.scanPhoto(file);
+			}
 
             @Override
             public String workInBackground(Void... params) throws TaskException {
@@ -575,12 +579,17 @@ import uk.co.senab.photoview.PhotoViewAttacher;
                         newFile.getParentFile().mkdirs();
                     try {
                         FileUtils.copyFile(file, newFile);
+
+						notifyFileSys(newFile);
+
                         return newFile.getParentFile().getAbsolutePath();
                     } catch (Exception e) {
 
                     }
                 }
                 else {
+					notifyFileSys(newFile);
+
                     return newFile.getParentFile().getAbsolutePath();
                 }
                 return null;

@@ -18,9 +18,10 @@ import java.lang.reflect.Method;
  */
 public class SinaCommonActivity extends BaseActivity implements AisenActivityHelper.EnableSwipeback {
 
-    private int overrideTheme = -1;
-
     public static final String FRAGMENT_TAG = "FRAGMENT_CONTAINER";
+
+    private int contentId;
+    private int overrideTheme = -1;
 
     /**
      * 启动一个界面
@@ -60,19 +61,23 @@ public class SinaCommonActivity extends BaseActivity implements AisenActivityHel
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        String className = getIntent().getStringExtra("className");
-        if (TextUtils.isEmpty(className)) {
-            finish();
-            return;
-        }
-
-        int contentId = org.aisen.android.R.layout.comm_ui_fragment_container;
-
-        FragmentArgs values = (FragmentArgs) getIntent().getSerializableExtra("args");
+        contentId = savedInstanceState == null ? org.aisen.android.R.layout.comm_ui_fragment_container
+                                               : savedInstanceState.getInt("contentId");
+        overrideTheme = savedInstanceState == null ? -1
+                                                   : savedInstanceState.getInt("overrideTheme");
 
         Fragment fragment = null;
         if (savedInstanceState == null) {
             try {
+                String className = getIntent().getStringExtra("className");
+                if (TextUtils.isEmpty(className)) {
+                    super.onCreate(savedInstanceState);
+                    finish();
+                    return;
+                }
+
+                FragmentArgs values = (FragmentArgs) getIntent().getSerializableExtra("args");
+
                 Class clazz = Class.forName(className);
                 fragment = (Fragment) clazz.newInstance();
                 // 设置参数给Fragment
@@ -107,38 +112,11 @@ public class SinaCommonActivity extends BaseActivity implements AisenActivityHel
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                super.onCreate(savedInstanceState);
                 finish();
                 return;
             }
         }
-//        ABaseFragment fragment = null;
-//        if (savedInstanceState == null) {
-//            try {
-//                Class clazz = Class.forName(className);
-//                Object object = clazz.newInstance();
-//                if (object instanceof ABaseFragment) {
-//
-//                    fragment = (ABaseFragment) clazz.newInstance();
-//
-//                    // 设置参数给Fragment
-//                    if (values != null) {
-//                        fragment.setArguments(FragmentArgs.transToBundle(values));
-//                    }
-//                    // 重写Activity的主题
-//                    if (fragment.setActivityTheme() > -1) {
-//                        overrideTheme = fragment.setActivityTheme();
-//                    }
-//                    // 重写Activity的contentView
-//                    if (fragment.inflateActivityContentView() > 0) {
-//                        contentId = fragment.inflateActivityContentView();
-//                    }
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                finish();
-//                return;
-//            }
-
         super.onCreate(savedInstanceState);
         setContentView(contentId);
 
@@ -155,6 +133,14 @@ public class SinaCommonActivity extends BaseActivity implements AisenActivityHel
             getSupportActionBar().setDisplayShowHomeEnabled(false);
 
         BizFragment.createBizFragment(this);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt("contentId", contentId);
+        outState.putInt("overrideTheme", overrideTheme);
     }
 
     @Override

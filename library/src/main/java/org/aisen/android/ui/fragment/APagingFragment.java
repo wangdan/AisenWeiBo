@@ -101,6 +101,8 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
         // 将分页信息保存起来
         if (mPaging != null)
             outState.putSerializable(SAVED_PAGING, mPaging);
+		if (refreshConfig != null)
+			outState.putSerializable(SAVED_CONFIG, refreshConfig);
 
         onSaveDatas(outState);
 
@@ -126,16 +128,16 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 		
         if (savedInstanceSate == null) {
 			refreshConfig = new RefreshConfig();
-
-			setupRefreshConfig(refreshConfig);
         }
         else {
             refreshConfig = (RefreshConfig) savedInstanceSate.getSerializable(SAVED_CONFIG);
         }
 
-        setupRefreshView(savedInstanceSate);
+		setupRefreshConfig(refreshConfig);
 
-        setupRefreshViewWithConfig(refreshConfig);
+		setupRefreshView(savedInstanceSate);
+
+		setupRefreshViewWithConfig(refreshConfig);
 
 		bindAdapter(getAdapter());
 	}
@@ -278,7 +280,7 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
      *
      */
     protected void setupRefreshView(Bundle savedInstanceSate) {
-		if (refreshConfig.footerMoreEnable) {
+		if (refreshConfig != null && refreshConfig.footerMoreEnable) {
 			mFooterItemViewCreator = configFooterViewCreator();
 			View convertView = View.inflate(getActivity(), mFooterItemViewCreator.setLayoutRes()[0][0], null);
 			mFooterItemView = (AFooterItemView<T>) mFooterItemViewCreator.newItemView(convertView, IPagingAdapter.TYPE_NORMAL);
@@ -308,7 +310,9 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
         return false;
     }
 
-    public static class RefreshConfig {
+    public static class RefreshConfig implements Serializable {
+
+		private static final long serialVersionUID = 6244426943442129360L;
 
 		public boolean pagingEnd = false;// 分页是否结束
 		

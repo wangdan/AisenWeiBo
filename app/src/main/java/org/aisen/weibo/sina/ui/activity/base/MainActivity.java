@@ -42,7 +42,6 @@ import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.service.OfflineService;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
-import org.aisen.weibo.sina.sinasdk.bean.Friendship;
 import org.aisen.weibo.sina.sinasdk.bean.Group;
 import org.aisen.weibo.sina.sinasdk.bean.TokenInfo;
 import org.aisen.weibo.sina.support.action.WebLoginAction;
@@ -108,6 +107,7 @@ public class MainActivity extends BaseActivity
     private FabGroupsFragment fabGroupsFragment;
 
     private int newIntentNotificationIndex = -1;
+    private String toolbarTitle;
 
     public static void login() {
         Intent intent = new Intent(GlobalContext.getInstance(), MainActivity.class);
@@ -156,7 +156,21 @@ public class MainActivity extends BaseActivity
         setupFab(savedInstanceState);
         setupAppBarLayout(savedInstanceState);
 
+        if (savedInstanceState != null) {
+            toolbarTitle = savedInstanceState.getString("toolbarTitle");
+            if (!TextUtils.isEmpty(toolbarTitle))
+                getSupportActionBar().setTitle(toolbarTitle);
+        }
+
         mInstance = this;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (!TextUtils.isEmpty(toolbarTitle))
+            outState.putString("toolbarTitle", toolbarTitle);
     }
 
     @Override
@@ -320,6 +334,20 @@ public class MainActivity extends BaseActivity
 //            }
 //
 //        });
+        if (savedInstanceState != null) {
+            Fragment fragment = getFragmentManager().findFragmentByTag("MainFragment");
+            // 如果是TabsFragment，显示TabLayout
+            if (fragment != null) {
+                if (fragment instanceof ATabsFragment) {
+                    tabLayout.setVisibility(View.VISIBLE);
+                }
+                else {
+                    tabLayout.setVisibility(View.GONE);
+                }
+                // 显示AppBarLayout
+                appBarLayout.setExpanded(true, true);
+            }
+        }
     }
 
     /**
@@ -329,7 +357,7 @@ public class MainActivity extends BaseActivity
      * @return
      */
     @Override
-    public boolean onMenuClicked(MenuFragment.NavMenuItem item, boolean closeDrawer) {
+    public void onMenuClicked(MenuFragment.NavMenuItem item, boolean closeDrawer) {
         invalidateOptionsMenu();
 
         ABaseFragment fragment = null;
@@ -405,21 +433,25 @@ public class MainActivity extends BaseActivity
 
             }, 300);
         }
+    }
+
+    @Override
+    public boolean onMenuSelected(MenuFragment.NavMenuItem item) {
         // 设置可以选中的菜单项
         switch (item.id) {
-        // 首页
-        case MenuFragment.MENU_MAIN:
-        // 通知
-        case MenuFragment.MENU_NOTIFICATION:
-        // 提及
-        case MenuFragment.MENU_MENTION:
-        // 评论
-        case MenuFragment.MENU_CMT:
-        // 草稿箱
-        case MenuFragment.MENU_DRAT:
-            return true;
-        default:
-            return false;
+            // 首页
+            case MenuFragment.MENU_MAIN:
+                // 通知
+            case MenuFragment.MENU_NOTIFICATION:
+                // 提及
+            case MenuFragment.MENU_MENTION:
+                // 评论
+            case MenuFragment.MENU_CMT:
+                // 草稿箱
+            case MenuFragment.MENU_DRAT:
+                return true;
+            default:
+                return false;
         }
     }
 
@@ -472,7 +504,8 @@ public class MainActivity extends BaseActivity
         if (fragment == null)
             return;
 
-        getSupportActionBar().setTitle(title);
+        toolbarTitle = title.toString();
+        getSupportActionBar().setTitle(toolbarTitle);
 
         // 如果是TabsFragment，显示TabLayout
         if (fragment instanceof ATabsFragment) {

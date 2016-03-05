@@ -113,9 +113,11 @@ import java.io.File;
 //        setListSetting(value, R.array.fabTypes, pFabType);
 
         pFabPosition = (ListPreference) findPreference("pFabPosition");
-        pFabPosition.setOnPreferenceChangeListener(this);
-        value = Integer.parseInt(prefs.getString("pFabPosition", "1"));
-        setListSetting(value, R.array.fabPosition, pFabPosition);
+		if (pFabPosition != null) {
+			pFabPosition.setOnPreferenceChangeListener(this);
+			value = Integer.parseInt(prefs.getString("pFabPosition", "1"));
+			setListSetting(value, R.array.fabPosition, pFabPosition);
+		}
 
         // 缓存清理
         Preference pClearCache = (Preference) findPreference("pClearCache");

@@ -489,6 +489,10 @@
     <string name="settings_app_resident">应用常驻内存</string>
 
     <!-- 基本设置 -->
+    <string name="settings_donate">捐赠</string>
+    <string name="settings_donate_dialog_title">捐赠开发者</string>
+    <string name="settings_donate_dialog_message">如果觉得Aisen或者源码对你有用，支付宝账号binglanhappy@163.com已复制到粘贴板，捐赠一点碎银子给我喝杯咖啡吧，感谢你的支持！</string>
+    <string name="settings_donate_yes">打开支付宝</string>
     <string name="settings_basic_history_remind">%d条历史数据</string>
     <string name="settings_dir_hint">文件夹名称</string>
     <string name="settings_modify_picpath_title">修改图片保存路径</string>
