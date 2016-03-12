@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,12 +12,16 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.ViewGroup;
 
+import com.umeng.analytics.MobclickAgent;
+
 import org.aisen.android.common.utils.KeyGenerator;
 import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.activity.basic.BaseActivity;
+import org.aisen.android.ui.fragment.APagingFragment;
 import org.aisen.android.ui.fragment.adapter.FragmentPagerAdapter;
 import org.aisen.weibo.sina.R;
+import org.aisen.weibo.sina.service.publisher.PublishManager;
 import org.aisen.weibo.sina.sinasdk.bean.PicUrls;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.ui.fragment.picture.PictureFragment;
@@ -165,6 +170,22 @@ public class PicsActivity extends BaseActivity implements OnPageChangeListener {
 	@Override
 	protected int configTheme() {
 		return R.style.AppTheme_Pics;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		MobclickAgent.onPageStart("图片预览");
+		MobclickAgent.onResume(this);
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		MobclickAgent.onPageEnd("图片预览");
+		MobclickAgent.onPause(this);
 	}
 
 }

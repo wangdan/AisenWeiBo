@@ -21,6 +21,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.umeng.analytics.MobclickAgent;
+
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.common.utils.Utils;
@@ -207,6 +209,8 @@ public class MenuHeaderView implements View.OnClickListener {
 
                 @Override
                 public void onClick(View v) {
+                    MobclickAgent.onEvent(menuFragment.getActivity(), "menuheader_account_change");
+
                     AccountBean account = (AccountBean) v.getTag();
 
                     changeAccount(account, v);
@@ -293,6 +297,8 @@ public class MenuHeaderView implements View.OnClickListener {
         if (v.getId() == R.id.material_drawer_account_header_text_section) {
 //            switchAccountLayout();
             AccountFragment.launch(menuFragment.getActivity());
+
+            MobclickAgent.onEvent(menuFragment.getActivity(), "menuheader_show_accounts");
         }
     }
 

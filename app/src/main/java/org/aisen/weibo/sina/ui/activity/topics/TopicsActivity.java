@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.umeng.analytics.MobclickAgent;
+
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.fragment.ABaseFragment;
 import org.aisen.weibo.sina.R;
@@ -53,6 +55,22 @@ public class TopicsActivity extends BaseActivity {
 			}
 		}
 
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		MobclickAgent.onPageStart("话题");
+		MobclickAgent.onResume(this);
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		MobclickAgent.onPageEnd("话题");
+		MobclickAgent.onPause(this);
 	}
 	
 }

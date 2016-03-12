@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.umeng.analytics.MobclickAgent;
 
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.common.utils.ViewUtils;
@@ -342,6 +343,22 @@ public class AccountFragment extends ARecycleViewFragment<AccountBean, ArrayList
         }
 
         return super.onBackClick();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        MobclickAgent.onPageStart(getString(R.string.title_acount));
+        MobclickAgent.onResume(getActivity());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        MobclickAgent.onPageEnd(getString(R.string.title_acount));
+        MobclickAgent.onPause(getActivity());
     }
 
 }

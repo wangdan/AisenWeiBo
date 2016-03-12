@@ -2,6 +2,8 @@ package org.aisen.weibo.sina.ui.fragment.timeline;
 
 import android.os.Bundle;
 
+import com.umeng.analytics.MobclickAgent;
+
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.weibo.sina.base.AppContext;
@@ -70,6 +72,22 @@ public class TimelineGroupsFragment extends ATimelineFragment {
         getRefreshView().scrollToPosition(0);
 
         return true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        MobclickAgent.onPageStart("好友分组");
+        MobclickAgent.onResume(getActivity());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        MobclickAgent.onPageEnd("好友分组");
+        MobclickAgent.onPause(getActivity());
     }
 
 }

@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.umeng.analytics.MobclickAgent;
+
 import org.aisen.android.support.bean.TabItem;
 import org.aisen.android.support.inject.InjectUtility;
 import org.aisen.android.ui.activity.basic.BaseActivity;
@@ -113,6 +115,22 @@ public class FriendshipPagerFragment extends ATabsTabLayoutFragment<TabItem> {
         }
 
         return null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        MobclickAgent.onPageStart("朋友关系");
+        MobclickAgent.onResume(getActivity());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        MobclickAgent.onPageEnd("朋友关系");
+        MobclickAgent.onPause(getActivity());
     }
 
 }

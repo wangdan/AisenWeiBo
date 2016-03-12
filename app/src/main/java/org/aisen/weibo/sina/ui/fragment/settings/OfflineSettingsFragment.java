@@ -7,6 +7,8 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 
+import com.umeng.analytics.MobclickAgent;
+
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.component.orm.extra.Extra;
 import org.aisen.android.ui.activity.basic.BaseActivity;
@@ -122,6 +124,22 @@ public class OfflineSettingsFragment extends BasePreferenceFragment
 
         pOfflinePicTaskCount.setTitle(String.format(getString(R.string.offline_pic_task_count), valueTitleArr[value]));
         pOfflinePicTaskCount.setSummary(String.format(getString(R.string.offline_pic_task_count_summary), valueTitleArr[value]));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        MobclickAgent.onPageStart("离线设置");
+        MobclickAgent.onResume(getActivity());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        MobclickAgent.onPageEnd("离线设置");
+        MobclickAgent.onPause(getActivity());
     }
 
 }

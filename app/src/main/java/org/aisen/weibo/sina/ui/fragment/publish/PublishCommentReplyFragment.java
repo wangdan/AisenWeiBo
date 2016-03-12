@@ -8,6 +8,8 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 
+import com.umeng.analytics.MobclickAgent;
+
 import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.support.inject.ViewInject;
@@ -113,6 +115,22 @@ public class PublishCommentReplyFragment extends APublishFragment implements OnC
 	@Override
 	public int inflateContentView() {
 		return R.layout.ui_publish_comment_replay;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		MobclickAgent.onPageStart("发布回复评论");
+		MobclickAgent.onResume(getActivity());
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		MobclickAgent.onPageEnd("发布回复评论");
+		MobclickAgent.onPause(getActivity());
 	}
 
 }

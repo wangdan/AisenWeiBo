@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.getbase.floatingactionbutton.AddFloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.umeng.analytics.MobclickAgent;
 
 import org.aisen.android.common.utils.Utils;
 import org.aisen.android.support.bean.TabItem;
@@ -189,6 +190,9 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
     public void onResume() {
         super.onResume();
 
+        MobclickAgent.onPageStart("微博评论页");
+        MobclickAgent.onResume(getActivity());
+
         IntentFilter filter = new IntentFilter();
         filter.addAction(ACTION_REFRESH_CMT_CREATE);
         filter.addAction(ACTION_REFRESH_CMT_REPLY);
@@ -201,6 +205,9 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
     @Override
     public void onPause() {
         super.onPause();
+
+        MobclickAgent.onPageEnd("微博评论页");
+        MobclickAgent.onPause(getActivity());
 
         getActivity().unregisterReceiver(receiver);
     }
@@ -337,6 +344,8 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
             }
             else {
                 showOverlay();
+
+                MobclickAgent.onEvent(getActivity(), "toggle_cmt_fag");
             }
 
             action_menu.toggle();

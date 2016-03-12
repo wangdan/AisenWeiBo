@@ -12,6 +12,8 @@ import android.preference.PreferenceManager;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
+import com.umeng.analytics.MobclickAgent;
+
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.ActivityHelper;
 import org.aisen.weibo.sina.service.UnreadService;
@@ -144,6 +146,22 @@ public class NotificationSettingsFragment extends BasePreferenceFragment impleme
 		String[] valueTitleArr = getResources().getStringArray(R.array.txtUnread);
 
 		pInterval.setSummary(valueTitleArr[value]);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		MobclickAgent.onPageStart("通知设置");
+		MobclickAgent.onResume(getActivity());
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		MobclickAgent.onPageEnd("通知设置");
+		MobclickAgent.onPause(getActivity());
 	}
 	
 }

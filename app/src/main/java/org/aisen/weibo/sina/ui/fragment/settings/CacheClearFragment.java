@@ -7,6 +7,7 @@ import android.preference.Preference.OnPreferenceClickListener;
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.GravityEnum;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.umeng.analytics.MobclickAgent;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.DateUtils;
@@ -27,7 +28,7 @@ import java.text.DecimalFormat;
  */
 public class CacheClearFragment extends ABaseFragment implements OnPreferenceClickListener {
 
-	private static final int RETAIN_TIME = 2 * 24 * 60 * 60 * 1000;
+	private static final int RETAIN_TIME = 24 * 60 * 60 * 1000;
 	private Preference clearCachePref;
 //	private ProgressDialog mProgressDialog;
     private MaterialDialog materialDialog;
@@ -75,6 +76,8 @@ public class CacheClearFragment extends ABaseFragment implements OnPreferenceCli
 	}
 	
 	private void clearCache(final boolean all) {
+		MobclickAgent.onEvent(getActivity(), all ? "clear_cache_all" : "clear_cache_outofdate");
+
 		final WorkTask<Void, String, Void> task = new WorkTask<Void, String, Void>() {
 
 			@Override
@@ -234,8 +237,7 @@ public class CacheClearFragment extends ABaseFragment implements OnPreferenceCli
 						for (File childFile : childFiles)
 							deleteFile(childFile);
 					} else {
-//						if (file.delete())
-//							SystemUtils.scanPhoto(file);
+						file.delete();
 					}
 				}
 				

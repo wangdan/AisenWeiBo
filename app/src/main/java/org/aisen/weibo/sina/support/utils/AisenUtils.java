@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.umeng.analytics.MobclickAgent;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.md.MDHelper;

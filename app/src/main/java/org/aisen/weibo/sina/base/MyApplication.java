@@ -4,6 +4,8 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 
 import com.tencent.bugly.crashreport.CrashReport;
+import com.umeng.analytics.AnalyticsConfig;
+import com.umeng.analytics.MobclickAgent;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.DateUtils;
@@ -51,6 +53,10 @@ public class MyApplication extends GlobalContext {
         if (AppContext.isLoggedIn())
             AppContext.login(AppContext.getAccount());
 
+        // UMENG统计设置
+        AnalyticsConfig.setAppkey(this, BuildConfig.UMENG_APP_ID);
+        MobclickAgent.setCatchUncaughtExceptions(false);
+        MobclickAgent.openActivityDurationTrack(false);
         // 打开Debug日志
         Logger.DEBUG = BuildConfig.LOG_DEBUG;
         // BUGLY日志上报

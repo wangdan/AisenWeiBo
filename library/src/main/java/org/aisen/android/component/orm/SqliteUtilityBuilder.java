@@ -108,8 +108,6 @@ public class SqliteUtilityBuilder {
 	
 	static class SqliteDbHelper extends SQLiteOpenHelper {
 
-		public static final int DATABASE_VERSION = 1;
-		
 		SqliteDbHelper(Context context, String dbName, int dbVersion) {
 			super(context, dbName, null, dbVersion);
 		}

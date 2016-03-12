@@ -11,6 +11,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.umeng.analytics.MobclickAgent;
 
 import org.aisen.android.common.utils.ViewUtils;
 import org.aisen.android.network.task.TaskException;
@@ -252,14 +253,20 @@ public class ProfileAboutFragment extends ABaseFragment
         }
         // @Ta
         else if (v == btnMention) {
+            MobclickAgent.onEvent(getActivity(), "mention_ta");
+
             BizFragment.createBizFragment(this).mentionUser(getActivity(), mUser);
         }
         // 私信
         else if (v == btnDM) {
+            MobclickAgent.onEvent(getActivity(), "dm_ta");
+
             WeiboClientActivity.launchChat(getActivity(), mUser.getIdstr());
         }
         // 详细信息
         else if (v == btnDetail) {
+            MobclickAgent.onEvent(getActivity(), "more_ta");
+
             WeiboClientActivity.launchProfile(getActivity(), mUser.getIdstr());
         }
     }

@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.umeng.analytics.MobclickAgent;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.md.MDHelper;
@@ -315,6 +316,8 @@ public class MainActivity extends BaseActivity
                 super.onShowSheet();
 
                 fabGroupsFragment.show();
+
+                MobclickAgent.onEvent(MainActivity.this, "fab_groups");
             }
 
         });
@@ -392,10 +395,14 @@ public class MainActivity extends BaseActivity
                 }
 
             }.run();
+
+            MobclickAgent.onEvent(MainActivity.this, "md");
             break;
         // 热门微博
         case MenuFragment.MENU_HOT_STATUS:
             WeiboClientActivity.launchHotStatuses(this);
+
+            MobclickAgent.onEvent(MainActivity.this, "hot_status");
             break;
         // 草稿箱
         case MenuFragment.MENU_DRAT:
@@ -590,17 +597,26 @@ public class MainActivity extends BaseActivity
 //        else if (item.getItemId() == R.id.feedback)
 //            PublishActivity.publishFeedback(this);
         // 退出
-        if (item.getItemId() == R.id.exitapp)
+        if (item.getItemId() == R.id.exitapp) {
             finish();
+
+            MobclickAgent.onEvent(this, "exitapp");
+        }
         // 新微博
         else if (item.getItemId() == R.id.publish)
             PublishActivity.publishStatus(this, null);
         // 开始离线
-        else if (item.getItemId() == R.id.toggle_offline)
+        else if (item.getItemId() == R.id.toggle_offline) {
             OfflineUtils.toggleOffline(this);
+
+            MobclickAgent.onEvent(this, "toggle_offline");
+        }
         // 停止离线
-        else if (item.getItemId() == R.id.stop_offline)
+        else if (item.getItemId() == R.id.stop_offline) {
             OfflineService.stopOffline();
+
+            MobclickAgent.onEvent(this, "stop_offline");
+        }
         // 通知设置
         else if (item.getItemId() == R.id.notification_settings)
             NotificationSettingsFragment.launch(this);
@@ -611,6 +627,8 @@ public class MainActivity extends BaseActivity
                 @Override
                 public void doAction() {
                     SearchFragment.launch(MainActivity.this, "");
+
+                    MobclickAgent.onEvent(MainActivity.this, "toggle_search");
                 }
 
             }.run();

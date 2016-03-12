@@ -14,6 +14,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
+import com.umeng.analytics.MobclickAgent;
+
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.setting.SettingUtility;
 import org.aisen.android.common.utils.FileUtils;
@@ -400,6 +402,22 @@ public class WebLoginFragment extends ABaseFragment {
         }
 
         return "http://boyqiang520.s8.csome.cn/oauth2/";
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        MobclickAgent.onPageStart(String.format("%s授权页", mClient == Client.weico ? "Weico" : "Aisen"));
+        MobclickAgent.onResume(getActivity());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        MobclickAgent.onPageEnd(String.format("%s授权页", mClient == Client.weico ? "Weico" : "Aisen"));
+        MobclickAgent.onPause(getActivity());
     }
 
 }

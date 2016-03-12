@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.umeng.analytics.MobclickAgent;
+
 import org.aisen.android.common.utils.KeyGenerator;
 import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.support.inject.ViewInject;
@@ -195,6 +197,22 @@ public class PhotosActivity extends BaseActivity implements OnPageChangeListener
 		Intent data = new Intent();
 		data.putExtra("index", viewPager.getCurrentItem());
 		setResult(Activity.RESULT_OK, data);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		MobclickAgent.onPageStart("相册预览");
+		MobclickAgent.onResume(this);
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		MobclickAgent.onPageEnd("相册预览");
+		MobclickAgent.onPause(this);
 	}
 
 }

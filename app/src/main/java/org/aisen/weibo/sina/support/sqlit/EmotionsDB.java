@@ -1,8 +1,10 @@
 package org.aisen.weibo.sina.support.sqlit;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.FileUtils;
@@ -12,8 +14,6 @@ import org.aisen.android.network.task.WorkTask;
 import org.aisen.weibo.sina.support.bean.Emotion;
 import org.aisen.weibo.sina.support.bean.Emotions;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -28,19 +28,40 @@ public class EmotionsDB {
 
 	// 创建表情库
 	static {
-		String path = GlobalContext.getInstance().getAppPath() + File.separator + "emotions_v5.db";
-		File dbf = new File(path);
-		if (!dbf.exists()) {
-			Logger.w(TAG, "新建表情DB");
-			dbf.getParentFile().mkdirs();
-			try {
-				if (dbf.createNewFile())
-					emotionsDb = SQLiteDatabase.openOrCreateDatabase(dbf, null);
-			} catch (IOException ioex) {
+		emotionsDb = new SqliteDbHelper(GlobalContext.getInstance(), "emotions_v6.db", 1).getWritableDatabase();
+	}
+
+	static class SqliteDbHelper extends SQLiteOpenHelper {
+
+		SqliteDbHelper(Context context, String dbName, int dbVersion) {
+			super(context, dbName, null, dbVersion);
+		}
+
+		@Override
+		public void onCreate(SQLiteDatabase db) {
+
+		}
+
+		@Override
+		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+			dropDb(db);
+			onCreate(db);
+		}
+
+	}
+
+	static void dropDb(SQLiteDatabase db) {
+		Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type ='table' AND name != 'sqlite_sequence'", null);
+		if (cursor != null) {
+			while (cursor.moveToNext()) {
+				db.execSQL("DROP TABLE " + cursor.getString(0));
+
+				Logger.d(TAG, "删除表 = " + cursor.getString(0));
 			}
-		} else {
-			Logger.w(TAG, "表情DB已存在");
-			emotionsDb = SQLiteDatabase.openOrCreateDatabase(dbf, null);
+		}
+		if (cursor != null) {
+			cursor.close();
+			cursor = null;
 		}
 	}
 

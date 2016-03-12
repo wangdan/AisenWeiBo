@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.umeng.analytics.MobclickAgent;
+
 import org.aisen.android.support.bean.TabItem;
 import org.aisen.android.ui.fragment.ATabsTabLayoutFragment;
 import org.aisen.weibo.sina.R;
@@ -120,6 +122,9 @@ public class NotificationPagerFragment extends ATabsTabLayoutFragment<TabItem> {
     public void onResume() {
         super.onResume();
 
+        MobclickAgent.onPageStart("通知");
+        MobclickAgent.onResume(getActivity());
+
         IntentFilter filter = new IntentFilter();
         filter.addAction(UnreadService.ACTION_UNREAD_CHANGED);
         getActivity().registerReceiver(receiver, filter);
@@ -128,6 +133,9 @@ public class NotificationPagerFragment extends ATabsTabLayoutFragment<TabItem> {
     @Override
     public void onPause() {
         super.onPause();
+
+        MobclickAgent.onPageEnd("通知");
+        MobclickAgent.onPause(getActivity());
 
         getActivity().unregisterReceiver(receiver);
     }

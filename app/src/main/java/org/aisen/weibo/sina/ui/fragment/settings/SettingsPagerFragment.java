@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.umeng.analytics.MobclickAgent;
 
 import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.support.bean.TabItem;
@@ -107,6 +108,8 @@ public class SettingsPagerFragment extends ATabsTabLayoutFragment<TabItem> {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.donate) {
 			showDonateDialog();
+
+			MobclickAgent.onEvent(getActivity(), "donate");
 		}
 
 		return super.onOptionsItemSelected(item);
@@ -123,11 +126,20 @@ public class SettingsPagerFragment extends ATabsTabLayoutFragment<TabItem> {
 		new AlertDialogWrapper.Builder(getActivity())
 				.setTitle(R.string.settings_donate_dialog_title)
 				.setMessage(R.string.settings_donate_dialog_message)
-				.setNegativeButton(R.string.cancel, null)
+				.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						MobclickAgent.onEvent(getActivity(), "donate_cancel");
+					}
+
+				})
 				.setPositiveButton(R.string.settings_donate_yes, new DialogInterface.OnClickListener() {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
+						MobclickAgent.onEvent(getActivity(), "donate_yes");
+
 						AisenUtils.copyToClipboard("binglanhappy@163.com");
 
 						SystemUtils.startActivity(getActivity(), "com.eg.android.AlipayGphone");
@@ -135,6 +147,22 @@ public class SettingsPagerFragment extends ATabsTabLayoutFragment<TabItem> {
 
 				})
 				.show();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		MobclickAgent.onPageStart("设置");
+		MobclickAgent.onResume(getActivity());
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		MobclickAgent.onPageEnd("设置");
+		MobclickAgent.onPause(getActivity());
 	}
 
 }

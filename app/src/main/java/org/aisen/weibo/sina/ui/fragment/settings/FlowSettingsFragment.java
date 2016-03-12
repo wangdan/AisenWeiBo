@@ -10,6 +10,8 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
 
+import com.umeng.analytics.MobclickAgent;
+
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 import org.aisen.android.ui.activity.basic.BaseActivity;
@@ -122,6 +124,22 @@ public class FlowSettingsFragment extends BasePreferenceFragment
 			pPicMode.setEnabled(!Boolean.parseBoolean(newValue.toString()));
 		}
 		return true;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		MobclickAgent.onPageStart("流量设置");
+		MobclickAgent.onResume(getActivity());
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		MobclickAgent.onPageEnd("流量设置");
+		MobclickAgent.onPause(getActivity());
 	}
 
 }

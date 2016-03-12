@@ -2,9 +2,12 @@ package org.aisen.weibo.sina.ui.fragment.timeline;
 
 import android.os.Bundle;
 
+import com.umeng.analytics.MobclickAgent;
+
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
+import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
@@ -82,6 +85,34 @@ public class TimelineDefFragment extends ATimelineFragment {
         getRefreshView().scrollToPosition(0);
 
         return true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        MobclickAgent.onPageStart(getPageName());
+        MobclickAgent.onResume(getActivity());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        MobclickAgent.onPageEnd(getPageName());
+        MobclickAgent.onPause(getActivity());
+    }
+
+    private String getPageName() {
+        if ("statusesFriendsTimeLine".equals(method)) {
+            return getString(R.string.timeline_all);
+        } else if ("statusesBilateralTimeLine".equals(method)) {
+            return getString(R.string.timeline_bilateral);
+        } else if ("statusesToMe".equals(method)) {
+            return getString(R.string.timeline_tome);
+        }
+
+        return getString(R.string.timeline_all);
     }
 
 }

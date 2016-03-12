@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 
+import com.umeng.analytics.MobclickAgent;
+
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.common.utils.Utils;
@@ -51,6 +53,8 @@ public class VersionSettingsFragment extends BasePreferenceFragment
 	public boolean onPreferenceClick(Preference preference) {
 		if ("pVersion".equals(preference.getKey())) {
             showVersionDialog(getActivity());
+
+			MobclickAgent.onEvent(getActivity(), "show_version");
         }
 		else if ("pGrade".equals(preference.getKey())) {
 			startMarket();

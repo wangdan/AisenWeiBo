@@ -16,6 +16,7 @@ import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
+import com.umeng.analytics.MobclickAgent;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.DateUtils;
@@ -468,6 +469,22 @@ public class PublishStatusFragment extends APublishFragment {
 
 			});
 		}
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		MobclickAgent.onPageStart("发布新微博");
+		MobclickAgent.onResume(getActivity());
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		MobclickAgent.onPageEnd("发布新微博");
+		MobclickAgent.onPause(getActivity());
 	}
 
 }

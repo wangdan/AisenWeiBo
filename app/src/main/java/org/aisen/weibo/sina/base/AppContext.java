@@ -1,5 +1,7 @@
 package org.aisen.weibo.sina.base;
 
+import com.umeng.analytics.MobclickAgent;
+
 import org.aisen.weibo.sina.service.OfflineService;
 import org.aisen.weibo.sina.service.UnreadService;
 import org.aisen.weibo.sina.sinasdk.bean.UnreadCount;
@@ -44,6 +46,9 @@ public class AppContext {
         // 停止离线服务
         if (OfflineService.getInstance() != null)
             OfflineService.stopOffline();
+
+        // 设置友盟的账号统计
+        MobclickAgent.onProfileSignIn(accountBean.getUid());
     }
 
     public static void setAccount(AccountBean account) {

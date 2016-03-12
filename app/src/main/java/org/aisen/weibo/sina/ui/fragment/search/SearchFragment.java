@@ -15,6 +15,7 @@ import com.lapism.searchview.adapter.SearchAdapter;
 import com.lapism.searchview.adapter.SearchItem;
 import com.lapism.searchview.view.SearchCodes;
 import com.lapism.searchview.view.SearchView;
+import com.umeng.analytics.MobclickAgent;
 
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.common.utils.SystemUtils;
@@ -476,6 +477,22 @@ public class SearchFragment extends ATimelineFragment {
             searchSuggestTask = null;
         }
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        MobclickAgent.onPageStart("搜索页面");
+        MobclickAgent.onResume(getActivity());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        MobclickAgent.onPageEnd("搜索页面");
+        MobclickAgent.onPause(getActivity());
     }
 
 }

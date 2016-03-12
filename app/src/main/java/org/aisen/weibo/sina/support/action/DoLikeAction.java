@@ -3,6 +3,8 @@ package org.aisen.weibo.sina.support.action;
 import android.app.Activity;
 import android.view.View;
 
+import com.umeng.analytics.MobclickAgent;
+
 import org.aisen.android.common.utils.ViewUtils;
 import org.aisen.android.component.bitmaploader.core.LruMemoryCache;
 import org.aisen.android.component.orm.extra.Extra;
@@ -69,6 +71,8 @@ public class DoLikeAction extends IAction {
 
         // 开始处理点赞
         new LikeTask().execute();
+
+        MobclickAgent.onEvent(bizFragment.getActivity(), "do_like");
     }
 
     public static void refreshLikeCache() {
@@ -97,9 +101,9 @@ public class DoLikeAction extends IAction {
     public interface OnLikeCallback {
 
         // 点赞失败或者成功后，有必要时会回调这个方法刷新UI
-        public void onLikeFaild();
+        void onLikeFaild();
 
-        public void onLikeSuccess(StatusContent data, View likeView);
+        void onLikeSuccess(StatusContent data, View likeView);
 
     }
 

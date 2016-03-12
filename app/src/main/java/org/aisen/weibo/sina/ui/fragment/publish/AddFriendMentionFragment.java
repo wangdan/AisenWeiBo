@@ -21,6 +21,8 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.umeng.analytics.MobclickAgent;
+
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.network.task.TaskException;
@@ -319,6 +321,22 @@ public class AddFriendMentionFragment extends AListSwipeRefreshFragment<WeiBoUse
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         return true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        MobclickAgent.onPageStart("搜索提及好友");
+        MobclickAgent.onResume(getActivity());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        MobclickAgent.onPageEnd("搜索提及好友");
+        MobclickAgent.onPause(getActivity());
     }
 
 }

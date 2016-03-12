@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.umeng.analytics.MobclickAgent;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.DateUtils;
@@ -119,6 +120,9 @@ public class DraftFragment extends ARecycleViewFragment<PublishBean, ArrayList<P
     public void onResume() {
         super.onResume();
 
+        MobclickAgent.onPageStart("草稿箱");
+        MobclickAgent.onResume(getActivity());
+
         IntentFilter filter = new IntentFilter();
         filter.addAction(PublishManager.ACTION_PUBLISH_CHANNGED);
         getActivity().registerReceiver(receiver, filter);
@@ -129,6 +133,9 @@ public class DraftFragment extends ARecycleViewFragment<PublishBean, ArrayList<P
     @Override
     public void onPause() {
         super.onPause();
+
+        MobclickAgent.onPageEnd("草稿箱");
+        MobclickAgent.onPause(getActivity());
 
         getActivity().unregisterReceiver(receiver);
     }

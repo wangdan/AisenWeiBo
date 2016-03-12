@@ -17,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.umeng.analytics.MobclickAgent;
+
 import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.component.bitmaploader.core.ImageConfig;
 import org.aisen.android.component.bitmaploader.display.DefaultDisplayer;
@@ -104,6 +106,7 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
 
     private WeiBoUser mUser;
     private FriendshipShow mFriendship;
+    private int lastPosition = 1;
 
     @Override
     public int inflateContentView() {
@@ -461,6 +464,43 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
         this.mFriendship = friendship;
 
         getActivity().invalidateOptionsMenu();
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        super.onPageSelected(position);
+
+        endPage();
+        lastPosition = position;
+        startPage();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        startPage();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        endPage();
+    }
+
+    private void startPage() {
+        String[] pageNameArr = new String[]{ "个人关于", "个人微博", "个人相册", "个人收藏" };
+
+        MobclickAgent.onPageStart(pageNameArr[lastPosition]);
+        MobclickAgent.onResume(getActivity());
+    }
+
+    private void endPage() {
+        String[] pageNameArr = new String[]{ "个人关于", "个人微博", "个人相册", "个人收藏" };
+
+        MobclickAgent.onPageEnd(pageNameArr[lastPosition]);
+        MobclickAgent.onPause(getActivity());
     }
 
     public interface IUserProfileRefresh {
