@@ -7,11 +7,11 @@ import java.io.File;
 
 public interface IHttpUtility {
 
-	<T> T doGet(HttpConfig config, Setting action, Params params, Class<T> responseCls) throws TaskException;
+	<T> T doGet(HttpConfig config, Setting action, Params urlParams, Class<T> responseCls) throws TaskException;
 
-	<T> T doPost(HttpConfig config, Setting action, Params params, Class<T> responseCls, Object requestObj) throws TaskException;
+	<T> T doPost(HttpConfig config, Setting action, Params urlParams, Params bodyParams, Object requestObj, Class<T> responseCls) throws TaskException;
 
-	<T> T uploadFile(HttpConfig config, Setting action, Params params, MultipartFile[] files, Params headers, Class<T> responseCls) throws TaskException;
+	<T> T doPostFiles(HttpConfig config, Setting action, Params urlParams, Params bodyParams, MultipartFile[] files, Class<T> responseCls) throws TaskException;
 
 	class MultipartFile {
 

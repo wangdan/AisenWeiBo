@@ -149,7 +149,7 @@ public class SinaSDK extends ABizLogic {
 		params.addParameter("grant_type", "authorization_code");
 		params.addParameter("redirect_uri", getAppCallback());
 
-		return doPost(getHttpConfig(), getSetting("access_token"), configParams(params), AccessToken.class, null);
+		return doPost(getHttpConfig(), getSetting("access_token"), null, configParams(params), null, AccessToken.class);
 	}
 
     public AccessToken getWeicoAccessToken(String verifier) throws TaskException {
@@ -160,7 +160,7 @@ public class SinaSDK extends ABizLogic {
         params.addParameter("grant_type", "authorization_code");
         params.addParameter("redirect_uri", SettingUtility.getStringSetting("weico_callback"));
 
-        return doPost(getHttpConfig(), getSetting("access_token"), configParams(params), AccessToken.class, null);
+        return doPost(getHttpConfig(), getSetting("access_token"), null, configParams(params), null, AccessToken.class);
     }
 	
 	/**
@@ -174,7 +174,7 @@ public class SinaSDK extends ABizLogic {
 		Params params = new Params();
 		params.addParameter("access_token", token);
 		
-		return doPost(getHttpConfig(), getSetting("token_info"), configParams(params), TokenInfo.class, null);
+		return doPost(getHttpConfig(), getSetting("token_info"), null, configParams(params), null, TokenInfo.class);
 	}
 
 	// https://api.weibo.com/oauth2/default.html
@@ -203,7 +203,7 @@ public class SinaSDK extends ABizLogic {
 		params.addParameter("client_secret", appSecret);
 		params.addParameter("grant_type", "password");
 		
-		return doPost(getHttpConfig(), getSetting("accountLogin"), null, AccessToken.class, params);
+		return doPost(getHttpConfig(), getSetting("accountLogin"), null, params, null, AccessToken.class);
 	}
 	
 	/**
@@ -409,7 +409,7 @@ public class SinaSDK extends ABizLogic {
 	 * @return
 	 */
 	public StatusContent statusesReport(Params params) throws TaskException {
-		return doPost(getHttpConfig(), getSetting("statusesReport"), params, StatusContent.class, null);
+		return doPost(getHttpConfig(), getSetting("statusesReport"), null, params, null, StatusContent.class);
 	}
 
 	/**
@@ -460,7 +460,7 @@ public class SinaSDK extends ABizLogic {
 		Params params = new Params();
 		params.addParameter("id", id);
 
-		return doPost(configHttpConfig(), getSetting("statusFilterCreate"), configParams(params), GroupSortResult.class, null);
+		return doPost(configHttpConfig(), getSetting("statusFilterCreate"), null, configParams(params), null, GroupSortResult.class);
 	}
 	
 	/**
@@ -474,7 +474,7 @@ public class SinaSDK extends ABizLogic {
 		Params params = new Params();
 		params.addParameter("id", id);
 		
-		return doPost(configHttpConfig(), getSetting("statusMentionsShield"), configParams(params), GroupSortResult.class, null);
+		return doPost(configHttpConfig(), getSetting("statusMentionsShield"), null, configParams(params), null, GroupSortResult.class);
 	}
 
 	/**
@@ -534,7 +534,7 @@ public class SinaSDK extends ABizLogic {
 	 * @return
 	 */
 	public StatusComment commentCreate(Params params) throws TaskException {
-		return doPost(getHttpConfig(), getSetting("commentCreate"), params, StatusComment.class, null);
+		return doPost(getHttpConfig(), getSetting("commentCreate"), null, params, null, StatusComment.class);
 	}
 
 	/**
@@ -564,7 +564,7 @@ public class SinaSDK extends ABizLogic {
 	public WeiBoUser friendshipsDestroy(String uid) throws TaskException {
 		Params params = new Params("uid", uid);
 
-		return doPost(getHttpConfig(), getSetting("friendshipsDestroy"), configParams(params), WeiBoUser.class, null);
+		return doPost(getHttpConfig(), getSetting("friendshipsDestroy"), null, configParams(params), null, WeiBoUser.class);
 	}
 
 	/**
@@ -577,7 +577,7 @@ public class SinaSDK extends ABizLogic {
 	public WeiBoUser friendshipsCreate(String uid) throws TaskException {
 		Params params = new Params("uid", uid);
 
-		return doPost(getHttpConfig(), getSetting("friendshipsCreate"), configParams(params), WeiBoUser.class, null);
+		return doPost(getHttpConfig(), getSetting("friendshipsCreate"), null, configParams(params), null, WeiBoUser.class);
 	}
 
 	/**
@@ -592,7 +592,7 @@ public class SinaSDK extends ABizLogic {
 		Params params = new Params("uid", uid);
 		params.addParameter("remark", remark);
 
-		return doPost(getHttpConfig(), getSetting("friendshipsRemarkUpdate"), configParams(params), WeiBoUser.class, null);
+		return doPost(getHttpConfig(), getSetting("friendshipsRemarkUpdate"), null, configParams(params), null, WeiBoUser.class);
 	}
 
 	/**
@@ -696,7 +696,7 @@ public class SinaSDK extends ABizLogic {
 	public WeiBoUser friendshipsFollowersDestory(String uid) throws TaskException {
 		Params params = new Params("uid", uid);
 
-		return doPost(getHttpConfig(), getSetting("friendshipsFollowersDestory"), configParams(params), WeiBoUser.class, null);
+		return doPost(getHttpConfig(), getSetting("friendshipsFollowersDestory"), null, configParams(params), null, WeiBoUser.class);
 	}
 
 	/**
@@ -824,7 +824,7 @@ public class SinaSDK extends ABizLogic {
 	 */
 	public Favority favoritesCreate(String id) throws TaskException {
 		Params params = new Params("id", id);
-		return doPost(getHttpConfig(), getSetting("favoritesCreate"), params, Favority.class, null);
+		return doPost(getHttpConfig(), getSetting("favoritesCreate"), null, params, null, Favority.class);
 	}
 
 	/**
@@ -836,7 +836,7 @@ public class SinaSDK extends ABizLogic {
 	 */
 	public Favority favoritesDestory(String id) throws TaskException {
 		Params params = new Params("id", id);
-		return doPost(getHttpConfig(), getSetting("favoritesDestory"), params, Favority.class, null);
+		return doPost(getHttpConfig(), getSetting("favoritesDestory"), null, params, null, Favority.class);
 	}
 
 	/**
@@ -848,7 +848,7 @@ public class SinaSDK extends ABizLogic {
 	 */
 	public StatusContent statusDestroy(String id) throws TaskException {
 		Params params = new Params("id", id);
-		return doPost(getHttpConfig(), getSetting("statusDestroy"), params, StatusContent.class, null);
+		return doPost(getHttpConfig(), getSetting("statusDestroy"), null, params, null, StatusContent.class);
 	}
 
 	/**
@@ -891,7 +891,7 @@ public class SinaSDK extends ABizLogic {
 	public StatusContent statusesUpload(Params params, File file) throws TaskException {
 		MultipartFile[] files = file == null ? null : new MultipartFile[] { new MultipartFile("image/jpge", "pic", file) };
 
-		StatusContent s = uploadFile(getHttpConfig(), getSetting("statusesUpload"), params, files, null, StatusContent.class);
+		StatusContent s = doPostFiles(getHttpConfig(), getSetting("statusesUpload"), null, params, files, StatusContent.class);
 //		tempFile.delete();
 		return s;
 	}
@@ -902,7 +902,7 @@ public class SinaSDK extends ABizLogic {
 	 * @return
 	 */
 	public StatusContent statusesUploadUrlText(Params params) throws TaskException {
-		StatusContent s = doPost(getHttpConfig(), getSetting("statusesUploadUrlText"), params, StatusContent.class, null);
+		StatusContent s = doPost(getHttpConfig(), getSetting("statusesUploadUrlText"), params, null, null, StatusContent.class);
 		return s;
 	}
 	
@@ -923,7 +923,7 @@ public class SinaSDK extends ABizLogic {
 	 * @return
 	 */
 	public StatusContent statusesUpdate(Params params) throws TaskException {
-		return doPost(getHttpConfig(), getSetting("statusesUpdate"), configParams(params), StatusContent.class, null);
+		return doPost(getHttpConfig(), getSetting("statusesUpdate"), null, configParams(params), null, StatusContent.class);
 	}
 
 	/**
@@ -943,7 +943,7 @@ public class SinaSDK extends ABizLogic {
 	 */
 	public StatusComment commentsReply(Params params) throws TaskException {
 
-		return doPost(getHttpConfig(), getSetting("commentsReply"), params, StatusComment.class, null);
+		return doPost(getHttpConfig(), getSetting("commentsReply"), null, params, null, StatusComment.class);
 	}
 
 	/**
@@ -958,7 +958,7 @@ public class SinaSDK extends ABizLogic {
 		Params params = new Params();
 		params.addParameter("cid", commentId);
 
-		return doPost(getHttpConfig(), getSetting("commentsDestory"), params, StatusComment.class, null);
+		return doPost(getHttpConfig(), getSetting("commentsDestory"), null, params, null, StatusComment.class);
 	}
 
 	/**
@@ -1050,7 +1050,7 @@ public class SinaSDK extends ABizLogic {
 		if (!TextUtils.isEmpty(tags))
 			params.addParameter("tags", tags);
 
-		return doPost(getHttpConfig(), getSetting("friendshipsGroupsCreate"), params, Group.class, null);
+		return doPost(getHttpConfig(), getSetting("friendshipsGroupsCreate"), null, params, null, Group.class);
 	}
 
 	/**
@@ -1064,7 +1064,7 @@ public class SinaSDK extends ABizLogic {
 		Params params = new Params();
 		params.addParameter("list_id", list_id);
 
-		return doPost(getHttpConfig(), getSetting("friendshipGroupsDestory"), params, Group.class, null);
+		return doPost(getHttpConfig(), getSetting("friendshipGroupsDestory"), null, params, null, Group.class);
 	}
 
 	/**
@@ -1080,7 +1080,7 @@ public class SinaSDK extends ABizLogic {
 		params.addParameter("uid", uid);
 		params.addParameter("list_id", list_id);
 
-		return doPost(getHttpConfig(), getSetting("friendshipsGroupdMembersAdd"), params, Group.class, null);
+		return doPost(getHttpConfig(), getSetting("friendshipsGroupdMembersAdd"), null, params, null, Group.class);
 	}
 
 	/**
@@ -1096,7 +1096,7 @@ public class SinaSDK extends ABizLogic {
 		params.addParameter("uid", uid);
 		params.addParameter("list_id", list_id);
 
-		return doPost(getHttpConfig(), getSetting("friendshipsGroupdMembersDestory"), params, Group.class, null);
+		return doPost(getHttpConfig(), getSetting("friendshipsGroupdMembersDestory"), null, params, null, Group.class);
 	}
 
 	/**
@@ -1122,7 +1122,7 @@ public class SinaSDK extends ABizLogic {
 		if (tags != null)
 			params.addParameter("tags", tags);
 
-		return doPost(getHttpConfig(), getSetting("friendshipGroupsUpdate"), params, Group.class, null);
+		return doPost(getHttpConfig(), getSetting("friendshipGroupsUpdate"), null, params, null, Group.class);
 	}
 
 	/**
@@ -1165,7 +1165,7 @@ public class SinaSDK extends ABizLogic {
 		params.addParameter("list_ids", sb.toString());
 		
 		HttpConfig config = getHttpConfig();
-		return doPost(config, getSetting("friendshipGroupsOrder"), params, GroupSortResult.class, null);
+		return doPost(config, getSetting("friendshipGroupsOrder"), null, params, null, GroupSortResult.class);
 	}
 	
 	/**
@@ -1244,7 +1244,7 @@ public class SinaSDK extends ABizLogic {
 		Params params = new Params();
 		params.addParameter("json", JSON.toJSONString(requestMap));
 		
-		return doPost(config, getSetting("locationMobileGetLocation"), params, SinaLocationMap.class, null);
+		return doPost(config, getSetting("locationMobileGetLocation"), null, params, null, SinaLocationMap.class);
 	}
 	
 	/**
@@ -1335,7 +1335,7 @@ public class SinaSDK extends ABizLogic {
 	
 	/**
 	 * 发送私信
-	 * 
+	 *
 	 * @param uid
 	 * @param text
 	 * @return
@@ -1346,9 +1346,9 @@ public class SinaSDK extends ABizLogic {
 		params.addParameter("uid", uid);
 		params.addParameter("text", text);
 
-		return doPost(getHttpConfig(), getSetting("sendDmMessage"), null, Boolean.class, params);
+		return doPost(getHttpConfig(), getSetting("sendDmMessage"), null, params, null, Boolean.class);
 	}
-	
+
 	/**
 	 * 根据id获取某条微博
 	 * 
@@ -1407,7 +1407,7 @@ public class SinaSDK extends ABizLogic {
 
 		MultipartFile[] files = file == null ? null : new MultipartFile[] { new MultipartFile("image/jpge", "pic", file) };
 
-		return uploadFile(configHttpConfig(), getSetting("publishUploadPicture"), configParams(params), files, null, UploadPictureResultBean.class);
+		return doPostFiles(configHttpConfig(), getSetting("publishUploadPicture"), null, configParams(params), files, UploadPictureResultBean.class);
 	}
 
 	/**
@@ -1434,7 +1434,7 @@ public class SinaSDK extends ABizLogic {
 		try {
 
 			// ["ana",["anastasia","T-ANA小芹","anastasia 修容","广安门医院官方微博","anastasia 高光"]]
-			String response = doPost(config, action, params, String.class, null);
+			String response = doPost(config, action, null, params, null, String.class);
 			response = AisenUtils.convertUnicode(response);
 
 			Logger.d("SinaSDK", response);

@@ -26,7 +26,7 @@ public abstract class ABizLogic implements IHttpUtility {
 
 	public static final String TAG = "BizLogic";
 
-	static String getTag(Setting action, String append) {
+	public static String getTag(Setting action, String append) {
 		return TAG + "-" + action.getType() + "-" + append;
 	}
 
@@ -136,19 +136,19 @@ public abstract class ABizLogic implements IHttpUtility {
 	}
 
 	@Override
-	public <T> T doPost(HttpConfig config, Setting action, Params params, Class<T> responseCls, Object requestObj) throws TaskException {
+	public <T> T doPost(HttpConfig config, Setting action, Params urlParams, Params bodyParams, Object requestObj, Class<T> responseCls) throws TaskException {
 		long time = System.currentTimeMillis();
-		T result = getHttpUtility(action).doPost(resetHttpConfig(config, action), action, params, responseCls, requestObj);
+		T result = getHttpUtility(action).doPost(resetHttpConfig(config, action), action, urlParams, bodyParams, requestObj, responseCls);
 		Logger.v(getTag(action, "Post"), "耗时 %s ms", String.valueOf(System.currentTimeMillis() - time));
 
 		return result;
 	}
 
 	@Override
-	public <T> T uploadFile(HttpConfig config, Setting action, Params params, MultipartFile[] files, Params headers, Class<T> responseClass) throws TaskException {
+	public <T> T doPostFiles(HttpConfig config, Setting action, Params urlParams, Params bodyParams, MultipartFile[] files, Class<T> responseCls) throws TaskException {
 		long time = System.currentTimeMillis();
-		T result = getHttpUtility(action).uploadFile(resetHttpConfig(config, action), action, params, files, headers, responseClass);
-		Logger.v(getTag(action, "uploadFile"), "耗时 %s ms", String.valueOf(System.currentTimeMillis() - time));
+		T result = getHttpUtility(action).doPostFiles(resetHttpConfig(config, action), action, urlParams, bodyParams, files, responseCls);
+		Logger.v(getTag(action, "doPostFiles"), "耗时 %s ms", String.valueOf(System.currentTimeMillis() - time));
 
 		return result;
 	}

@@ -24,11 +24,11 @@ public class PictureSizeHttpUtility implements IHttpUtility {
     private static final String TAG = PictureSizeHttpUtility.class.getSimpleName();
 
     @Override
-    public <T> T doGet(HttpConfig config, Setting action, Params params, Class<T> responseCls) throws TaskException {
+    public <T> T doGet(HttpConfig config, Setting action, Params urlParams, Class<T> responseCls) throws TaskException {
         if (SystemUtils.getNetworkType() == SystemUtils.NetWorkType.none)
             return null;
 
-        String url = params.getParameter("path");
+        String url = urlParams.getParameter("path");
 
         PictureSize size = new PictureSize();
         size.setUrl(url);
@@ -57,12 +57,12 @@ public class PictureSizeHttpUtility implements IHttpUtility {
     }
 
     @Override
-    public <T> T doPost(HttpConfig config, Setting action, Params params, Class<T> responseCls, Object requestObj) throws TaskException {
+    public <T> T doPost(HttpConfig config, Setting action, Params urlParams, Params bodyParams, Object requestObj, Class<T> responseCls) throws TaskException {
         return null;
     }
 
     @Override
-    public <T> T uploadFile(HttpConfig config, Setting action, Params params, MultipartFile[] files, Params headers, Class<T> responseClass) throws TaskException {
+    public <T> T doPostFiles(HttpConfig config, Setting action, Params urlParams, Params bodyParams, MultipartFile[] files, Class<T> responseCls) throws TaskException {
         return null;
     }
 
