@@ -5,6 +5,7 @@ import org.aisen.android.common.setting.Setting;
 import org.aisen.android.common.utils.FileUtils;
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.network.biz.ABizLogic;
+import org.aisen.android.network.biz.IResult;
 import org.aisen.android.network.cache.ICacheUtility;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
@@ -44,7 +45,7 @@ public class FavoritesCacheUtility implements ICacheUtility {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public <T> Cache<T> findCacheData(Setting action, Params params, Class<T> responseCls) {
+	public IResult findCacheData(Setting action, Params params) {
 		if (AppSettings.isDisableCache())
 			return null;
 		
@@ -57,7 +58,7 @@ public class FavoritesCacheUtility implements ICacheUtility {
 				Logger.w(TAG, String.format("读取收藏数据，共耗时%sms", String.valueOf(System.currentTimeMillis() - time)));
 				
 				favorities.setEndPaging(CacheTimeUtils.isOutofdate("Favorites", AppContext.getAccount().getUser()));
-				return new Cache((T) favorities, false);
+				return favorities;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -67,7 +68,7 @@ public class FavoritesCacheUtility implements ICacheUtility {
 	}
 
 	@Override
-	public void addCacheData(Setting action, Params params, Object responseObj) {
+	public void addCacheData(Setting action, Params params, IResult responseObj) {
 		if (!AppContext.isLoggedIn())
 			return;
 
@@ -76,8 +77,7 @@ public class FavoritesCacheUtility implements ICacheUtility {
 			Favorities favorities = (Favorities) responseObj;
 			// 如果是第一页，就重置数据，否则，将数据添加到集合末尾
 			if (page > 1) {
-				Cache<Favorities> c = findCacheData(action, params, Favorities.class);
-				Favorities cache = c.getT();
+				Favorities cache = (Favorities) findCacheData(action, params);
 				if (cache != null) {
 					Favorities cacheFavorities = cache;
 

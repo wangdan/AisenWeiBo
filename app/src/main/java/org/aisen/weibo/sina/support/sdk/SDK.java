@@ -11,6 +11,7 @@ import org.aisen.android.network.http.HttpConfig;
 import org.aisen.android.network.http.IHttpUtility;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
+import org.aisen.weibo.sina.support.bean.JokeBeans;
 import org.aisen.weibo.sina.support.bean.LikeResultBean;
 import org.aisen.weibo.sina.support.bean.PictureSize;
 import org.jsoup.Connection;
@@ -21,8 +22,20 @@ import java.util.Map;
 
 public class SDK extends ABizLogic {
 
+    private SDK() {
+
+    }
+
+    private SDK(CacheMode mode) {
+        super((mode));
+    }
+
     public static SDK newInstance() {
         return new SDK();
+    }
+
+    public static SDK newInstance(CacheMode cacheMode) {
+        return new SDK(cacheMode);
     }
 
 	@Override
@@ -115,6 +128,36 @@ public class SDK extends ABizLogic {
         }
 
         throw new TaskException(TaskException.TaskError.timeout.toString());
+    }
+
+    /**
+     * 获取笑料百科列表
+     *
+     * @param id
+     * @param direction
+     * @param limit
+     * @return
+     * @throws TaskException
+     */
+    public JokeBeans getJokes(long id, String direction, int limit, int type) throws TaskException {
+        Setting action = newSetting("getJokes", "jokes", "获取笑话列表");
+        action.getExtras().put(BASE_URL, newSettingExtra(BASE_URL, "http://stream-cn-api.tclclouds.com/api/", ""));
+
+        Params params = new Params();
+        if ("up".equalsIgnoreCase(direction) || "down".equalsIgnoreCase(direction)) {
+        } else {
+            direction = "up";
+            id = 0;
+        }
+        params.addParameter("id", String.valueOf(id));
+        params.addParameter("direction", String.valueOf(direction));
+        params.addParameter("limit", String.valueOf(limit));
+        params.addParameter("mode",String.valueOf(type));
+
+        // 配置缓存器
+//        action.getExtras().put(CACHE_UTILITY, getExtra(CACHE_UTILITY, JokeCacheUtility.class.getName(), ""));
+
+        return doGet(action, params, JokeBeans.class);
     }
 
 }

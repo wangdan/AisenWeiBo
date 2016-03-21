@@ -58,7 +58,7 @@ public class InjectUtility {
 									field.set(injectedSource, sourceView.findViewById(viewId));
 
 									if (Logger.DEBUG) {
-										Logger.v(TAG, "id = %d, view = %s", viewId, field.get(injectedSource).toString());
+										Logger.v(TAG, "id = %d, view = %s", viewId, field.get(injectedSource) + "");
 									}
 								} else {
 									continue;

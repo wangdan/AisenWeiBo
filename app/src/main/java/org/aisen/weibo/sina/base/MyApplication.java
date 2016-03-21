@@ -24,6 +24,7 @@ import org.aisen.weibo.sina.support.sqlit.EmotionsDB;
 import org.aisen.weibo.sina.support.sqlit.PublishDB;
 import org.aisen.weibo.sina.support.sqlit.SinaDB;
 import org.aisen.weibo.sina.support.utils.AccountUtils;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
 
 import java.util.List;
@@ -37,6 +38,18 @@ public class MyApplication extends GlobalContext {
     public void onCreate() {
         super.onCreate();
 
+        // 打开Debug日志
+        Logger.DEBUG = BuildConfig.LOG_DEBUG;
+        // UMENG统计设置
+//        MobclickAgent.setDebugMode(Logger.DEBUG);
+        AnalyticsConfig.setAppkey(this, BuildConfig.UMENG_APP_ID);
+        MobclickAgent.setCatchUncaughtExceptions(false);
+        MobclickAgent.openActivityDurationTrack(false);
+        if (BuildConfig.LOG_DEBUG) {
+            Logger.d("Device_info", UMengUtil.getDeviceInfo(this));
+        }
+        // BUGLY日志上报
+        CrashReport.initCrashReport(this, BuildConfig.BUGLY_APP_ID, Logger.DEBUG);
         // 初始化图片加载
         BitmapLoader.newInstance(this, getImagePath());
         // 配置异常处理类
@@ -52,15 +65,6 @@ public class MyApplication extends GlobalContext {
         AppContext.setAccount(AccountUtils.getLogedinAccount());
         if (AppContext.isLoggedIn())
             AppContext.login(AppContext.getAccount());
-
-        // UMENG统计设置
-        AnalyticsConfig.setAppkey(this, BuildConfig.UMENG_APP_ID);
-        MobclickAgent.setCatchUncaughtExceptions(false);
-        MobclickAgent.openActivityDurationTrack(false);
-        // 打开Debug日志
-        Logger.DEBUG = BuildConfig.LOG_DEBUG;
-        // BUGLY日志上报
-        CrashReport.initCrashReport(this, BuildConfig.BUGLY_APP_ID, Logger.DEBUG);
     }
 
     // 刷新定时发布任务

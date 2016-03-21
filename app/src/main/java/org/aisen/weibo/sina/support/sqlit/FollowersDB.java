@@ -4,6 +4,7 @@ import org.aisen.android.common.setting.Setting;
 import org.aisen.android.common.utils.ActivityHelper;
 import org.aisen.android.component.orm.extra.Extra;
 import org.aisen.android.component.orm.utils.FieldUtils;
+import org.aisen.android.network.biz.IResult;
 import org.aisen.android.network.cache.ICacheUtility;
 import org.aisen.android.network.http.Params;
 import org.aisen.weibo.sina.base.AppContext;
@@ -38,7 +39,7 @@ public class FollowersDB implements ICacheUtility {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public <T> Cache<T> findCacheData(Setting action, Params params, Class<T> responseCls) {
+	public IResult findCacheData(Setting action, Params params) {
 		List<WeiBoUser> userList = selectAll();
 		if (userList.size() > 0) {
 			Friendship users = new Friendship();
@@ -46,14 +47,14 @@ public class FollowersDB implements ICacheUtility {
 			users.setFromCache(true);
 			users.setOutofdate(CacheTimeUtils.isOutofdate("Followers", AppContext.getAccount().getUser()));
 			users.setNext_cursor(ActivityHelper.getIntShareData("Followers" + AppContext.getAccount().getUser().getIdstr(), 0));
-			return new Cache((T) users, false);
+			return users;
 		}
 		
 		return null;
 	}
 
 	@Override
-	public void addCacheData(Setting action, Params params, Object responseObj) {
+	public void addCacheData(Setting action, Params params, IResult responseObj) {
 		boolean save = true;
 		if (params.containsKey("uid")) {
 			save = params.getParameter("uid").equals(AppContext.getAccount().getUser().getIdstr());

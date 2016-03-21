@@ -62,6 +62,7 @@ import org.aisen.weibo.sina.ui.fragment.mention.MentionPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.menu.FabGroupsFragment;
 import org.aisen.weibo.sina.ui.fragment.menu.MenuFragment;
 import org.aisen.weibo.sina.ui.fragment.search.SearchFragment;
+import org.aisen.weibo.sina.ui.fragment.secondgroups.JokesPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.settings.NotificationSettingsFragment;
 import org.aisen.weibo.sina.ui.fragment.settings.SettingsPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineDefFragment;
@@ -412,6 +413,10 @@ public class MainActivity extends BaseActivity
         case MenuFragment.MENU_SETTINGS:
             SettingsPagerFragment.launch(this);
             break;
+        // 轻松一刻
+        case MenuFragment.MENU_JOKE:
+            fragment = JokesPagerFragment.newInstance();
+            break;
         }
 
         if (fragment != null) {
@@ -448,14 +453,16 @@ public class MainActivity extends BaseActivity
         switch (item.id) {
             // 首页
             case MenuFragment.MENU_MAIN:
-                // 通知
+            // 通知
             case MenuFragment.MENU_NOTIFICATION:
-                // 提及
+            // 提及
             case MenuFragment.MENU_MENTION:
-                // 评论
+            // 评论
             case MenuFragment.MENU_CMT:
-                // 草稿箱
+            // 草稿箱
             case MenuFragment.MENU_DRAT:
+            // 轻松一刻
+            case MenuFragment.MENU_JOKE:
                 return true;
             default:
                 return false;

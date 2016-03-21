@@ -7,6 +7,7 @@ import org.aisen.android.common.utils.KeyGenerator;
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.component.orm.extra.Extra;
 import org.aisen.android.network.biz.ABizLogic;
+import org.aisen.android.network.biz.IResult;
 import org.aisen.android.network.cache.ICacheUtility;
 import org.aisen.android.network.http.Params;
 import org.aisen.weibo.sina.base.AppContext;
@@ -50,7 +51,7 @@ public class TimelineCacheUtility implements ICacheUtility {
 	
 
 	@Override
-	public <T> Cache<T> findCacheData(Setting action, Params params, Class<T> responseCls) {
+	public IResult findCacheData(Setting action, Params params) {
 		if (AppSettings.isDisableCache())
 			return null;
 		
@@ -87,7 +88,7 @@ public class TimelineCacheUtility implements ICacheUtility {
                 Logger.w(TAG, String.format("读取缓存耗时%sms", String.valueOf(System.currentTimeMillis() - time)));
                 Logger.d(TAG, String.format("返回微博数据%d条, expired = %s", statusContents.getStatuses().size(), String.valueOf(statusContents.isOutofdate())));
 
-                return new Cache((T) statusContents, false);
+                return statusContents;
             }
 		} catch (Exception e) {
 		}
@@ -96,7 +97,7 @@ public class TimelineCacheUtility implements ICacheUtility {
 	}
 
 	@Override
-	public void addCacheData(Setting action, Params params, Object responseObj) {
+	public void addCacheData(Setting action, Params params, IResult responseObj) {
         // 如果是离线请求，忽略数据缓存
         if (action.getExtras() != null && action.getExtras().containsKey("offline_action"))
             return;

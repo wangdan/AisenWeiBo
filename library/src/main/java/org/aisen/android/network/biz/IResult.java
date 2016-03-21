@@ -7,27 +7,27 @@ public interface IResult {
 	 * 
 	 * @return
 	 */
-	public boolean outofdate();
+	boolean outofdate();
 	
 	/**
 	 * 是否是缓存数据
 	 * 
 	 * @return
 	 */
-	public boolean fromCache();
+	boolean fromCache();
 	
 	/**
 	 * 没有更多数据了
 	 * 
 	 * @return
 	 */
-	public boolean endPaging();
+	boolean endPaging();
 
 	/**
 	 * 页码信息
 	 *
 	 * @return
 	 */
-	public String[] pagingIndex();
+	String[] pagingIndex();
 
 }

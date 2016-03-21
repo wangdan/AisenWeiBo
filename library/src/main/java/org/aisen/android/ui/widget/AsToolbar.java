@@ -54,8 +54,8 @@ public class AsToolbar extends Toolbar {
     
     public interface OnToolbarDoubleClick {
     	
-    	public boolean onToolbarDoubleClick();
+    	boolean onToolbarDoubleClick();
     	
     }
-    
+
 }

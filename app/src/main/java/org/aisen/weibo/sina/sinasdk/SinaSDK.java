@@ -16,6 +16,7 @@ import com.alibaba.fastjson.JSONObject;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.setting.Setting;
+import org.aisen.android.common.setting.SettingUtil;
 import org.aisen.android.common.setting.SettingUtility;
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.network.biz.ABizLogic;
@@ -1618,6 +1619,10 @@ public class SinaSDK extends ABizLogic {
 		}
 
 		return resultUsers;
+	}
+
+	protected String getPageCount(Setting setting) {
+		return SettingUtil.getSettingValue(setting, "page_count");
 	}
 	
 }

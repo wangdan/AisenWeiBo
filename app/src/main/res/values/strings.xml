@@ -208,6 +208,10 @@
     <string name="notification_mention_cmt_format">\@我的评论 %d </string>
     <string name="notification_cmt_sendbyme">发出的评论</string>
 
+    <!--轻松一刻-->
+    <string name="jokes_text">纯文</string>
+    <string name="jokes_image">图文</string>
+
     <!--no more-->
     <string name="disable_status">没有更多微博了</string>
     <string name="disable_comments">没有更多评论了</string>

@@ -7,6 +7,7 @@ import org.aisen.android.common.utils.KeyGenerator;
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.component.orm.extra.Extra;
 import org.aisen.android.network.biz.ABizLogic;
+import org.aisen.android.network.biz.IResult;
 import org.aisen.android.network.cache.ICacheUtility;
 import org.aisen.android.network.http.Params;
 import org.aisen.weibo.sina.base.AppContext;
@@ -40,7 +41,7 @@ public class CommentCacheUtility implements ICacheUtility {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public <T> Cache<T> findCacheData(Setting action, Params params, Class<T> responseCls) {
+	public IResult findCacheData(Setting action, Params params) {
 		if (AppSettings.isDisableCache())
 			return null;
 		
@@ -60,7 +61,7 @@ public class CommentCacheUtility implements ICacheUtility {
                 Logger.w(TAG, String.format("读取缓存耗时%sms", String.valueOf(System.currentTimeMillis() - time)));
                 Logger.d(TAG, String.format("返回评论数据%d条, expired = %s", cmts.getComments().size(), String.valueOf(cmts.outofdate())));
 
-                return new Cache((T) cmts, false);
+                return cmts;
             }
 
 		} catch (Exception e) {
@@ -70,12 +71,12 @@ public class CommentCacheUtility implements ICacheUtility {
 	}
 
 	@Override
-	public void addCacheData(Setting action, Params params, Object responseObj) {
+	public void addCacheData(Setting action, Params params, IResult result) {
 		if (!AppContext.isLoggedIn())
 			return;
 		
 		try {
-			StatusComments cmts = (StatusComments) responseObj;
+			StatusComments cmts = (StatusComments) result;
 			
 			List<StatusComment> newList = new ArrayList<StatusComment>();
 
