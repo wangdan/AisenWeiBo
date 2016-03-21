@@ -16,7 +16,7 @@ public abstract class AWaterfallSwipeRefreshFragment<T extends Serializable, Ts 
                                     extends AWaterfallFragment<T, Ts>
                                     implements SwipeRefreshLayout.OnRefreshListener {
 
-    @ViewInject(idStr = "swipyRefreshLayout")
+    @ViewInject(idStr = "swipeRefreshLayout")
     SwipeRefreshLayout swipeRefreshLayout;
 
     @Override

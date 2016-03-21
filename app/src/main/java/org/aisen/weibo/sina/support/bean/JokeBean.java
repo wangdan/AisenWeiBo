@@ -1,6 +1,7 @@
 package org.aisen.weibo.sina.support.bean;
 
 import org.aisen.android.component.orm.annotation.PrimaryKey;
+import org.aisen.android.ui.fragment.adapter.BasicRecycleViewAdapter;
 
 import java.io.Serializable;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
 /**
  * Created by wangdan on 16/3/14.
  */
-public class JokeBean implements Serializable {
+public class JokeBean implements Serializable, BasicRecycleViewAdapter.ItemTypeData {
 
     private static final long serialVersionUID = -2772854043143937178L;
 
@@ -24,6 +25,8 @@ public class JokeBean implements Serializable {
     private int imgWidth;
 
     private int imgHeight;
+
+    private int itemType;
 
     public long getId() {
         return id;
@@ -71,6 +74,19 @@ public class JokeBean implements Serializable {
 
     public void setImgHeight(int imgHeight) {
         this.imgHeight = imgHeight;
+    }
+
+    public int getItemType() {
+        return itemType;
+    }
+
+    public void setItemType(int itemType) {
+        this.itemType = itemType;
+    }
+
+    @Override
+    public int itemType() {
+        return getItemType();
     }
 
 }

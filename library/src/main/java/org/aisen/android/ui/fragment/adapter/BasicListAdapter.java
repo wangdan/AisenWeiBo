@@ -34,6 +34,11 @@ public class BasicListAdapter<T extends Serializable> extends BaseAdapter implem
 
     @Override
     public int getItemViewType(int position) {
+        T t = getDatas().get(position);
+        if (t instanceof ItemTypeData) {
+            return ((ItemTypeData) t).itemType();
+        }
+
         return IPagingAdapter.TYPE_NORMAL;
     }
 

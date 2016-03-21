@@ -81,4 +81,10 @@ public interface IPagingAdapter<T extends Serializable> {
         
     }
 
+    interface ItemTypeData {
+
+        int itemType();
+
+    }
+
 }

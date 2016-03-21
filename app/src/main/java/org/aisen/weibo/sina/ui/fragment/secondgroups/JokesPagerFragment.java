@@ -39,23 +39,16 @@ public class JokesPagerFragment extends ATabsTabLayoutFragment<TabItem> {
         ArrayList<TabItem> items = new ArrayList<>();
 
         // 纯文
-        items.add(new TabItem("1", getString(R.string.jokes_text)));
+        items.add(new TabItem("0", getString(R.string.jokes_text)));
         // 图文
-//        items.add(new TabItem("2", getString(R.string.jokes_image)));
+        items.add(new TabItem("1", getString(R.string.jokes_image)));
 
         return items;
     }
 
     @Override
     protected Fragment newFragment(TabItem bean) {
-        if ("1".equals(bean.getType())) {
-            return JokeTextFragment.newInstance();
-        }
-        else if ("2".equals(bean.getType())) {
-            return JokeTextFragment.newInstance();
-        }
-
-        return null;
+        return JokesFragment.newInstance(Integer.parseInt(bean.getType()));
     }
 
 }

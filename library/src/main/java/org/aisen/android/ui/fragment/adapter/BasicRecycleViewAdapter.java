@@ -62,6 +62,16 @@ public class BasicRecycleViewAdapter<T extends Serializable> extends RecyclerVie
             return headerItemTypes[position][1];
         }
 
+        int headerCount = headerItemTypes != null ? headerItemTypes.length : 0;
+        if (position >= headerCount) {
+            int realPosition = position - headerCount;
+
+            T t = getDatas().get(realPosition);
+            if (t instanceof ItemTypeData) {
+                return ((ItemTypeData) t).itemType();
+            }
+        }
+
         return IPagingAdapter.TYPE_NORMAL;
     }
 

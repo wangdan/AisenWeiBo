@@ -14,6 +14,7 @@ import org.aisen.android.network.task.TaskException;
 import org.aisen.weibo.sina.support.bean.JokeBeans;
 import org.aisen.weibo.sina.support.bean.LikeResultBean;
 import org.aisen.weibo.sina.support.bean.PictureSize;
+import org.aisen.weibo.sina.support.cache.JokesCacheUtility;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
@@ -155,7 +156,7 @@ public class SDK extends ABizLogic {
         params.addParameter("mode",String.valueOf(type));
 
         // 配置缓存器
-//        action.getExtras().put(CACHE_UTILITY, getExtra(CACHE_UTILITY, JokeCacheUtility.class.getName(), ""));
+        action.getExtras().put(CACHE_UTILITY, newSettingExtra(CACHE_UTILITY, JokesCacheUtility.class.getName(), ""));
 
         return doGet(action, params, JokeBeans.class);
     }
