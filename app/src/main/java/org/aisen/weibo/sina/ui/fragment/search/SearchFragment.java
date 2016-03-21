@@ -125,7 +125,7 @@ public class SearchFragment extends ATimelineFragment {
         return new AHeaderItemViewCreator<StatusContent>() {
 
             @Override
-            public int[][] setHeaderLayoutRes() {
+            public int[][] setHeaders() {
                 return new int[][]{ { R.layout.ui_search_headerview, 100 } };
             }
 

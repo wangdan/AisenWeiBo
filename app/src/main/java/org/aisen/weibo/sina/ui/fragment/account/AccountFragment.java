@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,7 +30,6 @@ import org.aisen.android.ui.fragment.ARecycleViewFragment;
 import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
 import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
-import org.aisen.android.ui.fragment.itemview.NormalItemViewCreator;
 import org.aisen.android.ui.widget.CircleImageView;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
@@ -119,7 +119,12 @@ public class AccountFragment extends ARecycleViewFragment<AccountBean, ArrayList
 
     @Override
     public IItemViewCreator<AccountBean> configItemViewCreator() {
-        return new NormalItemViewCreator<AccountBean>(R.layout.item_account) {
+        return new IItemViewCreator<AccountBean>() {
+
+            @Override
+            public View newContentView(LayoutInflater inflater, ViewGroup parent, int viewType) {
+                return inflater.inflate(R.layout.item_account, parent, false);
+            }
 
             @Override
             public IITemView<AccountBean> newItemView(View convertView, int viewType) {

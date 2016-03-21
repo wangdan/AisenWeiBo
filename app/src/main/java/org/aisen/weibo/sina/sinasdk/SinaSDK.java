@@ -902,7 +902,7 @@ public class SinaSDK extends ABizLogic {
 	 * @return
 	 */
 	public StatusContent statusesUploadUrlText(Params params) throws TaskException {
-		StatusContent s = doPost(getHttpConfig(), getSetting("statusesUploadUrlText"), params, null, null, StatusContent.class);
+		StatusContent s = doPost(getHttpConfig(), getSetting("statusesUploadUrlText"), null, params, null, StatusContent.class);
 		return s;
 	}
 	

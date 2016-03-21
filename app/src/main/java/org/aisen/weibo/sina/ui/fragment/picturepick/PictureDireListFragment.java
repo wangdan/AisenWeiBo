@@ -1,7 +1,9 @@
 package org.aisen.weibo.sina.ui.fragment.picturepick;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,7 +17,6 @@ import org.aisen.android.ui.fragment.AListFragment;
 import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
 import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
-import org.aisen.android.ui.fragment.itemview.NormalItemViewCreator;
 import org.aisen.weibo.sina.R;
 
 import java.io.Serializable;
@@ -78,7 +79,12 @@ public class PictureDireListFragment extends AListFragment<PictureDireListFragme
 
     @Override
     public IItemViewCreator<PictureFileDire> configItemViewCreator() {
-        return new NormalItemViewCreator<PictureFileDire>(R.layout.item_picture_pick_dire) {
+        return new IItemViewCreator<PictureFileDire>() {
+
+            @Override
+            public View newContentView(LayoutInflater inflater, ViewGroup parent, int viewType) {
+                return inflater.inflate(R.layout.item_picture_pick_dire, parent, false);
+            }
 
             @Override
             public IITemView<PictureFileDire> newItemView(View convertView, int viewType) {

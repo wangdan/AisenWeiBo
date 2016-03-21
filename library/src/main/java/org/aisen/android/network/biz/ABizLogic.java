@@ -74,28 +74,28 @@ public abstract class ABizLogic implements IHttpUtility {
 		ICacheUtility cacheUtility = null;// 缓存器
 		T cache = null;// 返回的缓存
 
-		if (mCacheMode != CacheMode.disable) {
-			// 配置的缓存模式
-			if (action.getExtras().containsKey(CACHE_UTILITY)) {
-				if (!TextUtils.isEmpty(action.getExtras().get(CACHE_UTILITY).getValue())) {
-					try {
-						cacheUtility = (ICacheUtility) Class.forName(action.getExtras().get(CACHE_UTILITY).getValue()).newInstance();
-					} catch (Exception e) {
-						Logger.w(getTag(action, "Get"), "CacheUtility 配置错误");
-					}
+		// 配置的缓存模式
+		if (action.getExtras().containsKey(CACHE_UTILITY)) {
+			if (!TextUtils.isEmpty(action.getExtras().get(CACHE_UTILITY).getValue())) {
+				try {
+					cacheUtility = (ICacheUtility) Class.forName(action.getExtras().get(CACHE_UTILITY).getValue()).newInstance();
+				} catch (Exception e) {
+					Logger.w(getTag(action, "Get"), "CacheUtility 配置错误");
 				}
 			}
-			else {
-				Logger.v(getTag(action, "Get"), "CacheUtility 没有配置");
-			}
+		}
+		else {
+			Logger.v(getTag(action, "Get"), "CacheUtility 没有配置");
+		}
 
+		if (mCacheMode != CacheMode.disable) {
 			// 拉取缓存数据
 			if (cacheUtility != null) {
 				long time = System.currentTimeMillis();
 
 				cache = (T) cacheUtility.findCacheData(action, params);
 				if (cache != null) {
-					Logger.v(getTag(action, "Cache"), "读取缓存耗时 %s ms", String.valueOf(System.currentTimeMillis() - time));
+					Logger.d(getTag(action, "Cache"), "读取缓存耗时 %s ms", String.valueOf(System.currentTimeMillis() - time));
 				}
 			}
 		}
@@ -105,13 +105,13 @@ public abstract class ABizLogic implements IHttpUtility {
 			try {
 				long time = System.currentTimeMillis();
 				T result = getHttpUtility(action).doGet(resetHttpConfig(config, action), action, params, responseCls);
-				Logger.v(getTag(action, "Get-Http"), "耗时 %s ms", String.valueOf(System.currentTimeMillis() - time));
+				Logger.d(getTag(action, "Get-Http"), "耗时 %s ms", String.valueOf(System.currentTimeMillis() - time));
 
 				if (result != null && result instanceof IResult) {
 					putToCache(action, params, (IResult) result, cacheUtility);
 				}
 
-				Logger.v(getTag(action, "Get-Http"), "返回服务器数据");
+				Logger.d(getTag(action, "Get-Http"), "返回服务器数据");
 				return result;
 			} catch (TaskException e) {
 				Logger.w(getTag(action, "Exception"), e + "");
@@ -122,7 +122,7 @@ public abstract class ABizLogic implements IHttpUtility {
 			}
 		} else {
 			if (cache != null) {
-				Logger.v(getTag(action, "Cache"), "返回缓存数据");
+				Logger.d(getTag(action, "Cache"), "返回缓存数据");
 				// 缓存存在，且有效
 				return cache;
 			}
@@ -139,7 +139,7 @@ public abstract class ABizLogic implements IHttpUtility {
 	public <T> T doPost(HttpConfig config, Setting action, Params urlParams, Params bodyParams, Object requestObj, Class<T> responseCls) throws TaskException {
 		long time = System.currentTimeMillis();
 		T result = getHttpUtility(action).doPost(resetHttpConfig(config, action), action, urlParams, bodyParams, requestObj, responseCls);
-		Logger.v(getTag(action, "Post"), "耗时 %s ms", String.valueOf(System.currentTimeMillis() - time));
+		Logger.d(getTag(action, "Post"), "耗时 %s ms", String.valueOf(System.currentTimeMillis() - time));
 
 		return result;
 	}
@@ -148,7 +148,7 @@ public abstract class ABizLogic implements IHttpUtility {
 	public <T> T doPostFiles(HttpConfig config, Setting action, Params urlParams, Params bodyParams, MultipartFile[] files, Class<T> responseCls) throws TaskException {
 		long time = System.currentTimeMillis();
 		T result = getHttpUtility(action).doPostFiles(resetHttpConfig(config, action), action, urlParams, bodyParams, files, responseCls);
-		Logger.v(getTag(action, "doPostFiles"), "耗时 %s ms", String.valueOf(System.currentTimeMillis() - time));
+		Logger.d(getTag(action, "doPostFiles"), "耗时 %s ms", String.valueOf(System.currentTimeMillis() - time));
 
 		return result;
 	}
@@ -229,11 +229,11 @@ public abstract class ABizLogic implements IHttpUtility {
 		public Void workInBackground(Void... p) throws TaskException {
             long time = System.currentTimeMillis();
 
-			Logger.v(getTag(setting, "Cache"), "开始保存缓存");
+			Logger.d(getTag(setting, "Cache"), "开始保存缓存");
 
 			cacheUtility.addCacheData(setting, params, o);
 
-			Logger.v(getTag(setting, "Cache"), "缓存耗时 %s ms", String.valueOf(System.currentTimeMillis() - time));
+			Logger.d(getTag(setting, "Cache"), "保存缓存耗时 %s ms", String.valueOf(System.currentTimeMillis() - time));
 
 			return null;
 		}

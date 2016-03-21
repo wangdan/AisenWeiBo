@@ -42,24 +42,9 @@ public class BasicListAdapter<T extends Serializable> extends BaseAdapter implem
         IITemView<T> itemView;
 
         if (convertView == null) {
-            int[][] itemResAndTypeArr = itemViewCreator.setLayoutRes();
-
-            int itemRes = -1;
             int itemType = getItemViewType(position);
 
-            for (int[] itemResAndType : itemResAndTypeArr) {
-                if (itemType == itemResAndType[1]) {
-                    itemRes = itemResAndType[0];
-
-                    break;
-                }
-            }
-
-            if (itemRes == -1) {
-                throw new RuntimeException("没有找到ViewRes，ViewType = " + itemType);
-            }
-
-            convertView = View.inflate(holderFragment.getActivity(), itemRes, null);
+            convertView = itemViewCreator.newContentView(holderFragment.getActivity().getLayoutInflater(), parent, itemType);
 
             itemView = itemViewCreator.newItemView(convertView, itemType);
             itemView.onBindView(convertView);

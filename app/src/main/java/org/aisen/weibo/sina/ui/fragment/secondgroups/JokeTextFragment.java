@@ -1,18 +1,17 @@
 package org.aisen.weibo.sina.ui.fragment.secondgroups;
 
 import android.support.v7.widget.CardView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.aisen.android.support.inject.ViewInject;
-import org.aisen.android.ui.fragment.ARecycleViewSwipeRefreshFragment;
 import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
 import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
-import org.aisen.android.ui.fragment.itemview.NormalItemViewCreator;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.support.bean.JokeBean;
-import org.aisen.weibo.sina.support.bean.JokeBeans;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
 
 import java.util.Random;
@@ -34,7 +33,12 @@ public class JokeTextFragment extends JokeBaseFragment {
 
     @Override
     public IItemViewCreator<JokeBean> configItemViewCreator() {
-        return new NormalItemViewCreator<JokeBean>(R.layout.item_joke_text) {
+        return new IItemViewCreator<JokeBean>() {
+
+            @Override
+            public View newContentView(LayoutInflater inflater, ViewGroup parent, int viewType) {
+                return inflater.inflate(R.layout.item_joke_text, parent, false);
+            }
 
             @Override
             public IITemView<JokeBean> newItemView(View convertView, int viewType) {

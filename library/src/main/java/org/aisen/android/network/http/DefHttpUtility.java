@@ -43,8 +43,7 @@ public class DefHttpUtility implements IHttpUtility {
 		Request.Builder builder = createRequestBuilder(config, action, urlParams, "Post");
 
 		if (bodyParams != null) {
-			Params p = (Params) requestObj;
-			String requestBodyStr = ParamsUtil.encodeToURLParams(p);
+			String requestBodyStr = ParamsUtil.encodeToURLParams(bodyParams);
 
 			Logger.d(getTag(action, "Post"), requestBodyStr);
 
@@ -76,7 +75,7 @@ public class DefHttpUtility implements IHttpUtility {
 				String value = bodyParams.getParameter(key);
 				multipartBuilder.addFormDataPart(key, value);
 
-				Logger.v(getTag(action, method), "BodyParam[%s, %s]", key, value);
+				Logger.d(getTag(action, method), "BodyParam[%s, %s]", key, value);
 			}
 		}
 
@@ -87,13 +86,13 @@ public class DefHttpUtility implements IHttpUtility {
 				if (file.getBytes() != null) {
 					multipartBuilder.addFormDataPart(file.getKey(), file.getKey(), RequestBody.create(MediaType.parse("application/octet-stream"), file.getBytes()));
 
-					Logger.v(getTag(action, method), "Multipart bytes, length = " + file.getBytes().length);
+					Logger.d(getTag(action, method), "Multipart bytes, length = " + file.getBytes().length);
 				}
 				// 文件
 				else if (file.getFile() != null) {
 					multipartBuilder.addFormDataPart(file.getKey(), file.getFile().getName(), RequestBody.create(MediaType.parse(file.getContentType()), file.getFile()));
 
-					Logger.v(getTag(action, method), "Multipart file, name = %s, path = %s", file.getFile().getName(), file.getFile().getAbsolutePath());
+					Logger.d(getTag(action, method), "Multipart file, name = %s, path = %s", file.getFile().getName(), file.getFile().getAbsolutePath());
 				}
 			}
 
@@ -113,7 +112,7 @@ public class DefHttpUtility implements IHttpUtility {
 		}
 
 		String url = (config.baseUrl + action.getValue() + (urlParams == null ? "" : "?" + ParamsUtil.encodeToURLParams(urlParams))).replaceAll(" ", "");
-		Logger.v(getTag(action, method), url);
+		Logger.d(getTag(action, method), url);
 
 		Request.Builder builder = new Request.Builder();
 		builder.url(url);
@@ -122,7 +121,7 @@ public class DefHttpUtility implements IHttpUtility {
 		if (!TextUtils.isEmpty(config.cookie)) {
 			builder.header("Cookie", config.cookie);
 
-			Logger.v(getTag(action, method), "Cookie = " + config.cookie);
+			Logger.d(getTag(action, method), "Cookie = " + config.cookie);
 		}
 		// add header
 		if (config.headerMap.size() > 0) {
@@ -130,7 +129,7 @@ public class DefHttpUtility implements IHttpUtility {
 			for (String key : keySet) {
 				builder.addHeader(key, config.headerMap.get(key));
 
-				Logger.v(getTag(action, method), "Header[%s, %s]", key, config.headerMap.get(key));
+				Logger.d(getTag(action, method), "Header[%s, %s]", key, config.headerMap.get(key));
 			}
 		}
 

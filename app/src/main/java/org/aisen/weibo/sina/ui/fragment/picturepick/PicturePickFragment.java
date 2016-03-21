@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -35,7 +36,6 @@ import org.aisen.android.ui.fragment.AGridFragment;
 import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
 import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
-import org.aisen.android.ui.fragment.itemview.NormalItemViewCreator;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 
@@ -253,7 +253,12 @@ public class PicturePickFragment extends AGridFragment<String, ArrayList<String>
 
     @Override
     public IItemViewCreator<String> configItemViewCreator() {
-        return new NormalItemViewCreator<String>(R.layout.item_picture_pick) {
+        return new IItemViewCreator<String>() {
+
+            @Override
+            public View newContentView(LayoutInflater inflater, ViewGroup parent, int viewType) {
+                return inflater.inflate(R.layout.item_picture_pick, parent, false);
+            }
 
             @Override
             public IITemView<String> newItemView(View convertView, int viewType) {

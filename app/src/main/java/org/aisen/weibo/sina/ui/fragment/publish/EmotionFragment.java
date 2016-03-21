@@ -4,6 +4,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -15,7 +16,6 @@ import org.aisen.android.ui.fragment.AGridFragment;
 import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
 import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
-import org.aisen.android.ui.fragment.itemview.NormalItemViewCreator;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.support.bean.Emotion;
 import org.aisen.weibo.sina.support.bean.Emotions;
@@ -66,7 +66,12 @@ public class EmotionFragment extends AGridFragment<Emotion, Emotions>
 
 	@Override
 	public IItemViewCreator<Emotion> configItemViewCreator() {
-		return new NormalItemViewCreator<Emotion>(R.layout.item_emotion) {
+		return new IItemViewCreator<Emotion>() {
+
+			@Override
+			public View newContentView(LayoutInflater inflater, ViewGroup parent, int viewType) {
+				return inflater.inflate(R.layout.item_emotion, parent, false);
+			}
 
 			@Override
 			public IITemView<Emotion> newItemView(View convertView, int viewType) {

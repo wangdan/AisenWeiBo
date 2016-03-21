@@ -1,7 +1,6 @@
 package org.aisen.android.ui.fragment.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -51,7 +50,7 @@ public class BasicRecycleViewAdapter<T extends Serializable> extends RecyclerVie
 
     public void setHeaderItemViewCreator(AHeaderItemViewCreator<T> headerItemViewCreator) {
         this.headerItemViewCreator = headerItemViewCreator;
-        headerItemTypes = headerItemViewCreator.setHeaderLayoutRes();
+        headerItemTypes = headerItemViewCreator.setHeaders();
     }
 
     @Override
@@ -84,52 +83,27 @@ public class BasicRecycleViewAdapter<T extends Serializable> extends RecyclerVie
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        int[][] itemResAndTypeArr = itemViewCreator.setLayoutRes();
-
-        int itemRes = -1;
-        int itemType = viewType;
-
-        if (!isHeaderType(viewType) && !isFooterType(viewType)) {
-            for (int[] itemResAndType : itemResAndTypeArr) {
-                if (itemType == itemResAndType[1]) {
-                    itemRes = itemResAndType[0];
-
-                    break;
-                }
-            }
-
-            if (itemRes == -1) {
-                throw new RuntimeException("没有找到ViewRes，ViewType = " + itemType);
-            }
-        }
-
         View convertView;
         IITemView<T> itemView;
-        if (viewType == IPagingAdapter.TYPE_FOOTER) {
+
+        if (isFooterType(viewType)) {
             itemView = footerItemView;
 
             convertView = itemView.getConvertView();
         }
         else if (isHeaderType(viewType)) {
-            for (int[] itemResAndType : headerItemTypes) {
-                if (itemType == itemResAndType[1]) {
-                    itemRes = itemResAndType[0];
-
-                    break;
-                }
-            }
-
-            convertView = LayoutInflater.from(holderFragment.getActivity()).inflate(itemRes, parent, false);
+            convertView = headerItemViewCreator.newContentView(holderFragment.getActivity().getLayoutInflater(), parent, viewType);
 
             itemView = headerItemViewCreator.newItemView(convertView, viewType);
             convertView.setTag(R.id.itemview, itemView);
         }
         else {
-            convertView = LayoutInflater.from(holderFragment.getActivity()).inflate(itemRes, parent, false);
+            convertView = itemViewCreator.newContentView(holderFragment.getActivity().getLayoutInflater(), parent, viewType);
 
             itemView = itemViewCreator.newItemView(convertView, viewType);
             convertView.setTag(R.id.itemview, itemView);
         }
+
         itemView.onBindView(convertView);
 
         if (!(itemView instanceof ARecycleViewItemView)) {

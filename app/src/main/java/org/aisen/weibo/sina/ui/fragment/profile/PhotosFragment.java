@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 
@@ -22,7 +23,6 @@ import org.aisen.android.ui.fragment.ATabsFragment;
 import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
 import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
-import org.aisen.android.ui.fragment.itemview.NormalItemViewCreator;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
@@ -124,7 +124,12 @@ public class PhotosFragment extends AGridSwipyRefreshFragment<PhotoBean, PhotosB
 
     @Override
     public IItemViewCreator<PhotoBean> configItemViewCreator() {
-        return new NormalItemViewCreator<PhotoBean>(R.layout.item_profile_photos) {
+        return new IItemViewCreator<PhotoBean>() {
+
+            @Override
+            public View newContentView(LayoutInflater inflater, ViewGroup parent, int viewType) {
+                return inflater.inflate(R.layout.item_profile_photos, parent, false);
+            }
 
             @Override
             public IITemView<PhotoBean> newItemView(View convertView, int viewType) {

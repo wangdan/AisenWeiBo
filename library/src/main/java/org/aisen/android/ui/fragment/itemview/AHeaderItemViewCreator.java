@@ -1,5 +1,9 @@
 package org.aisen.android.ui.fragment.itemview;
 
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import java.io.Serializable;
 
 /**
@@ -9,10 +13,19 @@ import java.io.Serializable;
 public abstract class AHeaderItemViewCreator<T extends Serializable> implements IItemViewCreator<T> {
 
     @Override
-    final public int[][] setLayoutRes() {
-        return setHeaderLayoutRes();
+    public View newContentView(LayoutInflater inflater, ViewGroup parent, int viewType) {
+        for (int[] headerLayoutRes : setHeaders()) {
+            if (viewType == headerLayoutRes[1]) {
+                return inflater.inflate(headerLayoutRes[0], parent, false);
+            }
+        }
+        return null;
     }
 
-    abstract public int[][] setHeaderLayoutRes();
+    /**
+     *
+     * @return position 0:layoutRes,1:viewType
+     */
+    abstract public int[][] setHeaders();
 
 }

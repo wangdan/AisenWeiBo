@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
@@ -27,7 +28,6 @@ import org.aisen.android.ui.fragment.ARecycleViewFragment;
 import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
 import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
-import org.aisen.android.ui.fragment.itemview.NormalItemViewCreator;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.MyApplication;
@@ -106,7 +106,12 @@ public class DraftFragment extends ARecycleViewFragment<PublishBean, ArrayList<P
 
     @Override
     public IItemViewCreator<PublishBean> configItemViewCreator() {
-        return new NormalItemViewCreator<PublishBean>(R.layout.item_draft) {
+        return new IItemViewCreator<PublishBean>() {
+
+            @Override
+            public View newContentView(LayoutInflater inflater, ViewGroup parent, int viewType) {
+                return inflater.inflate(R.layout.item_draft, parent, false);
+            }
 
             @Override
             public IITemView<PublishBean> newItemView(View convertView, int viewType) {

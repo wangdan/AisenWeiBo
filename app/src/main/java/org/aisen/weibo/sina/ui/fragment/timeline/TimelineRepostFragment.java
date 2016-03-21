@@ -4,7 +4,9 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,7 +24,6 @@ import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
 import org.aisen.android.ui.fragment.itemview.BasicFooterView;
 import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
-import org.aisen.android.ui.fragment.itemview.NormalItemViewCreator;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
@@ -191,7 +192,12 @@ public class TimelineRepostFragment extends AListFragment<StatusContent, StatusC
 
     @Override
     public IItemViewCreator<StatusContent> configItemViewCreator() {
-        return new NormalItemViewCreator<StatusContent>(TimelineCommentItemView.LAYOUT_RES) {
+        return new IItemViewCreator<StatusContent>() {
+
+            @Override
+            public View newContentView(LayoutInflater inflater, ViewGroup parent, int viewType) {
+                return inflater.inflate(TimelineCommentItemView.LAYOUT_RES, parent, false);
+            }
 
             @Override
             public IITemView<StatusContent> newItemView(View convertView, int viewType) {
@@ -215,7 +221,12 @@ public class TimelineRepostFragment extends AListFragment<StatusContent, StatusC
 
     @Override
     protected IItemViewCreator<StatusContent> configFooterViewCreator() {
-        return new NormalItemViewCreator<StatusContent>(BasicFooterView.LAYOUT_RES) {
+        return new IItemViewCreator<StatusContent>() {
+
+            @Override
+            public View newContentView(LayoutInflater inflater, ViewGroup parent, int viewType) {
+                return inflater.inflate(BasicFooterView.LAYOUT_RES, parent, false);
+            }
 
             @Override
             public IITemView<StatusContent> newItemView(View convertView, int viewType) {

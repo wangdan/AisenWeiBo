@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -34,7 +35,6 @@ import org.aisen.android.ui.fragment.AListSwipeRefreshFragment;
 import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
 import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
-import org.aisen.android.ui.fragment.itemview.NormalItemViewCreator;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
@@ -116,7 +116,12 @@ public class AddFriendMentionFragment extends AListSwipeRefreshFragment<WeiBoUse
 
     @Override
     public IItemViewCreator<WeiBoUser> configItemViewCreator() {
-        return new NormalItemViewCreator<WeiBoUser>(R.layout.item_friend) {
+        return new IItemViewCreator<WeiBoUser>() {
+
+            @Override
+            public View newContentView(LayoutInflater inflater, ViewGroup parent, int viewType) {
+                return inflater.inflate(R.layout.item_friend, parent, false);
+            }
 
             @Override
             public IITemView<WeiBoUser> newItemView(View convertView, int viewType) {

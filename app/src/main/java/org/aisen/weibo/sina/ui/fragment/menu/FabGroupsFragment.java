@@ -1,7 +1,9 @@
 package org.aisen.weibo.sina.ui.fragment.menu;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -12,7 +14,6 @@ import org.aisen.android.common.utils.Utils;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.fragment.AListFragment;
 import org.aisen.android.ui.fragment.adapter.ABasicItemView;
-import org.aisen.android.ui.fragment.itemview.NormalItemViewCreator;
 import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
 import org.aisen.weibo.sina.R;
@@ -57,7 +58,12 @@ public class FabGroupsFragment extends AListFragment<Group, Groups> {
 
     @Override
     public IItemViewCreator<Group> configItemViewCreator() {
-        return new NormalItemViewCreator<Group>(R.layout.item_main_group) {
+        return new IItemViewCreator<Group>() {
+
+            @Override
+            public View newContentView(LayoutInflater inflater, ViewGroup parent, int viewType) {
+                return inflater.inflate(R.layout.item_main_group, parent, false);
+            }
 
             @Override
             public IITemView<Group> newItemView(View convertView, int viewType) {

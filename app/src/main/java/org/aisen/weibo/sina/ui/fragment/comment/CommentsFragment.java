@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 import org.aisen.android.common.utils.SystemUtils;
@@ -15,7 +16,6 @@ import org.aisen.android.ui.fragment.adapter.BasicRecycleViewAdapter;
 import org.aisen.android.ui.fragment.itemview.BasicFooterView;
 import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
-import org.aisen.android.ui.fragment.itemview.NormalItemViewCreator;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
@@ -86,7 +86,12 @@ public class CommentsFragment extends ARecycleViewSwipeRefreshFragment<StatusCom
 
     @Override
     protected IItemViewCreator<StatusComment> configFooterViewCreator() {
-        return new NormalItemViewCreator<StatusComment>(BasicFooterView.LAYOUT_RES) {
+        return new IItemViewCreator<StatusComment>() {
+
+            @Override
+            public View newContentView(LayoutInflater inflater, ViewGroup parent, int viewType) {
+                return inflater.inflate(BasicFooterView.LAYOUT_RES, parent, false);
+            }
 
             @Override
             public IITemView<StatusComment> newItemView(View convertView, int viewType) {
@@ -141,7 +146,12 @@ public class CommentsFragment extends ARecycleViewSwipeRefreshFragment<StatusCom
 
     @Override
     public IItemViewCreator<StatusComment> configItemViewCreator() {
-        return new NormalItemViewCreator<StatusComment>(MentionCmtItemView.RES_LAYOUT_ID) {
+        return new IItemViewCreator<StatusComment>() {
+
+            @Override
+            public View newContentView(LayoutInflater inflater, ViewGroup parent, int viewType) {
+                return inflater.inflate(MentionCmtItemView.RES_LAYOUT_ID, parent, false);
+            }
 
             @Override
             public IITemView<StatusComment> newItemView(View convertView, int viewType) {

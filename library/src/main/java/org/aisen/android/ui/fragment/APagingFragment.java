@@ -21,7 +21,6 @@ import org.aisen.android.ui.fragment.itemview.AHeaderItemViewCreator;
 import org.aisen.android.ui.fragment.itemview.BasicFooterView;
 import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
-import org.aisen.android.ui.fragment.itemview.NormalItemViewCreator;
 import org.aisen.android.ui.fragment.itemview.OnFooterViewListener;
 import org.aisen.android.ui.widget.AsToolbar;
 
@@ -282,8 +281,8 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
     protected void setupRefreshView(Bundle savedInstanceSate) {
 		if (refreshConfig != null && refreshConfig.footerMoreEnable) {
 			mFooterItemViewCreator = configFooterViewCreator();
-			View convertView = View.inflate(getActivity(), mFooterItemViewCreator.setLayoutRes()[0][0], null);
-			mFooterItemView = (AFooterItemView<T>) mFooterItemViewCreator.newItemView(convertView, IPagingAdapter.TYPE_NORMAL);
+			View convertView = mFooterItemViewCreator.newContentView(getActivity().getLayoutInflater(), null, IPagingAdapter.TYPE_FOOTER);
+			mFooterItemView = (AFooterItemView<T>) mFooterItemViewCreator.newItemView(convertView, IPagingAdapter.TYPE_FOOTER);
 		}
 
 		mHeaderItemViewCreator = configHeaderViewCreator();
@@ -559,7 +558,12 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 	}
 
 	protected IItemViewCreator<T> configFooterViewCreator() {
-		return new NormalItemViewCreator<T>(BasicFooterView.LAYOUT_RES) {
+		return new IItemViewCreator<T>() {
+
+			@Override
+			public View newContentView(LayoutInflater inflater, ViewGroup parent, int viewType) {
+				return inflater.inflate(BasicFooterView.LAYOUT_RES, parent, false);
+			}
 
 			@Override
 			public IITemView<T> newItemView(View convertView, int viewType) {

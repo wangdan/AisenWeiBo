@@ -4,7 +4,9 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,7 +20,7 @@ import org.aisen.android.ui.fragment.APagingFragment;
 import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
 import org.aisen.android.ui.fragment.adapter.BasicRecycleViewAdapter;
 import org.aisen.android.ui.fragment.itemview.IITemView;
-import org.aisen.android.ui.fragment.itemview.NormalItemViewCreator;
+import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
 import org.aisen.android.ui.widget.MDButton;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.sinasdk.bean.SearchsResultUser;
@@ -115,10 +117,11 @@ public class SearchHeaderView extends ARecycleViewItemView<StatusContent> implem
         }
     }
 
-    class HeaderItemCreator extends NormalItemViewCreator<SearchsResultUser> {
+    class HeaderItemCreator implements IItemViewCreator<SearchsResultUser> {
 
-        public HeaderItemCreator() {
-            super(R.layout.item_search_headerview);
+        @Override
+        public View newContentView(LayoutInflater inflater, ViewGroup parent, int viewType) {
+            return inflater.inflate(R.layout.item_search_headerview, parent, false);
         }
 
         @Override

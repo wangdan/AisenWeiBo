@@ -1,17 +1,16 @@
 package org.aisen.weibo.sina.ui.fragment.profile;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.ui.fragment.itemview.AHeaderItemViewCreator;
 import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
-import org.aisen.android.ui.fragment.itemview.NormalItemViewCreator;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
@@ -21,12 +20,8 @@ import org.aisen.weibo.sina.sinasdk.bean.StatusContents;
 import org.aisen.weibo.sina.sinasdk.bean.Token;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
-import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
-import org.aisen.weibo.sina.ui.fragment.comment.TimelineDetailPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.ATimelineFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineItemView;
-
-import java.util.ArrayList;
 
 /**
  * 用户的微博
@@ -72,7 +67,12 @@ public class ProfileTimelineFragment extends ATimelineFragment {
 
     @Override
     public IItemViewCreator<StatusContent> configItemViewCreator() {
-        return new NormalItemViewCreator<StatusContent>(R.layout.item_profile_timeline) {
+        return new IItemViewCreator<StatusContent>() {
+
+            @Override
+            public View newContentView(LayoutInflater inflater, ViewGroup parent, int viewType) {
+                return inflater.inflate(R.layout.item_profile_timeline, parent, false);
+            }
 
             @Override
             public IITemView<StatusContent> newItemView(View convertView, int viewType) {
@@ -87,7 +87,7 @@ public class ProfileTimelineFragment extends ATimelineFragment {
         return new AHeaderItemViewCreator<StatusContent>() {
 
             @Override
-            public int[][] setHeaderLayoutRes() {
+            public int[][] setHeaders() {
                 return new int[][]{ { ProfileTimelineHeaderView.LAYOUT_RES, 100 } };
             }
 

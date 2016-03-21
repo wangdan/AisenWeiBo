@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
@@ -18,7 +20,6 @@ import org.aisen.android.ui.fragment.AListFragment;
 import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
 import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
-import org.aisen.android.ui.fragment.itemview.NormalItemViewCreator;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
@@ -119,7 +120,12 @@ public class MentionSuggestionFragment extends AListFragment<MentionSuggestionBe
 
 	@Override
 	public IItemViewCreator<MentionSuggestionBean> configItemViewCreator() {
-		return new NormalItemViewCreator<MentionSuggestionBean>(R.layout.item_friend) {
+		return new IItemViewCreator<MentionSuggestionBean>() {
+
+			@Override
+			public View newContentView(LayoutInflater inflater, ViewGroup parent, int viewType) {
+				return inflater.inflate(R.layout.item_friend, parent, false);
+			}
 
 			@Override
 			public IITemView<MentionSuggestionBean> newItemView(View convertView, int viewType) {
