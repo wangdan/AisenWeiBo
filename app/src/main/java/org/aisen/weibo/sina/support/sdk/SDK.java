@@ -14,7 +14,9 @@ import org.aisen.android.network.task.TaskException;
 import org.aisen.weibo.sina.support.bean.JokeBeans;
 import org.aisen.weibo.sina.support.bean.LikeResultBean;
 import org.aisen.weibo.sina.support.bean.PictureSize;
+import org.aisen.weibo.sina.support.bean.WallpaperBeans;
 import org.aisen.weibo.sina.support.cache.JokesCacheUtility;
+import org.aisen.weibo.sina.support.cache.WallpaperCacheUtility;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
@@ -159,6 +161,29 @@ public class SDK extends ABizLogic {
         action.getExtras().put(CACHE_UTILITY, newSettingExtra(CACHE_UTILITY, JokesCacheUtility.class.getName(), ""));
 
         return doGet(action, params, JokeBeans.class);
+    }
+
+    /**
+     * 获取壁纸列表
+     *
+     * @param page
+     * @return
+     * @throws TaskException
+     */
+    public WallpaperBeans getWallpaper(int page) throws TaskException {
+        Setting action = newSetting("getWallpaper", "wallpaper/newestorhot/content", "获取最新壁纸列表");
+        action.getExtras().put(BASE_URL, newSettingExtra(BASE_URL, "http://apps.tclclouds.com/api/", ""));
+
+        Params params = new Params();
+        params.addParameter("flag", "1");// 1：最新；2：最热）
+        params.addParameter("page", String.valueOf(page));
+        params.addParameter("per_page", "30");
+        params.addParameter("encoder", "debug");
+
+        // 配置缓存器
+        action.getExtras().put(CACHE_UTILITY, newSettingExtra(CACHE_UTILITY, WallpaperCacheUtility.class.getName(), ""));
+
+        return doGet(action, params, WallpaperBeans.class);
     }
 
 }

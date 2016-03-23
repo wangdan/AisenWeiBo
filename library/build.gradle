@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven'
 
 android {
     signingConfigs {
@@ -44,3 +45,10 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
     compile 'com.squareup.okhttp:okhttp:2.6.0'
 }
+
+// ext is a gradle closure allowing the declaration of global properties
+//ext {
+//    PUBLISH_GROUP_ID = 'org.aisen.android'
+//    PUBLISH_ARTIFACT_ID = 'aisen'
+//    PUBLISH_VERSION = '1.0.0'
+//}

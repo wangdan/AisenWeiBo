@@ -1,5 +1,6 @@
 package org.aisen.weibo.sina.ui.fragment.secondgroups;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
@@ -17,15 +18,22 @@ import org.aisen.android.component.bitmaploader.core.ImageConfig;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.support.paging.IPaging;
+import org.aisen.android.ui.fragment.ATabsFragment;
 import org.aisen.android.ui.fragment.AWaterfallSwipeRefreshFragment;
 import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
 import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
+import org.aisen.android.ui.widget.pla.PLAAdapterView;
 import org.aisen.weibo.sina.R;
+import org.aisen.weibo.sina.base.AppSettings;
+import org.aisen.weibo.sina.sinasdk.bean.PicUrls;
+import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.support.bean.JokeBean;
 import org.aisen.weibo.sina.support.bean.JokeBeans;
 import org.aisen.weibo.sina.support.paging.JokePaging;
 import org.aisen.weibo.sina.support.sdk.SDK;
+import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.ui.activity.picture.PicsActivity;
 
 import java.util.List;
 
@@ -34,7 +42,7 @@ import java.util.List;
  *
  * Created by wangdan on 16/3/14.
  */
-public class JokesFragment extends AWaterfallSwipeRefreshFragment<JokeBean, JokeBeans> {
+public class JokesFragment extends AWaterfallSwipeRefreshFragment<JokeBean, JokeBeans> implements ATabsFragment.ITabInitData {
 
     final static int[] themeColorArr = {
             R.color.md_red_700,
@@ -94,6 +102,39 @@ public class JokesFragment extends AWaterfallSwipeRefreshFragment<JokeBean, Joke
     }
 
     @Override
+    public void onItemClick(PLAAdapterView<?> parent, View view, int position, long id) {
+        super.onItemClick(parent, view, position, id);
+
+        final JokeBean bean = getAdapterItems().get(position);
+        // 纯文
+        if (bean.getItemType() == 0) {
+            AisenUtils.showMenuDialog(this, view, getResources().getStringArray(R.array.jokes_menu), new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (which == 0) {
+                        AisenUtils.copyToClipboard(bean.getExcerpt());
+                    }
+                    else if (which == 1) {
+                        startActivity(Utils.getShareIntent("", bean.getExcerpt(), ""));
+                    }
+                }
+
+            });
+        }
+        // 图文
+        else if (bean.getItemType() == 1) {
+            StatusContent statusContent = new StatusContent();
+            PicUrls picUrls = new PicUrls();
+            picUrls.setThumbnail_pic(bean.getImgUrl());
+            statusContent.setText(bean.getExcerpt());
+            statusContent.setPic_urls(new PicUrls[]{ picUrls });
+
+            PicsActivity.launch(getActivity(), statusContent, 0);
+        }
+    }
+
+    @Override
     protected void setupRefreshView(Bundle savedInstanceSate) {
         super.setupRefreshView(savedInstanceSate);
 
@@ -108,11 +149,28 @@ public class JokesFragment extends AWaterfallSwipeRefreshFragment<JokeBean, Joke
 
     @Override
     public void requestData(RefreshMode mode) {
-        if (mode == RefreshMode.refresh) {
-            mode = RefreshMode.reset;
+        boolean load = true;
+
+        // 如果还没有加载过数据，切且显示的是当前的页面
+        if (getTaskCount(PAGING_TASK_ID) == 0) {
+            load = AisenUtils.checkTabsFragmentCanRequestData(this);
         }
 
-        new JokeTask(mode).execute();
+        if (load) {
+            if (mode == RefreshMode.refresh) {
+                mode = RefreshMode.reset;
+            }
+
+            new JokeTask(mode).execute();
+        }
+    }
+
+    @Override
+    public void onTabRequestData() {
+        // 如果还没有加载过数据，就开始加载
+        if (getTaskCount(PAGING_TASK_ID) == 0) {
+            requestData(RefreshMode.reset);
+        }
     }
 
     @Override
@@ -159,7 +217,7 @@ public class JokesFragment extends AWaterfallSwipeRefreshFragment<JokeBean, Joke
 
         @Override
         public void onBindData(View convertView, JokeBean data, int position) {
-            txtJoke.setText(data.getExcerpt());
+            txtJoke.setText(data.getExcerpt() + "");
             setCardViewBackground(data);
         }
 
@@ -193,6 +251,8 @@ public class JokesFragment extends AWaterfallSwipeRefreshFragment<JokeBean, Joke
             img.setLayoutParams(new LinearLayout.LayoutParams(width, height));
 
             ImageConfig config = new ImageConfig();
+            config.setId("Jokes");
+            config.setMaxWidth(width);
             config.setLoadfaildRes(R.drawable.bg_timeline_loading);
             config.setLoadingRes(R.drawable.bg_timeline_loading);
             BitmapLoader.getInstance().display(JokesFragment.this, data.getImgUrl(), img, config);
@@ -247,6 +307,18 @@ public class JokesFragment extends AWaterfallSwipeRefreshFragment<JokeBean, Joke
             return beans;
         }
 
+    }
+
+    @Override
+    public boolean onToolbarDoubleClick() {
+        if (AisenUtils.checkTabsFragmentCanRequestData(this)) {
+            requestDataDelaySetRefreshing(AppSettings.REQUEST_DATA_DELAY);
+            getRefreshView().setSelectionFromTop(0, 0);
+
+            return true;
+        }
+
+        return false;
     }
 
 }

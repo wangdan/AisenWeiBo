@@ -36,12 +36,12 @@ public class VersionSettingsFragment extends BasePreferenceFragment
 	
 	private void refreshVersion() {
 		if (pVersion == null) {
-			pVersion = (Preference) (Preference) getPreferenceManager().findPreference("pVersion");
+			pVersion = getPreferenceManager().findPreference("pVersion");
 			pVersion.setOnPreferenceClickListener(this);
 		}
 		
 		if (pGrade == null) {
-			pGrade = (Preference) (Preference) getPreferenceManager().findPreference("pGrade");
+			pGrade = getPreferenceManager().findPreference("pGrade");
 			pGrade.setOnPreferenceClickListener(this);
 		}
 		

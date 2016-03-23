@@ -63,6 +63,7 @@ import org.aisen.weibo.sina.ui.fragment.menu.FabGroupsFragment;
 import org.aisen.weibo.sina.ui.fragment.menu.MenuFragment;
 import org.aisen.weibo.sina.ui.fragment.search.SearchFragment;
 import org.aisen.weibo.sina.ui.fragment.secondgroups.JokesPagerFragment;
+import org.aisen.weibo.sina.ui.fragment.secondgroups.WallpaperFragment;
 import org.aisen.weibo.sina.ui.fragment.settings.NotificationSettingsFragment;
 import org.aisen.weibo.sina.ui.fragment.settings.SettingsPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineDefFragment;
@@ -98,10 +99,6 @@ public class MainActivity extends BaseActivity
     AppBarLayout appBarLayout;
     @ViewInject(id = R.id.tabLayout)
     TabLayout tabLayout;
-//    @ViewInject(id = R.id.content_frame)
-//    FrameLayout contentFrame;
-//    @ViewInject(id = R.id.searchView)
-//    SearchView mSearchView;
 
     private ActionBarDrawerToggle drawerToggle;
     private MaterialSheetFab materialSheetFab;
@@ -417,6 +414,10 @@ public class MainActivity extends BaseActivity
         case MenuFragment.MENU_JOKE:
             fragment = JokesPagerFragment.newInstance();
             break;
+        // 精美壁纸
+        case MenuFragment.MENU_WALLPAPER:
+            fragment = WallpaperFragment.newInstance();
+            break;
         }
 
         if (fragment != null) {
@@ -463,6 +464,8 @@ public class MainActivity extends BaseActivity
             case MenuFragment.MENU_DRAT:
             // 轻松一刻
             case MenuFragment.MENU_JOKE:
+            // 精美壁纸
+            case MenuFragment.MENU_WALLPAPER:
                 return true;
             default:
                 return false;
@@ -640,8 +643,6 @@ public class MainActivity extends BaseActivity
 
             }.run();
         }
-//            getFragmentManager().beginTransaction().add(R.id.laySearch, new SearchFragment(), "SearchFragment").commit();
-//            mSearchView.show(true);
 
         return super.onOptionsItemSelected(item);
     }

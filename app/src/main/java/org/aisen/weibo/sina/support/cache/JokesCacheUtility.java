@@ -1,7 +1,6 @@
 package org.aisen.weibo.sina.support.cache;
 
 import org.aisen.android.common.setting.Setting;
-import org.aisen.android.common.utils.Logger;
 import org.aisen.android.component.orm.extra.Extra;
 import org.aisen.android.component.orm.utils.FieldUtils;
 import org.aisen.android.network.biz.IResult;
@@ -39,7 +38,7 @@ public class JokesCacheUtility implements ICacheUtility {
                 beans.setData(data);
                 beans.setFromCache(true);
                 beans.setEndPaging(beanList.size() == 0);
-                beans.setOutofdate(CacheTimeUtils.isOutofdate("Jokes", null));
+                beans.setOutofdate(CacheTimeUtils.isOutofdate("Jokes" + type, null));
                 return beans;
             }
         }
@@ -59,14 +58,9 @@ public class JokesCacheUtility implements ICacheUtility {
             SinaDB.getDB().deleteAll(new Extra(null, String.valueOf(type)), JokeBean.class);
         }
 
-        CacheTimeUtils.saveTime("Jokes", null);
+        CacheTimeUtils.saveTime("Jokes" + type, null);
 
-        try {
-            // 移除第一条广告位数据
-            SinaDB.getDB().insert(new Extra(null, String.valueOf(type)), beans.getData().getContents());
-        } catch (Throwable e) {
-            Logger.printExc(getClass(), e);
-        }
+        SinaDB.getDB().insert(new Extra(null, String.valueOf(type)), beans.getData().getContents());
     }
 
 }

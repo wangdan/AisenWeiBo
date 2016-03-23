@@ -188,6 +188,7 @@
     <string name="draw_topic_title">热门话题</string>
     <string name="draw_private_msg">私信</string>
     <string name="draw_joke">轻松一刻</string>
+    <string name="draw_wallpaper">精美壁纸</string>
     <string name="draw_private_msg_title">私信</string>
     <string name="draw_private_notification">通知</string>
     <string name="draw_hot_statuses_title">热门微博</string>
@@ -581,6 +582,11 @@
     <string name="search_user">用户</string>
     <string name="search_user_empty">没有相关用户</string>
     <string name="search_status">微博</string>
+
+    <string-array name="jokes_menu">
+        <item>复制</item>
+        <item>分享</item>
+    </string-array>
 
     <string-array name="user_headers">
         <item>全部</item>
