@@ -50,6 +50,8 @@ public abstract class APermissionsAction extends IAction implements IPermissions
         }
         // 没有或者拒绝了权限
         else if (PackageManager.PERMISSION_DENIED == ContextCompat.checkSelfPermission(getContext(), permission)) {
+            interrupt = true;
+
             Logger.d(TAG, "%s permission = %s", "PERMISSION_DENIED", permission);
 
             doInterrupt();
@@ -114,6 +116,8 @@ public abstract class APermissionsAction extends IAction implements IPermissions
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        Logger.d(TAG, "onRequestPermissionsResult , requestCode = " + requestCode);
+
         if (grantResults != null && grantResults.length > 0) {
             for (int i = 0; i < permissions.length; i++) {
                 Logger.d(TAG, "requestCode = %d, permission = %s, grantResult = %d", requestCode, permissions[i], grantResults[i]);
@@ -138,7 +142,7 @@ public abstract class APermissionsAction extends IAction implements IPermissions
 
                 onPermissionDenied(false);
             } else {
-                Logger.d(TAG, "onPermissionDenied(false)");
+                Logger.d(TAG, "onPermissionDenied(true)");
 
                 onPermissionDenied(true);
             }

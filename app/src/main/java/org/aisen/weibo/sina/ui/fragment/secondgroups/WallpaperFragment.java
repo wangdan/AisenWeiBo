@@ -22,11 +22,14 @@ import org.aisen.android.ui.fragment.AWaterfallSwipeRefreshFragment;
 import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
 import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
+import org.aisen.android.ui.widget.pla.PLAAdapterView;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.support.bean.WallpaperBean;
 import org.aisen.weibo.sina.support.bean.WallpaperBeans;
 import org.aisen.weibo.sina.support.sdk.SDK;
+import org.aisen.weibo.sina.ui.activity.picture.WallpaperSettingActivity;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -58,6 +61,17 @@ public class WallpaperFragment extends AWaterfallSwipeRefreshFragment<WallpaperB
     private void setViewPadding(View viewGroup) {
         viewGroup.setPadding(viewGroup.getPaddingLeft(), viewGroup.getPaddingTop(),
                 viewGroup.getPaddingRight(), SystemUtils.getNavigationBarHeight(getActivity()));
+    }
+
+    @Override
+    public void onItemClick(PLAAdapterView<?> parent, View view, int position, long id) {
+        super.onItemClick(parent, view, position, id);
+
+        WallpaperBean bean = getAdapterItems().get(position);
+        File file = BitmapLoader.getInstance().getCacheFile(bean.getIndexThumbnailUrl());
+        if (file != null && file.exists()) {
+            WallpaperSettingActivity.launch(getActivity(), file, bean.getNormalUrl());
+        }
     }
 
     @Override

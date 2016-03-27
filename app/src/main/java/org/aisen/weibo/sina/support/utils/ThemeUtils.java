@@ -10,25 +10,25 @@ import org.aisen.weibo.sina.base.AppSettings;
 public class ThemeUtils {
 
     public static int[][] themeArr = {
-            { R.style.AppTheme_Red, R.style.AppTheme_Main_Red, R.style.AppTheme_Profile_Red },
-            { R.style.AppTheme_Pink, R.style.AppTheme_Main_Pink, R.style.AppTheme_Profile_Pink },
-            { R.style.AppTheme_Purple, R.style.AppTheme_Main_Purple, R.style.AppTheme_Profile_Purple },
-            { R.style.AppTheme_DeepPurple, R.style.AppTheme_Main_DeepPurple, R.style.AppTheme_Profile_DeepPurple },
-            { R.style.AppTheme_Indigo, R.style.AppTheme_Main_Indigo, R.style.AppTheme_Profile_Indigo },
-            { R.style.AppTheme_Blue, R.style.AppTheme_Main_Blue, R.style.AppTheme_Profile_Blue },
-            { R.style.AppTheme_LightBlue, R.style.AppTheme_Main_LightBlue, R.style.AppTheme_Profile_LightBlue },
-            { R.style.AppTheme_Cyan, R.style.AppTheme_Main_Cyan, R.style.AppTheme_Profile_Cyan },
-            { R.style.AppTheme_Teal, R.style.AppTheme_Main_Teal, R.style.AppTheme_Profile_Teal },
-            { R.style.AppTheme_Green, R.style.AppTheme_Main_Green, R.style.AppTheme_Profile_Green },
-            { R.style.AppTheme_LightGreen, R.style.AppTheme_Main_LightGreen, R.style.AppTheme_Profile_LightGreen },
-            { R.style.AppTheme_Lime, R.style.AppTheme_Main_Lime, R.style.AppTheme_Profile_Lime },
-            { R.style.AppTheme_Yellow, R.style.AppTheme_Main_Yellow, R.style.AppTheme_Profile_Yellow },
-            { R.style.AppTheme_Amber, R.style.AppTheme_Main_Amber, R.style.AppTheme_Profile_Amber },
-            { R.style.AppTheme_Orange, R.style.AppTheme_Main_Orange, R.style.AppTheme_Profile_Orange },
-            { R.style.AppTheme_DeepOrange, R.style.AppTheme_Main_DeepOrange, R.style.AppTheme_Profile_DeepOrange },
-            { R.style.AppTheme_Brown, R.style.AppTheme_Main_Brown, R.style.AppTheme_Profile_Brown },
-            { R.style.AppTheme_Grey, R.style.AppTheme_Main_Grey, R.style.AppTheme_Profile_Grey },
-            { R.style.AppTheme_BlueGrey, R.style.AppTheme_Main_BlueGrey, R.style.AppTheme_Profile_BlueGrey }
+            { R.style.AppTheme_Red, R.style.AppTheme_Main_Red, R.style.AppTheme_Profile_Red, R.style.AppTheme_Search_Red },
+            { R.style.AppTheme_Pink, R.style.AppTheme_Main_Pink, R.style.AppTheme_Profile_Pink, R.style.AppTheme_Search_Pink },
+            { R.style.AppTheme_Purple, R.style.AppTheme_Main_Purple, R.style.AppTheme_Profile_Purple, R.style.AppTheme_Search_Purple },
+            { R.style.AppTheme_DeepPurple, R.style.AppTheme_Main_DeepPurple, R.style.AppTheme_Profile_DeepPurple, R.style.AppTheme_Search_DeepPurple },
+            { R.style.AppTheme_Indigo, R.style.AppTheme_Main_Indigo, R.style.AppTheme_Profile_Indigo, R.style.AppTheme_Search_Indigo },
+            { R.style.AppTheme_Blue, R.style.AppTheme_Main_Blue, R.style.AppTheme_Profile_Blue, R.style.AppTheme_Search_Blue },
+            { R.style.AppTheme_LightBlue, R.style.AppTheme_Main_LightBlue, R.style.AppTheme_Profile_LightBlue, R.style.AppTheme_Search_LightBlue },
+            { R.style.AppTheme_Cyan, R.style.AppTheme_Main_Cyan, R.style.AppTheme_Profile_Cyan, R.style.AppTheme_Search_Cyan },
+            { R.style.AppTheme_Teal, R.style.AppTheme_Main_Teal, R.style.AppTheme_Profile_Teal, R.style.AppTheme_Search_Teal },
+            { R.style.AppTheme_Green, R.style.AppTheme_Main_Green, R.style.AppTheme_Profile_Green, R.style.AppTheme_Search_Green },
+            { R.style.AppTheme_LightGreen, R.style.AppTheme_Main_LightGreen, R.style.AppTheme_Profile_LightGreen, R.style.AppTheme_Search_LightGreen },
+            { R.style.AppTheme_Lime, R.style.AppTheme_Main_Lime, R.style.AppTheme_Profile_Lime, R.style.AppTheme_Search_Lime },
+            { R.style.AppTheme_Yellow, R.style.AppTheme_Main_Yellow, R.style.AppTheme_Profile_Yellow, R.style.AppTheme_Search_Yellow },
+            { R.style.AppTheme_Amber, R.style.AppTheme_Main_Amber, R.style.AppTheme_Profile_Amber, R.style.AppTheme_Search_Amber },
+            { R.style.AppTheme_Orange, R.style.AppTheme_Main_Orange, R.style.AppTheme_Profile_Orange, R.style.AppTheme_Search_Orange },
+            { R.style.AppTheme_DeepOrange, R.style.AppTheme_Main_DeepOrange, R.style.AppTheme_Profile_DeepOrange, R.style.AppTheme_Search_DeepOrange },
+            { R.style.AppTheme_Brown, R.style.AppTheme_Main_Brown, R.style.AppTheme_Profile_Brown, R.style.AppTheme_Search_Brown },
+            { R.style.AppTheme_Grey, R.style.AppTheme_Main_Grey, R.style.AppTheme_Profile_Grey, R.style.AppTheme_Search_Grey },
+            { R.style.AppTheme_BlueGrey, R.style.AppTheme_Main_BlueGrey, R.style.AppTheme_Profile_BlueGrey, R.style.AppTheme_Search_BlueGrey }
     };
 
     public static int[][] themeColorArr = {

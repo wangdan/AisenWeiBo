@@ -62,6 +62,11 @@
         <item name="themeStatusbarColor">@color/md_red_700</item>
     </style>
 
+    <style name="AppTheme.Search.Red">
+        <item name="themeColor">@color/md_red_500</item>
+        <item name="themeStatusbarColor">@color/md_red_700</item>
+    </style>
+
     <style name="AppTheme.Profile.Red">
         <item name="themeColor">@color/md_red_500</item>
         <item name="themeStatusbarColor">@color/md_red_700</item>
@@ -83,6 +88,11 @@
         <item name="themeStatusbarColor">@color/md_pink_700</item>
     </style>
 
+    <style name="AppTheme.Search.Pink">
+        <item name="themeColor">@color/md_pink_500</item>
+        <item name="themeStatusbarColor">@color/md_pink_700</item>
+    </style>
+
     <!-- purple -->
     <style name="AppTheme.Purple">
         <item name="themeColor">@color/md_purple_500</item>
@@ -95,6 +105,11 @@
     </style>
 
     <style name="AppTheme.Profile.Purple">
+        <item name="themeColor">@color/md_purple_500</item>
+        <item name="themeStatusbarColor">@color/md_purple_700</item>
+    </style>
+
+    <style name="AppTheme.Search.Purple">
         <item name="themeColor">@color/md_purple_500</item>
         <item name="themeStatusbarColor">@color/md_purple_700</item>
     </style>
@@ -115,6 +130,11 @@
         <item name="themeStatusbarColor">@color/md_deep_purple_700</item>
     </style>
 
+    <style name="AppTheme.Search.DeepPurple">
+        <item name="themeColor">@color/md_deep_purple_500</item>
+        <item name="themeStatusbarColor">@color/md_deep_purple_700</item>
+    </style>
+
     <!-- indigo -->
     <style name="AppTheme.Indigo">
         <item name="themeColor">@color/md_indigo_500</item>
@@ -127,6 +147,11 @@
     </style>
 
     <style name="AppTheme.Profile.Indigo">
+        <item name="themeColor">@color/md_indigo_500</item>
+        <item name="themeStatusbarColor">@color/md_indigo_700</item>
+    </style>
+
+    <style name="AppTheme.Search.Indigo">
         <item name="themeColor">@color/md_indigo_500</item>
         <item name="themeStatusbarColor">@color/md_indigo_700</item>
     </style>
@@ -147,6 +172,11 @@
         <item name="themeStatusbarColor">@color/md_blue_700</item>
     </style>
 
+    <style name="AppTheme.Search.Blue">
+        <item name="themeColor">@color/md_blue_500</item>
+        <item name="themeStatusbarColor">@color/md_blue_700</item>
+    </style>
+
     <!-- light_blue -->
     <style name="AppTheme.LightBlue">
         <item name="themeColor">@color/md_light_blue_500</item>
@@ -159,6 +189,11 @@
     </style>
 
     <style name="AppTheme.Profile.LightBlue">
+        <item name="themeColor">@color/md_light_blue_500</item>
+        <item name="themeStatusbarColor">@color/md_light_blue_700</item>
+    </style>
+
+    <style name="AppTheme.Search.LightBlue">
         <item name="themeColor">@color/md_light_blue_500</item>
         <item name="themeStatusbarColor">@color/md_light_blue_700</item>
     </style>
@@ -179,6 +214,11 @@
         <item name="themeStatusbarColor">@color/md_cyan_700</item>
     </style>
 
+    <style name="AppTheme.Search.Cyan">
+        <item name="themeColor">@color/md_cyan_500</item>
+        <item name="themeStatusbarColor">@color/md_cyan_700</item>
+    </style>
+
     <!-- teal -->
     <style name="AppTheme.Teal">
         <item name="themeColor">@color/md_teal_500</item>
@@ -191,6 +231,11 @@
     </style>
 
     <style name="AppTheme.Profile.Teal">
+        <item name="themeColor">@color/md_teal_500</item>
+        <item name="themeStatusbarColor">@color/md_teal_700</item>
+    </style>
+
+    <style name="AppTheme.Search.Teal">
         <item name="themeColor">@color/md_teal_500</item>
         <item name="themeStatusbarColor">@color/md_teal_700</item>
     </style>
@@ -211,6 +256,11 @@
         <item name="themeStatusbarColor">@color/md_green_700</item>
     </style>
 
+    <style name="AppTheme.Search.Green">
+        <item name="themeColor">@color/md_green_500</item>
+        <item name="themeStatusbarColor">@color/md_green_700</item>
+    </style>
+
     <!-- light_green -->
     <style name="AppTheme.LightGreen">
         <item name="themeColor">@color/md_light_green_500</item>
@@ -223,6 +273,11 @@
     </style>
 
     <style name="AppTheme.Profile.LightGreen">
+        <item name="themeColor">@color/md_light_green_500</item>
+        <item name="themeStatusbarColor">@color/md_light_green_700</item>
+    </style>
+
+    <style name="AppTheme.Search.LightGreen">
         <item name="themeColor">@color/md_light_green_500</item>
         <item name="themeStatusbarColor">@color/md_light_green_700</item>
     </style>
@@ -243,6 +298,11 @@
         <item name="themeStatusbarColor">@color/md_lime_700</item>
     </style>
 
+    <style name="AppTheme.Search.Lime">
+        <item name="themeColor">@color/md_lime_500</item>
+        <item name="themeStatusbarColor">@color/md_lime_700</item>
+    </style>
+
     <!-- yellow -->
     <style name="AppTheme.Yellow">
         <item name="themeColor">@color/md_yellow_500</item>
@@ -255,6 +315,11 @@
     </style>
 
     <style name="AppTheme.Profile.Yellow">
+        <item name="themeColor">@color/md_yellow_500</item>
+        <item name="themeStatusbarColor">@color/md_yellow_700</item>
+    </style>
+
+    <style name="AppTheme.Search.Yellow">
         <item name="themeColor">@color/md_yellow_500</item>
         <item name="themeStatusbarColor">@color/md_yellow_700</item>
     </style>
@@ -275,6 +340,11 @@
         <item name="themeStatusbarColor">@color/md_amber_700</item>
     </style>
 
+    <style name="AppTheme.Search.Amber">
+        <item name="themeColor">@color/md_amber_500</item>
+        <item name="themeStatusbarColor">@color/md_amber_700</item>
+    </style>
+
     <!-- orange -->
     <style name="AppTheme.Orange">
         <item name="themeColor">@color/md_orange_500</item>
@@ -287,6 +357,11 @@
     </style>
 
     <style name="AppTheme.Profile.Orange">
+        <item name="themeColor">@color/md_orange_500</item>
+        <item name="themeStatusbarColor">@color/md_orange_700</item>
+    </style>
+
+    <style name="AppTheme.Search.Orange">
         <item name="themeColor">@color/md_orange_500</item>
         <item name="themeStatusbarColor">@color/md_orange_700</item>
     </style>
@@ -307,6 +382,11 @@
         <item name="themeStatusbarColor">@color/md_deep_orange_700</item>
     </style>
 
+    <style name="AppTheme.Search.DeepOrange">
+        <item name="themeColor">@color/md_deep_orange_500</item>
+        <item name="themeStatusbarColor">@color/md_deep_orange_700</item>
+    </style>
+
     <!-- brown -->
     <style name="AppTheme.Brown">
         <item name="themeColor">@color/md_brown_500</item>
@@ -319,6 +399,11 @@
     </style>
 
     <style name="AppTheme.Profile.Brown">
+        <item name="themeColor">@color/md_brown_500</item>
+        <item name="themeStatusbarColor">@color/md_brown_700</item>
+    </style>
+
+    <style name="AppTheme.Search.Brown">
         <item name="themeColor">@color/md_brown_500</item>
         <item name="themeStatusbarColor">@color/md_brown_700</item>
     </style>
@@ -339,6 +424,11 @@
         <item name="themeStatusbarColor">@color/md_grey_700</item>
     </style>
 
+    <style name="AppTheme.Search.Grey">
+        <item name="themeColor">@color/md_grey_500</item>
+        <item name="themeStatusbarColor">@color/md_grey_700</item>
+    </style>
+
     <!-- blue_grey -->
     <style name="AppTheme.BlueGrey">
         <item name="themeColor">@color/md_blue_grey_500</item>
@@ -354,4 +444,10 @@
         <item name="themeColor">@color/md_blue_grey_500</item>
         <item name="themeStatusbarColor">@color/md_blue_grey_700</item>
     </style>
+
+    <style name="AppTheme.Search.BlueGrey">
+        <item name="themeColor">@color/md_blue_grey_500</item>
+        <item name="themeStatusbarColor">@color/md_blue_grey_700</item>
+    </style>
+
 </resources>

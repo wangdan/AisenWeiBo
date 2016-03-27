@@ -70,7 +70,7 @@ public class Utils {
 		return shareIntent;
 	}
 
-	public static int dip2px(int dipValue) {
+	public static int dip2px(float dipValue) {
 		float reSize = GlobalContext.getInstance().getResources().getDisplayMetrics().density;
 		return (int) ((dipValue * reSize) + 0.5);
 	}

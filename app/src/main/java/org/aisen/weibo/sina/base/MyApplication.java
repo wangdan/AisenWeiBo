@@ -1,7 +1,10 @@
 package org.aisen.weibo.sina.base;
 
+import android.Manifest;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.pm.PackageManager;
+import android.support.v4.content.ContextCompat;
 
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.AnalyticsConfig;
@@ -40,16 +43,10 @@ public class MyApplication extends GlobalContext {
 
         // 打开Debug日志
         Logger.DEBUG = BuildConfig.LOG_DEBUG;
-        // UMENG统计设置
-//        MobclickAgent.setDebugMode(Logger.DEBUG);
-        AnalyticsConfig.setAppkey(this, BuildConfig.UMENG_APP_ID);
-        MobclickAgent.setCatchUncaughtExceptions(false);
-        MobclickAgent.openActivityDurationTrack(false);
-        if (BuildConfig.LOG_DEBUG) {
-            Logger.d("Device_info", UMengUtil.getDeviceInfo(this));
+        if (PackageManager.PERMISSION_DENIED == ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)) {
+            setupCrash();
         }
-        // BUGLY日志上报
-        CrashReport.initCrashReport(this, BuildConfig.BUGLY_APP_ID, Logger.DEBUG);
+        setupCrash();
         // 初始化图片加载
         BitmapLoader.newInstance(this, getImagePath());
         // 配置异常处理类
@@ -65,6 +62,19 @@ public class MyApplication extends GlobalContext {
         AppContext.setAccount(AccountUtils.getLogedinAccount());
         if (AppContext.isLoggedIn())
             AppContext.login(AppContext.getAccount());
+    }
+
+    public void setupCrash() {
+        // UMENG统计设置
+//        MobclickAgent.setDebugMode(Logger.DEBUG);
+        AnalyticsConfig.setAppkey(this, BuildConfig.UMENG_APP_ID);
+        MobclickAgent.setCatchUncaughtExceptions(false);
+        MobclickAgent.openActivityDurationTrack(false);
+        if (BuildConfig.LOG_DEBUG) {
+            Logger.d("Device_info", UMengUtil.getDeviceInfo(this));
+        }
+        // BUGLY日志上报
+        CrashReport.initCrashReport(this, BuildConfig.BUGLY_APP_ID, Logger.DEBUG);
     }
 
     // 刷新定时发布任务

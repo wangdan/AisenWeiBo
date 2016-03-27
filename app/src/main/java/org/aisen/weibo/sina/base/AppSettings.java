@@ -11,6 +11,8 @@ import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
 
+import java.io.File;
+
 /**
  * Created by wangdan on 15/4/12.
  */

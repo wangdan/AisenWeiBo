@@ -1,24 +1,29 @@
 <manifest package="org.aisen.weibo.sina" xmlns:android="http://schemas.android.com/apk/res/android">
 
+
+    <!--Dangerous Permissions-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <!-- 允许写入sdcard -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+
+    <!--Normal Permissions-->
     <!-- 允许程序打开网络 -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <!-- 允许程序访问Wi-Fi网络状态信息 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <!-- 允许程序改变Wi-Fi连接状态 -->
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-    <!-- 允许写入sdcard -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
     <!-- 允许一个程序访问GPS信息 -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <!--<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>-->
     <!-- 允许程序访问有关GSM网络信息 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <!-- 允许访问振动设备 -->
     <uses-permission android:name="android.permission.VIBRATE"/>
     <!-- 开机自启动 -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.READ_LOGS"/>
+    <!--<uses-permission android:name="android.permission.READ_LOGS"/>-->
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
 
     <application android:name=".base.MyApplication" android:allowBackup="true"
                  android:icon="@drawable/a_icon_b" android:label="@string/app_name"
@@ -106,6 +111,11 @@
                 <action android:name="android.intent.action.VIEW"/>
                 <data android:scheme="org.aisen.weibo.sina.topics"/>
             </intent-filter>
+        </activity>
+        <!--壁纸设置-->
+        <activity android:name=".ui.activity.picture.WallpaperSettingActivity"
+                  android:screenOrientation="portrait">
+
         </activity>
 
         <!-- 发布服务 -->

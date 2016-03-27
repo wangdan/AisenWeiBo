@@ -76,6 +76,7 @@ public class SdcardDownloader implements Downloader {
 				config.getProgress().downloadFailed(null);
 			throw new Exception("");
 		} catch (Exception e) {
+            e.printStackTrace();
 			if(config.getProgress()!=null)
 				config.getProgress().sendException(e);
 			throw new Exception(e.getCause());

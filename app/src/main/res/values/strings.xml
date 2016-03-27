@@ -386,6 +386,8 @@
     <string name="msg_save_orig_faild">下载原图失败</string>
     <string name="error_pic_load_faild">获取失败</string>
     <string name="msg_save_pic_loading">正在保存</string>
+    <string name="cancel_sdcard_permission">取消SD卡读写授权</string>
+    <string name="alwaysdenied_sdcard_permission">SD卡读写授权被禁用了，请去设置界面打开此权限</string>
     <string name="error_pic_load_faild_1">图片加载失败\n点击屏幕刷新</string>
 
     <!-- BizFragment -->
@@ -582,6 +584,13 @@
     <string name="search_user">用户</string>
     <string name="search_user_empty">没有相关用户</string>
     <string name="search_status">微博</string>
+
+    <string name="down_faild">下载失败</string>
+    <string name="txt_set_wallpaper_fail">设置墙纸失败</string>
+    <string name="txt_network_offline">未连接网络</string>
+    <string name="txt_set_wallpaper_suc">成功设置墙纸</string>
+    <string name="txt_save_wallpaper_suc">已保存至相册</string>
+    <string name="wallpaper_download_cancel">取消下载</string>
 
     <string-array name="jokes_menu">
         <item>复制</item>

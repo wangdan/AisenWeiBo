@@ -29,10 +29,7 @@ public abstract class IAction {
     }
 
     public void run() {
-        if (parent != null && parent.interrupt()) {
-            parent.doInterrupt();
-        }
-        else {
+        if (parent == null || !parent.interrupt()) {
             doAction();
         }
     }

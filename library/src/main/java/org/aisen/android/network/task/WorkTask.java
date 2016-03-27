@@ -301,7 +301,7 @@ public abstract class WorkTask<Params, Progress, Result> {
 		return cancelByUser;
 	}
 
-	public final boolean cancel(boolean mayInterruptIfRunning) {
+	public boolean cancel(boolean mayInterruptIfRunning) {
 		cancelByUser = true;
 
 		return mFuture.cancel(mayInterruptIfRunning);

@@ -20,6 +20,10 @@
         <attr name="profileInsetForeground" format="reference|color" />
     </declare-styleable>
 
+    <declare-styleable name="Themes">
+        <attr name="waveViewStyle" format="reference" />
+    </declare-styleable>
+
     <declare-styleable name="ActionIconThemedTextView">
         <attr name="iabColor" format="color"/>
         <attr name="iabActivatedColor" format="color"/>

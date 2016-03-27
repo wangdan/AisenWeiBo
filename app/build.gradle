@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "org.aiwen.weibo.sina"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 23
         versionCode 600
         versionName "6.0.0"
@@ -48,9 +48,11 @@ dependencies {
     compile 'com.github.castorflex.smoothprogressbar:library:1.1.0'
     compile 'com.github.castorflex.smoothprogressbar:library-circular:1.1.0'
     compile 'org.jsoup:jsoup:1.8.2'
-    compile 'com.github.chrisbanes.photoview:library:1.2.3'
     compile 'com.getbase:floatingactionbutton:1.10.1'
     compile 'com.lapism:searchview:2.1.1'
-    compile 'com.tencent.bugly:crashreport:1.2.9'  // 其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.8
-    compile 'com.umeng.analytics:analytics:latest.integration' // 友盟统计
+    compile 'com.tencent.bugly:crashreport:1.2.9'
+    // 其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.8
+    compile 'com.umeng.analytics:analytics:latest.integration'
+    // 友盟统计
+    compile 'com.github.chrisbanes.photoview:library:1.2.3'
 }

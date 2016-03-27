@@ -33,13 +33,16 @@ import org.aisen.android.component.bitmaploader.core.ImageConfig;
 import org.aisen.android.component.bitmaploader.download.DownloadProcess;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
+import org.aisen.android.support.action.IAction;
 import org.aisen.android.support.inject.ViewInject;
+import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.fragment.ABaseFragment;
 import org.aisen.android.ui.fragment.ATabsFragment;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.sinasdk.bean.PicUrls;
 import org.aisen.weibo.sina.support.bean.PictureSize;
+import org.aisen.weibo.sina.support.permissions.SdcardPermissionAction;
 import org.aisen.weibo.sina.support.sdk.SDK;
 import org.aisen.weibo.sina.support.sqlit.SinaDB;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
@@ -553,68 +556,75 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 	}
 
 	private void downloadImage() {
-		new WorkTask<Void, Void, String>() {
+		new IAction(getActivity(), new SdcardPermissionAction((BaseActivity) getActivity(), null)) {
 
-            @Override
-            protected void onPrepare() {
-                super.onPrepare();
+			@Override
+			public void doAction() {
+				new WorkTask<Void, Void, String>() {
 
-                ViewUtils.createProgressDialog(getActivity(), getString(R.string.msg_save_pic_loading), ThemeUtils.getThemeColor()).show();
-            }
+					@Override
+					protected void onPrepare() {
+						super.onPrepare();
 
-			private void notifyFileSys(File file) {
-				SystemUtils.scanPhoto(file);
+						ViewUtils.createProgressDialog(getActivity(), getString(R.string.msg_save_pic_loading), ThemeUtils.getThemeColor()).show();
+					}
+
+					private void notifyFileSys(File file) {
+						SystemUtils.scanPhoto(file);
+					}
+
+					@Override
+					public String workInBackground(Void... params) throws TaskException {
+						File file = origFile;
+						if (!file.exists())
+							file = BitmapLoader.getInstance().getCacheFile(getImage());
+
+						String path = SystemUtils.getSdcardPath() + File.separator + AppSettings.getImageSavePath() + File.separator + file.getName();
+						File newFile = new File(path);
+						if (!newFile.exists()) {
+							if (!newFile.getParentFile().exists())
+								newFile.getParentFile().mkdirs();
+							try {
+								FileUtils.copyFile(file, newFile);
+
+								notifyFileSys(newFile);
+
+								return newFile.getParentFile().getAbsolutePath();
+							} catch (Exception e) {
+
+							}
+						}
+						else {
+							notifyFileSys(newFile);
+
+							return newFile.getParentFile().getAbsolutePath();
+						}
+						return null;
+					}
+
+					@Override
+					protected void onSuccess(String aBoolean) {
+						super.onSuccess(aBoolean);
+
+						if (!TextUtils.isEmpty(aBoolean)) {
+							showMessage(String.format(getString(R.string.msg_save_pic_success), aBoolean));
+						}
+						else {
+							showMessage(R.string.msg_save_pic_faild);
+						}
+					}
+
+					@Override
+					protected void onFinished() {
+						super.onFinished();
+
+						ViewUtils.dismissProgressDialog();
+					}
+
+				}.execute();
 			}
 
-            @Override
-            public String workInBackground(Void... params) throws TaskException {
-                File file = origFile;
-                if (!file.exists())
-                    file = BitmapLoader.getInstance().getCacheFile(getImage());
-
-                String path = SystemUtils.getSdcardPath() + File.separator + AppSettings.getImageSavePath() + File.separator + file.getName();
-                File newFile = new File(path);
-                if (!newFile.exists()) {
-                    if (!newFile.getParentFile().exists())
-                        newFile.getParentFile().mkdirs();
-                    try {
-                        FileUtils.copyFile(file, newFile);
-
-						notifyFileSys(newFile);
-
-                        return newFile.getParentFile().getAbsolutePath();
-                    } catch (Exception e) {
-
-                    }
-                }
-                else {
-					notifyFileSys(newFile);
-
-                    return newFile.getParentFile().getAbsolutePath();
-                }
-                return null;
-            }
-
-            @Override
-            protected void onSuccess(String aBoolean) {
-                super.onSuccess(aBoolean);
-
-                if (!TextUtils.isEmpty(aBoolean)) {
-                    showMessage(String.format(getString(R.string.msg_save_pic_success), aBoolean));
-                }
-                else {
-                    showMessage(R.string.msg_save_pic_faild);
-                }
-            }
-
-            @Override
-            protected void onFinished() {
-                super.onFinished();
-
-                ViewUtils.dismissProgressDialog();
-            }
-
-        }.execute();
+		}.run();
 	}
 
     DownloadOrigPicture downloadOrigPicture;

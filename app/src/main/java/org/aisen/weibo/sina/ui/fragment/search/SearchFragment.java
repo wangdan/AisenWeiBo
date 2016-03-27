@@ -32,6 +32,7 @@ import org.aisen.android.ui.fragment.itemview.AHeaderItemViewCreator;
 import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
+import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
 import org.aisen.weibo.sina.sinasdk.bean.SearchsResultUser;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
@@ -89,7 +90,7 @@ public class SearchFragment extends ATimelineFragment {
 
     @Override
     public int setActivityTheme() {
-        return R.style.AppTheme_Search;
+        return ThemeUtils.themeArr[AppSettings.getThemeColor()][3];
     }
 
     @Override

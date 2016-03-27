@@ -61,9 +61,16 @@ public class GlobalContext extends Application {
 	 * @return
 	 */
 	public String getAppPath() {
-		if ("android".equals(SettingUtility.getStringSetting("root_path")))
-			return GlobalContext.getInstance().getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() + File.separator;
-		
+		if ("android".equals(SettingUtility.getStringSetting("root_path"))) {
+			File file = GlobalContext.getInstance().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+			if (file != null) {
+				return file.getAbsolutePath() + File.separator;
+			}
+			else {
+				return getCacheDir().getAbsolutePath() + File.separator;
+			}
+		}
+
 		return SdcardUtils.getSdcardPath() + File.separator + SettingUtility.getStringSetting("root_path") + File.separator;
 	}
 	
