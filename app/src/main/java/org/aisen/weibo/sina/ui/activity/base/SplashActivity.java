@@ -1,6 +1,5 @@
 package org.aisen.weibo.sina.ui.activity.base;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,8 +8,6 @@ import android.os.Handler;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import org.aisen.android.support.action.IAction;
-import org.aisen.android.support.permissions.APermissionsAction;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
@@ -54,21 +51,12 @@ public class SplashActivity extends BaseActivity {
 
         @Override
         public void run() {
-//            APermissionsAction permissionsAction = new APermissionsAction(SplashActivity.this, null, getActivityHelper(), Manifest.permission.READ_PHONE_STATE) {
-//            };
-//            new IAction(SplashActivity.this, permissionsAction) {
-//
-//                @Override
-//                public void doAction() {
-                    MainActivity.login();
-                    if (AppContext.isLoggedIn()) {
-                        MainActivity.runCheckAccountTask(AppContext.getAccount());
-                    }
+            MainActivity.login();
+            if (AppContext.isLoggedIn()) {
+                MainActivity.runCheckAccountTask(AppContext.getAccount());
+            }
 
-                    finish();
-//                }
-//
-//            }.run();
+            finish();
         }
 
     };

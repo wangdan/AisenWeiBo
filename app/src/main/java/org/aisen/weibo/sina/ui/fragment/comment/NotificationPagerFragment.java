@@ -35,7 +35,7 @@ public class NotificationPagerFragment extends ATabsTabLayoutFragment<TabItem> {
             index = 0;
 
             UnreadCount count = AppContext.getAccount().getUnreadCount();
-            if (count.getCmt() == 0) {
+            if (count != null && count.getCmt() == 0) {
                 if (count.getMention_status() > 0) {
                     index = 1;
                 }

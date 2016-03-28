@@ -28,6 +28,8 @@
     <application android:name=".base.MyApplication" android:allowBackup="true"
                  android:icon="@drawable/a_icon_b" android:label="@string/app_name"
                  android:theme="@style/AppBaseTheme">
+        <!--友盟配置-->
+        <meta-data android:value="56dee56ae0f55af007001d9d" android:name="UMENG_APPKEY"/>
         <!-- 启动界面 -->
         <activity android:name=".ui.activity.base.SplashActivity"
                   android:screenOrientation="portrait"

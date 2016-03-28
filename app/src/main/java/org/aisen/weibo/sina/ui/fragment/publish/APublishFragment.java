@@ -53,6 +53,7 @@ import org.aisen.android.component.bitmaploader.download.SdcardDownloader;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
+import org.aisen.android.support.action.IAction;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.fragment.ABaseFragment;
@@ -65,6 +66,7 @@ import org.aisen.weibo.sina.support.bean.Emotion;
 import org.aisen.weibo.sina.support.bean.PublishBean;
 import org.aisen.weibo.sina.support.bean.PublishBean.PublishStatus;
 import org.aisen.weibo.sina.support.compress.TimelineBitmapCompress;
+import org.aisen.weibo.sina.support.permissions.SdcardPermissionAction;
 import org.aisen.weibo.sina.support.sqlit.EmotionsDB;
 import org.aisen.weibo.sina.support.sqlit.PublishDB;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
@@ -514,18 +516,20 @@ public abstract class APublishFragment extends ABaseFragment
 	}
 	
 	private void showGetPictureDialog() {
-		new AlertDialogWrapper.Builder(getActivity())
-							.setItems(R.array.publish_pic, new OnClickListener() {
-					
-								@Override
-								public void onClick(DialogInterface dialog, int which) {
-									switch (which) {
+		new IAction(getActivity(), new SdcardPermissionAction(((BaseActivity) getActivity()), null)) {
+
+			@Override
+			public void doAction() {
+				new AlertDialogWrapper.Builder(getActivity())
+						.setItems(R.array.publish_pic, new OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								switch (which) {
 									// 相册
 									case 0:
-//										photoChoice.start(APublishFragment.this, 0);
-                                        String[] images = getPublishBean().getPics();
-                                        // images = null;// 这里只选中一个图片，不设置默认图片
-                                        PicturePickFragment.launch(APublishFragment.this, 9, images, 3333);
+										String[] images = getPublishBean().getPics();
+										PicturePickFragment.launch(APublishFragment.this, 9, images, 3333);
 										break;
 									// 拍照
 									case 1:
@@ -543,10 +547,13 @@ public abstract class APublishFragment extends ABaseFragment
 										break;
 									default:
 										break;
-									}
 								}
-							})
-							.show();
+							}
+						})
+						.show();
+			}
+
+		}.run();
 	}
 
 	/**

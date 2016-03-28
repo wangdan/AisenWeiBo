@@ -234,39 +234,44 @@ public class BizFragment extends ABaseFragment {
                     AppContext.getAccount().getAdvancedToken().isExpired();
 
             if (interrupt) {
-                new AlertDialogWrapper.Builder(getRealActivity())
-//                        .setTitle(R.string.profile_ad_title)
-//                        .setMessage(R.string.profile_ad_message)
-                        .setMessage(R.string.profile_ad_title)
-                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                checkAdTokenAction = CheckAdTokenAction.this;
-
-                                String account = AppContext.getAccount().getAccount();
-                                String password = AppContext.getAccount().getPassword();
-
-                                WebLoginFragment.launch(BizFragment.this, WebLoginFragment.Client.weico, account, password, REQUEST_CODE_AD_AUTH);
-                            }
-
-                        })
-                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (callback != null)
-                                    callback.onCheckProfileFaild();
-                            }
-
-                        })
-                        .show();
+                doInterrupt();
             }
             else {
                 checkAdTokenAction = null;
             }
 
             return interrupt;
+        }
+
+        @Override
+        public void doInterrupt() {
+            new AlertDialogWrapper.Builder(getRealActivity())
+//                        .setTitle(R.string.profile_ad_title)
+//                        .setMessage(R.string.profile_ad_message)
+                    .setMessage(R.string.profile_ad_title)
+                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            checkAdTokenAction = CheckAdTokenAction.this;
+
+                            String account = AppContext.getAccount().getAccount();
+                            String password = AppContext.getAccount().getPassword();
+
+                            WebLoginFragment.launch(BizFragment.this, WebLoginFragment.Client.weico, account, password, REQUEST_CODE_AD_AUTH);
+                        }
+
+                    })
+                    .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (callback != null)
+                                callback.onCheckProfileFaild();
+                        }
+
+                    })
+                    .show();
         }
 
         @Override

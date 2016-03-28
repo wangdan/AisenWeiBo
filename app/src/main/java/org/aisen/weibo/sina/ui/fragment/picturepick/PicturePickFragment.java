@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -369,6 +370,9 @@ public class PicturePickFragment extends AGridFragment<String, ArrayList<String>
             Cursor cursor = GlobalContext.getInstance().getContentResolver().query(uri, proj, null, null, null);
             while (cursor.moveToNext()) {
                 String path = cursor.getString(0);
+                if (TextUtils.isEmpty(path)) {
+                    continue;
+                }
                 Logger.d(path);
                 picFileList.add(new File(path).getAbsolutePath());
             }

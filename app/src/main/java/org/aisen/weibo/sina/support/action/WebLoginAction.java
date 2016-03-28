@@ -31,7 +31,13 @@ public class WebLoginAction extends IAction {
 
     @Override
     protected boolean interrupt() {
-        return TextUtils.isEmpty(AppContext.getAccount().getCookie());
+        if (TextUtils.isEmpty(AppContext.getAccount().getCookie())) {
+            doInterrupt();
+
+            return true;
+        }
+
+        return false;
     }
 
     @Override

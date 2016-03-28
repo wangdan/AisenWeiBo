@@ -592,6 +592,10 @@
     <string name="txt_save_wallpaper_suc">已保存至相册</string>
     <string name="wallpaper_download_cancel">取消下载</string>
 
+    <!--首页-->
+    <string name="crash_hint">开启Crash日志上报，有助于我更好的跟踪分析问题，电话权限仅用于获取设备IMEI号，现在去设置界面打开吗?</string>
+    <string name="crash_settings">好的</string>
+
     <string-array name="jokes_menu">
         <item>复制</item>
         <item>分享</item>
