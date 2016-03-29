@@ -2,8 +2,6 @@ package org.aisen.weibo.sina.ui.fragment.timeline;
 
 import android.os.Bundle;
 
-import com.umeng.analytics.MobclickAgent;
-
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.weibo.sina.base.AppContext;
@@ -11,6 +9,7 @@ import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
 import org.aisen.weibo.sina.sinasdk.bean.Group;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContents;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 
 /**
  * 分组微博列表
@@ -78,16 +77,14 @@ public class TimelineGroupsFragment extends ATimelineFragment {
     public void onResume() {
         super.onResume();
 
-        MobclickAgent.onPageStart("好友分组");
-        MobclickAgent.onResume(getActivity());
+        UMengUtil.onPageStart(getActivity(), "好友分组微博页");
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        MobclickAgent.onPageEnd("好友分组");
-        MobclickAgent.onPause(getActivity());
+        UMengUtil.onPageEnd(getActivity(), "好友分组微博页");
     }
 
 }

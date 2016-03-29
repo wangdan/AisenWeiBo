@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.umeng.analytics.MobclickAgent;
+
 import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.common.utils.Utils;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
@@ -113,9 +115,13 @@ public class JokesFragment extends AWaterfallSwipeRefreshFragment<JokeBean, Joke
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     if (which == 0) {
+                        MobclickAgent.onEvent(getActivity(), "joke_text_copy");
+
                         AisenUtils.copyToClipboard(bean.getExcerpt());
                     }
                     else if (which == 1) {
+                        MobclickAgent.onEvent(getActivity(), "joke_text_share");
+
                         startActivity(Utils.getShareIntent("", bean.getExcerpt(), ""));
                     }
                 }

@@ -42,6 +42,7 @@ import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.support.action.DoLikeAction;
 import org.aisen.weibo.sina.support.bean.LikeBean;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineRepostFragment;
@@ -137,7 +138,7 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
         bizFragment = BizFragment.createBizFragment(this);
 
         BaseActivity activity = (BaseActivity) getActivity();
-        activity.getSupportActionBar().setTitle(R.string.timeline_detail);
+        activity.getSupportActionBar().setTitle("");// R.string.timeline_detail
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setHasOptionsMenu(true);
@@ -190,8 +191,7 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
     public void onResume() {
         super.onResume();
 
-        MobclickAgent.onPageStart("微博评论页");
-        MobclickAgent.onResume(getActivity());
+        UMengUtil.onPageStart(getActivity(), "微博评论页");
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(ACTION_REFRESH_CMT_CREATE);
@@ -206,8 +206,7 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
     public void onPause() {
         super.onPause();
 
-        MobclickAgent.onPageEnd("微博评论页");
-        MobclickAgent.onPause(getActivity());
+        UMengUtil.onPageEnd(getActivity(), "微博评论页");
 
         getActivity().unregisterReceiver(receiver);
     }

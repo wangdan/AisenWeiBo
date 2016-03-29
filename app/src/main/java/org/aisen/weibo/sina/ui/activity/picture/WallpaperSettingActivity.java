@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.umeng.analytics.MobclickAgent;
+
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.FileUtils;
 import org.aisen.android.common.utils.KeyGenerator;
@@ -22,6 +24,7 @@ import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.support.permissions.SdcardPermissionAction;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.fragment.secondgroups.WallpaperDownloadTask;
 import org.aisen.weibo.sina.ui.widget.WallpaperViewer;
 import org.aisen.weibo.sina.ui.widget.WaveView;
@@ -228,6 +231,8 @@ public class WallpaperSettingActivity extends BaseActivity implements WallpaperV
                 // 在idol3上设置时常耗时800ms以下，在idol5手机100ms以下
                 final File file = WallpaperDownloadTask.getWallpaperSaveFile(origURL);
                 if (file.exists()) {
+                    MobclickAgent.onEvent(WallpaperSettingActivity.this, "wallpaper_setting");
+
                     showMessage(R.string.txt_set_wallpaper_suc);
                     // AsyncTask的execute()方法，默认会在队列执行
                     new AsyncTask<Void, Void, Boolean>() {
@@ -270,6 +275,20 @@ public class WallpaperSettingActivity extends BaseActivity implements WallpaperV
     @Override
     protected int configTheme() {
         return R.style.AppTheme_Pics;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        UMengUtil.onPageStart(this, "壁纸预览页");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        UMengUtil.onPageEnd(this, "壁纸预览页");
     }
 
 }

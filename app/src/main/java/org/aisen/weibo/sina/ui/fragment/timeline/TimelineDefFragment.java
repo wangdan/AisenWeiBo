@@ -2,8 +2,6 @@ package org.aisen.weibo.sina.ui.fragment.timeline;
 
 import android.os.Bundle;
 
-import com.umeng.analytics.MobclickAgent;
-
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
@@ -12,6 +10,7 @@ import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContents;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 
 import java.lang.reflect.Method;
 
@@ -91,16 +90,14 @@ public class TimelineDefFragment extends ATimelineFragment {
     public void onResume() {
         super.onResume();
 
-        MobclickAgent.onPageStart(getPageName());
-        MobclickAgent.onResume(getActivity());
+        UMengUtil.onPageStart(getActivity(), getPageName());
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        MobclickAgent.onPageEnd(getPageName());
-        MobclickAgent.onPause(getActivity());
+        UMengUtil.onPageEnd(getActivity(), getPageName());
     }
 
     private String getPageName() {

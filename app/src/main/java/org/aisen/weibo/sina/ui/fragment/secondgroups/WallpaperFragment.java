@@ -27,6 +27,7 @@ import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.support.bean.WallpaperBean;
 import org.aisen.weibo.sina.support.bean.WallpaperBeans;
 import org.aisen.weibo.sina.support.sdk.SDK;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.activity.picture.WallpaperSettingActivity;
 
 import java.io.File;
@@ -174,6 +175,20 @@ public class WallpaperFragment extends AWaterfallSwipeRefreshFragment<WallpaperB
             return beans;
         }
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        UMengUtil.onPageStart(getActivity(), "壁纸列表页");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        UMengUtil.onPageEnd(getActivity(), "壁纸列表页");
     }
 
 }

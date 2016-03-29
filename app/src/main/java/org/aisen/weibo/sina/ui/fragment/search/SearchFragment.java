@@ -15,7 +15,6 @@ import com.lapism.searchview.adapter.SearchAdapter;
 import com.lapism.searchview.adapter.SearchItem;
 import com.lapism.searchview.view.SearchCodes;
 import com.lapism.searchview.view.SearchView;
-import com.umeng.analytics.MobclickAgent;
 
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.common.utils.SystemUtils;
@@ -38,6 +37,7 @@ import org.aisen.weibo.sina.sinasdk.bean.SearchsResultUser;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContents;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 import org.aisen.weibo.sina.ui.fragment.timeline.ATimelineFragment;
 
@@ -484,16 +484,14 @@ public class SearchFragment extends ATimelineFragment {
     public void onResume() {
         super.onResume();
 
-        MobclickAgent.onPageStart("搜索页面");
-        MobclickAgent.onResume(getActivity());
+        UMengUtil.onPageStart(getActivity(), "搜索页面");
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        MobclickAgent.onPageEnd("搜索页面");
-        MobclickAgent.onPause(getActivity());
+        UMengUtil.onPageEnd(getActivity(), "搜索页面");
     }
 
 }

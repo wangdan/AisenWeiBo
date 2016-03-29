@@ -19,6 +19,7 @@ import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.fragment.ATabsTabLayoutFragment;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 
 import java.util.ArrayList;
@@ -153,16 +154,14 @@ public class SettingsPagerFragment extends ATabsTabLayoutFragment<TabItem> {
 	public void onResume() {
 		super.onResume();
 
-		MobclickAgent.onPageStart("设置");
-		MobclickAgent.onResume(getActivity());
+		UMengUtil.onPageStart(getActivity(), "设置页");
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
 
-		MobclickAgent.onPageEnd("设置");
-		MobclickAgent.onPause(getActivity());
+		UMengUtil.onPageEnd(getActivity(), "设置页");
 	}
 
 }

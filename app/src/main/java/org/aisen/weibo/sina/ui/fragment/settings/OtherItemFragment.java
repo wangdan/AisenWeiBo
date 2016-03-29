@@ -1,5 +1,6 @@
 package org.aisen.weibo.sina.ui.fragment.settings;
 
+import android.Manifest;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -9,11 +10,20 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
+import android.util.Log;
+
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.setting.SettingUtility;
+import org.aisen.android.common.utils.ActivityHelper;
+import org.aisen.android.support.action.IAction;
+import org.aisen.android.support.permissions.APermissionsAction;
+import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
+import org.aisen.weibo.sina.base.MyApplication;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
 
@@ -37,6 +47,7 @@ public class OtherItemFragment extends VersionSettingsFragment
 	private Preference pGithub;// Github
 	private CheckBoxPreference pScreenRotate;// 屏幕旋转
 	private CheckBoxPreference pDisableCache;// 禁用缓存
+	private CheckBoxPreference pCrashLog;// Crash日志上报
 	private CheckBoxPreference pNetworkDelay;// 网络请求延迟
 	private ListPreference pCacheValidity;// 业务数据有效期
 
@@ -63,6 +74,9 @@ public class OtherItemFragment extends VersionSettingsFragment
 		
 		pDisableCache = (CheckBoxPreference) findPreference("pDisableCache");
 		pDisableCache.setOnPreferenceChangeListener(this);
+
+		pCrashLog = (CheckBoxPreference) findPreference("pCrashLog");
+		pCrashLog.setOnPreferenceChangeListener(this);
 
 		pNetworkDelay = (CheckBoxPreference) findPreference("pNetworkDelay");
 		pNetworkDelay.setOnPreferenceChangeListener(this);
@@ -102,6 +116,11 @@ public class OtherItemFragment extends VersionSettingsFragment
 		else if ("pNetworkDelay".equals(preference.getKey())) {
 			SettingUtility.setPermanentSetting("http_delay", Boolean.parseBoolean(newValue.toString()) ? 10 * 1000 : 0);
 		}
+		else if ("pCrashLog".equals(preference.getKey())) {
+			if (Boolean.parseBoolean(newValue.toString())) {
+				checkPhotoPermission(((BaseActivity) getActivity()), false);
+			}
+		}
 		return true;
 	}
 
@@ -133,5 +152,55 @@ public class OtherItemFragment extends VersionSettingsFragment
 //
 //		pLanguage.setSummary(valueTitleArr[value]);
 //	}
+
+	public static void checkPhotoPermission(final BaseActivity activity, final boolean shownever) {
+		APermissionsAction permissionsAction = new APermissionsAction(activity, null, activity.getActivityHelper(), Manifest.permission.CALL_PHONE) {
+
+			@Override
+			protected void onPermissionDenied(boolean alwaysDenied) {
+				if (alwaysDenied) {
+					if (shownever && ActivityHelper.getBooleanShareData("donot_crash_remind", false)) {
+						return;
+					}
+
+					MaterialDialog.Builder builder = new MaterialDialog.Builder(activity)
+														.forceStacking(true)
+														.content(R.string.crash_hint)
+														.negativeText(R.string.crash_settings)
+														.onPositive(new MaterialDialog.SingleButtonCallback() {
+
+															@Override
+															public void onClick(MaterialDialog dialog, DialogAction which) {
+																ActivityHelper.putBooleanShareData("donot_crash_remind", true);
+															}
+
+														})
+														.onNegative(new MaterialDialog.SingleButtonCallback() {
+
+															@Override
+															public void onClick(MaterialDialog dialog, DialogAction which) {
+
+															}
+
+														});
+					if (shownever)
+						builder.positiveText(R.string.donnot_remind);
+					builder.show();
+				}
+			}
+
+		};
+		// 开启日志上报
+		new IAction(activity, permissionsAction) {
+
+			@Override
+			public void doAction() {
+				Log.d("Main", "setupCrash");
+
+				((MyApplication) GlobalContext.getInstance()).setupCrash();
+			}
+
+		}.run();
+	}
 
 }

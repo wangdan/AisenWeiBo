@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import org.aisen.android.support.bean.TabItem;
 import org.aisen.android.ui.fragment.ATabsTabLayoutFragment;
 import org.aisen.weibo.sina.R;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 
 import java.util.ArrayList;
 
@@ -21,6 +22,8 @@ public class JokesPagerFragment extends ATabsTabLayoutFragment<TabItem> {
     public static JokesPagerFragment newInstance() {
         return new JokesPagerFragment();
     }
+
+    private int lastPosition = 0;
 
     @Override
     public int inflateContentView() {
@@ -49,6 +52,41 @@ public class JokesPagerFragment extends ATabsTabLayoutFragment<TabItem> {
     @Override
     protected Fragment newFragment(TabItem bean) {
         return JokesFragment.newInstance(Integer.parseInt(bean.getType()));
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        super.onPageSelected(position);
+
+        endPage();
+        lastPosition = position;
+        startPage();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        startPage();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        endPage();
+    }
+
+    private void startPage() {
+        String[] pageNameArr = new String[]{ "文本笑话", "图文笑话" };
+
+        UMengUtil.onPageStart(getActivity(), pageNameArr[lastPosition] + "页");
+    }
+
+    private void endPage() {
+        String[] pageNameArr = new String[]{ "文本笑话", "图文笑话" };
+
+        UMengUtil.onPageEnd(getActivity(), pageNameArr[lastPosition] + "页");
     }
 
 }

@@ -1,6 +1,5 @@
 package org.aisen.weibo.sina.ui.activity.base;
 
-import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Fragment;
@@ -21,8 +20,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.umeng.analytics.MobclickAgent;
 
 import org.aisen.android.common.context.GlobalContext;
@@ -35,7 +32,6 @@ import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.support.action.IAction;
 import org.aisen.android.support.inject.ViewInject;
-import org.aisen.android.support.permissions.APermissionsAction;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.fragment.ABaseFragment;
 import org.aisen.android.ui.fragment.APagingFragment;
@@ -45,7 +41,6 @@ import org.aisen.android.ui.widget.AsToolbar;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
-import org.aisen.weibo.sina.base.MyApplication;
 import org.aisen.weibo.sina.service.OfflineService;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
 import org.aisen.weibo.sina.sinasdk.bean.Group;
@@ -70,6 +65,7 @@ import org.aisen.weibo.sina.ui.fragment.search.SearchFragment;
 import org.aisen.weibo.sina.ui.fragment.secondgroups.JokesPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.secondgroups.WallpaperFragment;
 import org.aisen.weibo.sina.ui.fragment.settings.NotificationSettingsFragment;
+import org.aisen.weibo.sina.ui.fragment.settings.OtherItemFragment;
 import org.aisen.weibo.sina.ui.fragment.settings.SettingsPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineDefFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineGroupsFragment;
@@ -168,7 +164,7 @@ public class MainActivity extends BaseActivity
 
         mInstance = this;
 
-        checkPhotoPermission(this);
+        OtherItemFragment.checkPhotoPermission(this, true);
     }
 
     @Override
@@ -420,10 +416,14 @@ public class MainActivity extends BaseActivity
         // 轻松一刻
         case MenuFragment.MENU_JOKE:
             fragment = JokesPagerFragment.newInstance();
+
+            MobclickAgent.onEvent(this, "menu_joke");
             break;
         // 精美壁纸
         case MenuFragment.MENU_WALLPAPER:
             fragment = WallpaperFragment.newInstance();
+
+            MobclickAgent.onEvent(this, "menu_wallpaper");
             break;
         }
 
@@ -659,9 +659,9 @@ public class MainActivity extends BaseActivity
     @Override
     public boolean onBackClick() {
         if (AppSettings.isAppResident()) {
-            if (menuFragment.backToMain()) {
-                return true;
-            } else {
+//            if (menuFragment.backToMain()) {
+//                return true;
+//            } else {
                 if (isDrawerOpened()) {
                     closeDrawer();
 
@@ -671,7 +671,7 @@ public class MainActivity extends BaseActivity
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addCategory(Intent.CATEGORY_HOME);
                 startActivity(intent);
-            }
+//            }
             return true;
         }
         else {
@@ -832,47 +832,6 @@ public class MainActivity extends BaseActivity
                 login();
             }
         }
-    }
-
-    public static void checkPhotoPermission(final BaseActivity activity) {
-        APermissionsAction permissionsAction = new APermissionsAction(activity, null, activity.getActivityHelper(), Manifest.permission.READ_PHONE_STATE) {
-
-            @Override
-            protected void onPermissionDenied(boolean alwaysDenied) {
-                if (alwaysDenied) {
-                    new MaterialDialog.Builder(activity)
-                            .forceStacking(true)
-                            .content(R.string.crash_hint)
-                            .positiveText(R.string.donnot_remind)
-                            .negativeText(R.string.crash_settings)
-                            .onPositive(new MaterialDialog.SingleButtonCallback() {
-
-                                @Override
-                                public void onClick(MaterialDialog dialog, DialogAction which) {
-                                }
-
-                            })
-                            .onNegative(new MaterialDialog.SingleButtonCallback() {
-
-                                @Override
-                                public void onClick(MaterialDialog dialog, DialogAction which) {
-                                }
-
-                            })
-                            .show();
-                }
-            }
-
-        };
-        // 开启日志上报
-        new IAction(activity, permissionsAction) {
-
-            @Override
-            public void doAction() {
-                ((MyApplication) GlobalContext.getInstance()).setupCrash();
-            }
-
-        }.run();
     }
 
 }

@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
-import com.umeng.analytics.MobclickAgent;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.DateUtils;
@@ -37,6 +36,7 @@ import org.aisen.weibo.sina.support.bean.PublishBean;
 import org.aisen.weibo.sina.support.bean.PublishType;
 import org.aisen.weibo.sina.support.sqlit.PublishDB;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.widget.AisenTextView;
@@ -125,8 +125,7 @@ public class DraftFragment extends ARecycleViewFragment<PublishBean, ArrayList<P
     public void onResume() {
         super.onResume();
 
-        MobclickAgent.onPageStart("草稿箱");
-        MobclickAgent.onResume(getActivity());
+        UMengUtil.onPageStart(getActivity(), "草稿箱页");
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(PublishManager.ACTION_PUBLISH_CHANNGED);
@@ -139,8 +138,7 @@ public class DraftFragment extends ARecycleViewFragment<PublishBean, ArrayList<P
     public void onPause() {
         super.onPause();
 
-        MobclickAgent.onPageEnd("草稿箱");
-        MobclickAgent.onPause(getActivity());
+        UMengUtil.onPageEnd(getActivity(), "草稿箱页");
 
         getActivity().unregisterReceiver(receiver);
     }

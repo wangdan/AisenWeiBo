@@ -8,8 +8,6 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 
-import com.umeng.analytics.MobclickAgent;
-
 import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.support.inject.ViewInject;
@@ -22,6 +20,7 @@ import org.aisen.weibo.sina.support.bean.PublishBean.PublishStatus;
 import org.aisen.weibo.sina.support.bean.PublishType;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 
 /**
  * 回复评论
@@ -121,16 +120,14 @@ public class PublishCommentReplyFragment extends APublishFragment implements OnC
 	public void onResume() {
 		super.onResume();
 
-		MobclickAgent.onPageStart("发布回复评论");
-		MobclickAgent.onResume(getActivity());
+		UMengUtil.onPageStart(getActivity(), "发布回复评论页");
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
 
-		MobclickAgent.onPageEnd("发布回复评论");
-		MobclickAgent.onPause(getActivity());
+		UMengUtil.onPageEnd(getActivity(), "发布回复评论页");
 	}
 
 }

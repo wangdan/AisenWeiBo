@@ -10,13 +10,12 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
 
-import com.umeng.analytics.MobclickAgent;
-
 import org.aisen.android.common.context.GlobalContext;
-import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
+import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 
 /**
  * 流量控制
@@ -130,16 +129,14 @@ public class FlowSettingsFragment extends BasePreferenceFragment
 	public void onResume() {
 		super.onResume();
 
-		MobclickAgent.onPageStart("流量设置");
-		MobclickAgent.onResume(getActivity());
+		UMengUtil.onPageStart(getActivity(), "流量设置页");
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
 
-		MobclickAgent.onPageEnd("流量设置");
-		MobclickAgent.onPause(getActivity());
+		UMengUtil.onPageEnd(getActivity(), "流量设置页");
 	}
 
 }

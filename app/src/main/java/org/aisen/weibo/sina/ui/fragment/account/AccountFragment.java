@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
-import com.umeng.analytics.MobclickAgent;
 
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.common.utils.ViewUtils;
@@ -44,6 +43,7 @@ import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.utils.AccountUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.activity.base.MainActivity;
 import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
@@ -354,16 +354,14 @@ public class AccountFragment extends ARecycleViewFragment<AccountBean, ArrayList
     public void onResume() {
         super.onResume();
 
-        MobclickAgent.onPageStart(getString(R.string.title_acount));
-        MobclickAgent.onResume(getActivity());
+        UMengUtil.onPageStart(getActivity(), getString(R.string.title_acount) + "页");
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        MobclickAgent.onPageEnd(getString(R.string.title_acount));
-        MobclickAgent.onPause(getActivity());
+        UMengUtil.onPageEnd(getActivity(), getString(R.string.title_acount) + "页");
     }
 
 }

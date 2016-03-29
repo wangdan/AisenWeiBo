@@ -13,8 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.umeng.analytics.MobclickAgent;
-
 import org.aisen.android.common.utils.KeyGenerator;
 import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.support.inject.ViewInject;
@@ -25,6 +23,7 @@ import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.sinasdk.bean.PicUrls;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.support.bean.PhotosBean;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.fragment.comment.TimelineDetailPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.picture.PictureFragment;
 import org.aisen.weibo.sina.ui.fragment.profile.PhotosFragment;
@@ -203,16 +202,14 @@ public class PhotosActivity extends BaseActivity implements OnPageChangeListener
 	public void onResume() {
 		super.onResume();
 
-		MobclickAgent.onPageStart("相册预览");
-		MobclickAgent.onResume(this);
+		UMengUtil.onPageStart(this, "相册预览页");
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
 
-		MobclickAgent.onPageEnd("相册预览");
-		MobclickAgent.onPause(this);
+		UMengUtil.onPageEnd(this, "相册预览页");
 	}
 
 }

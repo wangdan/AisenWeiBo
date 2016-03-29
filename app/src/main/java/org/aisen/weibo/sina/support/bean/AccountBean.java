@@ -29,7 +29,7 @@ public class AccountBean extends BaseSinaBean {
 
     private AccessToken advancedToken;
 
-    private UnreadCount unreadCount;
+    private UnreadCount unreadCount = new UnreadCount();
 
     private String cookie;// 网页授权的cookie
 

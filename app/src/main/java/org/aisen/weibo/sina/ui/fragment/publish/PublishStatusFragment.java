@@ -16,7 +16,6 @@ import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
-import com.umeng.analytics.MobclickAgent;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.DateUtils;
@@ -33,6 +32,7 @@ import org.aisen.weibo.sina.support.bean.PublishBean;
 import org.aisen.weibo.sina.support.bean.PublishBean.PublishStatus;
 import org.aisen.weibo.sina.support.bean.PublishType;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 
 import java.util.ArrayList;
@@ -475,16 +475,14 @@ public class PublishStatusFragment extends APublishFragment {
 	public void onResume() {
 		super.onResume();
 
-		MobclickAgent.onPageStart("发布新微博");
-		MobclickAgent.onResume(getActivity());
+		UMengUtil.onPageStart(getActivity(), "发布新微博页");
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
 
-		MobclickAgent.onPageEnd("发布新微博");
-		MobclickAgent.onPause(getActivity());
+		UMengUtil.onPageEnd(getActivity(), "发布新微博页");
 	}
 
 }

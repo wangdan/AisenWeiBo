@@ -2,10 +2,15 @@ package org.aisen.weibo.sina.support.utils;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.text.TextUtils;
+
+import com.umeng.analytics.MobclickAgent;
+
+import org.aisen.android.common.utils.Logger;
 
 /**
  * Created by wangdan on 16/3/14.
@@ -57,5 +62,18 @@ public class UMengUtil {
         return null;
     }
 
+    public static void onPageStart(Activity context, String name) {
+        MobclickAgent.onPageStart(name);
+        MobclickAgent.onResume(context);
+
+        Logger.v("UMeng", "onPageStart(%s)", name);
+    }
+
+    public static void onPageEnd(Activity context, String name) {
+        MobclickAgent.onPageEnd(name);
+        MobclickAgent.onPause(context);
+
+        Logger.v("UMeng", "onPageEnd(%s)", name);
+    }
 
 }

@@ -12,14 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.umeng.analytics.MobclickAgent;
-
 import org.aisen.android.support.bean.TabItem;
 import org.aisen.android.ui.fragment.ATabsTabLayoutFragment;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.service.UnreadService;
 import org.aisen.weibo.sina.sinasdk.bean.UnreadCount;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.fragment.mention.MentionCmtsFragment;
 import org.aisen.weibo.sina.ui.fragment.mention.MentionTimelineFragment;
 
@@ -122,8 +121,7 @@ public class NotificationPagerFragment extends ATabsTabLayoutFragment<TabItem> {
     public void onResume() {
         super.onResume();
 
-        MobclickAgent.onPageStart("通知");
-        MobclickAgent.onResume(getActivity());
+        UMengUtil.onPageStart(getActivity(), "通知页");
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(UnreadService.ACTION_UNREAD_CHANGED);
@@ -134,8 +132,7 @@ public class NotificationPagerFragment extends ATabsTabLayoutFragment<TabItem> {
     public void onPause() {
         super.onPause();
 
-        MobclickAgent.onPageEnd("通知");
-        MobclickAgent.onPause(getActivity());
+        UMengUtil.onPageEnd(getActivity(), "通知页");
 
         getActivity().unregisterReceiver(receiver);
     }

@@ -22,8 +22,6 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import com.umeng.analytics.MobclickAgent;
-
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.network.task.TaskException;
@@ -45,6 +43,7 @@ import org.aisen.weibo.sina.support.paging.FriendshipPaging;
 import org.aisen.weibo.sina.support.sqlit.FriendMentionDB;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 
 import java.util.ArrayList;
@@ -332,16 +331,14 @@ public class AddFriendMentionFragment extends AListSwipeRefreshFragment<WeiBoUse
     public void onResume() {
         super.onResume();
 
-        MobclickAgent.onPageStart("搜索提及好友");
-        MobclickAgent.onResume(getActivity());
+        UMengUtil.onPageStart(getActivity(), "搜索提及好友页");
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        MobclickAgent.onPageEnd("搜索提及好友");
-        MobclickAgent.onPause(getActivity());
+        UMengUtil.onPageEnd(getActivity(), "搜索提及好友页");
     }
 
 }

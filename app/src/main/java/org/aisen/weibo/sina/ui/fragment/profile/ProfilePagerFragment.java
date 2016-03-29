@@ -17,8 +17,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.umeng.analytics.MobclickAgent;
-
 import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.component.bitmaploader.core.ImageConfig;
 import org.aisen.android.component.bitmaploader.display.DefaultDisplayer;
@@ -41,6 +39,7 @@ import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.support.utils.AccountUtils;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.fragment.friendship.FriendshipPagerFragment;
@@ -492,15 +491,13 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
     private void startPage() {
         String[] pageNameArr = new String[]{ "个人关于", "个人微博", "个人相册", "个人收藏" };
 
-        MobclickAgent.onPageStart(pageNameArr[lastPosition]);
-        MobclickAgent.onResume(getActivity());
+        UMengUtil.onPageStart(getActivity(), pageNameArr[lastPosition] + "页");
     }
 
     private void endPage() {
         String[] pageNameArr = new String[]{ "个人关于", "个人微博", "个人相册", "个人收藏" };
 
-        MobclickAgent.onPageEnd(pageNameArr[lastPosition]);
-        MobclickAgent.onPause(getActivity());
+        UMengUtil.onPageEnd(getActivity(), pageNameArr[lastPosition] + "页");
     }
 
     public interface IUserProfileRefresh {

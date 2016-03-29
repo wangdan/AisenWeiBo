@@ -14,8 +14,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
-import com.umeng.analytics.MobclickAgent;
-
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.setting.SettingUtility;
 import org.aisen.android.common.utils.FileUtils;
@@ -36,6 +34,7 @@ import org.aisen.weibo.sina.sinasdk.bean.Groups;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -408,16 +407,14 @@ public class WebLoginFragment extends ABaseFragment {
     public void onResume() {
         super.onResume();
 
-        MobclickAgent.onPageStart(String.format("%s授权页", mClient == Client.weico ? "Weico" : "Aisen"));
-        MobclickAgent.onResume(getActivity());
+        UMengUtil.onPageStart(getActivity(), String.format("%s授权页", mClient == Client.weico ? "Weico" : "Aisen"));
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        MobclickAgent.onPageEnd(String.format("%s授权页", mClient == Client.weico ? "Weico" : "Aisen"));
-        MobclickAgent.onPause(getActivity());
+        UMengUtil.onPageEnd(getActivity(), String.format("%s授权页", mClient == Client.weico ? "Weico" : "Aisen"));
     }
 
 }

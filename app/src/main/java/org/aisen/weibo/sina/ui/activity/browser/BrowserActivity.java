@@ -14,8 +14,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.umeng.analytics.MobclickAgent;
-
 import org.aisen.android.common.utils.Utils;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.activity.basic.BaseActivity;
@@ -23,6 +21,7 @@ import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
@@ -169,16 +168,14 @@ public class BrowserActivity extends BaseActivity {
 	public void onResume() {
 		super.onResume();
 
-		MobclickAgent.onPageStart("内置浏览器");
-		MobclickAgent.onResume(this);
+		UMengUtil.onPageStart(this, "内置浏览器页");
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
 
-		MobclickAgent.onPageEnd("内置浏览器");
-		MobclickAgent.onPause(this);
+		UMengUtil.onPageEnd(this, "内置浏览器页");
 	}
 
     @Override

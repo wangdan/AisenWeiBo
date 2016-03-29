@@ -9,8 +9,6 @@ import android.graphics.BitmapFactory.Options;
 import android.graphics.Rect;
 import android.opengl.GLES10;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.ShareActionProvider;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,6 +18,8 @@ import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.ImageView;
+
+import com.umeng.analytics.MobclickAgent;
 
 import org.aisen.android.common.utils.BitmapUtil;
 import org.aisen.android.common.utils.BitmapUtil.BitmapType;
@@ -511,12 +511,12 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 				}
 			}
 
-			Intent shareIntent = Utils.getShareIntent("", "", getImage());
+//			Intent shareIntent = Utils.getShareIntent("", "", getImage());
 
-			MenuItem shareItem = menu.findItem(R.id.share);
-			ShareActionProvider shareProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
-			shareProvider.setShareHistoryFileName("channe_share.xml");
-			shareProvider.setShareIntent(shareIntent);
+//			MenuItem shareItem = menu.findItem(R.id.share);
+//			ShareActionProvider shareProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
+//			shareProvider.setShareHistoryFileName("channe_share.xml");
+//			shareProvider.setShareIntent(shareIntent);
 		}
 
 		super.onPrepareOptionsMenu(menu);
@@ -526,11 +526,16 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// 下载
 		if (item.getItemId() == R.id.savePicture) {
+			MobclickAgent.onEvent(getActivity(), "save_picture");
+
 			downloadImage();
 		}
 		// 分享
 		else if (item.getItemId() == R.id.share) {
-			
+			MobclickAgent.onEvent(getActivity(), "share_picture");
+
+			Intent shareIntent = Utils.getShareIntent("", "", getImage());
+			startActivity(shareIntent);
 		}
 		// 复制链接
 		else if (item.getItemId() == R.id.copy) {

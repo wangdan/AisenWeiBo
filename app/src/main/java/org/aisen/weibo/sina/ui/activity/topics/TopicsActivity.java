@@ -5,11 +5,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.umeng.analytics.MobclickAgent;
-
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.fragment.ABaseFragment;
 import org.aisen.weibo.sina.R;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineTopicsFragment;
 
 /**
@@ -61,16 +60,14 @@ public class TopicsActivity extends BaseActivity {
 	public void onResume() {
 		super.onResume();
 
-		MobclickAgent.onPageStart("话题");
-		MobclickAgent.onResume(this);
+		UMengUtil.onPageStart(this, "话题页");
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
 
-		MobclickAgent.onPageEnd("话题");
-		MobclickAgent.onPause(this);
+		UMengUtil.onPageEnd(this, "话题页");
 	}
 	
 }

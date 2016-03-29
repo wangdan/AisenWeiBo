@@ -60,8 +60,8 @@ public class MyApplication extends GlobalContext {
 
     public void setupCrash() {
         // UMENG统计设置
-//        MobclickAgent.setDebugMode(Logger.DEBUG);
-        AnalyticsConfig.setAppkey(this, BuildConfig.UMENG_APP_ID);
+        MobclickAgent.setDebugMode(Logger.DEBUG);
+//        AnalyticsConfig.setAppkey(this, BuildConfig.UMENG_APP_ID);
         MobclickAgent.setCatchUncaughtExceptions(false);
         MobclickAgent.openActivityDurationTrack(false);
         if (BuildConfig.LOG_DEBUG) {

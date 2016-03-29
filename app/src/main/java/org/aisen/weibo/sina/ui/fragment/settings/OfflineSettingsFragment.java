@@ -7,8 +7,6 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 
-import com.umeng.analytics.MobclickAgent;
-
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.component.orm.extra.Extra;
 import org.aisen.android.ui.activity.basic.BaseActivity;
@@ -17,6 +15,7 @@ import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.sinasdk.bean.Group;
 import org.aisen.weibo.sina.support.sqlit.SinaDB;
 import org.aisen.weibo.sina.support.utils.OfflineUtils;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 
 import java.util.List;
@@ -130,16 +129,14 @@ public class OfflineSettingsFragment extends BasePreferenceFragment
     public void onResume() {
         super.onResume();
 
-        MobclickAgent.onPageStart("离线设置");
-        MobclickAgent.onResume(getActivity());
+        UMengUtil.onPageStart(getActivity(), "离线设置页");
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        MobclickAgent.onPageEnd("离线设置");
-        MobclickAgent.onPause(getActivity());
+        UMengUtil.onPageEnd(getActivity(), "离线设置页");
     }
 
 }
