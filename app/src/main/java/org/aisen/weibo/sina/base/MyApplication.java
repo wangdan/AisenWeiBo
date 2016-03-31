@@ -28,6 +28,7 @@ import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by wangdan on 15/12/13.
@@ -38,6 +39,7 @@ public class MyApplication extends GlobalContext {
     public void onCreate() {
         super.onCreate();
 
+        setupTheme();
         // 打开Debug日志
         Logger.DEBUG = BuildConfig.LOG_DEBUG;
         setupCrash();
@@ -56,6 +58,17 @@ public class MyApplication extends GlobalContext {
         AppContext.setAccount(AccountUtils.getLogedinAccount());
         if (AppContext.isLoggedIn())
             AppContext.login(AppContext.getAccount());
+    }
+
+    private void setupTheme() {
+        int position = AppSettings.getThemeColor();
+        if (position == -1) {
+            // 一些我喜欢的颜色
+            int[] initIndex = new int[]{ 0, 1, 4, 8, 15, 16, 18 };
+            position = initIndex[new Random().nextInt(initIndex.length)];
+
+            AppSettings.setThemeColor(position);
+        }
     }
 
     public void setupCrash() {

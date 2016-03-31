@@ -77,7 +77,7 @@
         <!--默认状态下FAB的阴影大小-->
         <item name="android:elevation" tools:ignore="NewApi">@dimen/fab_elevation</item>
         <!--设置FAB的图标，Google建议符合Design设计的该图标大小为24dp-->
-        <item name="android:src">@drawable/ic_drawer_at</item>
+        <item name="android:src">@drawable/ic_list_white_48dp</item>
         <!--设置FAB的大小，该属性有两个值，分别为normal和mini，对应的FAB大小分别为56dp和40dp-->
         <item name="fabSize">normal</item>
         <!--该属性尤为重要，如果不设置0dp，那么在4.1的sdk上FAB会显示为正方形，而且在5.0以后的sdk没有阴影效果-->

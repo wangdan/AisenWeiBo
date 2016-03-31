@@ -432,7 +432,7 @@ public class AppSettings {
     }
 
     public static int getThemeColor() {
-        return ActivityHelper.getIntShareData("Theme_index", 8);
+        return ActivityHelper.getIntShareData("Theme_index", -1);
     }
 
     public static void setThemeColor(int theme) {
