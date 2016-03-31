@@ -453,7 +453,7 @@ public class TimelinePicsView extends ViewGroup implements BitmapOwner {
 			imgW01 = (mWidth - gap * 3) / 4;
 			imgH01 = imgW01;
 
-			height = imgH * 2 + imgH01 + gap + 2;
+			height = imgH * 2 + imgH01 + gap * 2;
 
 			rect = new Rect(0, 0, imgW * 2 + gap, imgH * 2 + gap);
 			tempRects[0] = rect;
