@@ -47,8 +47,26 @@ dependencies {
 }
 
 // ext is a gradle closure allowing the declaration of global properties
-//ext {
-//    PUBLISH_GROUP_ID = 'org.aisen.android'
-//    PUBLISH_ARTIFACT_ID = 'aisen'
-//    PUBLISH_VERSION = '1.0.0'
-//}
+group = 'org.aisen.android'
+
+ext {
+    PUBLISH_GROUP_ID = 'org.aisen.android'
+    PUBLISH_ARTIFACT_ID = 'aisen'
+    PUBLISH_VERSION = '1.0.0'
+}
+
+artifacts {
+    //当前aar文件名
+    archives file('/Users/wangdan/Documents/github/AisenWeibo_6.0/AisenWeiBo/library/build/outputs/aar/library-debug.aar ')
+}
+
+uploadArchives {
+    repositories.mavenDeployer {
+        repository(url: "file:///Users/wangdan/Documents/github/mvn-repo-aiwen/repository")
+        pom.project {
+            groupId project.PUBLISH_GROUP_ID
+            artifactId project.PUBLISH_ARTIFACT_ID
+            version project.PUBLISH_VERSION
+        }
+    }
+}

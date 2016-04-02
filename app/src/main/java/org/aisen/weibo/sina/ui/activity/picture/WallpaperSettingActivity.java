@@ -59,6 +59,8 @@ public class WallpaperSettingActivity extends BaseActivity implements WallpaperV
     WallpaperViewer viewer;
     @ViewInject(id = R.id.photoview)
     PhotoView photoView;
+    @ViewInject(id = R.id.viewFinish)
+    View viewFinish;
 
     private File thumbFile;
     private File origFile;
@@ -79,6 +81,14 @@ public class WallpaperSettingActivity extends BaseActivity implements WallpaperV
                 if (!cancelIfRunning()) {
                     setWallpaper();
                 }
+            }
+
+        });
+        viewFinish.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                finish();
             }
 
         });

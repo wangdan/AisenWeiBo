@@ -61,7 +61,7 @@ public class WallpaperFragment extends AWaterfallSwipeRefreshFragment<WallpaperB
 
     private void setViewPadding(View viewGroup) {
         viewGroup.setPadding(viewGroup.getPaddingLeft(), viewGroup.getPaddingTop(),
-                viewGroup.getPaddingRight(), SystemUtils.getNavigationBarHeight(getActivity()));
+                viewGroup.getPaddingRight(), Utils.dip2px(56));
     }
 
     @Override

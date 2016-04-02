@@ -175,7 +175,7 @@ public class SDK extends ABizLogic {
         action.getExtras().put(BASE_URL, newSettingExtra(BASE_URL, "http://apps.tclclouds.com/api/", ""));
 
         Params params = new Params();
-        params.addParameter("flag", "1");// 1：最新；2：最热）
+        params.addParameter("flag", "2");// 1：最新；2：最热）
         params.addParameter("page", String.valueOf(page));
         params.addParameter("per_page", "30");
         params.addParameter("encoder", "debug");

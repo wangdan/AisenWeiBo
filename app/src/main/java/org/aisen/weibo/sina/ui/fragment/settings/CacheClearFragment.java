@@ -221,26 +221,36 @@ public class CacheClearFragment extends ABaseFragment implements OnPreferenceCli
 
 			@Override
 			public Void workInBackground(Void... params) throws TaskException {
-				String path = GlobalContext.getInstance().getImagePath() + File.separator + "compression";
-				
-				File cacheRootFile = new File(path);
-				
-				deleteFile(cacheRootFile);
-				
+				File cacheRootFile = new File(GlobalContext.getInstance().getImagePath());
+
+				deleteFile(cacheRootFile, false);
+
 				return null;
 			}
-			
-			void deleteFile(File file) {
-				if (!isCancelled()) {	
+
+			void deleteFile(File file, boolean all) {
+				if (!file.exists())
+					return;
+
+				if (!isCancelled()) {
 					if (file.isDirectory()) {
 						File[] childFiles = file.listFiles();
 						for (File childFile : childFiles)
-							deleteFile(childFile);
+							deleteFile(childFile, all);
 					} else {
-						file.delete();
+						boolean clear = all;
+						if (!clear) {
+							Logger.v("ClearCache", String.format("文件最后修改时间是%s", DateUtils.formatDate(file.lastModified(), DateUtils.TYPE_01)));
+							clear = System.currentTimeMillis() - file.lastModified() >= RETAIN_TIME;
+							if (clear)
+								Logger.v("ClearCache", "缓存超过1天，删除该缓存");
+						}
+						else {
+							file.delete();
+						}
 					}
 				}
-				
+
 			}
 			
 		}.execute();

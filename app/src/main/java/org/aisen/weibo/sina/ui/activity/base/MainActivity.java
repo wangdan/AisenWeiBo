@@ -64,6 +64,7 @@ import org.aisen.weibo.sina.ui.fragment.menu.MenuFragment;
 import org.aisen.weibo.sina.ui.fragment.search.SearchFragment;
 import org.aisen.weibo.sina.ui.fragment.secondgroups.JokesPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.secondgroups.WallpaperFragment;
+import org.aisen.weibo.sina.ui.fragment.settings.CacheClearFragment;
 import org.aisen.weibo.sina.ui.fragment.settings.NotificationSettingsFragment;
 import org.aisen.weibo.sina.ui.fragment.settings.OtherItemFragment;
 import org.aisen.weibo.sina.ui.fragment.settings.SettingsPagerFragment;
@@ -131,6 +132,8 @@ public class MainActivity extends BaseActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ui_main);
+
+        CacheClearFragment.clearCompress();
 
         BizFragment bizFragment = BizFragment.createBizFragment(this);
         bizFragment.createFabAnimator(fabBtn);
@@ -699,6 +702,13 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onResume() {
         super.onResume();
+
+        // 修复偶尔Fab按钮不见了
+        if (menuFragment != null && menuFragment.getSelectedId() == 1) {
+            if (fabBtn.getVisibility() != View.VISIBLE) {
+                fabBtn.setVisibility(View.VISIBLE);
+            }
+        }
 
         if (!AppContext.isLoggedIn()) {
             finish();

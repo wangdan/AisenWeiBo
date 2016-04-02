@@ -13,6 +13,10 @@
         android:layout_width="match_parent" android:layout_height="200dip"
         android:layout_alignParentBottom="true" android:background="@drawable/wallpaper_bottom_bg"/>
 
+    <RelativeLayout
+        android:id="@+id/viewFinish" android:layout_width="match_parent"
+        android:layout_height="match_parent" android:background="?attr/selectableItemBackground"/>
+
     <LinearLayout
         android:id="@+id/layNavigation"
         android:layout_width="match_parent"

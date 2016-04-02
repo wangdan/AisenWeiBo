@@ -84,6 +84,13 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		if (savedInstanceState == null) {
+			refreshConfig = new RefreshConfig();
+		}
+		else {
+			refreshConfig = (RefreshConfig) savedInstanceState.getSerializable(SAVED_CONFIG);
+		}
+
 		ArrayList<T> datas = savedInstanceState == null ? new ArrayList<T>()
                                                         : (ArrayList<T>) savedInstanceState.getSerializable(SAVED_DATAS);
 		mAdapter = newAdapter(datas);
@@ -125,13 +132,6 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 	void _layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
 		super._layoutInit(inflater, savedInstanceSate);
 		
-        if (savedInstanceSate == null) {
-			refreshConfig = new RefreshConfig();
-        }
-        else {
-            refreshConfig = (RefreshConfig) savedInstanceSate.getSerializable(SAVED_CONFIG);
-        }
-
 		setupRefreshConfig(refreshConfig);
 
 		setupRefreshView(savedInstanceSate);
@@ -597,7 +597,7 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 	 */
 	@Override
 	public void onTaskStateChanged(AFooterItemView<?> footerItemView, ABaseTaskState state, TaskException exception, RefreshMode mode) {
-		if (!refreshConfig.footerMoreEnable || mFooterItemView == null)
+		if (refreshConfig == null || !refreshConfig.footerMoreEnable || mFooterItemView == null)
 			return;
 
 		if (mFooterItemView != null) {

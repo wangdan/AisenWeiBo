@@ -488,13 +488,13 @@ public class TimelinePicsView extends ViewGroup implements BitmapOwner {
 			rect = new Rect(mWidth - imgW, imgH * 2 + gap * 2, mWidth, imgH * 3 + gap * 2);
 			tempRects[3] = rect;
 
-			rect = new Rect(0, height - imgH - gap, imgW, height);
+			rect = new Rect(0, height - imgH, imgW, height);
 			tempRects[4] = rect;
-			rect = new Rect(imgW + gap, height - imgH - gap, imgW * 2 + gap, height);
+			rect = new Rect(imgW + gap, height - imgH, imgW * 2 + gap, height);
 			tempRects[5] = rect;
-			rect = new Rect(imgW * 2 + gap * 2, height - imgH - gap, imgW * 3 + gap * 2, height);
+			rect = new Rect(imgW * 2 + gap * 2, height - imgH, imgW * 3 + gap * 2, height);
 			tempRects[6] = rect;
-			rect = new Rect(imgW * 3 + gap * 3, height - imgH - gap, mWidth, height);
+			rect = new Rect(imgW * 3 + gap * 3, height - imgH, mWidth, height);
 			tempRects[7] = rect;
 			
 			layoutParams = new LinearLayout.LayoutParams(mWidth, height);
