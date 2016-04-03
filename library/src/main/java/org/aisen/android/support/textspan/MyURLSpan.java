@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Parcel;
 import android.provider.Browser;
-import android.text.ParcelableSpan;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.style.ClickableSpan;
@@ -20,7 +19,7 @@ import org.aisen.android.common.utils.Logger;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.widget.MToast;
 
-public class MyURLSpan extends ClickableSpan implements ParcelableSpan {
+public class MyURLSpan extends ClickableSpan {
 
 	private final String mURL;
 	
@@ -105,4 +104,5 @@ public class MyURLSpan extends ClickableSpan implements ParcelableSpan {
 	public void setColor(int color) {
 		this.color = color;
 	}
+
 }

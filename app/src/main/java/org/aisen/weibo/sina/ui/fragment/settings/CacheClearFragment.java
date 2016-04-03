@@ -242,8 +242,10 @@ public class CacheClearFragment extends ABaseFragment implements OnPreferenceCli
 						if (!clear) {
 							Logger.v("ClearCache", String.format("文件最后修改时间是%s", DateUtils.formatDate(file.lastModified(), DateUtils.TYPE_01)));
 							clear = System.currentTimeMillis() - file.lastModified() >= RETAIN_TIME;
-							if (clear)
+							if (clear) {
 								Logger.v("ClearCache", "缓存超过1天，删除该缓存");
+								file.delete();
+							}
 						}
 						else {
 							file.delete();

@@ -8,7 +8,7 @@
         chg:changeLogFileResourceId="@raw/custom_changelog"
         in your View component in layout file -->
 
-	<changelogversion versionName="6.0.0" changeDate="2016-04">
+	<changelogversion versionName="6.0.1" changeDate="2016-04">
 		<changelogtext>适配了Android M.</changelogtext>
 		<changelogtext>更新了大部分界面.</changelogtext>
 	</changelogversion>
