@@ -11,9 +11,9 @@ import java.util.List;
  */
 public interface IPagingAdapter<T extends Serializable> {
 
-    public static final int TYPE_NORMAL = 1;
+    public static final int TYPE_NORMAL = 1000;
 
-    public static final int TYPE_FOOTER = 2;
+    public static final int TYPE_FOOTER = 2000;
 
     ArrayList<T> getDatas();
 

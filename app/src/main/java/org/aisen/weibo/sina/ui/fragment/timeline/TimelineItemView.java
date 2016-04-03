@@ -85,7 +85,7 @@ public class TimelineItemView extends ARecycleViewItemView<StatusContent> implem
     AisenTextView txtReContent;
 
     @ViewInject(id = R.id.layPicturs)
-    public TimelinePicsView layPicturs;
+    TimelinePicsView layPicturs;
 
     @ViewInject(id = R.id.btnMenus)
     View btnMenus;

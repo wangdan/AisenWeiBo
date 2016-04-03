@@ -11,7 +11,7 @@
         <item name="colorPrimaryDark">?attr/themeStatusbarColor</item>
         <item name="colorAccent">?attr/themeColor</item>
 
-        <item name="theme_background">@color/material_grey_50</item>
+        <item name="theme_background">@color/material_grey_100</item>
 
         <!--默认不适配，只有在19的时候在适配-->
         <item name="fitSystemWindows">false</item>

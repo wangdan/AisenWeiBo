@@ -595,10 +595,19 @@
     <!--首页-->
     <string name="crash_hint">开启Crash日志上报，有助于我更好的跟踪分析问题，电话权限仅用于获取设备IMEI号，现在去设置界面打开吗?</string>
     <string name="crash_settings">好的</string>
+    <string name="timeline_feature_repost">转自 %s</string>
+    <string name="timeline_feature_detail">详情</string>
 
     <string-array name="jokes_menu">
         <item>复制</item>
         <item>分享</item>
+    </string-array>
+
+    <string-array name="timeline_headers">
+        <item>全部</item>
+        <item>原创</item>
+        <item>图片</item>
+        <item>照片墙</item>
     </string-array>
 
     <string-array name="user_headers">

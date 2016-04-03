@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    android:id="@+id/cardView"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:layout_marginBottom="8dip"
+    android:layout_marginTop="8dip"
+    android:clickable="true"
+    android:foreground="?attr/selectableItemBackground" app:cardBackgroundColor="#ffffff"
+    app:cardElevation="1.5dip">
+
+    <LinearLayout
+        android:layout_width="match_parent" android:layout_height="match_parent" android:clipChildren="false"
+        android:clipToPadding="false"
+        android:orientation="vertical" android:padding="@dimen/item_padding">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginBottom="8dip">
+
+            <org.aisen.android.ui.widget.MDButton
+                android:id="@+id/txtName"
+                style="@style/TextTitle" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:clickable="true"
+                android:text="名字"/>
+
+            <TextView
+                android:id="@+id/txtDesc" style="@style/TextSubhead" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:layout_below="@id/txtName" android:layout_marginTop="2dip"
+                android:text="来自Aisen 2015-01-26"/>
+
+            <org.aisen.android.ui.widget.MDButton
+                android:id="@+id/txtDetail" style="@style/TextTitle"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_alignParentRight="true" android:clickable="true"
+                android:text="@string/timeline_feature_detail" android:visibility="gone"/>
+
+        </RelativeLayout>
+
+        <!--org.aisen.weibo.sina.ui.widget.TimelinePicsView-->
+        <org.aisen.weibo.sina.ui.widget.TimelinePicsView
+            android:id="@+id/layPicturs"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            >
+
+            <!--org.aisen.weibo.sina.ui.widget.GifHintImageView-->
+            <org.aisen.weibo.sina.ui.widget.GifHintImageView
+                android:id="@+id/img01" style="@style/timelinePicture"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+            <org.aisen.weibo.sina.ui.widget.GifHintImageView
+                android:id="@+id/img02" style="@style/timelinePicture"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+            <org.aisen.weibo.sina.ui.widget.GifHintImageView
+                android:id="@+id/img03" style="@style/timelinePicture"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+            <org.aisen.weibo.sina.ui.widget.GifHintImageView
+                android:id="@+id/img04" style="@style/timelinePicture"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+            <org.aisen.weibo.sina.ui.widget.GifHintImageView
+                android:id="@+id/img05" style="@style/timelinePicture"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+            <org.aisen.weibo.sina.ui.widget.GifHintImageView
+                android:id="@+id/img06" style="@style/timelinePicture"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+            <org.aisen.weibo.sina.ui.widget.GifHintImageView
+                android:id="@+id/img07" style="@style/timelinePicture"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+            <org.aisen.weibo.sina.ui.widget.GifHintImageView
+                android:id="@+id/img08" style="@style/timelinePicture"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+            <org.aisen.weibo.sina.ui.widget.GifHintImageView
+                android:id="@+id/img09" style="@style/timelinePicture"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        </org.aisen.weibo.sina.ui.widget.TimelinePicsView>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

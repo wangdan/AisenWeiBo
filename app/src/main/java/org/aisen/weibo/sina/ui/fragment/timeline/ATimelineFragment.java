@@ -13,6 +13,9 @@ import org.aisen.android.network.task.TaskException;
 import org.aisen.android.support.paging.IPaging;
 import org.aisen.android.ui.fragment.APagingFragment;
 import org.aisen.android.ui.fragment.ARecycleViewSwipeRefreshFragment;
+import org.aisen.android.ui.fragment.adapter.BasicRecycleViewAdapter;
+import org.aisen.android.ui.fragment.adapter.IPagingAdapter;
+import org.aisen.android.ui.fragment.itemview.AHeaderItemViewCreator;
 import org.aisen.android.ui.fragment.itemview.BasicFooterView;
 import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
@@ -36,6 +39,8 @@ import java.util.List;
  */
 public abstract class ATimelineFragment extends ARecycleViewSwipeRefreshFragment<StatusContent, StatusContents> {
 
+    private String feature = "0";
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -43,6 +48,22 @@ public abstract class ATimelineFragment extends ARecycleViewSwipeRefreshFragment
         if (getActivity() instanceof MainActivity) {
             BizFragment.createBizFragment(getActivity()).getFabAnimator().attachToRecyclerView(getRefreshView(), null, null);
         }
+
+        if (getArguments() == null) {
+            feature = savedInstanceState == null ? feature
+                                                 : savedInstanceState.getString("feature", "0");
+        }
+        else {
+            feature = savedInstanceState == null ? getArguments().getString("feature", "0")
+                                                 : savedInstanceState.getString("feature", "0");
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putString("feature", feature);
     }
 
     @Override
@@ -63,20 +84,66 @@ public abstract class ATimelineFragment extends ARecycleViewSwipeRefreshFragment
     }
 
     @Override
+    protected AHeaderItemViewCreator<StatusContent> configHeaderViewCreator() {
+        if (this instanceof TimelineDefFragment || this instanceof TimelineGroupsFragment) {
+            return new AHeaderItemViewCreator<StatusContent>() {
+
+                @Override
+                public int[][] setHeaders() {
+                    return new int[][]{ { ATimelineHeaderView.LAYOUT_RES, 100 } };
+                }
+
+                @Override
+                public IITemView<StatusContent> newItemView(View convertView, int viewType) {
+                    return new ATimelineHeaderView(ATimelineFragment.this, convertView) {
+
+                        @Override
+                        protected int getTitleArrRes() {
+                            return R.array.timeline_headers;
+                        }
+
+                        @Override
+                        protected String[] getTitleFeature() {
+                            return ATimelineHeaderView.timelineFeatureArr;
+                        }
+
+                    };
+                }
+
+            };
+        }
+
+        return super.configHeaderViewCreator();
+    }
+
+    @Override
     public IItemViewCreator<StatusContent> configItemViewCreator() {
         return new IItemViewCreator<StatusContent>() {
 
             @Override
             public View newContentView(LayoutInflater inflater, ViewGroup parent, int viewType) {
+                if (5 == viewType) {
+                    return inflater.inflate(TimelinePhotosItemView.LAYOUT_RES, parent, false);
+                }
+
                 return inflater.inflate(TimelineItemView.LAYOUT_RES, parent, false);
             }
 
             @Override
             public IITemView<StatusContent> newItemView(View convertView, int viewType) {
+                if (5 == viewType) {
+                    return new TimelinePhotosItemView(convertView, ATimelineFragment.this);
+                }
+
                 return new TimelineItemView(convertView, ATimelineFragment.this);
             }
 
         };
+    }
+
+    @Override
+    protected IPagingAdapter<StatusContent> newAdapter(ArrayList<StatusContent> datas) {
+        return new TimelineAdapter(this, configItemViewCreator(), datas);
     }
 
     @Override
@@ -120,6 +187,26 @@ public abstract class ATimelineFragment extends ARecycleViewSwipeRefreshFragment
         };
     }
 
+    class TimelineAdapter extends BasicRecycleViewAdapter<StatusContent> {
+
+        public TimelineAdapter(APagingFragment holderFragment, IItemViewCreator<StatusContent> itemViewCreator, ArrayList<StatusContent> datas) {
+            super(holderFragment, itemViewCreator, datas);
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            int itemType = super.getItemViewType(position);
+
+            // 如果不是HeaderView和FooterView
+            if (itemType == IPagingAdapter.TYPE_NORMAL) {
+                return Integer.parseInt(getFeature());
+            }
+
+            return itemType;
+        }
+
+    }
+
     abstract public class ATimelineTask extends APagingTask<Void, Void, StatusContents> {
 
         public ATimelineTask(RefreshMode mode) {
@@ -134,6 +221,16 @@ public abstract class ATimelineFragment extends ARecycleViewSwipeRefreshFragment
         @Override
         protected StatusContents workInBackground(RefreshMode mode, String previousPage, String nextPage, Void... p) throws TaskException {
             Params params = new Params();
+
+            // 是否是原创
+            if (!TextUtils.isEmpty(getFeature())) {
+                if ("5".equals(getFeature())) {
+                    params.addParameter("feature", "2");
+                }
+                else {
+                    params.addParameter("feature", getFeature());
+                }
+            }
 
             if (mode == APagingFragment.RefreshMode.refresh && !TextUtils.isEmpty(previousPage))
                 params.addParameter("since_id", previousPage);
@@ -185,6 +282,14 @@ public abstract class ATimelineFragment extends ARecycleViewSwipeRefreshFragment
                 }
             }
         }
+    }
+
+    public String getFeature() {
+        return feature;
+    }
+
+    public void setFeature(String feature) {
+        this.feature = feature;
     }
 
 }

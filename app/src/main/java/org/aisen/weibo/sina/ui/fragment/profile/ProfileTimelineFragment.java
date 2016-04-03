@@ -1,7 +1,6 @@
 package org.aisen.weibo.sina.ui.fragment.profile;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +20,7 @@ import org.aisen.weibo.sina.sinasdk.bean.Token;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.ui.fragment.timeline.ATimelineFragment;
+import org.aisen.weibo.sina.ui.fragment.timeline.ATimelineHeaderView;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineItemView;
 
 /**
@@ -40,7 +40,6 @@ public class ProfileTimelineFragment extends ATimelineFragment {
     }
 
     private WeiBoUser mUser;
-    private String feature;
 
     @Override
     public int inflateContentView() {
@@ -53,8 +52,6 @@ public class ProfileTimelineFragment extends ATimelineFragment {
 
         mUser = savedInstanceState == null ? (WeiBoUser) getArguments().getSerializable("mUser")
                                           : (WeiBoUser) savedInstanceState.getSerializable("mUser");
-        feature = savedInstanceState == null ? getArguments().getString("feature", "0")
-                                             : savedInstanceState.getString("feature", "0");
     }
 
     @Override
@@ -62,7 +59,6 @@ public class ProfileTimelineFragment extends ATimelineFragment {
         super.onSaveInstanceState(outState);
 
         outState.putSerializable("mUser", mUser);
-        outState.putString("feature", feature);
     }
 
     @Override
@@ -88,12 +84,24 @@ public class ProfileTimelineFragment extends ATimelineFragment {
 
             @Override
             public int[][] setHeaders() {
-                return new int[][]{ { ProfileTimelineHeaderView.LAYOUT_RES, 100 } };
+                return new int[][]{ { ATimelineHeaderView.LAYOUT_RES, 100 } };
             }
 
             @Override
             public IITemView<StatusContent> newItemView(View convertView, int viewType) {
-                return new ProfileTimelineHeaderView(ProfileTimelineFragment.this, convertView);
+                return new ATimelineHeaderView(ProfileTimelineFragment.this, convertView) {
+
+                    @Override
+                    protected int getTitleArrRes() {
+                        return R.array.user_headers;
+                    }
+
+                    @Override
+                    protected String[] getTitleFeature() {
+                        return ATimelineHeaderView.profileFeatureArr;
+                    }
+
+                };
             }
 
         };
@@ -112,10 +120,6 @@ public class ProfileTimelineFragment extends ATimelineFragment {
 
         @Override
         public StatusContents getStatusContents(Params params) throws TaskException {
-            // 是否是原创
-            if (!TextUtils.isEmpty(feature))
-                params.addParameter("feature", feature);
-
             // 不管user_id字段传值什么，都返回登录用户的微博
             if (AppContext.getAccount().getUser().getIdstr().equals(mUser.getIdstr())) {
                 params.addParameter("user_id", mUser.getIdstr());
@@ -140,14 +144,6 @@ public class ProfileTimelineFragment extends ATimelineFragment {
             return statusContents;
         }
 
-    }
-
-    public String getFeature() {
-        return feature;
-    }
-
-    public void setFeature(String feature) {
-        this.feature = feature;
     }
 
     @Override

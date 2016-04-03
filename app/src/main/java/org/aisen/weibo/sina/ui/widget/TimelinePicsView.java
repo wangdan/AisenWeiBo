@@ -30,6 +30,7 @@ import org.aisen.weibo.sina.support.compress.TimelineThumbBitmapCompress;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.fragment.profile.PhotosFragment;
 import org.aisen.weibo.sina.ui.fragment.profile.ProfileTimelineFragment;
+import org.aisen.weibo.sina.ui.fragment.timeline.ATimelineFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineDefFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineGroupsFragment;
 
@@ -274,6 +275,12 @@ public class TimelinePicsView extends ViewGroup implements BitmapOwner {
 		}
 		else {
 			mWidth = SystemUtils.getScreenWidth() - Utils.dip2px(10 * 2 + 8 * 2);
+
+			if (ownerFragment instanceof ATimelineFragment) {
+				if ("5".equals(((ATimelineFragment) ownerFragment).getFeature())) {
+					mWidth = SystemUtils.getScreenWidth() - Utils.dip2px(10 * 2);
+				}
+			}
 		}
 
 		int size = picUrls.length;

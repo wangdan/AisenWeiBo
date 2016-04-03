@@ -14,6 +14,7 @@ import org.aisen.android.component.bitmaploader.core.ImageConfig;
 import org.aisen.android.component.bitmaploader.download.SdcardDownloader;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.fragment.AListFragment;
+import org.aisen.android.ui.fragment.APagingFragment;
 import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
 import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
@@ -55,6 +56,13 @@ public class PictureDireListFragment extends AListFragment<PictureDireListFragme
                                            : (ArrayList<PictureFileDire>) savedInstanceState.getSerializable("files");
         currentDire = savedInstanceState == null ? getArguments().getString("current")
                                                  : savedInstanceState.getString("current");
+    }
+
+    @Override
+    protected void setupRefreshConfig(RefreshConfig config) {
+        super.setupRefreshConfig(config);
+
+        config.footerMoreEnable = false;
     }
 
     @Override
