@@ -179,7 +179,7 @@ public class OtherItemFragment extends VersionSettingsFragment
 
 															@Override
 															public void onClick(MaterialDialog dialog, DialogAction which) {
-
+																AisenUtils.gotoSettings(activity);
 															}
 
 														});

@@ -12,7 +12,6 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -94,6 +93,10 @@ public class MenuFragment extends ABaseFragment {
         super.layoutInit(inflater, savedInstanceSate);
 
         setupMenuItems(savedInstanceSate);
+        // 如果是私信，还要默认打开首页，否则是空的页面
+        if (selectedId == MenuFragment.MENU_MD) {
+            triggerMenuClick(MenuFragment.MENU_MAIN);
+        }
     }
 
     @Override
