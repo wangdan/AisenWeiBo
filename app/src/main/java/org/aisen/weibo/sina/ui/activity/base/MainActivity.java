@@ -264,9 +264,8 @@ public class MainActivity extends BaseActivity
             }
 
             if (menuId == MenuFragment.MENU_MD) {
-                menuFragment = MenuFragment.newInstance(MenuFragment.MENU_MAIN);
+                menuFragment = MenuFragment.newInstance(MenuFragment.MENU_MD);
                 getFragmentManager().beginTransaction().add(R.id.menu_frame, menuFragment, "MenuFragment").commit();
-                menuFragment.triggerMenuClick(MenuFragment.MENU_MD);
             }
             else if (menuId == MenuFragment.MENU_FRIENDSHIP) {
                 menuFragment = MenuFragment.newInstance(MenuFragment.MENU_MAIN);
