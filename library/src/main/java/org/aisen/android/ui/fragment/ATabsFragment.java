@@ -226,7 +226,7 @@ public abstract class ATabsFragment<T extends TabItem> extends ABaseFragment
     }
 
     public Fragment getCurrentFragment() {
-        if (mViewPager == null || mInnerAdapter.getCount() < mCurrentPosition)
+        if (mViewPager == null || mInnerAdapter == null || mInnerAdapter.getCount() < mCurrentPosition)
             return null;
 
         return fragments.get(makeFragmentName(mCurrentPosition));

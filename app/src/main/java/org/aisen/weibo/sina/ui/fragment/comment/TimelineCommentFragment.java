@@ -91,6 +91,10 @@ public class TimelineCommentFragment extends AListFragment<StatusComment, Status
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         super.onItemClick(parent, view, position, id);
 
+        if (getAdapterItems().size() == 0) {
+            return;
+        }
+
         final StatusComment comment = getAdapterItems().get(position);
 
         final String[] commentMenuArr = GlobalContext.getInstance().getResources().getStringArray(R.array.cmt_menus);

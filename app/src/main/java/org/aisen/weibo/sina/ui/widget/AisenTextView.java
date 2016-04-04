@@ -157,8 +157,11 @@ public class AisenTextView extends TextView {
 
 			if (TextUtils.isEmpty(textView.getText()))
 				return false;
-			
-			SpannableString spannableString = SpannableString.valueOf(textView.getText());
+
+			// android.view.ViewRootImpl$CalledFromWrongThreadException Only the original thread that created a view hierarchy can touch its views.
+			// 把getText + 一个空字符试试，可能是直接取值会刷UI
+			String text = textView.getText() + "";
+			SpannableString spannableString = SpannableString.valueOf(text);
 			Matcher localMatcher = Pattern.compile("\\[(\\S+?)\\]").matcher(spannableString);
 			while (localMatcher.find()) {
 				if (isCancelled())

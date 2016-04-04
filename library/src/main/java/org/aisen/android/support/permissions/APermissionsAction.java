@@ -104,7 +104,13 @@ public abstract class APermissionsAction extends IAction implements IPermissions
 
         Logger.d(TAG, "requestPermission(%s)", permission);
 
-        getContext().requestPermissions(new String[]{ permission }, requestCode);
+        // XT1562(Motorola) 这里会上报一个这样的错误，暂时搞不懂为什么
+        // java.lang.IllegalArgumentException:Wake lock not active: android.os.Binder@3e69cbf from uid 1000
+        try {
+            getContext().requestPermissions(new String[]{ permission }, requestCode);
+        } catch (IllegalArgumentException e) {
+            Logger.printExc(APermissionsAction.class, e);
+        }
     }
 
     /**

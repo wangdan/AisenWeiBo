@@ -453,9 +453,18 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
         onRefresh(fragment);
     }
 
-    private void onRefresh(APagingFragment fragment) {
-        if (!fragment.isRefreshing()) {
-            fragment.requestData(APagingFragment.RefreshMode.refresh);
+    private void onRefresh(final APagingFragment fragment) {
+        if (!isDestory()) {
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    if (fragment != null && !fragment.isRefreshing()) {
+                        fragment.requestData(APagingFragment.RefreshMode.refresh);
+                    }
+                }
+
+            }, 1000);
         }
     }
 

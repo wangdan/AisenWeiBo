@@ -89,12 +89,17 @@ public class WebLoginFragment extends ABaseFragment {
     private boolean mAccountFilled = false;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         BaseActivity activity = (BaseActivity) getActivity();
         activity.getSupportActionBar().setTitle(R.string.login_title);
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         mClient = Client.valueOf(getArguments().getString("client"));
         if (getArguments().containsKey("account")) {
@@ -103,7 +108,6 @@ public class WebLoginFragment extends ABaseFragment {
         if (getArguments().containsKey("password")) {
             mPassword = getArguments().getString("password");
         }
-
     }
 
     @Override

@@ -183,7 +183,11 @@ public class SDK extends ABizLogic {
         // 配置缓存器
         action.getExtras().put(CACHE_UTILITY, newSettingExtra(CACHE_UTILITY, WallpaperCacheUtility.class.getName(), ""));
 
-        return doGet(action, params, WallpaperBeans.class);
+        WallpaperBeans beans = doGet(action, params, WallpaperBeans.class);
+        if (beans.getItem() == null || beans.getItem().getWallpaperList() == null) {
+            throw new TaskException(TaskException.TaskError.resultIllegal.toString());
+        }
+        return beans;
     }
 
 }

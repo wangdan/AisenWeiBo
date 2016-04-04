@@ -43,12 +43,13 @@ public class ViewUtils {
 	}
 
 	public static void setTextViewValue(Activity context, int txtId, String content) {
-		if (context != null)
+		if (context != null && context.findViewById(txtId) != null)
 			((TextView) context.findViewById(txtId)).setText(content);
 	}
 
 	public static void setTextViewValue(View container, int txtId, String content) {
-		((TextView) container.findViewById(txtId)).setText(content);
+		if (container != null && container.findViewById(txtId) != null)
+			((TextView) container.findViewById(txtId)).setText(content);
 	}
 
 	public static void setTextViewValue(Activity context, View container, int txtId, int contentId) {

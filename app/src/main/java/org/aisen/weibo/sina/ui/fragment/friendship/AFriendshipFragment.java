@@ -196,7 +196,7 @@ public abstract class AFriendshipFragment extends AListSwipeRefreshFragment<WeiB
 		protected void onSuccess(Friendship result) {
 			super.onSuccess(result);
 			
-			if (result == null)
+			if (result == null || isDestory())
 				return;
 			
 			if (AFriendshipFragment.this instanceof FollowersFragment &&
