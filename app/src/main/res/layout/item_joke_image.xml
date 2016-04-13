@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+             android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_micro"
+        android:layout_marginLeft="@dimen/spacing_micro"
+        android:layout_marginRight="@dimen/spacing_micro"
+        android:layout_marginTop="@dimen/spacing_micro"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardCornerRadius="3dip" app:cardElevation="1.5dip"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/img" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:scaleType="centerCrop"/>
+
+            <TextView
+                android:id="@+id/txtJoke"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:lineSpacingExtra="2dip"
+                android:padding="8dip"
+                android:text="14sp" android:textColor="@color/text_87"
+                />
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+</FrameLayout>

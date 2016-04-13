@@ -2,8 +2,6 @@ package org.aisen.weibo.sina.support.bean;
 
 import java.io.Serializable;
 
-import org.aisen.orm.annotation.PrimaryKey;
-
 /**
  * Created by wangdan on 15/5/3.
  */

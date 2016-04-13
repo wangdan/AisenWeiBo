@@ -1,4 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- standard metrics -->
+    <dimen name="spacing_normal">8dp</dimen>
+    <dimen name="spacing_micro">4dp</dimen>
+    <dimen name="padding_normal">16dp</dimen>
+
+    <dimen name="tab_margin_left">8dip</dimen>
+
     <!-- 主要文本字体大小 -->
     <dimen name="textsize_primary">16sp</dimen>
     <!-- 次要文本字体大小 -->
@@ -10,26 +18,55 @@
     <!-- 右侧图片大小 -->
     <dimen name="righticon_size">22dip</dimen>
     <dimen name="righticon_padding">16dip</dimen>
-    <!-- TimelinePicsGap -->
-    <dimen name="gap_pics">4sp</dimen>
-    <!--标签的大小-->
+
+    <dimen name="fab_scrollthreshold">4dip</dimen>
+
+    <!--DrawLayoutHeader-->
+    <dimen name="material_drawer_account_header_height">148dp</dimen>
+    <dimen name="material_drawer_account_header_height_compact">72dp</dimen>
+    <dimen name="material_drawer_account_header_horizontal_top">16dp</dimen>
+    <dimen name="material_drawer_account_header_horizontal_bottom">4dp</dimen>
+    <dimen name="material_drawer_account_header_selected">64dp</dimen>
+    <dimen name="material_drawer_account_header_secondary">40dp</dimen>
+    <dimen name="material_drawer_account_header_compact">56dp</dimen>
+    <dimen name="material_drawer_account_header_text">14sp</dimen>
+    <dimen name="material_drawer_account_header_dropdown">22dp</dimen>
+    <dimen name="material_drawer_account_header_dropdown_padding">5dp</dimen>
+    <dimen name="material_drawer_account_header_dropdown_margin_bottom">14dp</dimen>
+    <dimen name="material_drawer_vertical_padding">16dp</dimen>
+    <dimen name="material_drawer_padding">8dp</dimen>
+
+    <!--表情的大小-->
     <dimen name="emotion_size">18dip</dimen>
     <dimen name="publish_emotion_size">22dip</dimen>
-    <!-- timeline padding -->
+
+    <!-- App Primary Text Sizes -->
+    <dimen name="app_text_size_xsmall">11sp</dimen>
+    <dimen name="app_text_size_small">12sp</dimen>
+    <dimen name="app_text_size_medium">14sp</dimen>
+    <dimen name="app_text_size_large">18sp</dimen>
+    <dimen name="app_text_size_xlarge">20sp</dimen>
+    <dimen name="app_text_size_diff_large_small">6sp</dimen>
+
+    <dimen name="fab_spacing">10dp</dimen>
+    <dimen name="fab_elevation">4dip</dimen>
+    <dimen name="sheet_spacing">10dp</dimen>
+    <dimen name="fab_sheet_elevation">0dp</dimen>
+
+    <!--timeline-->
     <dimen name="item_padding">10dip</dimen>
     <dimen name="item_margin">5dip</dimen>
-
-    <dimen name="swipe_refresh_progress_bar_start_margin">-40dp</dimen>
-    <dimen name="swipe_refresh_progress_bar_end_margin">16dp</dimen>
-
-    <!-- 相册间隙 -->
-    <dimen name="gap_photo">3dip</dimen>
+    <dimen name="gap_pics">4sp</dimen>
 
     <!-- picture预览 -->
     <dimen name="normal_gif_webview_margin_left">40dp</dimen>
     <dimen name="normal_gif_webview_margin_right">40dp</dimen>
 
-    <dimen name="listPreferredItemHeightSmall">48dp</dimen>
+    <!-- 相册间隙 -->
+    <dimen name="gap_photo">3dip</dimen>
+
+    <!--profile-->
+    <dimen name="profile_cover">200dip</dimen>
 
     <!--字体大小-->
     <dimen name="sp_12">12sp</dimen>

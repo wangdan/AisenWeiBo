@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txtVisiable" style="@style/TextSubhead" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:layout_marginLeft="16dip"
+        android:layout_marginTop="8dip" android:textColor="?attr/text_subhead" android:visibility="gone"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginTop="16dip"
+        android:paddingLeft="16dip" android:paddingRight="16dip">
+
+        <org.aisen.android.ui.widget.CircleImageView
+            android:id="@+id/imgPhoto" android:layout_width="42dip" android:layout_height="42dip" android:layout_marginRight="8dip"
+            android:src="@drawable/a_icon_b"/>
+
+        <TextView
+            android:id="@+id/txtName" style="@style/TextTitle"
+            android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_toRightOf="@id/imgPhoto"
+            android:text="名字"/>
+
+        <ImageView
+            android:id="@+id/imgVerified" android:layout_width="18dip" android:layout_height="18dip" android:layout_marginLeft="4dip" android:layout_marginRight="@dimen/comm_h_gap"
+            android:layout_toRightOf="@id/txtName" android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/txtDesc" style="@style/TextSubhead" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_below="@id/txtName" android:layout_marginTop="2dip"
+            android:layout_toRightOf="@id/imgPhoto" android:text="来自Aisen 2015-01-26"/>
+
+        <org.aisen.weibo.sina.ui.widget.AisenTextView
+            android:id="@+id/txtContent" style="@style/TextBody" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_below="@id/imgPhoto" android:layout_marginTop="10dip"
+            android:lineSpacingExtra="4dip" android:paddingBottom="8dip"
+            android:text="哈哈，我今天发了条微博"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/layReStatusContainer"
+        android:layout_width="match_parent" android:layout_height="wrap_content" android:background="?attr/selectableItemBackground"
+        android:orientation="vertical" android:paddingLeft="16dip" android:paddingRight="16dip">
+
+        <RelativeLayout
+            android:id="@+id/layRe" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <View
+                android:id="@+id/layReDivider"
+                android:layout_width="match_parent" android:layout_height="1.5dip" android:layout_marginBottom="8dip"
+                android:background="@color/divider_timeline_item"/>
+
+            <!--org.aisen.weibo.sina.ui.widget.AisenTextView-->
+            <org.aisen.weibo.sina.ui.widget.AisenTextView
+                android:id="@+id/txtReContent"
+                style="@style/TextBody" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:layout_below="@id/layReDivider" android:lineSpacingExtra="4dip"
+                android:text="哈哈，我发了条微博被baby转发了，教主吃屎！"/>
+
+        </RelativeLayout>
+
+        <org.aisen.weibo.sina.ui.widget.TimelinePicsView
+            android:id="@+id/layPicturs"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="8dip">
+
+            <!--org.aisen.weibo.sina.ui.widget.GifHintImageView-->
+            <org.aisen.weibo.sina.ui.widget.GifHintImageView
+                android:id="@+id/img01" style="@style/timelinePicture"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+            <org.aisen.weibo.sina.ui.widget.GifHintImageView
+                android:id="@+id/img02" style="@style/timelinePicture"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+            <org.aisen.weibo.sina.ui.widget.GifHintImageView
+                android:id="@+id/img03" style="@style/timelinePicture"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+            <org.aisen.weibo.sina.ui.widget.GifHintImageView
+                android:id="@+id/img04" style="@style/timelinePicture"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+            <org.aisen.weibo.sina.ui.widget.GifHintImageView
+                android:id="@+id/img05" style="@style/timelinePicture"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+            <org.aisen.weibo.sina.ui.widget.GifHintImageView
+                android:id="@+id/img06" style="@style/timelinePicture"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+            <org.aisen.weibo.sina.ui.widget.GifHintImageView
+                android:id="@+id/img07" style="@style/timelinePicture"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+            <org.aisen.weibo.sina.ui.widget.GifHintImageView
+                android:id="@+id/img08" style="@style/timelinePicture"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+
+            <org.aisen.weibo.sina.ui.widget.GifHintImageView
+                android:id="@+id/img09" style="@style/timelinePicture"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        </org.aisen.weibo.sina.ui.widget.TimelinePicsView>
+
+        <TextView
+            android:id="@+id/txtPics" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="24sp"/>
+
+    </LinearLayout>
+</LinearLayout>

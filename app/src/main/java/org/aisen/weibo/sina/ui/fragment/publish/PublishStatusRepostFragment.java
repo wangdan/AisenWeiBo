@@ -13,15 +13,15 @@ import org.aisen.android.network.http.Params;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.fragment.ABaseFragment;
-
 import org.aisen.weibo.sina.R;
+import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
+import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.support.bean.PublishBean;
 import org.aisen.weibo.sina.support.bean.PublishBean.PublishStatus;
 import org.aisen.weibo.sina.support.bean.PublishType;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
-import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
-import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 
 /**
  * 转发微博
@@ -92,7 +92,7 @@ public class PublishStatusRepostFragment extends APublishFragment implements OnC
 	}
 	
 	@Override
-    PublishBean newPublishBean() {
+	PublishBean newPublishBean() {
 		return null;
 	}
 	
@@ -123,8 +123,22 @@ public class PublishStatusRepostFragment extends APublishFragment implements OnC
 	}
 
 	@Override
-	protected int inflateContentView() {
-		return R.layout.as_ui_publish_status_comment;
+	public int inflateContentView() {
+		return R.layout.ui_publish_status_comment;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		UMengUtil.onPageStart(getActivity(), "发布转发微博页");
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		UMengUtil.onPageEnd(getActivity(), "发布转发微博页");
 	}
 
 }

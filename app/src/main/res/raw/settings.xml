@@ -65,6 +65,11 @@
 	    <value>org.aisen.android.network.http.DefHttpUtility</value>
 	</setting>
 
+	<setting type="http_delay">
+		<des>Http延迟</des>
+		<value>0</value>
+	</setting>
+
 	<setting type="cache_validtime">
 		<des>缓存数据的有效期，max_date为永久有效，单位(s)</des>
 		<value>max_date</value>
@@ -72,7 +77,7 @@
 
 	<setting type="debug">
 		<des>APP是否是DEBUG模式</des>
-		<value>false</value>
+		<value>true</value>
 	</setting>
 
 	<setting type="cache_enable">
@@ -125,7 +130,7 @@
 
 	<setting type="activity_helper">
 		<des>Activity帮助类</des>
-		<value>org.aisen.weibo.sina.ui.activity.basic.AisenActivityHelper</value>
+		<value>org.aisen.weibo.sina.ui.activity.base.AisenActivityHelper</value>
 	</setting>
 
     <setting type="weico_key">

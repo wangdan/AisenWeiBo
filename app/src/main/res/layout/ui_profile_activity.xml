@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.aisen.weibo.sina.ui.widget.KitkatProfileViewGroup xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent"
+                                                       android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent" android:layout_height="match_parent"
+        >
+
+        <RelativeLayout
+            android:id="@+id/layoutContent" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+        </RelativeLayout>
+
+        <include
+            android:id="@id/layoutLoadFailed" layout="@layout/comm_lay_loadfailed" android:layout_width="match_parent" android:layout_height="match_parent"
+            android:visibility="gone"/>
+
+        <include
+            android:id="@id/layoutLoading" layout="@layout/comm_lay_loading" android:layout_width="fill_parent" android:layout_height="fill_parent" android:visibility="gone"/>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/viewToolbar" android:layout_width="match_parent"
+        android:layout_height="@dimen/abc_action_bar_default_height_material" android:alpha="0" android:background="?attr/colorPrimary"/>
+
+    <RelativeLayout
+        android:id="@+id/layToolbar"
+        android:layout_width="match_parent" android:layout_height="wrap_content">
+
+        <include
+            layout="@layout/comm_lay_toolbar" android:layout_width="match_parent" android:layout_height="@dimen/abc_action_bar_default_height_material"/>
+    </RelativeLayout>
+</org.aisen.weibo.sina.ui.widget.KitkatProfileViewGroup>
+

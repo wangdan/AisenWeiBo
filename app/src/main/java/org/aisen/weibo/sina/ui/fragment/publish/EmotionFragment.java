@@ -4,25 +4,25 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ImageView;
 
 import org.aisen.android.network.task.TaskException;
-import org.aisen.android.support.adapter.ABaseAdapter.AbstractItemView;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.fragment.AGridFragment;
-import org.aisen.android.ui.fragment.ARefreshFragment;
-
+import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
+import org.aisen.android.ui.fragment.itemview.IITemView;
+import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.support.bean.Emotion;
 import org.aisen.weibo.sina.support.bean.Emotions;
-import org.aisen.weibo.sina.support.db.EmotionsDB;
+import org.aisen.weibo.sina.support.sqlit.EmotionsDB;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * 表情窗口
@@ -40,8 +40,8 @@ public class EmotionFragment extends AGridFragment<Emotion, Emotions>
 	private OnEmotionSelectedListener onEmotionSelectedListener;
 	
 	@Override
-	protected int inflateContentView() {
-		return R.layout.as_lay_emotions;
+	public int inflateContentView() {
+		return R.layout.ui_emotions;
 	}
 
 	@Override
@@ -65,37 +65,48 @@ public class EmotionFragment extends AGridFragment<Emotion, Emotions>
 	}
 
 	@Override
-	protected AbstractItemView<Emotion> newItemView() {
-		return new EmotionItemView();
+	public IItemViewCreator<Emotion> configItemViewCreator() {
+		return new IItemViewCreator<Emotion>() {
+
+			@Override
+			public View newContentView(LayoutInflater inflater, ViewGroup parent, int viewType) {
+				return inflater.inflate(R.layout.item_emotion, parent, false);
+			}
+
+			@Override
+			public IITemView<Emotion> newItemView(View convertView, int viewType) {
+				return new EmotionItemView(convertView);
+			}
+
+		};
 	}
 
 	@Override
-	protected void requestData(ARefreshFragment.RefreshMode mode) {
+	public void requestData(RefreshMode mode) {
 		// 浪小花-lxh_
 		new EmotionTask(mode).execute("d_");
 	}
-	
-	class EmotionItemView extends AbstractItemView<Emotion> {
+
+	class EmotionItemView extends ARecycleViewItemView<Emotion> {
 
 		@ViewInject(id = R.id.imgEmotion)
 		ImageView imgEmotion;
-		
-		@Override
-		public int inflateViewId() {
-			return R.layout.as_item_emotion;
+
+		public EmotionItemView(View itemView) {
+			super(itemView);
 		}
 
 		@Override
-		public void bindingData(View convertView, Emotion data) {
+		public void onBindData(View convertView, Emotion data, int position) {
 			imgEmotion.setImageBitmap(BitmapFactory.decodeByteArray(data.getData(), 0, data.getData().length));
 		}
-		
+
 	}
 	
-	class EmotionTask extends PagingTask<String, Void, Emotions> {
+	class EmotionTask extends APagingTask<String, Void, Emotions> {
 
-		public EmotionTask(ARefreshFragment.RefreshMode mode) {
-			super(UUID.randomUUID().toString(), mode);
+		public EmotionTask(RefreshMode mode) {
+			super(mode);
 		}
 
 		@Override

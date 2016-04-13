@@ -461,9 +461,11 @@ public class SwipeBackLayout extends FrameLayout {
         int background = a.getResourceId(0, 0);
         a.recycle();
 
+        // 这里可以设置背景颜色
         ViewGroup decor = (ViewGroup) activity.getWindow().getDecorView();
         ViewGroup decorChild = (ViewGroup) decor.getChildAt(0);
         decorChild.setBackgroundResource(background);
+//        decorChild.setBackgroundColor(Color.parseColor("#fffafafa"));
         decor.removeView(decorChild);
         addView(decorChild);
         setContentView(decorChild);

@@ -14,10 +14,10 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+
 import org.aisen.android.common.utils.ViewUtils;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.widget.CircleImageView;
-
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
@@ -50,7 +50,7 @@ public class MDColorsDialogFragment extends DialogFragment
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		setCancelable(true);
 		
-		View view = View.inflate(getActivity(), R.layout.as_ui_mdcolors_dialog, null);
+		View view = View.inflate(getActivity(), R.layout.ui_mdcolors_dialog, null);
 		
 		GridView gridView = (GridView) view.findViewById(R.id.grid);
 		gridView.setAdapter(new MDColorsAdapter());
@@ -83,7 +83,7 @@ public class MDColorsDialogFragment extends DialogFragment
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			if (convertView == null)
-				convertView = View.inflate(getActivity(), R.layout.as_item_mdcolors, null);
+				convertView = View.inflate(getActivity(), R.layout.item_mdcolors, null);
 
 			if (!colorMap.containsKey(String.valueOf(position)))
 				colorMap.put(String.valueOf(position), new ColorDrawable(getResources().getColor(ThemeUtils.themeColorArr[position][0])));

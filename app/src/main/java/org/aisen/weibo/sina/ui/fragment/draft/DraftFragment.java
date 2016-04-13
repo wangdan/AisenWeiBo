@@ -9,34 +9,36 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AbsListView;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.DateUtils;
+import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.common.utils.ViewUtils;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
-import org.aisen.android.support.adapter.ABaseAdapter.AbstractItemView;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.fragment.ABaseFragment;
-import org.aisen.android.ui.fragment.AListFragment;
-
+import org.aisen.android.ui.fragment.ARecycleViewFragment;
+import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
+import org.aisen.android.ui.fragment.itemview.IITemView;
+import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.MyApplication;
+import org.aisen.weibo.sina.service.PublishService;
+import org.aisen.weibo.sina.service.publisher.PublishManager;
 import org.aisen.weibo.sina.support.bean.PublishBean;
 import org.aisen.weibo.sina.support.bean.PublishType;
-import org.aisen.weibo.sina.support.db.PublishDB;
-import org.aisen.weibo.sina.support.publisher.PublishManager;
-import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.support.sqlit.PublishDB;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
-import org.aisen.weibo.sina.sys.service.PublishService;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
-import org.aisen.weibo.sina.ui.fragment.basic.BizFragment;
+import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.widget.AisenTextView;
 
 import java.util.ArrayList;
@@ -47,54 +49,37 @@ import java.util.List;
  *
  * @author wangdan
  */
-public class DraftFragment extends AListFragment<PublishBean, ArrayList<PublishBean>>
-        implements OnItemClickListener, View.OnClickListener {
+public class DraftFragment extends ARecycleViewFragment<PublishBean, ArrayList<PublishBean>>
+                                implements View.OnClickListener {
 
     public static ABaseFragment newInstance() {
         return new DraftFragment();
     }
 
-    private BizFragment bizFragment;
-
     @Override
-    protected int inflateContentView() {
-        return R.layout.as_ui_draft;
+    public int inflateContentView() {
+        return R.layout.ui_draft;
+    }
+
+    private void setViewPadding(View viewGroup) {
+        viewGroup.setPadding(viewGroup.getPaddingLeft(), viewGroup.getPaddingTop(),
+                viewGroup.getPaddingRight(), SystemUtils.getNavigationBarHeight(getActivity()));
     }
 
     @Override
-    protected void setInitRefreshView(AbsListView refreshView, Bundle savedInstanceSate) {
-        super.setInitRefreshView(refreshView, savedInstanceSate);
+    protected void setupRefreshConfig(RefreshConfig config) {
+        super.setupRefreshConfig(config);
 
-        setPadding(refreshView);
-        setPadding(findViewById(R.id.layoutEmpty));
-        setPadding(findViewById(R.id.layoutLoadFailed));
-        setPadding(findViewById(R.id.layoutLoading));
-    }
-
-    private void setPadding(View view) {
-        if (view == null)
-            return;
-
-        int toolbarHeight = getResources().getDimensionPixelSize(R.dimen.abc_action_bar_default_height_material);
-
-        view.setPadding(view.getPaddingLeft(),
-                            toolbarHeight,
-                            view.getPaddingRight(),
-                            view.getPaddingBottom());
+        config.emptyHint = getString(R.string.empty_draft);
+        config.footerMoreEnable = false;
     }
 
     @Override
     protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
         super.layoutInit(inflater, savedInstanceSate);
 
-        getRefreshView().setOnItemClickListener(this);
-
-        try {
-            bizFragment = BizFragment.getBizFragment(this);
-        } catch (Exception e) {
-        }
-
-//        AisenTextView.stringMemoryCache.evictAll();
+        setViewPadding(getEmptyLayout());
+        setViewPadding(getLoadingLayout());
     }
 
     @Override
@@ -120,13 +105,27 @@ public class DraftFragment extends AListFragment<PublishBean, ArrayList<PublishB
     }
 
     @Override
-    protected AbstractItemView<PublishBean> newItemView() {
-        return new DraftboxItemView();
+    public IItemViewCreator<PublishBean> configItemViewCreator() {
+        return new IItemViewCreator<PublishBean>() {
+
+            @Override
+            public View newContentView(LayoutInflater inflater, ViewGroup parent, int viewType) {
+                return inflater.inflate(R.layout.item_draft, parent, false);
+            }
+
+            @Override
+            public IITemView<PublishBean> newItemView(View convertView, int viewType) {
+                return new DraftboxItemView(convertView);
+            }
+
+        };
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
+        UMengUtil.onPageStart(getActivity(), "草稿箱页");
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(PublishManager.ACTION_PUBLISH_CHANNGED);
@@ -138,6 +137,8 @@ public class DraftFragment extends AListFragment<PublishBean, ArrayList<PublishB
     @Override
     public void onPause() {
         super.onPause();
+
+        UMengUtil.onPageEnd(getActivity(), "草稿箱页");
 
         getActivity().unregisterReceiver(receiver);
     }
@@ -153,13 +154,13 @@ public class DraftFragment extends AListFragment<PublishBean, ArrayList<PublishB
     };
 
     @Override
-    protected void requestData(RefreshMode mode) {
+    public void requestData(RefreshMode mode) {
     }
 
-    class DraftTask extends PagingTask<Void, Void, ArrayList<PublishBean>> {
+    class DraftTask extends APagingTask<Void, Void, ArrayList<PublishBean>> {
 
         public DraftTask(RefreshMode mode) {
-            super("DraftTask", mode);
+            super(mode);
         }
 
         @Override
@@ -170,12 +171,12 @@ public class DraftFragment extends AListFragment<PublishBean, ArrayList<PublishB
         @Override
         protected ArrayList<PublishBean> workInBackground(RefreshMode mode, String previousPage,
                                                           String nextPage, Void... params) throws TaskException {
-            return PublishDB.getPublishList(AppContext.getUser());
+            return PublishDB.getPublishList(AppContext.getAccount().getUser());
         }
 
     }
 
-    class DraftboxItemView extends AbstractItemView<PublishBean> {
+    class DraftboxItemView extends ARecycleViewItemView<PublishBean> {
 
         @ViewInject(id = R.id.txtType)
         TextView txtType;
@@ -192,13 +193,12 @@ public class DraftFragment extends AListFragment<PublishBean, ArrayList<PublishB
         @ViewInject(id = R.id.btnResend)
         View btnResend;
 
-        @Override
-        public int inflateViewId() {
-            return R.layout.as_item_draft;
+        public DraftboxItemView(View itemView) {
+            super(itemView);
         }
 
         @Override
-        public void bindingData(View convertView, PublishBean data) {
+        public void onBindData(View convertView, PublishBean data, int position) {
             txtTiming.setVisibility(View.GONE);
 
             PublishType type = data.getType();
@@ -229,8 +229,7 @@ public class DraftFragment extends AListFragment<PublishBean, ArrayList<PublishB
                 txtError.setVisibility(TextUtils.isEmpty(data.getErrorMsg()) ? View.GONE : View.VISIBLE);
             }
 
-            if (bizFragment != null)
-                bizFragment.bindOnTouchListener(txtContent);
+            BizFragment.createBizFragment(DraftFragment.this).bindOnTouchListener(txtContent);
 
             btnDel.setTag(data);
             btnDel.setOnClickListener(DraftFragment.this);
@@ -242,14 +241,26 @@ public class DraftFragment extends AListFragment<PublishBean, ArrayList<PublishB
 
     @Override
     public void onClick(View v) {
-        PublishBean bean = (PublishBean) v.getTag();
+        final PublishBean bean = (PublishBean) v.getTag();
         // 删除
         if (v.getId() == R.id.btnDel) {
             deleteDraft(bean);
         }
         // 重新发送
         else if (v.getId() == R.id.btnResend) {
-            PublishService.publish(getActivity(), bean);
+            BizFragment.createBizFragment(this).checkProfile(new BizFragment.CheckProfileCallback() {
+
+                @Override
+                public void onCheckProfileSuccess() {
+                    PublishService.publish(getActivity(), bean);
+                }
+
+                @Override
+                public void onCheckProfileFaild() {
+                    showMessage(R.string.publish_request_ad_auth_faild);
+                }
+
+            });
         }
     }
 
@@ -271,7 +282,7 @@ public class DraftFragment extends AListFragment<PublishBean, ArrayList<PublishB
                             @Override
                             protected void onSuccess(Void result) {
                                 getAdapterItems().remove(bean);
-                                notifyDataSetChanged();
+                                getAdapter().notifyDataSetChanged();
 
                                 showMessage(R.string.draft_del_draft_hint);
 
@@ -299,7 +310,7 @@ public class DraftFragment extends AListFragment<PublishBean, ArrayList<PublishB
                                 if (bean.getTiming() > 0)
                                     MyApplication.removePublishAlarm(bean);
 
-                                PublishDB.deletePublish(bean, AppContext.getUser());
+                                PublishDB.deletePublish(bean, AppContext.getAccount().getUser());
 
                                 return null;
                             }

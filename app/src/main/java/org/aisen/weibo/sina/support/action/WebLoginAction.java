@@ -5,12 +5,11 @@ import android.content.DialogInterface;
 import android.text.TextUtils;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
-import org.aisen.android.support.action.IAction;
 
+import org.aisen.android.support.action.IAction;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
-import org.aisen.weibo.sina.ui.activity.profile.WeiboClientActivity;
-import org.aisen.weibo.sina.ui.fragment.basic.BizFragment;
+import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 
 import java.util.Random;
 
@@ -33,29 +32,34 @@ public class WebLoginAction extends IAction {
     @Override
     protected boolean interrupt() {
         if (TextUtils.isEmpty(AppContext.getAccount().getCookie())) {
-            doAction();
+            doInterrupt();
 
             return true;
         }
 
-        return super.interrupt();
+        return false;
     }
 
     @Override
-    public void doAction() {
+    public void doInterrupt() {
         new AlertDialogWrapper.Builder(mBizFragment.getActivity()).setMessage(R.string.acount_timeout)
                 .setNegativeButton(R.string.no, null)
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mBizFragment.setDMLogin(getChild());
-
-                        WeiboClientActivity.launchForAuth(mBizFragment, requestCode);
+                        mBizFragment.requestWebLogin(WebLoginAction.this);
                     }
 
                 })
                 .show();
+    }
+
+    @Override
+    public void doAction() {
+        if (getChild() != null) {
+            getChild().run();
+        }
     }
     
     public int getRequestCode() {

@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,52 +21,52 @@ import com.afollestad.materialdialogs.AlertDialogWrapper;
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.common.utils.ViewUtils;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
-import org.aisen.android.component.container.FragmentContainerActivity;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
-import org.aisen.android.support.adapter.ABaseAdapter;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.activity.basic.BaseActivity;
-import org.aisen.android.ui.fragment.AListFragment;
+import org.aisen.android.ui.fragment.ARecycleViewFragment;
+import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
+import org.aisen.android.ui.fragment.itemview.IITemView;
+import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
 import org.aisen.android.ui.widget.CircleImageView;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.MyApplication;
-import org.aisen.weibo.sina.sinasdk.SinaSDK;
-import org.aisen.weibo.sina.sinasdk.bean.AccessToken;
-import org.aisen.weibo.sina.sinasdk.bean.TokenInfo;
+import org.aisen.weibo.sina.service.PublishService;
+import org.aisen.weibo.sina.service.UnreadService;
+import org.aisen.weibo.sina.service.notifier.UnreadCountNotifier;
+import org.aisen.weibo.sina.service.publisher.PublishNotifier;
 import org.aisen.weibo.sina.sinasdk.bean.UnreadCount;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.support.bean.AccountBean;
-import org.aisen.weibo.sina.support.db.AccountDB;
-import org.aisen.weibo.sina.support.notifier.UnreadCountNotifier;
-import org.aisen.weibo.sina.support.publisher.PublishNotifier;
-import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.support.utils.AccountUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
-import org.aisen.weibo.sina.sys.service.PublishService;
-import org.aisen.weibo.sina.sys.service.UnreadService;
-import org.aisen.weibo.sina.ui.activity.basic.MainActivity;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
+import org.aisen.weibo.sina.ui.activity.base.MainActivity;
+import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
+import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 账号管理页面
+ * 账号列表，显示在左侧的菜单里面
  *
- * Created by wangdan on 15/4/12.
+ * Created by wangdan on 16/1/21.
  */
-public class AccountFragment extends AListFragment<AccountBean, ArrayList<AccountBean>> {
+public class AccountFragment extends ARecycleViewFragment<AccountBean, ArrayList<AccountBean>> {
 
     public static final String TAG = "Account";
 
     public static void launch(Activity from) {
-        FragmentContainerActivity.launch(from, AccountFragment.class, null);
+        SinaCommonActivity.launch(from, AccountFragment.class, null);
     }
 
     // 登录账号
     public static void login(AccountBean accountBean, boolean toMain) {
-        if (AppContext.isLogedin()) {
+        if (AppContext.isLoggedIn()) {
             // 1、清理定时发布
             MyApplication.removeAllPublishAlarm();
             // 2、清理正在发布的数据
@@ -76,25 +77,33 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
             UnreadCountNotifier.mCount = new UnreadCount();
             // 5、清理通知栏
             PublishNotifier.cancelAll();
-            // 6、清理内存数据
-//            TimelineMemoryCacheUtility.clear();
         }
 
         // 登录该账号
         AppContext.login(accountBean);
-        AccountDB.setLogedinAccount(accountBean);
+        AccountUtils.setLogedinAccount(accountBean);
 
         // 进入首页
-        if (toMain)
+        if (toMain) {
             MainActivity.login();
+
+            MainActivity.runCheckAccountTask(accountBean);
+        }
     }
 
     @ViewInject(id = R.id.btnAccountAdd, click = "addAccount")
     View btnAccountAdd;
 
     @Override
-    protected int inflateContentView() {
-        return R.layout.as_ui_account;
+    public int inflateContentView() {
+        return R.layout.ui_account;
+    }
+
+    @Override
+    protected void setupRefreshConfig(RefreshConfig config) {
+        super.setupRefreshConfig(config);
+
+        config.footerMoreEnable = false;
     }
 
     @Override
@@ -106,17 +115,27 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
         activity.getSupportActionBar().setTitle(R.string.title_acount);
 
         setHasOptionsMenu(true);
-
-        new CheckTokenInfoTask().execute();
     }
 
     @Override
-    protected ABaseAdapter.AbstractItemView<AccountBean> newItemView() {
-        return new AccountItemView();
+    public IItemViewCreator<AccountBean> configItemViewCreator() {
+        return new IItemViewCreator<AccountBean>() {
+
+            @Override
+            public View newContentView(LayoutInflater inflater, ViewGroup parent, int viewType) {
+                return inflater.inflate(R.layout.item_account, parent, false);
+            }
+
+            @Override
+            public IITemView<AccountBean> newItemView(View convertView, int viewType) {
+                return new AccountItemView(convertView);
+            }
+
+        };
     }
 
     @Override
-    protected void requestData(RefreshMode mode) {
+    public void requestData(RefreshMode mode) {
         new AccountTask().execute();
     }
 
@@ -124,7 +143,7 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
         final AccountBean account = getAdapterItems().get(position);
         // 重新授权Aisen
-        if (account.getToken().isExpired()) {
+        if (account.getAccessToken() == null || account.getAccessToken().isExpired()) {
             new AlertDialogWrapper.Builder(getActivity())
                     .setTitle(R.string.remind)
                     .setMessage(R.string.account_expired)
@@ -132,24 +151,7 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
 
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            LoginFragment.launch(AccountFragment.this, account.getAccount(), account.getPassword(), 1000);
-                        }
-
-                    })
-                    .show();
-
-            return;
-        }
-        // 重新授权Weico
-        else if (account.getAdvancedToken() == null || account.getAdvancedToken().isExpired()) {
-            new AlertDialogWrapper.Builder(getActivity())
-                    .setTitle(R.string.remind)
-                    .setMessage(R.string.account_ad_expired)
-                    .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            WeicoLoginFragment.launch(AccountFragment.this, account.getAccount(), account.getPassword(), 1001);
+                            WebLoginFragment.launch(AccountFragment.this, WebLoginFragment.Client.aisen, account.getAccount(), account.getPassword(), BizFragment.REQUEST_CODE_AUTH);
                         }
 
                     })
@@ -181,45 +183,28 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
     }
 
     void addAccount(View v) {
-        LoginFragment.launch(this, 1000);
+        WebLoginFragment.launch(this, WebLoginFragment.Client.aisen, null, null, BizFragment.REQUEST_CODE_AUTH);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 1000 && resultCode == Activity.RESULT_OK) {
-            AccessToken token = (AccessToken) data.getSerializableExtra("token");
-//            String days = String.valueOf(TimeUnit.SECONDS.toDays(token.getExpires_in()));
-//            new AlertDialogWrapper.Builder(getActivity())
-//                                    .setTitle(R.string.remind)
-//                                    .setMessage(String.format(getString(R.string.account_newaccount_remind), days))
-//                                    .setPositiveButton(R.string.i_know, null)
-//                                    .show();
+        if (requestCode == BizFragment.REQUEST_CODE_AUTH) {
+            if (resultCode == Activity.RESULT_CANCELED) {
 
-            requestData(RefreshMode.reset);
-        }
-        else if (requestCode == 1001 && resultCode == Activity.RESULT_OK) {
-            AccessToken token = (AccessToken) data.getSerializableExtra("token");
-            Logger.e(token);
-
-            for (AccountBean dbAccount : AccountDB.query()) {
-                if (dbAccount.getUserId().equals(token.getUid())) {
-                    dbAccount.setAdvancedToken(token);
-                    AccountDB.newAccount(dbAccount);
-                    if (AppContext.isLogedin() && AppContext.getUser().getIdstr().equals(dbAccount.getUserId())) {
-                        AppContext.getAccount().setAdvancedToken(token);
-                        AccountDB.setLogedinAccount(AppContext.getAccount());
-                    }
-                    break;
-                }
             }
+            else if (resultCode == Activity.RESULT_OK) {
+                AccountBean accountBean = (AccountBean) data.getSerializableExtra("account");
 
-            requestData(RefreshMode.reset);
+                AccountUtils.newAccount(accountBean);
+
+                requestData(RefreshMode.reset);
+            }
         }
     }
 
-    class AccountItemView extends ABaseAdapter.AbstractItemView<AccountBean> {
+    class AccountItemView extends ARecycleViewItemView<AccountBean> {
 
         @ViewInject(id = R.id.txtName)
         TextView txtName;
@@ -236,15 +221,14 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
         @ViewInject(id = R.id.divider)
         View divider;
 
-        private ColorDrawable grayDrawable;
+        ColorDrawable grayDrawable;
 
-        @Override
-        public int inflateViewId() {
-            return R.layout.as_item_account;
+        public AccountItemView(View itemView) {
+            super(itemView);
         }
 
         @Override
-        public void bindingData(View convertView, AccountBean data) {
+        public void onBindData(View convertView, AccountBean data, int position) {
             if (grayDrawable == null)
                 grayDrawable = new ColorDrawable(Color.parseColor("#99000000"));
 
@@ -256,21 +240,21 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
             txtName.setText(user.getScreen_name());
             txtDesc.setText(user.getDescription() + "");
             txtTokenInfo.setText(R.string.account_relogin_remind);
-            if (data.getToken().isExpired() || data.getAdvancedToken() == null || data.getAdvancedToken().isExpired()) {
+            if (data.getAccessToken() == null || data.getAccessToken().isExpired()) {
                 txtTokenInfo.setVisibility(View.VISIBLE);
             } else {
                 txtTokenInfo.setVisibility(View.GONE);
             }
 
-            if (AppContext.isLogedin())
-                viewCover.setVisibility(data.getUser().getIdstr().equals(AppContext.getUser().getIdstr()) ? View.GONE : View.VISIBLE);
+            if (AppContext.isLoggedIn())
+                viewCover.setVisibility(data.getUser().getIdstr().equals(AppContext.getAccount().getUser().getIdstr()) ? View.GONE : View.VISIBLE);
             else
                 viewCover.setVisibility(View.VISIBLE);
 
             viewCover.setImageDrawable(grayDrawable);
             btnRight.setTag(data);
 
-            divider.setVisibility(getPosition() == getSize() - 1 ? View.GONE : View.VISIBLE);
+            divider.setVisibility(itemPosition() == itemSize() - 1 ? View.GONE : View.VISIBLE);
         }
 
         void deleteAccount(View v) {
@@ -295,11 +279,11 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
 
                                 @Override
                                 public Boolean workInBackground(Void... params) throws TaskException {
-                                    Logger.w(TAG, "删除账号 uid = " + account.getUserId());
-                                    AccountDB.remove(account.getUserId());
+                                    Logger.w(TAG, "删除账号 uid = " + account.getUid());
+                                    AccountUtils.remove(account.getUid());
 
                                     // 如果是登录账号，退出登录
-                                    if (AppContext.isLogedin() && account.getUserId().equals(AppContext.getUser().getIdstr()))
+                                    if (AppContext.isLoggedIn() && account.getUid().equals(AppContext.getAccount().getUser().getIdstr()))
                                         AppContext.logout();
 
                                     try {
@@ -326,10 +310,10 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
 
     }
 
-    class AccountTask extends PagingTask<Void, Void, ArrayList<AccountBean>> {
+    class AccountTask extends APagingTask<Void, Void, ArrayList<AccountBean>> {
 
         public AccountTask() {
-            super("AccountTask", RefreshMode.reset);
+            super(RefreshMode.reset);
         }
 
         @Override
@@ -340,14 +324,14 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
         @Override
         protected ArrayList<AccountBean> workInBackground(RefreshMode mode, String previousPage,
                                                           String nextPage, Void... params) throws TaskException {
-            return (ArrayList<AccountBean>) AccountDB.query();
+            return (ArrayList<AccountBean>) AccountUtils.queryAccount();
         }
 
     }
 
     @Override
     public boolean onBackClick() {
-        if (!AppContext.isLogedin()) {
+        if (!AppContext.isLoggedIn()) {
             new AlertDialogWrapper.Builder(getActivity()).setTitle(R.string.remind)
                     .setMessage(R.string.account_account_exit_remind)
                     .setNegativeButton(R.string.cancel, null)
@@ -366,74 +350,18 @@ public class AccountFragment extends AListFragment<AccountBean, ArrayList<Accoun
         return super.onBackClick();
     }
 
-    class CheckTokenInfoTask extends WorkTask<Void, Void, Boolean> {
+    @Override
+    public void onResume() {
+        super.onResume();
 
-        @Override
-        public Boolean workInBackground(Void... params) throws TaskException {
-            for (AccountBean account : AccountDB.query()) {
-                TokenInfo tokenInfo = null;
-                // Aisen授权
-                try {
-                    tokenInfo = SinaSDK.getInstance(account.getToken()).getTokenInfo(account.getToken().getToken());
-                } catch (TaskException e) {
-                    e.printStackTrace();
-                    if ("21327".equals(e.getCode()) ||
-                            "21317".equals(e.getCode())) {
-                        tokenInfo = new TokenInfo();
-                        tokenInfo.setExpire_in(0);
-                    }
-                    else {
-                        return false;
-                    }
-                }
-                account.getToken().setExpires_in(tokenInfo.getExpire_in());
-                // Weico授权
-                try {
-                    if (account.getAdvancedToken() != null)
-                        tokenInfo = SinaSDK.getInstance(account.getAdvancedToken()).getTokenInfo(account.getAdvancedToken().getToken());
-                    else {
-                        tokenInfo = new TokenInfo();
-                        tokenInfo.setExpire_in(0);
-                    }
-                } catch (TaskException e) {
-                    e.printStackTrace();
-                    if ("21327".equals(e.getCode()) ||
-                            "21317".equals(e.getCode())) {
-                        tokenInfo = new TokenInfo();
-                        tokenInfo.setExpire_in(0);
-                    }
-                    else {
-                        return false;
-                    }
-                }
-                if (account.getAdvancedToken() != null)
-                    account.getAdvancedToken().setExpires_in(tokenInfo.getExpire_in());
+        UMengUtil.onPageStart(getActivity(), getString(R.string.title_acount) + "页");
+    }
 
-                // 刷新用户信息
-                AccountDB.newAccount(account);
-                if (AppContext.getAccount() != null && AppContext.getAccount().getUserId().equals(account.getUserId())) {
-                    AppContext.getAccount().setToken(account.getToken());
-                    AppContext.setAdvancedToken(account.getAdvancedToken());
-                    AccountDB.setLogedinAccount(AppContext.getAccount());
+    @Override
+    public void onPause() {
+        super.onPause();
 
-                    if (account.getToken().isExpired() ||
-                            account.getAdvancedToken() == null || account.getAdvancedToken().isExpired()) {
-                        AppContext.logout();
-                    }
-                }
-
-                publishProgress();
-            }
-
-            return true;
-        }
-
-        @Override
-        protected void onProgressUpdate(Void... values) {
-            super.onProgressUpdate(values);
-
-            requestData(RefreshMode.reset);
-        }
+        UMengUtil.onPageEnd(getActivity(), getString(R.string.title_acount) + "页");
     }
 
 }

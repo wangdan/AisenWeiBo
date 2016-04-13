@@ -1,27 +1,23 @@
 package org.aisen.weibo.sina.ui.fragment.settings;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
-
 import org.aisen.android.common.context.GlobalContext;
-import org.aisen.android.common.utils.Logger;
-import org.aisen.android.component.container.FragmentContainerActivity;
+import org.aisen.android.component.orm.extra.Extra;
 import org.aisen.android.ui.activity.basic.BaseActivity;
-import org.aisen.orm.extra.Extra;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.sinasdk.bean.Group;
-import org.aisen.weibo.sina.support.db.SinaDB;
+import org.aisen.weibo.sina.support.sqlit.SinaDB;
 import org.aisen.weibo.sina.support.utils.OfflineUtils;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
+import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,7 +30,7 @@ public class OfflineSettingsFragment extends BasePreferenceFragment
                                                     Preference.OnPreferenceClickListener {
 
     public static void launch(Activity from) {
-        FragmentContainerActivity.launch(from, OfflineSettingsFragment.class, null);
+        SinaCommonActivity.launch(from, OfflineSettingsFragment.class, null);
     }
 
     private Preference pOfflineGroups;// 主题设置
@@ -83,7 +79,7 @@ public class OfflineSettingsFragment extends BasePreferenceFragment
     @Override
     public boolean onPreferenceClick(Preference preference) {
         if (preference.getKey().equals("pOfflineGroups")) {
-            final List<Group> groups = SinaDB.getOfflineSqlite().select(new Extra(AppContext.getUser().getIdstr(), null), Group.class);
+            final List<Group> groups = SinaDB.getOfflineSqlite().select(new Extra(AppContext.getAccount().getUser().getIdstr(), null), Group.class);
 
             OfflineUtils.showOfflineGroupsModifyDialog(getActivity(), groups,
                     new OfflineUtils.OnOfflineGroupSetCallback() {
@@ -109,7 +105,7 @@ public class OfflineSettingsFragment extends BasePreferenceFragment
     }
 
     private void setGroupsSummary() {
-        List<Group> groups = SinaDB.getOfflineSqlite().select(new Extra(AppContext.getUser().getIdstr(), null), Group.class);
+        List<Group> groups = SinaDB.getOfflineSqlite().select(new Extra(AppContext.getAccount().getUser().getIdstr(), null), Group.class);
         String summary = "";
         if (groups.size() == 0) {
             summary = getString(R.string.offline_none_groups) + ",";
@@ -127,6 +123,20 @@ public class OfflineSettingsFragment extends BasePreferenceFragment
 
         pOfflinePicTaskCount.setTitle(String.format(getString(R.string.offline_pic_task_count), valueTitleArr[value]));
         pOfflinePicTaskCount.setSummary(String.format(getString(R.string.offline_pic_task_count_summary), valueTitleArr[value]));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        UMengUtil.onPageStart(getActivity(), "离线设置页");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        UMengUtil.onPageEnd(getActivity(), "离线设置页");
     }
 
 }

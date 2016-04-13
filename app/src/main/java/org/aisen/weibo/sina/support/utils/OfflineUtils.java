@@ -1,22 +1,21 @@
 package org.aisen.weibo.sina.support.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.aisen.weibo.sina.R;
-import org.aisen.weibo.sina.base.AppContext;
-import org.aisen.weibo.sina.support.db.SinaDB;
-import org.aisen.weibo.sina.sys.service.OfflineService;
-import org.aisen.weibo.sina.sinasdk.bean.Group;
-
 import android.app.Activity;
 import android.content.DialogInterface;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+
 import org.aisen.android.common.context.GlobalContext;
-import org.aisen.android.common.utils.ActivityHelper;
 import org.aisen.android.common.utils.Logger;
-import org.aisen.orm.extra.Extra;
+import org.aisen.android.component.orm.extra.Extra;
+import org.aisen.weibo.sina.R;
+import org.aisen.weibo.sina.base.AppContext;
+import org.aisen.weibo.sina.service.OfflineService;
+import org.aisen.weibo.sina.sinasdk.bean.Group;
+import org.aisen.weibo.sina.support.sqlit.SinaDB;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by wangdan on 15/5/3.
@@ -31,10 +30,10 @@ public class OfflineUtils {
      * @param context
      */
     public static void toggleOffline(final Activity context) {
-        if (!AppContext.isLogedin())
+        if (!AppContext.isLoggedIn())
             return;
 
-        List<Group> groups = SinaDB.getOfflineSqlite().select(new Extra(AppContext.getUser().getIdstr(), null), Group.class);
+        List<Group> groups = SinaDB.getOfflineSqlite().select(new Extra(AppContext.getAccount().getUser().getIdstr(), null), Group.class);
         if (groups.size() == 0) {
             Logger.d(TAG, "离线分组未设置过");
 
@@ -83,11 +82,11 @@ public class OfflineUtils {
      */
     public static void showOfflineGroupsModifyDialog(Activity activity, List<Group> selectedGroups,
                                                      final OnOfflineGroupSetCallback callback, int titleId) {
-        String[] items = new String[AppContext.getGroups().getLists().size()];
-        final boolean[] editCheckedItems = new boolean[AppContext.getGroups().getLists().size()];
+        String[] items = new String[AppContext.getAccount().getGroups().getLists().size()];
+        final boolean[] editCheckedItems = new boolean[AppContext.getAccount().getGroups().getLists().size()];
 
-        for (int i = 0; i < AppContext.getGroups().getLists().size(); i++) {
-            Group group = AppContext.getGroups().getLists().get(i);
+        for (int i = 0; i < AppContext.getAccount().getGroups().getLists().size(); i++) {
+            Group group = AppContext.getAccount().getGroups().getLists().get(i);
 
             items[i] = group.getName();
             editCheckedItems[i] = false;
@@ -122,7 +121,7 @@ public class OfflineUtils {
 
                                         for (int i = 0; i < editCheckedItems.length; i++) {
                                             if (editCheckedItems[i]) {
-                                                groups.add(AppContext.getGroups().getLists().get(i));
+                                                groups.add(AppContext.getAccount().getGroups().getLists().get(i));
                                             }
                                         }
 
@@ -135,7 +134,7 @@ public class OfflineUtils {
     }
 
     public static Extra getLoggedExtra(String key) {
-        return new Extra(AppContext.getUser().getIdstr(), key);
+        return new Extra(AppContext.getAccount().getUser().getIdstr(), key);
     }
 
     public interface OnOfflineGroupSetCallback {

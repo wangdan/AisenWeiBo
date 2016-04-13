@@ -9,8 +9,9 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
-import org.aisen.android.common.utils.Utils;
 
+import org.aisen.android.common.md.MDHelper;
+import org.aisen.android.common.utils.Utils;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.ui.widget.ColorPicker;
 
@@ -36,10 +37,10 @@ public class CustomThemeColorFragment extends DialogFragment {
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		setCancelable(true);
 		
-		View view = View.inflate(getActivity(), R.layout.as_ui_custom_themecolor, null);
+		View view = View.inflate(getActivity(), R.layout.ui_custom_themecolor, null);
 		final ColorPicker mColorPicker = (ColorPicker) view.findViewById(R.id.colorPicker);
         int callback = getResources().getColor(R.color.material_deep_teal_500);
-        mColorPicker.setColor(Utils.resolveColor(getActivity(), R.attr.colorPrimary, callback));
+        mColorPicker.setColor(MDHelper.resolveColor(getActivity(), R.attr.colorPrimary, callback));
 
 		return new AlertDialogWrapper.Builder(getActivity())
 				        .setView(view)

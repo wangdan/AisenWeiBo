@@ -1,12 +1,11 @@
 package org.aisen.weibo.sina.sinasdk.bean;
 
-import org.aisen.orm.annotation.PrimaryKey;
-import org.aisen.weibo.sina.support.bean.PhotoBean;
+import org.aisen.android.component.orm.annotation.PrimaryKey;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class StatusContent extends PhotoBean implements Serializable {
+public class StatusContent implements Serializable {
 
     private static final long serialVersionUID = 4658890626870999594L;
 
@@ -95,12 +94,12 @@ public class StatusContent extends PhotoBean implements Serializable {
     /**
      * 转发的博文，内容为status，如果不是转发，则没有此字段
      */
-    private String reposts_count;
+    private int reposts_count;
 
     /**
      * 转发的博文，内容为status，如果不是转发，则没有此字段
      */
-    private String comments_count;
+    private int comments_count;
 
     /**
      * 每次拉取的微博，首条都记录本组数据的拉取时间
@@ -246,19 +245,19 @@ public class StatusContent extends PhotoBean implements Serializable {
         this.retweeted_status = retweeted_status;
     }
 
-    public String getReposts_count() {
+    public int getReposts_count() {
         return reposts_count;
     }
 
-    public void setReposts_count(String reposts_count) {
+    public void setReposts_count(int reposts_count) {
         this.reposts_count = reposts_count;
     }
 
-    public String getComments_count() {
+    public int getComments_count() {
         return comments_count;
     }
 
-    public void setComments_count(String comments_count) {
+    public void setComments_count(int comments_count) {
         this.comments_count = comments_count;
     }
 

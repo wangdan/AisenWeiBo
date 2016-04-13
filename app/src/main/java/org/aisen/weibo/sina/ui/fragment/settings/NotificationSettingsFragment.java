@@ -14,12 +14,12 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.ActivityHelper;
-import org.aisen.android.component.container.FragmentContainerActivity;
 import org.aisen.android.ui.activity.basic.BaseActivity;
-
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
-import org.aisen.weibo.sina.sys.service.UnreadService;
+import org.aisen.weibo.sina.service.UnreadService;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
+import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 
 /**
  * 通知设置
@@ -31,7 +31,7 @@ public class NotificationSettingsFragment extends BasePreferenceFragment impleme
 																			OnCheckedChangeListener {
 
 	public static void launch(Activity from) {
-		FragmentContainerActivity.launch(from, NotificationSettingsFragment.class, null);
+		SinaCommonActivity.launch(from, NotificationSettingsFragment.class, null);
 	}
 
     private CheckBoxPreference pNotificationEnable;// 开启通知提醒
@@ -145,6 +145,20 @@ public class NotificationSettingsFragment extends BasePreferenceFragment impleme
 		String[] valueTitleArr = getResources().getStringArray(R.array.txtUnread);
 
 		pInterval.setSummary(valueTitleArr[value]);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		UMengUtil.onPageStart(getActivity(), "通知设置页");
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		UMengUtil.onPageEnd(getActivity(), "通知设置页");
 	}
 	
 }

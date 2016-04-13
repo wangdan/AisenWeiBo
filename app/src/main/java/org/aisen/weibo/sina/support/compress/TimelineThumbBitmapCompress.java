@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import org.aisen.android.common.utils.BitmapUtil;
 import org.aisen.android.component.bitmaploader.core.BitmapCompress;
 import org.aisen.android.component.bitmaploader.core.ImageConfig;
-
 import org.aisen.weibo.sina.ui.widget.TimelinePicsView;
 
 import java.io.File;

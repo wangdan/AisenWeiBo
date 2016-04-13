@@ -1,132 +1,90 @@
 package org.aisen.weibo.sina.ui.fragment.timeline;
 
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.widget.ListView;
 
-import org.aisen.android.common.utils.Logger;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
-import org.aisen.android.ui.fragment.ABaseFragment;
-import org.aisen.android.ui.fragment.ARefreshFragment;
-import org.aisen.android.ui.fragment.AStripTabsFragment;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
+import org.aisen.weibo.sina.sinasdk.bean.Group;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContents;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 
 /**
- * 分组的微博列表
+ * 分组微博列表
  *
- * @author wangdan
+ * Created by wangdan on 16/1/2.
  */
-public class TimelineGroupsFragment extends ATimelineFragment implements AStripTabsFragment.IStripTabInitData {
+public class TimelineGroupsFragment extends ATimelineFragment {
 
-    public static ABaseFragment newInstance(AStripTabsFragment.StripTabItem groupBean) {
-        return newInstance(groupBean, false);
-    }
-
-    public static ABaseFragment newInstance(AStripTabsFragment.StripTabItem groupBean, boolean offline) {
+    public static TimelineGroupsFragment newInstance(Group group) {
         TimelineGroupsFragment fragment = new TimelineGroupsFragment();
 
         Bundle args = new Bundle();
-        args.putSerializable("bean", groupBean);
-        args.putBoolean("offline", offline);
+        args.putSerializable("group", group);
         fragment.setArguments(args);
 
         return fragment;
     }
 
-    static int count = 0;
+    private Group group;
 
     @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-        Logger.e("TimelineGroupsFragment, " + --count);
-    }
-
-    public TimelineGroupsFragment() {
-        Logger.e("TimelineGroupsFragment, " + ++count);
+        group = savedInstanceState == null ? (Group) getArguments().getSerializable("group")
+                                           : (Group) savedInstanceState.getSerializable("group");
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
+        super.onSaveInstanceState(outState);
+
+        outState.putSerializable("group", group);
     }
 
     @Override
-    public void onStripTabRequestData() {
-        // 如果还没有加载过数据，就开始加载
-        if (getTaskCount("TimelineTask") == 0) {
-            requestData(ARefreshFragment.RefreshMode.reset);
-        }
+    public void requestData(RefreshMode mode) {
+        new GroupsTimelineTask(mode).execute();
     }
 
-    @Override
-    protected void requestData(ARefreshFragment.RefreshMode mode) {
-        // 如果还没有加载过数据，切且显示的是当前的页面
-        if (getTaskCount("TimelineTask") == 0) {
-            if (getPagerCurrentFragment() == this)
-                new FriendsGroupTimelineTask(mode).execute();
-        } else {
-            new FriendsGroupTimelineTask(mode).execute();
-        }
-    }
+    class GroupsTimelineTask extends ATimelineTask {
 
-    // 加载分组好友的task
-    class FriendsGroupTimelineTask extends TimelineTask {
-
-        public FriendsGroupTimelineTask(ARefreshFragment.RefreshMode mode) {
+        public GroupsTimelineTask(RefreshMode mode) {
             super(mode);
         }
 
         @Override
-        protected StatusContents workInBackground(ARefreshFragment.RefreshMode mode, String previousPage, String nextPage, Void... p) throws TaskException {
-            Params params = new Params();
+        public StatusContents getStatusContents(Params params) throws TaskException {
+            params.addParameter("list_id", group.getIdstr());
 
-            if (mode == ARefreshFragment.RefreshMode.refresh && !TextUtils.isEmpty(previousPage))
-                params.addParameter("since_id", previousPage);
-
-            if (mode == ARefreshFragment.RefreshMode.update && !TextUtils.isEmpty(nextPage))
-                params.addParameter("max_id", nextPage);
-
-            params.addParameter("list_id", getGroup().getType());
-
-            params.addParameter("count", String.valueOf(AppSettings.getTimelineCount()));
-
-            boolean offline = getArguments() != null ? getArguments().getBoolean("offline") : false;
-
-            long time = System.currentTimeMillis();
-            StatusContents beans = offline ? SinaSDK.getInstance(AppContext.getToken(), getTaskCacheMode(this)).offlineFriendshipGroupsTimeline(params)
-                    : SinaSDK.getInstance(AppContext.getToken(), getTaskCacheMode(this)).friendshipGroupsTimeline(params);
-
-            // 如果是缓存，延迟一点返回，防止有点点卡顿
-            if (beans.isCache() && System.currentTimeMillis() - time < 100) {
-                try {
-                    Thread.sleep(150);
-                } catch (Exception e) {
-
-                }
-            }
-
-            return beans;
+            return SinaSDK.getInstance(AppContext.getAccount().getAccessToken(), getTaskCacheMode(this)).friendshipGroupsTimeline(params);
         }
 
     }
 
-    public void resetDatas() {
-        cleatTaskCount("TimelineTask");
+    @Override
+    public boolean onToolbarDoubleClick() {
+        requestDataDelaySetRefreshing(AppSettings.REQUEST_DATA_DELAY);
+        getRefreshView().scrollToPosition(0);
 
-        if (getRefreshView() instanceof ListView) {
-            ListView listView = (ListView) getRefreshView();
-            listView.setSelectionFromTop(0, 0);
-        }
+        return true;
+    }
 
-        putLastReadPosition(0);
-        putLastReadTop(0);
+    @Override
+    public void onResume() {
+        super.onResume();
 
-        new FriendsGroupTimelineTask(RefreshMode.reset).execute();
+        UMengUtil.onPageStart(getActivity(), "好友分组微博页");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        UMengUtil.onPageEnd(getActivity(), "好友分组微博页");
     }
 
 }

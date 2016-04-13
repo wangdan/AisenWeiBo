@@ -3,7 +3,6 @@ package org.aisen.weibo.sina.ui.widget;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -19,7 +18,6 @@ import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.BitmapUtil;
 import org.aisen.android.common.utils.KeyGenerator;
 import org.aisen.android.common.utils.Logger;
-import org.aisen.android.common.utils.Utils;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.component.bitmaploader.core.LruMemoryCache;
 import org.aisen.android.component.bitmaploader.core.MyBitmap;
@@ -28,10 +26,9 @@ import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.support.textspan.ClickableTextViewMentionLinkOnTouchListener;
 import org.aisen.android.support.textspan.MyURLSpan;
 import org.aisen.android.ui.activity.basic.BaseActivity;
-
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
-import org.aisen.weibo.sina.support.db.EmotionsDB;
+import org.aisen.weibo.sina.support.sqlit.EmotionsDB;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.BlockingQueue;
@@ -160,8 +157,11 @@ public class AisenTextView extends TextView {
 
 			if (TextUtils.isEmpty(textView.getText()))
 				return false;
-			
-			SpannableString spannableString = SpannableString.valueOf(textView.getText());
+
+			// android.view.ViewRootImpl$CalledFromWrongThreadException Only the original thread that created a view hierarchy can touch its views.
+			// 把getText + 一个空字符试试，可能是直接取值会刷UI
+			String text = textView.getText() + "";
+			SpannableString spannableString = SpannableString.valueOf(text);
 			Matcher localMatcher = Pattern.compile("\\[(\\S+?)\\]").matcher(spannableString);
 			while (localMatcher.find()) {
 				if (isCancelled())
@@ -193,8 +193,6 @@ public class AisenTextView extends TextView {
 				ImageSpan l = new ImageSpan(GlobalContext.getInstance(), b, ImageSpan.ALIGN_BASELINE);
 				spannableString.setSpan(l, k, m, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}
-			
-//			publishProgress(spannableString);
 			
 			// 用户名称
 //			Pattern pattern = Pattern.compile("@([a-zA-Z0-9_\\-\\u4e00-\\u9fa5]+)");

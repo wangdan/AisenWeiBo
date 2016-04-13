@@ -1,7 +1,7 @@
 package org.aisen.weibo.sina.sinasdk.bean;
 
 import org.aisen.android.common.utils.Logger;
-import org.aisen.orm.annotation.PrimaryKey;
+import org.aisen.android.component.orm.annotation.PrimaryKey;
 
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;

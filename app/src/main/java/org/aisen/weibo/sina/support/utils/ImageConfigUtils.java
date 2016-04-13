@@ -2,7 +2,6 @@ package org.aisen.weibo.sina.support.utils;
 
 import org.aisen.android.component.bitmaploader.core.ImageConfig;
 import org.aisen.android.component.bitmaploader.display.DefaultDisplayer;
-
 import org.aisen.weibo.sina.R;
 
 public class ImageConfigUtils {

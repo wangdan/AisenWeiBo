@@ -1,16 +1,12 @@
 package org.aisen.weibo.sina.ui.widget;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
 import org.aisen.android.common.utils.Logger;
-import org.aisen.android.common.utils.SystemBarUtils;
-import org.aisen.android.common.utils.Utils;
-
-import org.aisen.weibo.sina.R;
+import org.aisen.android.common.utils.SystemUtils;
 
 /**
  * Created by wangdan on 15/4/26.
@@ -39,9 +35,9 @@ public class KitkatProfileViewGroup extends FrameLayout {
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
             Logger.w("setPadding-KitkatViewGroup");
             setPadding(getPaddingLeft(),
-                        getPaddingTop(),
-                        getPaddingRight(),
-                        getPaddingBottom() + SystemBarUtils.getNavigationBarHeight(getContext()));
+                    getPaddingTop(),
+                    getPaddingRight(),
+                    getPaddingBottom() + SystemUtils.getNavigationBarHeight(getContext()));
 
 //            setBackgroundColor(Utils.resolveColor(getContext(), R.attr.colorPrimary, Color.BLACK));
         }

@@ -133,8 +133,8 @@ public class DatePickerDialog extends DialogFragment implements View.OnClickList
 //				mMonthAndDayView.setSelected(true);
                 TextView date_picker_month = (TextView) mMonthAndDayView.findViewById(R.id.date_picker_month);
                 TextView date_picker_day = (TextView) mMonthAndDayView.findViewById(R.id.date_picker_day);
-                date_picker_month.setTextColor(Utils.resolveColor(getActivity(), R.attr.theme_color, Color.BLUE));
-                date_picker_day.setTextColor(Utils.resolveColor(getActivity(), R.attr.theme_color, Color.BLUE));
+                date_picker_month.setTextColor(Utils.resolveColor(getActivity(), R.attr.themeColor, Color.BLUE));
+                date_picker_day.setTextColor(Utils.resolveColor(getActivity(), R.attr.themeColor, Color.BLUE));
 //				mYearView.setSelected(false);
                 mYearView.setTextColor(getResources().getColor(R.color.date_picker_text_normal));
 				mAnimator.setDisplayedChild(MONTH_AND_DAY_VIEW);
@@ -159,7 +159,7 @@ public class DatePickerDialog extends DialogFragment implements View.OnClickList
                 TextView date_picker_day = (TextView) mMonthAndDayView.findViewById(R.id.date_picker_day);
                 date_picker_month.setTextColor(getResources().getColor(R.color.date_picker_text_normal));
                 date_picker_day.setTextColor(getResources().getColor(R.color.date_picker_text_normal));
-                mYearView.setTextColor(Utils.resolveColor(getActivity(), R.attr.theme_color, Color.BLUE));
+                mYearView.setTextColor(Utils.resolveColor(getActivity(), R.attr.themeColor, Color.BLUE));
 				mAnimator.setDisplayedChild(YEAR_VIEW);
 				mCurrentView = currentView;
 			}

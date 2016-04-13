@@ -6,8 +6,6 @@ import org.aisen.android.network.biz.ABizLogic;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.ui.fragment.ABaseFragment;
-import org.aisen.android.ui.fragment.ARefreshFragment;
-
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
@@ -34,18 +32,18 @@ public class FollowersFragment extends AFriendshipFragment {
 		return fragment;
 	}
 
-    @Override
-    protected void configRefresh(RefreshConfig config) {
-        super.configRefresh(config);
+	@Override
+	protected void setupRefreshConfig(RefreshConfig config) {
+		super.setupRefreshConfig(config);
 
-        config.emptyLabel = getString(R.string.empty_followers);
-    }
+		config.emptyHint = getString(R.string.empty_followers);
+	}
 
 	@Override
-    Friendship getFriendship(@SuppressWarnings("rawtypes") WorkTask task, ARefreshFragment.RefreshMode mode,
+	Friendship getFriendship(@SuppressWarnings("rawtypes") WorkTask task, RefreshMode mode,
 									String previousPage, String nextPage, Token token, Void... params)
 			throws TaskException {
-		ABizLogic.CacheMode cacheMode = getUser().getIdstr().equals(AppContext.getUser().getIdstr()) ? getTaskCacheMode(task) : ABizLogic.CacheMode.disable;
+		ABizLogic.CacheMode cacheMode = getUser().getIdstr().equals(AppContext.getAccount().getUser().getIdstr()) ? getTaskCacheMode(task) : ABizLogic.CacheMode.disable;
 		
 		return SinaSDK.getInstance(token, cacheMode)
 											.friendshipsFollowers(null, getUser().getScreen_name(), nextPage);

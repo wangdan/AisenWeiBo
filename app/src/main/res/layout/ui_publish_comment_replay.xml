@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/layRoot"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/layContainer" android:layout_width="match_parent" android:layout_height="0dip" android:layout_weight="1"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent" android:layout_height="0dip" android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/imgBk" android:layout_width="match_parent" android:layout_height="match_parent" android:alpha="100"
+                android:scaleType="centerCrop"/>
+
+            <View
+                android:id="@+id/layImageCover" android:layout_width="match_parent" android:layout_height="match_parent" android:background="#99ffffff"
+                android:visibility="gone"/>
+
+            <LinearLayout
+                android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:padding="@dimen/comm_v_gap">
+
+                <LinearLayout
+                    android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                    <!-- 头像 -->
+                    <ImageView
+                        android:id="@+id/imgPhoto" android:layout_width="42dip" android:layout_height="42dip"
+                        android:layout_marginBottom="@dimen/comm_h_gap" android:layout_marginRight="@dimen/comm_h_gap"/>
+
+                    <TextView
+                        android:id="@+id/txtContent" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:maxLines="2" android:singleLine="false" android:textColor="@drawable/hint"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/txtErrorHint" android:layout_width="match_parent" android:layout_height="22dip"
+                    android:drawableLeft="@drawable/ic_msg_error" android:drawablePadding="4dip" android:gravity="center_vertical" android:paddingLeft="@dimen/comm_h_margin"
+                    android:textColor="@color/comm_red" android:textSize="14sp" android:visibility="gone"/>
+
+                <EditText
+                    android:id="@+id/editContent" android:layout_width="match_parent" android:layout_height="0dip"
+                    android:layout_weight="1" android:gravity="left|top" android:textCursorDrawable="@null"/>
+
+                <CheckBox
+                    android:id="@+id/checkbox" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/comm_v_gap" android:ellipsize="end"
+                    android:singleLine="true" android:text="@string/publish_repost_to_me"
+                    android:textColor="@drawable/hint" android:textSize="14sp"/>
+
+            </LinearLayout>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/txtContentSurplus" android:layout_width="wrap_content" android:layout_height="wrap_content" android:visibility="gone"/>
+
+        <View
+            android:layout_width="match_parent" android:layout_height="1.5dip" android:background="@drawable/divider_panel"/>
+
+        <include
+            layout="@layout/lay_publish_btns" android:layout_width="match_parent" android:layout_height="50dip"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/layEmotion" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@color/bg_emotion" android:visibility="gone">
+    </RelativeLayout>
+
+</LinearLayout>

@@ -28,7 +28,7 @@ public class VersionDialogFragment extends DialogFragment {
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		ChangeLogListView chgList = (ChangeLogListView) View.inflate(getActivity(), R.layout.as_demo_changelog_fragment_dialogstandard, null);
+		ChangeLogListView chgList = (ChangeLogListView) View.inflate(getActivity(), R.layout.demo_changelog_fragment_dialogstandard, null);
 		
 		return new AlertDialogWrapper.Builder(getActivity())
 				        .setTitle(R.string.settings_version_detail)

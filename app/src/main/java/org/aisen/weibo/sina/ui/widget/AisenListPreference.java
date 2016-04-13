@@ -18,14 +18,6 @@ import java.lang.reflect.Method;
  */
 public class AisenListPreference extends ListPreference {
 
-    public AisenListPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
-
-    public AisenListPreference(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
-
     public AisenListPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
     }

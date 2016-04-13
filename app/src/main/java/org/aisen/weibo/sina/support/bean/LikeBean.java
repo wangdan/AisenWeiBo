@@ -1,6 +1,7 @@
 package org.aisen.weibo.sina.support.bean;
 
-import org.aisen.orm.annotation.PrimaryKey;
+
+import org.aisen.android.component.orm.annotation.PrimaryKey;
 
 /**
  * Created by wangdan on 15-3-6.

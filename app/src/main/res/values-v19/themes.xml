@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Values-vxx之间的差异属性-->
+    <style name="AppBaseTheme" parent="AppCommonTheme">
+        <!--这两行是透明状态栏和导航栏-->
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <!--4.4的系统，状态栏有条黑色，修改为同ActionBar一样的颜色-->
+        <item name="themeStatusbarColor">@color/md_teal_500</item>
+        <!--在4.4的时候，适配Windows-->
+        <item name="fitSystemWindows">true</item>
+        <item name="menuHeaderHeight">185dip</item>
+        <item name="menuHeaderPaddingTop">40dip</item>
+        <item name="android:selectableItemBackground">@drawable/selector_list_holo</item>
+    </style>
+</resources>

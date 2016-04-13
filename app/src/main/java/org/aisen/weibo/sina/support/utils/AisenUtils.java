@@ -1,6 +1,7 @@
 package org.aisen.weibo.sina.support.utils;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -13,6 +14,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.Settings;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
 import android.text.TextUtils;
@@ -25,7 +27,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+
 import org.aisen.android.common.context.GlobalContext;
+import org.aisen.android.common.md.MDHelper;
 import org.aisen.android.common.setting.SettingUtility;
 import org.aisen.android.common.utils.DateUtils;
 import org.aisen.android.common.utils.FileUtils;
@@ -39,20 +43,25 @@ import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.fragment.ABaseFragment;
-import org.aisen.android.ui.fragment.ARefreshFragment;
-
+import org.aisen.android.ui.fragment.APagingFragment;
+import org.aisen.android.ui.fragment.ATabsFragment;
+import org.aisen.android.ui.fragment.ATabsTabLayoutFragment;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
-import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
-import org.aisen.weibo.sina.ui.fragment.basic.BizFragment;
-import org.aisen.weibo.sina.ui.fragment.comment.TimelineCommentFragment;
-import org.aisen.weibo.sina.ui.fragment.timeline.ATimelineFragment;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
 import org.aisen.weibo.sina.sinasdk.bean.GroupSortResult;
 import org.aisen.weibo.sina.sinasdk.bean.StatusComment;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
+import org.aisen.weibo.sina.ui.activity.base.MainActivity;
+import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
+import org.aisen.weibo.sina.ui.activity.profile.UserProfileActivity;
+import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
+import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
+import org.aisen.weibo.sina.ui.fragment.comment.TimelineCommentFragment;
+import org.aisen.weibo.sina.ui.fragment.comment.TimelineDetailPagerFragment;
+import org.aisen.weibo.sina.ui.fragment.timeline.ATimelineFragment;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -72,7 +81,7 @@ public class AisenUtils {
 
     public static int getThemeColor(Context context) {
         final int materialBlue = Color.parseColor("#ff0000");
-        int themeColor = Utils.resolveColor(context, R.attr.theme_color, materialBlue);
+        int themeColor = MDHelper.resolveColor(context, R.attr.themeColor, materialBlue);
         return themeColor;
     }
 
@@ -241,45 +250,63 @@ public class AisenUtils {
 
     @SuppressWarnings("deprecation")
     public static String convDate(String time) {
-        Context context = GlobalContext.getInstance();
-        Resources res = context.getResources();
+        try {
+            Context context = GlobalContext.getInstance();
+            Resources res = context.getResources();
 
-        StringBuffer buffer = new StringBuffer();
+            StringBuffer buffer = new StringBuffer();
 
-        Calendar createCal = Calendar.getInstance();
-        createCal.setTimeInMillis(Date.parse(time));
-        Calendar currentcal = Calendar.getInstance();
-        currentcal.setTimeInMillis(System.currentTimeMillis());
+            Calendar createCal = Calendar.getInstance();
 
-        long diffTime = (currentcal.getTimeInMillis() - createCal.getTimeInMillis()) / 1000;
-
-        // 同一月
-        if (currentcal.get(Calendar.MONTH) == createCal.get(Calendar.MONTH)) {
-            // 同一天
-            if (currentcal.get(Calendar.DAY_OF_MONTH) == createCal.get(Calendar.DAY_OF_MONTH)) {
-                if (diffTime < 3600 && diffTime >= 60) {
-                    buffer.append((diffTime / 60) + res.getString(R.string.msg_few_minutes_ago));
-                } else if (diffTime < 60) {
-                    buffer.append(res.getString(R.string.msg_now));
-                } else {
-                    buffer.append(res.getString(R.string.msg_today)).append(" ").append(DateUtils.formatDate(createCal.getTimeInMillis(), "HH:mm"));
+            if (time.length() == 13) {
+                try {
+                    createCal.setTimeInMillis(Long.parseLong(time));
+                } catch (Exception e) {
+                    createCal.setTimeInMillis(Date.parse(time));
                 }
             }
-            // 前一天
-            else if (currentcal.get(Calendar.DAY_OF_MONTH) - createCal.get(Calendar.DAY_OF_MONTH) == 1) {
-                buffer.append(res.getString(R.string.msg_yesterday)).append(" ").append(DateUtils.formatDate(createCal.getTimeInMillis(), "HH:mm"));
+            else {
+                createCal.setTimeInMillis(Date.parse(time));
             }
+
+            Calendar currentcal = Calendar.getInstance();
+            currentcal.setTimeInMillis(System.currentTimeMillis());
+
+            long diffTime = (currentcal.getTimeInMillis() - createCal.getTimeInMillis()) / 1000;
+
+            // 同一月
+            if (currentcal.get(Calendar.MONTH) == createCal.get(Calendar.MONTH)) {
+                // 同一天
+                if (currentcal.get(Calendar.DAY_OF_MONTH) == createCal.get(Calendar.DAY_OF_MONTH)) {
+                    if (diffTime < 3600 && diffTime >= 60) {
+                        buffer.append((diffTime / 60) + res.getString(R.string.msg_few_minutes_ago));
+                    } else if (diffTime < 60) {
+                        buffer.append(res.getString(R.string.msg_now));
+                    } else {
+                        buffer.append(res.getString(R.string.msg_today)).append(" ").append(DateUtils.formatDate(createCal.getTimeInMillis(), "HH:mm"));
+                    }
+                }
+                // 前一天
+                else if (currentcal.get(Calendar.DAY_OF_MONTH) - createCal.get(Calendar.DAY_OF_MONTH) == 1) {
+                    buffer.append(res.getString(R.string.msg_yesterday)).append(" ").append(DateUtils.formatDate(createCal.getTimeInMillis(), "HH:mm"));
+                }
+            }
+
+            if (buffer.length() == 0) {
+                buffer.append(DateUtils.formatDate(createCal.getTimeInMillis(), "MM-dd HH:mm"));
+            }
+
+            String timeStr = buffer.toString();
+            if (currentcal.get(Calendar.YEAR) != createCal.get(Calendar.YEAR)) {
+                timeStr = createCal.get(Calendar.YEAR) + " " + timeStr;
+            }
+
+            return timeStr;
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
 
-        if (buffer.length() == 0) {
-            buffer.append(DateUtils.formatDate(createCal.getTimeInMillis(), "MM-dd HH:mm"));
-        }
-
-        String timeStr = buffer.toString();
-        if (currentcal.get(Calendar.YEAR) != createCal.get(Calendar.YEAR)) {
-            timeStr = createCal.get(Calendar.YEAR) + " " + timeStr;
-        }
-        return timeStr;
+        return time;
     }
 
 
@@ -307,15 +334,19 @@ public class AisenUtils {
         }
     }
 
-    public static String getCounter(int count) {
+    public static String getCounter(int count, String append) {
         Resources res = GlobalContext.getInstance().getResources();
 
         if (count < 10000)
-            return String.valueOf(count);
+            return String.valueOf(count) + append;
         else if (count < 100 * 10000)
-            return new DecimalFormat("#.0" + res.getString(R.string.msg_ten_thousand)).format(count * 1.0f / 10000);
+            return new DecimalFormat("#.0").format(count * 1.0f / 10000) + append + res.getString(R.string.msg_ten_thousand);
         else
-            return new DecimalFormat("#" + res.getString(R.string.msg_ten_thousand)).format(count * 1.0f / 10000);
+            return new DecimalFormat("#").format(count * 1.0f / 10000) + append + res.getString(R.string.msg_ten_thousand);
+    }
+
+    public static String getCounter(int count) {
+        return getCounter(count, "");
     }
 
     /**
@@ -328,7 +359,7 @@ public class AisenUtils {
         if (user == null)
             return "";
 
-        if (AppSettings.isLargePhoto()) {
+        if (AppSettings.isLargePhoto() && !TextUtils.isEmpty(user.getAvatar_large())) {
             return user.getAvatar_large();
         }
 
@@ -375,7 +406,7 @@ public class AisenUtils {
             switch (position) {
                 // 原微博
                 case 0:
-                    TimelineCommentFragment.launch(fragment.getActivity(), status.getRetweeted_status());
+                    TimelineDetailPagerFragment.launch(fragment.getActivity(), status.getRetweeted_status());
                     break;
                 // 复制
                 case 1:
@@ -385,19 +416,19 @@ public class AisenUtils {
                     break;
                 // 转发
                 case 2:
-                    BizFragment.getBizFragment(fragment).statusRepost(status);
+                    BizFragment.createBizFragment(fragment).statusRepost(status);
                     break;
                 // 评论
                 case 3:
-                    BizFragment.getBizFragment(fragment).commentCreate(status);
+                    BizFragment.createBizFragment(fragment).commentCreate(status);
                     break;
                 // 收藏
                 case 4:
-                    BizFragment.getBizFragment(fragment).favorityCreate(status.getId() + "", null);
+                    BizFragment.createBizFragment(fragment).favorityCreate(status.getId() + "", null);
                     break;
                 // 取消收藏
                 case 5:
-                    BizFragment.getBizFragment(fragment).favorityDestory(status.getId() + "", null);
+                    BizFragment.createBizFragment(fragment).favorityDestory(status.getId() + "", null);
                     break;
                 // 删除微博
                 case 6:
@@ -425,23 +456,22 @@ public class AisenUtils {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        BizFragment.getBizFragment(fragment).statusDestory(status.getId() + "", new BizFragment.OnStatusDestoryCallback() {
+                        BizFragment.createBizFragment(fragment).statusDestory(status.getId() + "", new BizFragment.OnStatusDestoryCallback() {
 
-                            @SuppressWarnings({ "rawtypes" })
+                            @SuppressWarnings({"rawtypes"})
                             @Override
                             public void onStatusDestory(StatusContent status) {
                                 if (fragment instanceof ATimelineFragment) {
-                                    ARefreshFragment aRefreshFragment = ((ARefreshFragment) fragment);
+                                    APagingFragment aRefreshFragment = ((APagingFragment) fragment);
                                     for (Object so : aRefreshFragment.getAdapterItems()) {
                                         StatusContent s = (StatusContent) so;
                                         if (String.valueOf(s.getId()).equals(String.valueOf(status.getId()))) {
                                             aRefreshFragment.getAdapterItems().remove(s);
-                                            aRefreshFragment.notifyDataSetChanged();
+                                            aRefreshFragment.getAdapter().notifyDataSetChanged();
                                             break;
                                         }
                                     }
-                                }
-                                else {
+                                } else {
                                     if (fragment.getActivity() != null && fragment instanceof TimelineCommentFragment) {
                                         Intent data = new Intent();
                                         data.putExtra("status", status.getId());
@@ -509,7 +539,7 @@ public class AisenUtils {
 
                             @Override
                             public GroupSortResult workInBackground(Void... params) throws TaskException {
-                                return SinaSDK.getInstance(AppContext.getToken()).statusMentionsShield(status.getId() + "");
+                                return SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).statusMentionsShield(status.getId() + "");
                             }
 
                         }.execute();
@@ -577,7 +607,7 @@ public class AisenUtils {
                     break;
                 // 转发
                 case 1:
-                    BizFragment.getBizFragment(fragment).commentRepost(comment);
+                    BizFragment.createBizFragment(fragment).commentRepost(comment);
                     break;
                 // 删除
                 case 2:
@@ -587,19 +617,19 @@ public class AisenUtils {
 
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    BizFragment.getBizFragment(fragment).commentDestory(comment, new BizFragment.OnCommentDestoryCallback() {
+                                    BizFragment.createBizFragment(fragment).commentDestory(comment, new BizFragment.OnCommentDestoryCallback() {
 
                                         @SuppressWarnings("unchecked")
                                         @Override
                                         public void onCommentDestory(StatusComment commnet) {
-                                            if (fragment instanceof ARefreshFragment) {
+                                            if (fragment instanceof APagingFragment) {
                                                 @SuppressWarnings("rawtypes")
-                                                ARefreshFragment aRefreshFragment = ((ARefreshFragment) fragment);
+                                                APagingFragment aRefreshFragment = ((APagingFragment) fragment);
                                                 for (Object so : aRefreshFragment.getAdapterItems()) {
                                                     StatusComment s = (StatusComment) so;
                                                     if (s.getId().equals(commnet.getId())) {
                                                         aRefreshFragment.getAdapterItems().remove(s);
-                                                        aRefreshFragment.notifyDataSetChanged();
+                                                        aRefreshFragment.getAdapter().notifyDataSetChanged();
                                                         break;
                                                     }
                                                 }
@@ -612,7 +642,7 @@ public class AisenUtils {
                     break;
                 // 评论
                 case 3:
-                    BizFragment.getBizFragment(fragment).replyComment(comment.getStatus(), comment);
+                    BizFragment.createBizFragment(fragment).replyComment(comment.getStatus(), comment);
                     break;
             }
         } catch (Exception e) {
@@ -660,31 +690,31 @@ public class AisenUtils {
 
     public static void onMenuClicked(ABaseFragment fragment, int menuId, StatusContent status) {
         switch (menuId) {
-        case R.id.comment:
-            BizFragment.getBizFragment(fragment).commentCreate(status);
-            break;
-        case R.id.repost:
-            BizFragment.getBizFragment(fragment).statusRepost(status);
-            break;
-        case R.id.fav:
-            BizFragment.getBizFragment(fragment).favorityCreate(status.getId() + "", null);
-            break;
-        case R.id.fav_destory:
-            BizFragment.getBizFragment(fragment).favorityDestory(status.getId() + "", null);
-            break;
-        case R.id.copy:
-            copyToClipboard(status.getText());
-            ViewUtils.showMessage(R.string.msg_text_copyed);
-            break;
-        case R.id.delete:
-            deleteStatus(fragment, status);
-            break;
-        case R.id.weiguan:
-            PublishActivity.publishStatusRepostAndWeiguan(fragment.getActivity(), null, status);
-            break;
-        case R.id.share:
+            case R.id.comment:
+                BizFragment.createBizFragment(fragment).commentCreate(status);
+                break;
+            case R.id.repost:
+                BizFragment.createBizFragment(fragment).statusRepost(status);
+                break;
+            case R.id.fav:
+                BizFragment.createBizFragment(fragment).favorityCreate(status.getId() + "", null);
+                break;
+            case R.id.fav_destory:
+                BizFragment.createBizFragment(fragment).favorityDestory(status.getId() + "", null);
+                break;
+            case R.id.copy:
+                copyToClipboard(status.getText());
+                ViewUtils.showMessage(R.string.msg_text_copyed);
+                break;
+            case R.id.delete:
+                deleteStatus(fragment, status);
+                break;
+            case R.id.weiguan:
+                PublishActivity.publishStatusRepostAndWeiguan(fragment.getActivity(), null, status);
+                break;
+            case R.id.share:
 
-            break;
+                break;
         }
     }
 
@@ -717,7 +747,7 @@ public class AisenUtils {
     }
 
     public static boolean isLoggedUser(WeiBoUser user) {
-        return user.getIdstr().equalsIgnoreCase(AppContext.getUser().getIdstr());
+        return user.getIdstr().equalsIgnoreCase(AppContext.getAccount().getUser().getIdstr());
     }
 
     public static String getUnit(long length) {
@@ -750,7 +780,7 @@ public class AisenUtils {
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
                     | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    );//| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            );//| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 //            window.setStatusBarColor(Utils.resolveColor(activity, R.attr.theme_statusbar_color, Color.BLUE));
             window.setStatusBarColor(Color.parseColor("#20000000"));
@@ -782,6 +812,129 @@ public class AisenUtils {
 //            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 //            window.setStatusBarColor(Color.TRANSPARENT);
 //        }
+    }
+
+    public static boolean checkTabsFragmentCanRequestData(Fragment checkedFragment) {
+        if (checkedFragment.getActivity() == null)
+            return false;
+
+        ABaseFragment aFragment = null;
+        if (checkedFragment.getActivity() instanceof SinaCommonActivity) {
+            aFragment = (ABaseFragment) checkedFragment.getActivity().getFragmentManager().findFragmentByTag(SinaCommonActivity.FRAGMENT_TAG);
+        }
+        else if (checkedFragment.getActivity() instanceof MainActivity) {
+            aFragment = (ABaseFragment) checkedFragment.getActivity().getFragmentManager().findFragmentByTag("MainFragment");
+        }
+        else if (checkedFragment.getActivity() instanceof UserProfileActivity) {
+            aFragment = (ABaseFragment) checkedFragment.getActivity().getFragmentManager().findFragmentByTag(SinaCommonActivity.FRAGMENT_TAG);
+        }
+
+        if (aFragment != null && aFragment instanceof ATabsFragment) {
+            ATabsFragment fragment = (ATabsFragment) aFragment;
+            return fragment.getCurrentFragment() == checkedFragment;
+        }
+
+        return false;
+    }
+
+    public static void setTabsText(Fragment fragment, int index, String text) {
+        if (fragment.getActivity() == null)
+            return;
+
+        ABaseFragment aFragment = null;
+        if (fragment.getActivity() instanceof SinaCommonActivity) {
+            aFragment = (ABaseFragment) fragment.getActivity().getFragmentManager().findFragmentByTag(SinaCommonActivity.FRAGMENT_TAG);
+        }
+        else if (fragment.getActivity() instanceof MainActivity) {
+            aFragment = (ABaseFragment) fragment.getActivity().getFragmentManager().findFragmentByTag("MainFragment");
+        }
+
+        if (aFragment != null && aFragment instanceof ATabsTabLayoutFragment) {
+            ATabsTabLayoutFragment tabsFragment = (ATabsTabLayoutFragment) aFragment;
+
+            tabsFragment.getTablayout().getTabAt(index).setText(text);
+        }
+    }
+
+    public static String convertUnicode(String ori) {
+        char aChar;
+        int len = ori.length();
+        StringBuffer outBuffer = new StringBuffer(len);
+        for (int x = 0; x < len; ) {
+            aChar = ori.charAt(x++);
+            if (aChar == '\\') {
+                aChar = ori.charAt(x++);
+                if (aChar == 'u') {
+                    // Read the xxxx
+                    int value = 0;
+                    for (int i = 0; i < 4; i++) {
+                        aChar = ori.charAt(x++);
+                        switch (aChar) {
+                            case '0':
+                            case '1':
+                            case '2':
+                            case '3':
+                            case '4':
+                            case '5':
+                            case '6':
+                            case '7':
+                            case '8':
+                            case '9':
+                                value = (value << 4) + aChar - '0';
+                                break;
+                            case 'a':
+                            case 'b':
+                            case 'c':
+                            case 'd':
+                            case 'e':
+                            case 'f':
+                                value = (value << 4) + 10 + aChar - 'a';
+                                break;
+                            case 'A':
+                            case 'B':
+                            case 'C':
+                            case 'D':
+                            case 'E':
+                            case 'F':
+                                value = (value << 4) + 10 + aChar - 'A';
+                                break;
+                            default:
+                                throw new IllegalArgumentException(
+                                        "Malformed   \\uxxxx   encoding.");
+                        }
+                    }
+                    outBuffer.append((char) value);
+                } else {
+                    if (aChar == 't')
+                        aChar = '\t';
+                    else if (aChar == 'r')
+                        aChar = '\r';
+                    else if (aChar == 'n')
+                        aChar = '\n';
+                    else if (aChar == 'f')
+                        aChar = '\f';
+                    outBuffer.append(aChar);
+                }
+            } else
+                outBuffer.append(aChar);
+
+        }
+        return outBuffer.toString();
+    }
+
+    public static void gotoSettings(Context context) {
+        //Goto settings details
+        final Uri packageURI = Uri.parse("package:" + context.getPackageName());
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, packageURI);
+        try {
+            context.startActivity(intent);
+        } catch (Exception e) {
+//            e.printStackTrace();
+
+            //加入Launcher报错
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        }
     }
 
 }

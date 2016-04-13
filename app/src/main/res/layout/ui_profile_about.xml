@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    android:id="@+id/scrollView"
+    xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" android:background="@color/comm_white"
+    android:paddingBottom="16dip" android:paddingLeft="16dip"
+    android:paddingRight="16dip" android:paddingTop="8dip" app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginBottom="0dip" android:gravity="right|center_vertical">
+
+            <org.aisen.android.ui.widget.MDButton
+                android:id="@+id/btnMention" style="@style/TextSubhead"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:clickable="true"
+                android:gravity="center" android:minHeight="30dip"
+                android:paddingLeft="8dip" android:paddingRight="8dip" android:text="\@TA"/>
+
+            <org.aisen.android.ui.widget.MDButton
+                android:id="@+id/btnDM" style="@style/TextSubhead"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:clickable="true"
+                android:gravity="center" android:minHeight="30dip"
+                android:paddingLeft="8dip" android:paddingRight="8dip" android:text="私信"/>
+
+            <org.aisen.android.ui.widget.MDButton
+                android:id="@+id/btnDetail" style="@style/TextSubhead"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:clickable="true"
+                android:gravity="center" android:minHeight="30dip"
+                android:paddingLeft="8dip" android:paddingRight="8dip" android:text="详细资料"/>
+
+        </LinearLayout>
+
+        <include
+            android:id="@+id/item01"
+            layout="@layout/item_profile" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+        <include
+            android:id="@+id/item02"
+            layout="@layout/item_profile" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+        <include
+            android:id="@+id/item03"
+            layout="@layout/item_profile" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+        <include
+            android:id="@+id/item04"
+            layout="@layout/item_profile" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+        <include
+            android:id="@+id/item05"
+            layout="@layout/item_profile" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

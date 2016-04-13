@@ -1,14 +1,13 @@
 package org.aisen.weibo.sina.sinasdk.bean;
 
-import org.aisen.android.network.biz.IResult;
-import org.aisen.weibo.sina.support.bean.PhotosBean;
-import org.aisen.weibo.sina.sys.service.OfflineService;
+import org.aisen.android.support.bean.ResultBean;
+import org.aisen.weibo.sina.service.OfflineService;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StatusContents extends PhotosBean implements Serializable, IResult, OfflineService.OfflineLength {
+public class StatusContents extends ResultBean implements Serializable, OfflineService.OfflineLength {
 
 	private static final long serialVersionUID = 2115103214814709009L;
 
@@ -17,21 +16,19 @@ public class StatusContents extends PhotosBean implements Serializable, IResult,
 	private Long selectedGroupId;
 
 	private int total_number;
-	
-	private boolean cache;// 是否是缓存数据
-	
-	private boolean _expired;
-	
-	private boolean _noMore;
 
-    private long length;
-
+	private long length;
+	
 	public StatusContents() {
 		statuses = new ArrayList<StatusContent>();
 	}
 
 	public StatusContents(List<StatusContent> statuses) {
 		this.statuses = statuses;
+	}
+
+	public static long getSerialVersionUID() {
+		return serialVersionUID;
 	}
 
 	public List<StatusContent> getStatuses() {
@@ -58,43 +55,12 @@ public class StatusContents extends PhotosBean implements Serializable, IResult,
 		this.total_number = total_number;
 	}
 
-	@Override
-	public boolean isCache() {
-		return cache;
-	}
-
-	public void setCache(boolean cache) {
-		this.cache = cache;
+	public long getLength() {
+		return length;
 	}
 
 	@Override
-	public boolean expired() {
-		return _expired;
+	public void setLength(long length) {
+		this.length = length;
 	}
-	
-	public void setExpired(boolean expired) {
-		this._expired = expired;
-	}
-
-	public boolean noMore() {
-		return _noMore;
-	}
-
-	public void setNoMore(boolean noMore) {
-		this._noMore = noMore;
-	}
-
-	@Override
-	public String[] pagingIndex() {
-		return null;
-	}
-
-    public long getLength() {
-        return length;
-    }
-
-    @Override
-    public void setLength(long length) {
-        this.length = length;
-    }
 }

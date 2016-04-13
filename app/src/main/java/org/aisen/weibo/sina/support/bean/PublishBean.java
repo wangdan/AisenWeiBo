@@ -1,14 +1,13 @@
 package org.aisen.weibo.sina.support.bean;
 
 
-import java.io.Serializable;
-import java.util.UUID;
-
+import org.aisen.android.component.orm.annotation.PrimaryKey;
+import org.aisen.android.network.http.Params;
 import org.aisen.weibo.sina.sinasdk.bean.StatusComment;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 
-import org.aisen.android.network.http.Params;
-import org.aisen.orm.annotation.PrimaryKey;
+import java.io.Serializable;
+import java.util.UUID;
 
 public class PublishBean implements Serializable {
 

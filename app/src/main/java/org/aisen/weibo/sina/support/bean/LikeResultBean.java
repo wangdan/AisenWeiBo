@@ -7,6 +7,8 @@ import java.io.Serializable;
  */
 public class LikeResultBean implements Serializable {
 
+    private static final long serialVersionUID = -3410609361540356405L;
+
     private int ok;
 
     private String msg;

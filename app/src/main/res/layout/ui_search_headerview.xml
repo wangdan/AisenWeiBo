@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical" android:paddingLeft="@dimen/spacing_normal" android:paddingRight="@dimen/spacing_normal">
+
+    <TextView
+        style="@style/TextSubhead" android:layout_width="wrap_content"
+        android:layout_height="40dip" android:gravity="center_vertical" android:paddingTop="8dip"
+        android:text="@string/search_user"/>
+
+    <LinearLayout
+        android:id="@+id/layUsers" android:layout_width="match_parent"
+        android:layout_height="228dip"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@id/recycleview" android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtEmpty" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:gravity="center" android:minHeight="50dip" android:text="@string/search_user_empty"
+        />
+
+    <TextView
+        style="@style/TextSubhead" android:layout_width="wrap_content"
+        android:layout_height="48dip" android:gravity="center_vertical" android:text="@string/search_status"/>
+
+</LinearLayout>

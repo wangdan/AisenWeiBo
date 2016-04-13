@@ -1,25 +1,17 @@
 package org.aisen.weibo.sina.sinasdk.bean;
 
-import org.aisen.android.network.biz.IResult;
+import org.aisen.android.support.bean.ResultBean;
 
 import java.io.Serializable;
 import java.util.List;
 
-public class Favorities implements Serializable, IResult {
+public class Favorities extends ResultBean implements Serializable {
 
 	private static final long serialVersionUID = 7517616720409609120L;
 
 	private List<Favority> favorites;
 
 	private int total_number;
-	
-	private boolean cache;
-	
-	private boolean _expired;
-	
-	private boolean _noMore;
-	
-	private String[] pagingIndex;
 
 	public List<Favority> getFavorites() {
 		return favorites;
@@ -35,41 +27,6 @@ public class Favorities implements Serializable, IResult {
 
 	public void setTotal_number(int total_number) {
 		this.total_number = total_number;
-	}
-
-	public boolean isCache() {
-		return cache;
-	}
-
-	public void setCache(boolean cache) {
-		this.cache = cache;
-	}
-
-	@Override
-	public boolean expired() {
-		return _expired;
-	}
-	
-	public void setExpired(boolean expired) {
-		this._expired = expired;
-	}
-
-	@Override
-	public boolean noMore() {
-		return _noMore;
-	}
-	
-	public void setNoMore(boolean noMore) {
-		this._noMore = noMore;
-	}
-
-	@Override
-	public String[] pagingIndex() {
-		return pagingIndex;
-	}
-	
-	public void setPagingIndex(String[] pagingIndex) {
-		this.pagingIndex = pagingIndex;
 	}
 
 }

@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <color name="app_body_text_1">#de000000</color>
+    <color name="app_body_text_2">#8a000000</color>
+    <color name="app_body_text_disabled">#44000000</color>
+    <color name="app_body_text_1_inverse">#deffffff</color>
+    <color name="app_body_text_2_inverse">#8affffff</color>
+
+    <color name="white">#ffffff</color>
+    <color name="white30">#4bffffff</color>
+    <color name="white20">#33ffffff</color>
+    <color name="white10">#20ffffff</color>
+    <color name="white54">#8affffff</color>
+    <color name="white50">#80ffffff</color>
+    <color name="white72">#b5ffffff</color>
+    <color name="white78">#c8ffffff</color>
+    <color name="white87">#deffffff</color>
+    <color name="white40">#66ffffff</color>
+
     <!--适配Materail Design后添加的颜色-->
     <color name="text_100">#ff000000</color>
     <color name="text_87">#dd000000</color>
@@ -13,21 +31,28 @@
     <color name="text_60_inverse">#99ffffff</color>
     <color name="text_54_inverse">#89ffffff</color>
 
-    <color name="divider">#ebeef4</color>
+    <color name="background_selected_color">#1a000000</color>
+    <color name="navmenu_selected_color">@color/background_selected_color</color>
+
+    <color name="menu_color">#ff676767</color>
+
+    <color name="bg_followers_counter">#ff5656</color>
+
+    <!--timeline-->
+    <color name="divider_timeline_item">#ebeef4</color>
+
     <color name="edit_hint">#ff808080</color>
 
     <color name="search_text_color">#ffa3a3a3</color>
+
+    <color name="bg_emotion">#ff313740</color>
+
+    <color name="wave">#2b79f7</color>
 
     <color name="gplus_color_1">#3e802f</color>
     <color name="gplus_color_2">#f4b400</color>
     <color name="gplus_color_3">#427fed</color>
     <color name="gplus_color_4">#b23424</color>
-
-    <color name="bg_followers_counter">#ff5656</color>
-
-    <color name="bg_emotion">#ff313740</color>
-
-    <color name="chglib_background_default_divider_color">#DADADC</color>
 
     <integer-array name="gplus_colors">
         <item>@color/gplus_color_1</item>
@@ -35,6 +60,5 @@
         <item>@color/gplus_color_3</item>
         <item>@color/gplus_color_4</item>
     </integer-array>
-
 
 </resources>

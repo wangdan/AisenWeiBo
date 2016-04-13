@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/layWallpaperRoot"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#3b3b3b" android:orientation="vertical">
+
+    <org.aisen.weibo.sina.ui.widget.photoview.PhotoView
+        android:id="@+id/photoview" android:layout_width="match_parent"
+        android:layout_height="match_parent" android:scaleType="centerCrop"/>
+
+    <View
+        android:layout_width="match_parent" android:layout_height="200dip"
+        android:layout_alignParentBottom="true" android:background="@drawable/wallpaper_bottom_bg"/>
+
+    <RelativeLayout
+        android:id="@+id/viewFinish" android:layout_width="match_parent"
+        android:layout_height="match_parent" android:background="?attr/selectableItemBackground"/>
+
+    <LinearLayout
+        android:id="@+id/layNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" android:gravity="center_horizontal" android:orientation="vertical">
+
+        <org.aisen.weibo.sina.ui.widget.WallpaperViewer
+            android:id="@+id/viewer"
+            android:layout_width="124dp"
+            android:layout_height="80dp"
+            android:layout_above="@+id/settingView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/comm_v_margin"
+            android:visibility="visible"/>
+
+        <org.aisen.weibo.sina.ui.widget.WaveView
+            android:id="@+id/settingView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/comm_v_margin"
+            android:background="@drawable/ic_set_wallpaper_normal"/>
+    </LinearLayout>
+
+</RelativeLayout>

@@ -4,6 +4,12 @@
 
     <string name="draw_open">打开</string>
     <string name="draw_close">关闭</string>
+    <string name="hint_exit">再按一次退出</string>
+
+    <string name="menu_sinaweibo">微博</string>
+    <string name="menu_mention">提及</string>
+    <string name="menu_comments">评论</string>
+    <string name="menu_dm">私信</string>
 
     <!--菜单管理-->
     <string name="menu_add_account">添加账号</string>
@@ -14,6 +20,7 @@
     <string name="cancel_timing">取消定时</string>
     <string name="profile_friendship_create">关注</string>
     <string name="profile_friendship_destory">取消关注</string>
+    <string name="profile_friendship_each">互相关注</string>
     <string name="profile_follower_destory">移除粉丝</string>
     <string name="refresh">刷新</string>
     <string name="save_pic">保存</string>
@@ -24,14 +31,15 @@
     <string name="main_feedback">意见反馈</string>
     <string name="timeline_groups">好友分组</string>
     <string name="main_search">搜索</string>
-    <string name="search_user">搜人</string>
-    <string name="search_status">搜微博</string>
+    <string name="search_hint">搜索用户或者微博</string>
     <string name="exitapp">退出</string>
     <string name="group_add">新增分组</string>
     <string name="publish">写微博</string>
+    <string name="notification_settings">设置通知</string>
     <string name="toggle_offline">开始离线</string>
     <string name="stop_offline">停止离线</string>
 
+    <string name="timeline_detail">微博详情</string>
     <string name="timeline_cmt">评论</string>
     <string name="timeline_repost">转发</string>
     <string name="timeline_fav">收藏</string>
@@ -48,11 +56,31 @@
     <!-- 我的收藏 -->
     <string name="myfav_title">我的收藏</string>
 
+    <!--微博详情-->
+    <string name="comment_format">%s 评论</string>
+    <string name="repost_format">%s 转发</string>
+    <string name="attitudes_format">%s 赞</string>
+
+    <!--授权页面-->
+    <string name="login_title">用户授权</string>
+    <string name="login_remind">Aisen是个人开源项目，记录账号信息仅用于方便您多次网页授权，且在卸载Aisen时自动清除\n\n友情提示，如果遇到验证码，请先刷新再输入验证码通过概率高一点，目前还没有优化这个问题！\n\n如有疑问，请联系我 : wangd.info@gmail.com</string>
+    <string name="login_html_faild">加载授权网页失败...</string>
+    <string name="login_loading_token">正在请求授权...</string>
+    <string name="login_loading_userinfo">正在获取用户信息...</string>
+    <string name="login_loading_groups">正在获取用户分组...</string>
+    <string name="login_success">授权成功</string>
+    <string name="login_faild">授权失败</string>
+    <string name="login_faild_remind">授权失败，是否重新授权？</string>
+    <string name="login_exit">退出</string>
+    <string name="login_ok">再试一次</string>
+
     <!-- 账号管理 -->
     <string name="title_acount">账号管理</string>
     <string name="account_expired">Aisen授权过期，需要重新授权才能正常使用</string>
+    <string name="account_relogin">登录</string>
     <string name="account_ad_expired">高级授权过期或未授权，需要重新授权才能正常使用</string>
     <string name="account_newaccount_remind">请注意，根据新浪微博的平台政策，刚添加的帐号会在 %s 天后过期，到时需要重新登录</string>
+    <string name="account_account_expired">授权已过期，是否重新授权</string>
     <string name="account_relogin_remind">授权过期或者未高级授权</string>
     <string name="account_destory_account_remind">确定删除选中的账号吗？</string>
     <string name="account_delete_account_loading">正在删除账号</string>
@@ -159,7 +187,10 @@
     <string name="draw_topic">热门话题</string>
     <string name="draw_topic_title">热门话题</string>
     <string name="draw_private_msg">私信</string>
+    <string name="draw_joke">轻松一刻</string>
+    <string name="draw_wallpaper">精美壁纸</string>
     <string name="draw_private_msg_title">私信</string>
+    <string name="draw_private_notification">通知</string>
     <string name="draw_hot_statuses_title">热门微博</string>
     <string name="draw_hot_statuses">热门微博</string>
     <string name="draw_weibo_square">微博广场</string>
@@ -168,6 +199,19 @@
     <string name="draw_weibo_top_title">微博头条</string>
     <string name="draw_weibo_offline_read">离线阅读</string>
     <string name="draw_my_liked">我赞过的</string>
+
+    <!--通知-->
+    <string name="notification_cmt">评论</string>
+    <string name="notification_cmt_format">评论 %d </string>
+    <string name="notification_mention_status">\@我</string>
+    <string name="notification_mention_status_format">\@我 %d </string>
+    <string name="notification_mention_cmt">\@我的评论</string>
+    <string name="notification_mention_cmt_format">\@我的评论 %d </string>
+    <string name="notification_cmt_sendbyme">发出的评论</string>
+
+    <!--轻松一刻-->
+    <string name="jokes_text">纯文</string>
+    <string name="jokes_image">图文</string>
 
     <!--no more-->
     <string name="disable_status">没有更多微博了</string>
@@ -246,6 +290,7 @@
     <string name="dm_pic_notexist">图片不存在</string>
     <string name="title_mobile_photos">手机相册</string>
     <string name="publish_delete_pic">确定删除这个图片</string>
+    <string name="publish_request_ad_auth_faild">获取高级权限失败</string>
 
     <!-- 提及 -->
     <string name="mention_status">微博</string>
@@ -328,11 +373,11 @@
     <string name="profile_friends">%s 关注</string>
     <string name="profile_tab1">关于</string>
     <string name="profile_tab2">微博</string>
-    <string name="profile_tab3">原创</string>
-    <string name="profile_tab4">相册</string>
-    <string name="profile_tab5">收藏</string>
+    <string name="profile_tab3">相册</string>
+    <string name="profile_tab4">收藏</string>
     <string name="profile_feature_dialog">微博类型</string>
-    <string name="profile_help">是不是只能看到5条微博？想不想看更多，那就点“帮助”去找解决方法吧！</string>
+    <string name="profile_ad_title">高级权限未授权或者已过期</string>
+    <string name="profile_ad_message">看不了用户个人微博，哎，Sina也是醉了，是否开始高级授权？</string>
 
     <!-- 查看图片 -->
     <string name="title_pic">查看图片</string>
@@ -341,6 +386,8 @@
     <string name="msg_save_orig_faild">下载原图失败</string>
     <string name="error_pic_load_faild">获取失败</string>
     <string name="msg_save_pic_loading">正在保存</string>
+    <string name="cancel_sdcard_permission">取消SD卡读写授权</string>
+    <string name="alwaysdenied_sdcard_permission">SD卡读写授权被禁用了，请去设置界面打开此权限</string>
     <string name="error_pic_load_faild_1">图片加载失败\n点击屏幕刷新</string>
 
     <!-- BizFragment -->
@@ -365,6 +412,9 @@
     <string name="followers">粉丝</string>
     <string name="friends">关注</string>
     <string name="bilateral">互粉</string>
+    <string name="followers_format">%s 粉丝</string>
+    <string name="friends_format">%s 关注</string>
+    <string name="bilateral_format">%s 互粉</string>
     <string name="friendship_my_friends">Ta的关注</string>
     <string name="friendship_my_followers">Ta的粉丝</string>
     <string name="friendship_my_bilateral">Ta的互粉</string>
@@ -446,6 +496,10 @@
     <string name="settings_app_resident">应用常驻内存</string>
 
     <!-- 基本设置 -->
+    <string name="settings_donate">捐赠</string>
+    <string name="settings_donate_dialog_title">捐赠开发者</string>
+    <string name="settings_donate_dialog_message">如果觉得Aisen或者源码对你有用，支付宝账号binglanhappy@163.com已复制到粘贴板，捐赠一点碎银子给我喝杯咖啡吧，感谢你的支持！</string>
+    <string name="settings_donate_yes">打开支付宝</string>
     <string name="settings_basic_history_remind">%d条历史数据</string>
     <string name="settings_dir_hint">文件夹名称</string>
     <string name="settings_modify_picpath_title">修改图片保存路径</string>
@@ -470,6 +524,7 @@
     <string name="settings_pic_path">图片保存路径</string>
     <string name="settings_mention_history">清理@好友历史记录</string>
     <string name="settings_fab_type">Fab按钮功能</string>
+    <string name="settings_fab_type_summary">点击切换微博分组，长按可刷新列表</string>
     <string name="settings_fab_position">Fab按钮位置</string>
 
     <!-- 通知设置 -->
@@ -525,6 +580,35 @@
     <string name="settings_load_midpic">离线中图</string>
     <string name="settings_load_midpic_summary">建议勾选时只离线50条微博，将耗费较多流量和时间</string>
 
+    <!--搜索-->
+    <string name="search_user">用户</string>
+    <string name="search_user_empty">没有相关用户</string>
+    <string name="search_status">微博</string>
+
+    <string name="down_faild">下载失败</string>
+    <string name="txt_set_wallpaper_fail">设置墙纸失败</string>
+    <string name="txt_network_offline">未连接网络</string>
+    <string name="txt_set_wallpaper_suc">成功设置墙纸</string>
+    <string name="txt_save_wallpaper_suc">已保存至相册</string>
+    <string name="wallpaper_download_cancel">取消下载</string>
+
+    <!--首页-->
+    <string name="crash_hint">开启Crash日志上报，有助于我更好的跟踪分析问题，电话权限仅用于获取设备IMEI号，现在去设置界面打开吗?</string>
+    <string name="crash_settings">好的</string>
+    <string name="timeline_feature_repost">转自 %s</string>
+    <string name="timeline_feature_detail">详情</string>
+
+    <string-array name="jokes_menu">
+        <item>复制</item>
+        <item>分享</item>
+    </string-array>
+
+    <string-array name="timeline_headers">
+        <item>全部</item>
+        <item>原创</item>
+        <item>图片</item>
+        <item>照片墙</item>
+    </string-array>
 
     <string-array name="user_headers">
         <item>全部</item>
@@ -534,7 +618,7 @@
 
     <string-array name="pCacheValidity">
         <item>30秒</item>
-        <item>4小时</item>
+        <item>20分钟</item>
         <item>12小时</item>
         <item>24小时</item>
         <item>永久</item>

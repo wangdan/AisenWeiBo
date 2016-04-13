@@ -75,7 +75,7 @@ public class AmPmCirclesView extends View {
         Resources res = context.getResources();
         mWhite = res.getColor(R.color.comm_white);
         mAmPmTextColor = res.getColor(R.color.ampm_text_color);
-        mBlue = Utils.resolveColor(getContext(), R.attr.theme_color, res.getColor(R.color.comm_blue));
+        mBlue = Utils.resolveColor(getContext(), R.attr.themeColor, res.getColor(R.color.comm_blue));
         String typefaceFamily = res.getString(R.string.sans_serif);
         Typeface tf = Typeface.create(typefaceFamily, Typeface.NORMAL);
         mPaint.setTypeface(tf);

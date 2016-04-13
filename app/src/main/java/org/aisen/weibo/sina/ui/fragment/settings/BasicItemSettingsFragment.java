@@ -17,6 +17,8 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.umeng.analytics.MobclickAgent;
+
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.setting.SettingUtility;
 import org.aisen.android.common.utils.ActivityHelper;
@@ -25,11 +27,10 @@ import org.aisen.android.common.utils.ViewUtils;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.ui.activity.basic.BaseActivity;
-
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
-import org.aisen.weibo.sina.support.db.FriendMentionDB;
-import org.aisen.weibo.sina.ui.activity.basic.AisenActivityHelper;
+import org.aisen.weibo.sina.support.sqlit.FriendMentionDB;
+import org.aisen.weibo.sina.ui.activity.base.AisenActivityHelper;
 
 import java.io.File;
 
@@ -107,15 +108,17 @@ import java.io.File;
 		value = Integer.parseInt(prefs.getString("pSwipebackEdgeMode", "0"));
 		setListSetting(value, R.array.swipebackEdgeMode, pSwipebackEdgeMode);
 
-        pFabType = (ListPreference) findPreference("pFabType");
-        pFabType.setOnPreferenceChangeListener(this);
-        value = Integer.parseInt(prefs.getString("pFabType", "0"));
-        setListSetting(value, R.array.fabTypes, pFabType);
+//        pFabType = (ListPreference) findPreference("pFabType");
+//        pFabType.setOnPreferenceChangeListener(this);
+//        value = Integer.parseInt(prefs.getString("pFabType", "0"));
+//        setListSetting(value, R.array.fabTypes, pFabType);
 
         pFabPosition = (ListPreference) findPreference("pFabPosition");
-        pFabPosition.setOnPreferenceChangeListener(this);
-        value = Integer.parseInt(prefs.getString("pFabPosition", "1"));
-        setListSetting(value, R.array.fabPosition, pFabPosition);
+		if (pFabPosition != null) {
+			pFabPosition.setOnPreferenceChangeListener(this);
+			value = Integer.parseInt(prefs.getString("pFabPosition", "1"));
+			setListSetting(value, R.array.fabPosition, pFabPosition);
+		}
 
         // 缓存清理
         Preference pClearCache = (Preference) findPreference("pClearCache");
@@ -141,6 +144,8 @@ import java.io.File;
         else if ("pTheme".equals(preference.getKey())) {
 //			ThemeStyleSettingsFragment.launch(getActivity());
             MDColorsDialogFragment.launch(getActivity());
+
+			MobclickAgent.onEvent(getActivity(), "theme_setting");
         }
         // 自定义颜色
         else if ("pThemeCustom".equals(preference.getKey())) {
@@ -208,7 +213,7 @@ import java.io.File;
 	
 	// 修改图片保存路径
 	private void modifyImageSavePath() {
-		View entryView = View.inflate(getActivity(), R.layout.as_lay_dialog_remark_entry, null);
+		View entryView = View.inflate(getActivity(), R.layout.lay_dialog_remark_entry, null);
 		final EditText editRemark = (EditText) entryView.findViewById(R.id.editRemark);
 		editRemark.setHint(R.string.settings_dir_hint);
 		editRemark.setText(AppSettings.getImageSavePath());

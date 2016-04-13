@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Values-vxx之间的差异属性-->
+    <style name="AppBaseTheme" parent="AppCommonTheme">
+        <!--v21直接指定状态栏和导航栏颜色-->
+        <item name="android:navigationBarColor">?attr/themeColor</item>
+        <item name="android:statusBarColor">?attr/themeStatusbarColor</item>
+        <item name="menuHeaderHeight">185dip</item>
+        <item name="menuHeaderPaddingTop">40dip</item>
+        <item name="MDbuttonSelector">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="AppTheme.Main">
+        <!--这两个属性要一起用，忘记为什么了-->
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="AppTheme.Profile">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="AppTheme.Pics">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+
+</resources>

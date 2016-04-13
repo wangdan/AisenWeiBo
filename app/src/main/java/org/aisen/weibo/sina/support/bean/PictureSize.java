@@ -1,13 +1,15 @@
 package org.aisen.weibo.sina.support.bean;
 
-import java.io.Serializable;
+import org.aisen.android.component.orm.annotation.PrimaryKey;
 
-import org.aisen.orm.annotation.PrimaryKey;
+import java.io.Serializable;
 
 /**
  * Created by wangdan on 15/5/2.
  */
 public class PictureSize implements Serializable {
+
+    private static final long serialVersionUID = -5213202786229561729L;
 
     @PrimaryKey(column = "url")
     private String url;

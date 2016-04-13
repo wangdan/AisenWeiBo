@@ -14,7 +14,6 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -36,12 +35,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.ActivityHelper;
 import org.aisen.android.common.utils.BitmapUtil;
 import org.aisen.android.common.utils.FileUtils;
 import org.aisen.android.common.utils.Logger;
-import org.aisen.android.common.utils.SystemBarUtils;
+import org.aisen.android.common.utils.PhotoChoice;
 import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.common.utils.Utils;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
@@ -53,25 +53,25 @@ import org.aisen.android.component.bitmaploader.download.SdcardDownloader;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
+import org.aisen.android.support.action.IAction;
 import org.aisen.android.support.inject.ViewInject;
-import org.aisen.android.support.utils.PhotoChoice;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.fragment.ABaseFragment;
-
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
+import org.aisen.weibo.sina.service.PublishService;
+import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.support.bean.Emotion;
 import org.aisen.weibo.sina.support.bean.PublishBean;
 import org.aisen.weibo.sina.support.bean.PublishBean.PublishStatus;
 import org.aisen.weibo.sina.support.compress.TimelineBitmapCompress;
-import org.aisen.weibo.sina.support.db.EmotionsDB;
-import org.aisen.weibo.sina.support.db.PublishDB;
+import org.aisen.weibo.sina.support.permissions.SdcardPermissionAction;
+import org.aisen.weibo.sina.support.sqlit.EmotionsDB;
+import org.aisen.weibo.sina.support.sqlit.PublishDB;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
-import org.aisen.weibo.sina.sys.service.PublishService;
-import org.aisen.weibo.sina.ui.fragment.pics.PicturePickFragment;
+import org.aisen.weibo.sina.ui.fragment.picturepick.PicturePickFragment;
 import org.aisen.weibo.sina.ui.fragment.publish.EmotionFragment.OnEmotionSelectedListener;
-import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -260,7 +260,7 @@ public abstract class APublishFragment extends ABaseFragment
 				scrollPicContainer.setVisibility(View.VISIBLE);
 			}
 			for (String path : images) {
-				View itemView = View.inflate(getActivity(), R.layout.as_item_publish_pic, null);
+				View itemView = View.inflate(getActivity(), R.layout.item_publish_pic, null);
 				ImageView img = (ImageView) itemView.findViewById(R.id.img);
 
 				itemView.setTag(path);
@@ -393,8 +393,8 @@ public abstract class APublishFragment extends ABaseFragment
 
 	};
 	
-	private void send() {
-		if (AppSettings.isSendDelay()) 
+	protected void send() {
+		if (AppSettings.isSendDelay())
 			getPublishBean().setDelay(AppSettings.getPublishDelay());
 		else 
 			getPublishBean().setDelay(0);
@@ -516,18 +516,20 @@ public abstract class APublishFragment extends ABaseFragment
 	}
 	
 	private void showGetPictureDialog() {
-		new AlertDialogWrapper.Builder(getActivity())
-							.setItems(R.array.publish_pic, new OnClickListener() {
-					
-								@Override
-								public void onClick(DialogInterface dialog, int which) {
-									switch (which) {
+		new IAction(getActivity(), new SdcardPermissionAction(((BaseActivity) getActivity()), null)) {
+
+			@Override
+			public void doAction() {
+				new AlertDialogWrapper.Builder(getActivity())
+						.setItems(R.array.publish_pic, new OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								switch (which) {
 									// 相册
 									case 0:
-//										photoChoice.start(APublishFragment.this, 0);
-                                        String[] images = getPublishBean().getPics();
-                                        // images = null;// 这里只选中一个图片，不设置默认图片
-                                        PicturePickFragment.launch(APublishFragment.this, 9, images, 3333);
+										String[] images = getPublishBean().getPics();
+										PicturePickFragment.launch(APublishFragment.this, 9, images, 3333);
 										break;
 									// 拍照
 									case 1:
@@ -545,10 +547,13 @@ public abstract class APublishFragment extends ABaseFragment
 										break;
 									default:
 										break;
-									}
 								}
-							})
-							.show();
+							}
+						})
+						.show();
+			}
+
+		}.run();
 	}
 
 	/**
@@ -610,7 +615,7 @@ public abstract class APublishFragment extends ABaseFragment
             transitioner.setDuration(0);
         }
 
-        int statusBarHeight = SystemBarUtils.getStatusBarHeight(getActivity());
+        int statusBarHeight = SystemUtils.getStatusBarHeight(getActivity());
 		emotionHeight = SystemUtils.getKeyboardHeight(getActivity());
 
         SystemUtils.hideSoftInput(editContent);
@@ -679,7 +684,7 @@ public abstract class APublishFragment extends ABaseFragment
 													public void onClick(DialogInterface dialog, int which) {
 														getPublishBean().setStatus(PublishStatus.draft);
 
-														PublishDB.addPublish(getPublishBean(), AppContext.getUser());
+														PublishDB.addPublish(getPublishBean(), AppContext.getAccount().getUser());
 
 														getActivity().finish();
 													}
@@ -814,7 +819,7 @@ public abstract class APublishFragment extends ABaseFragment
 	}
 	
 	private void getLastPhoto() {
-		new WorkTask<Void, Void, String> () {
+		new WorkTask<Void, Void, String>() {
 
 			@Override
 			public String workInBackground(Void... params) throws TaskException {

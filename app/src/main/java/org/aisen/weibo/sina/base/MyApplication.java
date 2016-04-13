@@ -3,54 +3,86 @@ package org.aisen.weibo.sina.base;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 
+import com.tencent.bugly.crashreport.CrashReport;
+import com.umeng.analytics.AnalyticsConfig;
+import com.umeng.analytics.MobclickAgent;
+
 import org.aisen.android.common.context.GlobalContext;
-import org.aisen.android.common.setting.SettingUtility;
 import org.aisen.android.common.utils.DateUtils;
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
+import org.aisen.weibo.sina.BuildConfig;
+import org.aisen.weibo.sina.receiver.TimingBroadcastReceiver;
+import org.aisen.weibo.sina.receiver.TimingIntent;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.sinasdk.core.SinaErrorMsgUtil;
 import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.bean.PublishBean;
-import org.aisen.weibo.sina.support.db.AccountDB;
-import org.aisen.weibo.sina.support.db.EmotionsDB;
-import org.aisen.weibo.sina.support.db.PublishDB;
-import org.aisen.weibo.sina.sys.receiver.TimingBroadcastReceiver;
-import org.aisen.weibo.sina.sys.receiver.TimingIntent;
+import org.aisen.weibo.sina.support.sqlit.EmotionsDB;
+import org.aisen.weibo.sina.support.sqlit.PublishDB;
+import org.aisen.weibo.sina.support.sqlit.SinaDB;
+import org.aisen.weibo.sina.support.utils.AccountUtils;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
 
-import java.net.URLEncoder;
 import java.util.List;
+import java.util.Random;
 
+/**
+ * Created by wangdan on 15/12/13.
+ */
 public class MyApplication extends GlobalContext {
-	
-	@Override
-	public void onCreate() {
-        // 初始化
-        if (AppSettings.isCrashLogUpload()) {
-//            FIR.init(this);
-        }
-		super.onCreate();
 
-		// 初始化图片加载
-		BitmapLoader.newInstance(this, getImagePath());
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        setupTheme();
+        // 打开Debug日志
+        Logger.DEBUG = BuildConfig.LOG_DEBUG;
+        setupCrash();
+        // 初始化图片加载
+        BitmapLoader.newInstance(this, getImagePath());
         // 配置异常处理类
         TaskException.config(new SinaErrorMsgUtil());
-        // 设置登录账户
-        AccountBean accountBean = AccountDB.getLogedinAccount();
-        SettingUtility.addSettings("meizt_actions");
-        if (accountBean != null)
-            AppContext.login(accountBean);
+        // 初始化数据库
+        SinaDB.setInitDB();
         // 检查表情
         try {
             EmotionsDB.checkEmotions();
         } catch (Exception e) {
         }
-        // 打开Debug日志
-        Logger.DEBUG = true;
-	}
+        // 设置登录账号
+        AppContext.setAccount(AccountUtils.getLogedinAccount());
+        if (AppContext.isLoggedIn())
+            AppContext.login(AppContext.getAccount());
+    }
+
+    private void setupTheme() {
+        int position = AppSettings.getThemeColor();
+        if (position == -1) {
+            // 一些我喜欢的颜色
+            int[] initIndex = new int[]{ 0, 1, 4, 8, 15, 16, 18 };
+            position = initIndex[new Random().nextInt(initIndex.length)];
+
+            AppSettings.setThemeColor(position);
+        }
+    }
+
+    public void setupCrash() {
+        // UMENG统计设置
+        MobclickAgent.setDebugMode(Logger.DEBUG);
+//        AnalyticsConfig.setAppkey(this, BuildConfig.UMENG_APP_ID);
+        MobclickAgent.setCatchUncaughtExceptions(false);
+        MobclickAgent.openActivityDurationTrack(false);
+        if (BuildConfig.LOG_DEBUG) {
+            Logger.d("Device_info", UMengUtil.getDeviceInfo(this));
+        }
+        // BUGLY日志上报
+        CrashReport.initCrashReport(this, BuildConfig.BUGLY_APP_ID, Logger.DEBUG);
+    }
 
     // 刷新定时发布任务
     public static void refreshPublishAlarm() {
@@ -58,7 +90,7 @@ public class MyApplication extends GlobalContext {
 
             @Override
             public Void workInBackground(Void... params) throws TaskException {
-                List<PublishBean> beans = PublishDB.getPublishList(AppContext.getUser());
+                List<PublishBean> beans = PublishDB.getPublishList(AppContext.getAccount().getUser());
 
 
                 AlarmManager am = (AlarmManager) GlobalContext.getInstance().getSystemService(ALARM_SERVICE);
@@ -104,7 +136,7 @@ public class MyApplication extends GlobalContext {
 
                 return null;
             }
-        }.execute(AppContext.getUser());
+        }.execute(AppContext.getAccount().getUser());
     }
 
     public static void removePublishAlarm(PublishBean bean) {

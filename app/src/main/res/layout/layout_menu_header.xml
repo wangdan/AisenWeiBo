@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    android:id="@+id/layMenuHeader"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="@dimen/material_drawer_account_header_height"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/material_drawer_account_header_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" android:scaleType="fitXY"
+        android:src="@drawable/bg_banner_dialog"/>
+
+    <RelativeLayout
+        android:id="@+id/material_drawer_account_header"
+        android:layout_width="match_parent" android:layout_height="match_parent"
+        >
+
+        <org.aisen.android.ui.widget.CircleImageView
+            android:id="@+id/material_drawer_account_header_current"
+            android:layout_width="@dimen/material_drawer_account_header_selected"
+            android:layout_height="@dimen/material_drawer_account_header_selected"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="@dimen/material_drawer_account_header_horizontal_bottom"
+            android:layout_marginLeft="@dimen/material_drawer_vertical_padding"
+            android:layout_marginTop="@dimen/material_drawer_account_header_horizontal_top"
+            android:clickable="true"
+            app:border_color="@color/comm_white"
+            app:border_width="1dp"/>
+
+        <TextView
+            android:id="@+id/txtFollowersNewHint" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_alignRight="@id/material_drawer_account_header_current" android:layout_alignTop="@id/material_drawer_account_header_current" android:background="@drawable/menu_followers_counter" android:gravity="center"
+            android:minWidth="18dip" android:text="10"
+            android:textColor="@color/comm_white" android:textSize="12sp"/>
+
+        <LinearLayout
+            android:id="@+id/layAccountMore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/material_drawer_account_header_current"
+            android:gravity="right">
+
+            <include
+                android:id="@+id/layAccountFirst"
+                layout="@layout/item_account_more"
+                android:layout_width="@dimen/material_drawer_account_header_secondary"
+                android:layout_height="@dimen/material_drawer_account_header_secondary"
+                android:layout_marginRight="@dimen/material_drawer_vertical_padding"
+                android:clickable="true"
+                android:visibility="visible"/>
+
+            <include
+                android:id="@+id/layAccountSecond"
+                layout="@layout/item_account_more"
+                android:layout_width="@dimen/material_drawer_account_header_secondary"
+                android:layout_height="@dimen/material_drawer_account_header_secondary"
+                android:layout_marginRight="@dimen/material_drawer_vertical_padding"
+                android:clickable="true"
+                android:visibility="gone"/>
+
+            <include
+                android:id="@+id/layAccountThird"
+                layout="@layout/item_account_more"
+                android:layout_width="@dimen/material_drawer_account_header_secondary"
+                android:layout_height="@dimen/material_drawer_account_header_secondary"
+                android:layout_marginRight="@dimen/material_drawer_vertical_padding"
+                android:clickable="true"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/material_drawer_account_header_text_section"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:gravity="center_vertical" android:orientation="horizontal"
+            >
+
+            <TextView
+                android:id="@+id/material_drawer_account_header_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/material_drawer_vertical_padding"
+                android:fontFamily="sans-serif-medium"
+                android:lines="1" android:singleLine="true"
+                android:text="haha" android:textColor="@color/comm_white"
+                android:textSize="@dimen/material_drawer_account_header_text"/>
+
+            <ImageView
+                android:id="@+id/material_drawer_account_header_text_switcher"
+                android:layout_width="@dimen/material_drawer_account_header_dropdown"
+                android:layout_height="@dimen/material_drawer_account_header_dropdown"
+                android:layout_alignParentRight="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginRight="@dimen/material_drawer_vertical_padding"
+                android:src="@drawable/ic_arrow_down_light"/>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/imgMove"
+        android:layout_width="@dimen/material_drawer_account_header_secondary" android:layout_height="@dimen/material_drawer_account_header_secondary"/>
+
+</FrameLayout>

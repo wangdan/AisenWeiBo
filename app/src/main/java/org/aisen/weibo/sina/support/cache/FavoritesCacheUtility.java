@@ -5,16 +5,16 @@ import org.aisen.android.common.setting.Setting;
 import org.aisen.android.common.utils.FileUtils;
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.network.biz.ABizLogic;
+import org.aisen.android.network.biz.IResult;
 import org.aisen.android.network.cache.ICacheUtility;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
-
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
-import org.aisen.weibo.sina.support.utils.CacheTimeUtils;
 import org.aisen.weibo.sina.sinasdk.bean.Favorities;
 import org.aisen.weibo.sina.sinasdk.bean.Favority;
+import org.aisen.weibo.sina.support.utils.CacheTimeUtils;
 
 import java.io.File;
 import java.io.Serializable;
@@ -38,18 +38,18 @@ public class FavoritesCacheUtility implements ICacheUtility {
 		File favoritesFile = new File(String.format("%s%s%s-favorites.o", 
 										extenrnalDir.getAbsolutePath(), 
 										File.separator,
-										AppContext.getUser().getIdstr()));
+										AppContext.getAccount().getUser().getIdstr()));
 		
 		return favoritesFile;
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public <T> Cache<T> findCacheData(Setting action, Params params, Class<T> responseCls) {
+	public IResult findCacheData(Setting action, Params params) {
 		if (AppSettings.isDisableCache())
 			return null;
 		
-		if (!AppContext.isLogedin())
+		if (!AppContext.isLoggedIn())
 			return null;
 		try {
 			long time = System.currentTimeMillis();
@@ -57,8 +57,8 @@ public class FavoritesCacheUtility implements ICacheUtility {
 			if (favorities != null) {
 				Logger.w(TAG, String.format("读取收藏数据，共耗时%sms", String.valueOf(System.currentTimeMillis() - time)));
 				
-				favorities.setExpired(CacheTimeUtils.isExpired("Favorites", AppContext.getUser()));
-				return new Cache((T) favorities, false);
+				favorities.setEndPaging(CacheTimeUtils.isOutofdate("Favorites", AppContext.getAccount().getUser()));
+				return favorities;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -68,8 +68,8 @@ public class FavoritesCacheUtility implements ICacheUtility {
 	}
 
 	@Override
-	public void addCacheData(Setting action, Params params, Object responseObj) {
-		if (!AppContext.isLogedin())
+	public void addCacheData(Setting action, Params params, IResult responseObj) {
+		if (!AppContext.isLoggedIn())
 			return;
 
 		try {
@@ -77,8 +77,7 @@ public class FavoritesCacheUtility implements ICacheUtility {
 			Favorities favorities = (Favorities) responseObj;
 			// 如果是第一页，就重置数据，否则，将数据添加到集合末尾
 			if (page > 1) {
-				Cache<Favorities> c = findCacheData(action, params, Favorities.class);
-				Favorities cache = c.getT();
+				Favorities cache = (Favorities) findCacheData(action, params);
 				if (cache != null) {
 					Favorities cacheFavorities = cache;
 
@@ -89,11 +88,11 @@ public class FavoritesCacheUtility implements ICacheUtility {
 			}
 			// 加载第一页的时候，保存缓存的时间
 			else {
-				CacheTimeUtils.saveTime("Favorites", AppContext.getUser());
+				CacheTimeUtils.saveTime("Favorites", AppContext.getAccount().getUser());
 			}
 			
-			favorities.setExpired(false);
-			favorities.setCache(true);
+			favorities.setEndPaging(false);
+			favorities.setFromCache(true);
 			
 			Logger.d(TAG, String.format("加载了%d条数据，总共%d条", favorities.getFavorites().size(), favorities.getTotal_number()));
 			long time = System.currentTimeMillis();

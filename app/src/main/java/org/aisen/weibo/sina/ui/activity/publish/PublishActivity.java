@@ -12,23 +12,21 @@ import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.fragment.ABaseFragment;
-
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
+import org.aisen.weibo.sina.sinasdk.bean.StatusComment;
+import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
+import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.support.bean.PublishBean;
 import org.aisen.weibo.sina.support.bean.PublishType;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
-import org.aisen.weibo.sina.ui.activity.basic.AisenActivityHelper;
-import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
+import org.aisen.weibo.sina.ui.activity.base.AisenActivityHelper;
 import org.aisen.weibo.sina.ui.fragment.publish.APublishFragment;
 import org.aisen.weibo.sina.ui.fragment.publish.PublishCommentReplyFragment;
 import org.aisen.weibo.sina.ui.fragment.publish.PublishStatusCommentFragment;
 import org.aisen.weibo.sina.ui.fragment.publish.PublishStatusFragment;
 import org.aisen.weibo.sina.ui.fragment.publish.PublishStatusRepostFragment;
-import org.aisen.weibo.sina.sinasdk.bean.StatusComment;
-import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
-import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 
 /**
  * 1、发表评论<br/>
@@ -196,8 +194,8 @@ public class PublishActivity extends BaseActivity implements AisenActivityHelper
             String type = intent.getType();
             if (!TextUtils.isEmpty(action)) {
                 if (action.equals(Intent.ACTION_SEND) && !TextUtils.isEmpty(type)) {
-                	if (!AppContext.isLogedin()) {
-                		AccountFragment.launch(this);
+                	if (!AppContext.isLoggedIn()) {
+//                		AccountFragment.launch(this);
                 		
                 		showMessage(R.string.publish_please_login);
                 		
@@ -308,13 +306,13 @@ public class PublishActivity extends BaseActivity implements AisenActivityHelper
 	}
 
     @Override
-    public boolean canSwipe() {
-        return false;
-    }
-
-    @Override
     protected int configTheme() {
         return ThemeUtils.themeArr[AppSettings.getThemeColor()][0];
     }
+
+	@Override
+	public boolean canSwipe() {
+		return false;
+	}
 
 }

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent"
+                                                 android:fitsSystemWindows="true"
+                                                 android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:background="#00000000" android:fitsSystemWindows="true" android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <org.aisen.weibo.sina.ui.widget.ProfileCollapsingToolbarLayout
+            android:id="@+id/collapsingToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            android:minHeight="?attr/actionBarSize" app:contentScrim="#00000000"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap" app:profileInsetForeground="#40000000"
+            app:statusBarScrim="?attr/colorPrimaryDark">
+
+            <ImageView
+                android:id="@+id/imgCover"
+                android:layout_width="match_parent" android:layout_height="@dimen/profile_cover"
+                android:fitsSystemWindows="true" android:paddingBottom="0dip"
+                android:scaleType="centerCrop" android:tint="#11000000"
+                app:layout_collapseMode="parallax" app:layout_collapseParallaxMultiplier="0.7"/>
+
+            <RelativeLayout
+                android:id="@+id/layDetail"
+                android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="bottom"
+                android:background="?attr/colorPrimary" android:orientation="vertical"
+                app:layout_collapseMode="parallax" app:layout_collapseParallaxMultiplier="1.0">
+
+                <org.aisen.android.ui.widget.AsToolbar
+                    android:id="@+id/toolbar" android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+                <RelativeLayout
+                    android:id="@+id/layRealDetail"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/padding_normal" android:paddingLeft="@dimen/padding_normal"
+                    android:paddingRight="@dimen/padding_normal" android:paddingTop="32dip">
+
+                    <LinearLayout
+                        android:id="@+id/layName"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/txtName" style="@style/TextTitle.Inverse" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="-" android:textColor="@color/comm_white" android:textSize="24sp"/>
+
+                        <ImageView
+                            android:id="@+id/imgVerified" android:layout_width="20dip"
+                            android:layout_height="20dip"
+                            android:layout_marginLeft="8dip" android:layout_marginTop="2dip"
+                            android:src="@drawable/avatar_grassroot"/>
+
+                        <ImageView
+                            android:id="@+id/imgGender" android:layout_width="20dip" android:layout_height="20dip"
+                            android:layout_marginLeft="8dip" android:layout_marginTop="2dip"
+                            android:src="@drawable/list_female"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/txtFriendsCounter"
+                        style="@style/TextBody.Inverse" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_below="@id/layName" android:layout_marginLeft="-8dip"
+                        android:layout_marginTop="8dip" android:background="?attr/selectableItemBackground"
+                        android:paddingBottom="4dip" android:paddingLeft="8dip" android:paddingRight="8dip"
+                        android:paddingTop="4dip" android:text="- 关注"/>
+
+                    <TextView
+                        android:id="@+id/divider_01"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:layout_below="@id/layName"
+                        android:layout_marginLeft="4dip" android:layout_marginRight="4dip" android:layout_marginTop="8dip"
+                        android:layout_toRightOf="@id/txtFriendsCounter" android:paddingBottom="4dip" android:paddingTop="4dip" android:text="|"
+                        android:textColor="@color/text_54_inverse"/>
+
+                    <TextView
+                        android:id="@+id/txtFollowersCounter"
+                        style="@style/TextBody.Inverse" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_below="@id/layName" android:layout_marginTop="8dip"
+                        android:layout_toRightOf="@id/divider_01" android:background="?attr/selectableItemBackground" android:paddingBottom="4dip"
+                        android:paddingLeft="8dip"
+                        android:paddingRight="8dip" android:paddingTop="4dip" android:text="- 粉丝"/>
+
+                    <TextView
+                        android:id="@+id/txtDesc"
+                        style="@style/TextBody.Inverse" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:layout_below="@id/txtFollowersCounter"
+                        android:layout_marginTop="8dip" android:lineSpacingExtra="2dip" android:text="-"/>
+                </RelativeLayout>
+            </RelativeLayout>
+
+        </org.aisen.weibo.sina.ui.widget.ProfileCollapsingToolbarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary" android:orientation="horizontal" android:paddingLeft="8dip">
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabLayout" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:layout_marginBottom="0.2dip"
+                />
+        </LinearLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    <org.aisen.android.ui.widget.CircleImageView
+        android:id="@+id/imgAvatar" android:layout_width="100dip"
+        android:layout_height="100dip" android:layout_marginLeft="@dimen/padding_normal" android:visibility="invisible"
+        />
+
+</android.support.design.widget.CoordinatorLayout>

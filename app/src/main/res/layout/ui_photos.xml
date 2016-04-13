@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent"
+    >
+
+    <FrameLayout
+        android:id="@+id/frame" android:layout_width="match_parent" android:layout_height="match_parent"
+        android:background="@color/comm_white">
+
+        <include
+            android:id="@id/layoutLoading" layout="@layout/comm_lay_loading" android:layout_width="fill_parent" android:layout_height="fill_parent" android:visibility="visible"/>
+
+        <include
+            android:id="@id/layoutLoadFailed" layout="@layout/comm_lay_loadfailed" android:layout_width="match_parent" android:layout_height="match_parent"
+            android:visibility="gone"/>
+
+        <include
+            android:id="@id/layoutEmpty" layout="@layout/comm_lay_emptyview" android:layout_width="match_parent" android:layout_height="match_parent" android:visibility="gone"/>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@id/layoutContent" android:layout_width="match_parent" android:layout_height="match_parent"
+        android:orientation="vertical" android:padding="@dimen/gap_photo">
+
+        <org.aisen.android.ui.widget.swipyrefresh.SwipyRefreshLayout
+            android:id="@+id/swipyRefreshLayout" android:layout_width="match_parent" android:layout_height="match_parent">
+
+            <GridView
+                android:id="@+id/gridview"
+                android:layout_width="match_parent" android:layout_height="match_parent"
+                android:gravity="fill" android:horizontalSpacing="@dimen/gap_photo"
+                android:numColumns="3" android:stretchMode="columnWidth" android:verticalSpacing="@dimen/gap_photo"/>
+        </org.aisen.android.ui.widget.swipyrefresh.SwipyRefreshLayout>
+
+    </FrameLayout>
+</RelativeLayout>

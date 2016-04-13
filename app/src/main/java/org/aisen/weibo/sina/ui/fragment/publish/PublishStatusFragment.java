@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
+import com.sleepbot.datetimepicker.time.RadialPickerLayout;
+import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.DateUtils;
@@ -22,17 +24,16 @@ import org.aisen.android.network.http.Params;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.fragment.ABaseFragment;
-import com.sleepbot.datetimepicker.time.RadialPickerLayout;
-import com.sleepbot.datetimepicker.time.TimePickerDialog;
-
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
+import org.aisen.weibo.sina.sinasdk.bean.Group;
+import org.aisen.weibo.sina.sinasdk.bean.Groups;
 import org.aisen.weibo.sina.support.bean.PublishBean;
 import org.aisen.weibo.sina.support.bean.PublishBean.PublishStatus;
 import org.aisen.weibo.sina.support.bean.PublishType;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
-import org.aisen.weibo.sina.sinasdk.bean.Group;
-import org.aisen.weibo.sina.sinasdk.bean.Groups;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
+import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -64,8 +65,8 @@ public class PublishStatusFragment extends APublishFragment {
 	TextView txtTiming;
 	
 	@Override
-	protected int inflateContentView() {
-		return R.layout.as_ui_publish_status;
+	public int inflateContentView() {
+		return R.layout.ui_publish_status;
 	}
 	
 	@Override
@@ -140,7 +141,7 @@ public class PublishStatusFragment extends APublishFragment {
 		}
 		// 分组可见
 		else if ("3".equals(getPublishBean().getParams().getParameter("visible"))) {
-			Groups groups = AppContext.getGroups();
+			Groups groups = AppContext.getAccount().getGroups();
 			for (Group group : groups.getLists()) {
 				if (group.getIdstr().equals(getPublishBean().getParams().getParameter("list_id"))) {
 					txtGroupHint.setText(String.format(getString(R.string.publish_group_visiable), group.getName()));
@@ -151,7 +152,7 @@ public class PublishStatusFragment extends APublishFragment {
 	}
 
 	@Override
-    PublishBean newPublishBean() {
+	PublishBean newPublishBean() {
 		PublishBean bean = new PublishBean();
 		bean.setStatus(PublishStatus.create);
 		bean.setType(PublishType.status);
@@ -188,13 +189,13 @@ public class PublishStatusFragment extends APublishFragment {
         inflater.inflate(R.menu.menu_publish, menu);
 
         // 添加分组
-        if (AppContext.getGroups() == null || AppContext.getGroups().getLists().size() == 0) {
+        if (AppContext.getAccount().getGroups() == null || AppContext.getAccount().getGroups().getLists().size() == 0) {
         }
         else {
             SubMenu subMenu = menu.addSubMenu(R.id.publish, 333, 2,
 										GlobalContext.getInstance().getResources().getString(R.string.group_selected_visiable));
-            for (int i = 0; i < AppContext.getGroups().getLists().size(); i++) {
-                Group group = AppContext.getGroups().getLists().get(i);
+            for (int i = 0; i < AppContext.getAccount().getGroups().getLists().size(); i++) {
+                Group group = AppContext.getAccount().getGroups().getLists().get(i);
                 subMenu.add(100, i, i, group.getName());
             }
         }
@@ -227,8 +228,8 @@ public class PublishStatusFragment extends APublishFragment {
         // 分组
         else {
             int groupIndex = item.getItemId();
-            if (groupIndex < AppContext.getGroups().getLists().size()) {
-                Group group = AppContext.getGroups().getLists().get(groupIndex);
+            if (groupIndex < AppContext.getAccount().getGroups().getLists().size()) {
+                Group group = AppContext.getAccount().getGroups().getLists().get(groupIndex);
                 if (group.getName().equalsIgnoreCase(item.getTitle().toString())) {
                     getPublishBean().getParams().addParameter("visible", "3");
 
@@ -248,7 +249,7 @@ public class PublishStatusFragment extends APublishFragment {
     void popOverflowMenu(final View v) {
 		List<String> itemList = new ArrayList<String>();
 		itemList.add(getString(R.string.publish_all_visiable));
-		if (AppContext.getGroups() == null || AppContext.getGroups().getLists().size() == 0)
+		if (AppContext.getAccount().getGroups() == null || AppContext.getAccount().getGroups().getLists().size() == 0)
 			;
 		else
 			itemList.add(getString(R.string.publish_group_visiable_menu));
@@ -263,44 +264,44 @@ public class PublishStatusFragment extends APublishFragment {
 		
 		AisenUtils.showMenuDialog(this, v, overflowMenuItems, new DialogInterface.OnClickListener() {
 
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (getString(R.string.publish_all_visiable).equals(overflowMenuItems[which])) {
-                    getPublishBean().getParams().addParameter("visible", "0");// 所有人可见
-                } else if (getString(R.string.publish_miyou_visiable).equals(overflowMenuItems[which])) {
-                    getPublishBean().getParams().addParameter("visible", "2");// 密友可见
-                } else if (getString(R.string.publish_group_visiable_menu).equals(overflowMenuItems[which])) {
-                    setGroupVisiable(v);// 分组可见
-                } else if (getString(R.string.publish_set_timing).equals(overflowMenuItems[which])) {
-                    setTiming();// 定时发布
-                } else if (getString(R.string.publish_cancel_timing).equals(overflowMenuItems[which])) {
-                    getPublishBean().setTiming(0);
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				if (getString(R.string.publish_all_visiable).equals(overflowMenuItems[which])) {
+					getPublishBean().getParams().addParameter("visible", "0");// 所有人可见
+				} else if (getString(R.string.publish_miyou_visiable).equals(overflowMenuItems[which])) {
+					getPublishBean().getParams().addParameter("visible", "2");// 密友可见
+				} else if (getString(R.string.publish_group_visiable_menu).equals(overflowMenuItems[which])) {
+					setGroupVisiable(v);// 分组可见
+				} else if (getString(R.string.publish_set_timing).equals(overflowMenuItems[which])) {
+					setTiming();// 定时发布
+				} else if (getString(R.string.publish_cancel_timing).equals(overflowMenuItems[which])) {
+					getPublishBean().setTiming(0);
 
-                    setTimingHint();
-                }
+					setTimingHint();
+				}
 
-                setVisiableHint();
-            }
-        });
+				setVisiableHint();
+			}
+		});
 	}
 
 	// 设置分组可见
 	private void setGroupVisiable(View v) {
-		String[] groupArr = new String[AppContext.getGroups().getLists().size()];
-		for (int i = 0; i < AppContext.getGroups().getLists().size(); i++) 
-			groupArr[i] = AppContext.getGroups().getLists().get(i).getName();
+		String[] groupArr = new String[AppContext.getAccount().getGroups().getLists().size()];
+		for (int i = 0; i < AppContext.getAccount().getGroups().getLists().size(); i++)
+			groupArr[i] = AppContext.getAccount().getGroups().getLists().get(i).getName();
 		
 		AisenUtils.showMenuDialog(this, v, groupArr, new DialogInterface.OnClickListener() {
-			
-								@Override
-								public void onClick(DialogInterface dialog, int which) {
-									getPublishBean().getParams().addParameter("visible", "3");
-									
-									getPublishBean().getParams().addParameter("list_id", AppContext.getGroups().getLists().get(which).getIdstr());
-									
-									setVisiableHint();
-								}
-							});
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				getPublishBean().getParams().addParameter("visible", "3");
+
+				getPublishBean().getParams().addParameter("list_id", AppContext.getAccount().getGroups().getLists().get(which).getIdstr());
+
+				setVisiableHint();
+			}
+		});
 	}
 	
 	// 设置定时发布
@@ -309,7 +310,7 @@ public class PublishStatusFragment extends APublishFragment {
 		if (getPublishBean().getTiming() > 0)
 			calendar.setTimeInMillis(getPublishBean().getTiming());
 
-		View contentView = View.inflate(getActivity(), R.layout.as_lay_publish_timing, null);
+		View contentView = View.inflate(getActivity(), R.layout.lay_publish_timing, null);
 		final TextView btnDate = (TextView) contentView.findViewById(R.id.txtDate);
 		final TextView btnTime = (TextView) contentView.findViewById(R.id.txtTime);
 		btnTime.setText(DateUtils.formatDate(calendar.getTimeInMillis(), getString(R.string.publish_date_format_hm)));
@@ -353,10 +354,10 @@ public class PublishStatusFragment extends APublishFragment {
 			}
 		};
 		
-		final DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(onDateSetListener, 
-														calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), true);
+		final DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(onDateSetListener,
+				calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), true);
 		final TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(onTimeSetListener,
-														calendar.get(Calendar.HOUR_OF_DAY) ,calendar.get(Calendar.MINUTE), false, false);
+				calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false, false);
 		
 		OnClickListener timingOnClickListener = new OnClickListener() {
 			
@@ -445,5 +446,43 @@ public class PublishStatusFragment extends APublishFragment {
 		
 		return true;
 	}
-	
+
+	@Override
+	protected void send() {
+		// 单个图片或者没有图片，用aisen发布即可
+		if (getPublishBean().getPics() == null || getPublishBean().getPics().length == 1) {
+			super.send();
+		}
+		// 发送多个图片时，需要高级权限
+		else {
+			BizFragment.createBizFragment(this).checkProfile(new BizFragment.CheckProfileCallback() {
+
+				@Override
+				public void onCheckProfileSuccess() {
+					PublishStatusFragment.super.send();
+				}
+
+				@Override
+				public void onCheckProfileFaild() {
+					showMessage(R.string.publish_request_ad_auth_faild);
+				}
+
+			});
+		}
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		UMengUtil.onPageStart(getActivity(), "发布新微博页");
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		UMengUtil.onPageEnd(getActivity(), "发布新微博页");
+	}
+
 }

@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -23,27 +24,27 @@ import android.widget.TextView;
 
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
-import org.aisen.android.component.container.FragmentContainerActivity;
 import org.aisen.android.network.task.TaskException;
-import org.aisen.android.support.adapter.ABaseAdapter;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.support.paging.IPaging;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.fragment.ABaseFragment;
-import org.aisen.android.ui.fragment.ARefreshFragment;
-import org.aisen.android.ui.fragment.ASwipeRefreshListFragment;
-
+import org.aisen.android.ui.fragment.AListSwipeRefreshFragment;
+import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
+import org.aisen.android.ui.fragment.itemview.IITemView;
+import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
-import org.aisen.weibo.sina.support.db.FriendMentionDB;
-import org.aisen.weibo.sina.support.paging.FriendshipPagingProcessor;
-import org.aisen.weibo.sina.support.utils.AisenUtils;
-import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
-import org.aisen.weibo.sina.sinasdk.bean.AccessToken;
 import org.aisen.weibo.sina.sinasdk.bean.Friendship;
 import org.aisen.weibo.sina.sinasdk.bean.Token;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
+import org.aisen.weibo.sina.support.paging.FriendshipPaging;
+import org.aisen.weibo.sina.support.sqlit.FriendMentionDB;
+import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
+import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,11 +52,11 @@ import java.util.List;
 /**
  * Created by wangdan on 15/4/25.
  */
-public class AddFriendMentionFragment extends ASwipeRefreshListFragment<WeiBoUser, Friendship>
+public class AddFriendMentionFragment extends AListSwipeRefreshFragment<WeiBoUser, Friendship>
                                             implements AdapterView.OnItemClickListener, SearchView.OnQueryTextListener, MenuItemCompat.OnActionExpandListener{
 
     public static void launch(ABaseFragment from, int requestCode) {
-        FragmentContainerActivity.launchForResult(from, AddFriendMentionFragment.class, null, requestCode);
+        SinaCommonActivity.launchForResult(from, AddFriendMentionFragment.class, null, requestCode);
     }
 
     @ViewInject(id = R.id.laySearchSuggest)
@@ -68,8 +69,8 @@ public class AddFriendMentionFragment extends ASwipeRefreshListFragment<WeiBoUse
     private MentionSuggestionFragment suggestionFragment;
 
     @Override
-    protected int inflateContentView() {
-        return R.layout.as_ui_add_friend_mention;
+    public int inflateContentView() {
+        return R.layout.ui_add_friend_mention;
     }
 
     @Override
@@ -94,10 +95,10 @@ public class AddFriendMentionFragment extends ASwipeRefreshListFragment<WeiBoUse
     }
 
     @Override
-    protected void configRefresh(RefreshConfig config) {
-        super.configRefresh(config);
+    protected void setupRefreshConfig(RefreshConfig config) {
+        super.setupRefreshConfig(config);
 
-        config.emptyLabel = getString(R.string.empty_friends);
+        config.emptyHint = getString(R.string.empty_friends);
     }
 
     @Override
@@ -113,21 +114,33 @@ public class AddFriendMentionFragment extends ASwipeRefreshListFragment<WeiBoUse
     }
 
     @Override
-    protected ABaseAdapter.AbstractItemView<WeiBoUser> newItemView() {
-        return new FriendItemView();
+    public IItemViewCreator<WeiBoUser> configItemViewCreator() {
+        return new IItemViewCreator<WeiBoUser>() {
+
+            @Override
+            public View newContentView(LayoutInflater inflater, ViewGroup parent, int viewType) {
+                return inflater.inflate(R.layout.item_friend, parent, false);
+            }
+
+            @Override
+            public IITemView<WeiBoUser> newItemView(View convertView, int viewType) {
+                return new FriendItemView(convertView);
+            }
+
+        };
     }
 
     @Override
-    protected IPaging<WeiBoUser, Friendship> configPaging() {
-        return new FriendshipPagingProcessor();
+    protected IPaging<WeiBoUser, Friendship> newPaging() {
+        return new FriendshipPaging();
     }
 
     @Override
-    protected void requestData(RefreshMode mode) {
+    public void requestData(RefreshMode mode) {
         new FriendTask(mode == RefreshMode.refresh ? RefreshMode.reset : mode).execute();
     }
 
-    class FriendItemView extends ABaseAdapter.AbstractItemView<WeiBoUser> {
+    class FriendItemView extends ARecycleViewItemView<WeiBoUser> {
 
         @ViewInject(id = R.id.imgPhoto)
         ImageView imgPhoto;
@@ -140,13 +153,12 @@ public class AddFriendMentionFragment extends ASwipeRefreshListFragment<WeiBoUse
         @ViewInject(id = R.id.layDivider)
         View layDivider;
 
-        @Override
-        public int inflateViewId() {
-            return R.layout.as_item_friend;
+        public FriendItemView(View itemView) {
+            super(itemView);
         }
 
         @Override
-        public void bindingData(View convertView, WeiBoUser data) {
+        public void onBindData(View convertView, WeiBoUser data, int position) {
             BitmapLoader.getInstance().display(AddFriendMentionFragment.this,
                     AisenUtils.getUserPhoto(data),
                     imgPhoto, ImageConfigUtils.getLargePhotoConfig());
@@ -171,10 +183,10 @@ public class AddFriendMentionFragment extends ASwipeRefreshListFragment<WeiBoUse
 
     }
 
-    class FriendTask extends PagingTask<Void, Void, Friendship> {
+    class FriendTask extends APagingTask<Void, Void, Friendship> {
 
         public FriendTask(RefreshMode mode) {
-            super("PagingTask", mode);
+            super(mode);
         }
 
         @Override
@@ -185,20 +197,16 @@ public class AddFriendMentionFragment extends ASwipeRefreshListFragment<WeiBoUse
         @Override
         protected Friendship workInBackground(RefreshMode mode, String previousPage, String nextPage,
                                               Void... params) throws TaskException {
-            Token token = AppContext.getToken();
-            if (AppContext.getAdvancedToken() != null) {
-                AccessToken accessToken = AppContext.getAdvancedToken();
-
-                token = new Token();
-                token.setToken(accessToken.getToken());
-                token.setSecret(accessToken.getSecret());
+            Token token = AppContext.getAccount().getAdvancedToken();
+            if (token == null) {
+                token = AppContext.getAccount().getAccessToken();
             }
 
-            if (mode != ARefreshFragment.RefreshMode.update)
+            if (mode != RefreshMode.update)
                 nextPage = "0";
 
             Friendship friendship = SinaSDK.getInstance(token, getTaskCacheMode(this))
-                                                    .friendshipsFriends(AppContext.getUser().getIdstr(), null, nextPage, 50);
+                                                    .friendshipsFriends(AppContext.getAccount().getUser().getIdstr(), null, nextPage, 50);
 
             if ("0".equalsIgnoreCase(nextPage)) {
                 List<WeiBoUser> recentUsers = FriendMentionDB.getRecentMention("5");
@@ -222,7 +230,7 @@ public class AddFriendMentionFragment extends ASwipeRefreshListFragment<WeiBoUse
                 }
             }
             if (friendship.getNext_cursor() <= 0)
-                friendship.setNoMore(true);
+                friendship.setEndPaging(true);
 
             return friendship;
         }
@@ -317,6 +325,20 @@ public class AddFriendMentionFragment extends ASwipeRefreshListFragment<WeiBoUse
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         return true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        UMengUtil.onPageStart(getActivity(), "搜索提及好友页");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        UMengUtil.onPageEnd(getActivity(), "搜索提及好友页");
     }
 
 }

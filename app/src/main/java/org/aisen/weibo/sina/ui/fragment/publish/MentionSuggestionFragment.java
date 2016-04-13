@@ -4,32 +4,33 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
-import org.aisen.android.support.adapter.ABaseAdapter;
 import org.aisen.android.support.inject.ViewInject;
-import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.fragment.AListFragment;
-
+import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
+import org.aisen.android.ui.fragment.itemview.IITemView;
+import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
-import org.aisen.weibo.sina.support.bean.MentionSuggestionBean;
-import org.aisen.weibo.sina.support.bean.MentionSuggestionBeans;
-import org.aisen.weibo.sina.support.db.FriendDB;
-import org.aisen.weibo.sina.support.db.FriendMentionDB;
-import org.aisen.weibo.sina.support.utils.AisenUtils;
-import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
 import org.aisen.weibo.sina.sinasdk.bean.SuggestionAtUser;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
+import org.aisen.weibo.sina.support.bean.MentionSuggestionBean;
+import org.aisen.weibo.sina.support.bean.MentionSuggestionBeans;
+import org.aisen.weibo.sina.support.sqlit.FriendDB;
+import org.aisen.weibo.sina.support.sqlit.FriendMentionDB;
+import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +51,7 @@ public class MentionSuggestionFragment extends AListFragment<MentionSuggestionBe
 	}
 	
 	@ViewInject(id = R.id.progress)
-    SmoothProgressBar progressBar;
+	SmoothProgressBar progressBar;
 	@ViewInject(id = R.id.txtNone)
 	View viewNone;
 	
@@ -60,8 +61,8 @@ public class MentionSuggestionFragment extends AListFragment<MentionSuggestionBe
 	private WorkTask<String, Void, List<SuggestionAtUser>> remoteTask;
 	
 	@Override
-	protected int inflateContentView() {
-		return R.layout.as_ui_mention_suggestion;
+	public int inflateContentView() {
+		return R.layout.ui_mention_suggestion;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -116,21 +117,33 @@ public class MentionSuggestionFragment extends AListFragment<MentionSuggestionBe
 		getActivity().setResult(Activity.RESULT_OK, data);
 		getActivity().finish();
 	}
-	
+
 	@Override
-	protected ABaseAdapter.AbstractItemView<MentionSuggestionBean> newItemView() {
-		return new SuggestionItemView();
+	public IItemViewCreator<MentionSuggestionBean> configItemViewCreator() {
+		return new IItemViewCreator<MentionSuggestionBean>() {
+
+			@Override
+			public View newContentView(LayoutInflater inflater, ViewGroup parent, int viewType) {
+				return inflater.inflate(R.layout.item_friend, parent, false);
+			}
+
+			@Override
+			public IITemView<MentionSuggestionBean> newItemView(View convertView, int viewType) {
+				return new SuggestionItemView(convertView);
+			}
+
+		};
 	}
 
 	@Override
-	protected void requestData(RefreshMode mode) {
+	public void requestData(RefreshMode mode) {
 		new LocalTask(RefreshMode.reset).execute("");
 	}
 	
-	class LocalTask extends PagingTask<String, Void, MentionSuggestionBeans> {
+	class LocalTask extends APagingTask<String, Void, MentionSuggestionBeans> {
 
 		public LocalTask(RefreshMode mode) {
-			super("LocalTask", mode);
+			super(mode);
 		}
 		
 		@Override
@@ -195,7 +208,7 @@ public class MentionSuggestionFragment extends AListFragment<MentionSuggestionBe
 			} catch (Exception e) {
 			}
 			
-			SuggestionAtUser[] userArr = SinaSDK.getInstance(AppContext.getToken()).searchSuggestionsAtUsers(params[0]);
+			SuggestionAtUser[] userArr = SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).searchSuggestionsAtUsers(params[0]);
 			List<SuggestionAtUser> suggestionAtUsers = new ArrayList<SuggestionAtUser>();
 			
 			// 将本地匹配的数据过滤掉
@@ -247,10 +260,10 @@ public class MentionSuggestionFragment extends AListFragment<MentionSuggestionBe
 				}
 				
 				getAdapterItems().addAll(remoteUserList);
-				notifyDataSetChanged();
+				getAdapter().notifyDataSetChanged();
 			}
 			
-			if (getAdapter().getCount() == 0) {
+			if (getAdapter().getDatas().size() == 0) {
 				getRefreshView().setVisibility(View.GONE);
 				viewNone.setVisibility(View.VISIBLE);
 			}
@@ -264,8 +277,8 @@ public class MentionSuggestionFragment extends AListFragment<MentionSuggestionBe
 		}
 		
 	}
-	
-	class SuggestionItemView extends ABaseAdapter.AbstractItemView<MentionSuggestionBean> {
+
+	class SuggestionItemView extends ARecycleViewItemView<MentionSuggestionBean> {
 
 		@ViewInject(id = R.id.imgPhoto)
 		ImageView imgPhoto;
@@ -277,37 +290,36 @@ public class MentionSuggestionFragment extends AListFragment<MentionSuggestionBe
 		TextView txtDivider;
 		@ViewInject(id = R.id.layDivider)
 		View layDivider;
-		
-		@Override
-		public int inflateViewId() {
-			return R.layout.as_item_friend;
+
+		public SuggestionItemView(View itemView) {
+			super(itemView);
 		}
 
 		@Override
-		public void bindingData(View convertView, MentionSuggestionBean data) {
+		public void onBindData(View convertView, MentionSuggestionBean data, int position) {
 			String screenName = null;
 			String remark = null;
-			
+
 			if (data.getUser() != null) {
 				BitmapLoader.getInstance().display(MentionSuggestionFragment.this,
 						AisenUtils.getUserPhoto(data.getUser()),
 						imgPhoto, ImageConfigUtils.getLargePhotoConfig());
 
 				imgPhoto.setVisibility(View.VISIBLE);
-				
+
 				screenName = data.getUser().getScreen_name();
 				remark = data.getUser().getRemark();
 			}
 			else {
 				imgPhoto.setVisibility(View.GONE);
-				
+
 				screenName = data.getSuggestUser().getNickname();
 				remark = data.getSuggestUser().getRemark();
 			}
-			
+
 			txtName.setText(screenName);
 			txtRemark.setText(remark);
-			
+
 			if (localUserList.size() > 0 && remoteUserList.size() > 0) {
 				layDivider.setVisibility(getPosition() == 0 || getPosition() == localUserList.size() ? View.VISIBLE : View.GONE);
 				if (getPosition() == 0)
@@ -319,7 +331,7 @@ public class MentionSuggestionFragment extends AListFragment<MentionSuggestionBe
 				layDivider.setVisibility(View.GONE);
 			}
 		}
-		
+
 	}
 	
 	// 添加一个关注好友到搜索记录
@@ -327,7 +339,7 @@ public class MentionSuggestionFragment extends AListFragment<MentionSuggestionBe
 
 		@Override
 		public WeiBoUser workInBackground(String... params) throws TaskException {
-			WeiBoUser user = SinaSDK.getInstance(AppContext.getToken()).userShow(null, params[0]);
+			WeiBoUser user = SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).userShow(null, params[0]);
 			FriendMentionDB.addFriend(user);
 //			List<WeiBoUser> userList = new ArrayList<WeiBoUser>();
 //			userList.add(user);

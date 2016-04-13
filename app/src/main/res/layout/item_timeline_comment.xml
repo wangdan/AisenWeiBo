@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent"
+                android:background="?attr/selectableItemBackground" android:orientation="vertical"
+                android:paddingBottom="8dip" android:paddingLeft="16dip" android:paddingTop="8dip">
+
+    <org.aisen.android.ui.widget.CircleImageView
+        android:id="@+id/imgPhoto"
+        android:layout_width="40dip" android:layout_height="40dip" android:layout_marginRight="16dip" android:scaleType="centerCrop"/>
+
+    <TextView
+        android:id="@+id/txtName" style="@style/TextTitle"
+        android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_toRightOf="@id/imgPhoto" android:ellipsize="end" android:singleLine="true"
+        android:text="名字" android:textColor="?attr/text_subhead"/>
+
+    <org.aisen.weibo.sina.ui.widget.AisenTextView
+        android:id="@+id/txtContent" style="@style/TextBody"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_below="@id/txtName" android:layout_marginBottom="8dip" android:layout_marginTop="8dip" android:layout_toRightOf="@id/imgPhoto"
+        android:gravity="center_vertical" android:lineSpacingExtra="1.5dip" android:minHeight="26dip"
+        android:paddingRight="16dip"
+        android:text="我是评论正文"/>
+
+    <TextView
+        android:id="@+id/txtDesc"
+        style="@style/TextSubhead"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_below="@id/txtContent" android:layout_toRightOf="@id/imgPhoto" android:ellipsize="end" android:singleLine="true"
+        android:text="昨天 来自Aisen微博" android:textSize="12sp"/>
+
+</RelativeLayout>

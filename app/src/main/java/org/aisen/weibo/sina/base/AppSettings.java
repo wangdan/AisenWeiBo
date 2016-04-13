@@ -11,6 +11,8 @@ import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
 
+import java.io.File;
+
 /**
  * Created by wangdan on 15/4/12.
  */
@@ -329,7 +331,7 @@ public class AppSettings {
             case 0:
                 return 30 * 1000;
             case 1:
-                return 4 * 60 * 60 * 1000;
+                return 20 * 60 * 1000;
             case 2:
                 return 12 * 60 * 60 * 1000;
             case 3:
@@ -430,7 +432,7 @@ public class AppSettings {
     }
 
     public static int getThemeColor() {
-        return ActivityHelper.getIntShareData("Theme_index", 8);
+        return ActivityHelper.getIntShareData("Theme_index", -1);
     }
 
     public static void setThemeColor(int theme) {
@@ -503,6 +505,15 @@ public class AppSettings {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
         return prefs.getBoolean("pScreenRotate", false);
+    }
+
+    /**
+     * 测试用，验证通知模块时，不自动清除数据
+     *
+     * @return
+     */
+    public static boolean ignoreUnread() {
+        return false;
     }
 
 }

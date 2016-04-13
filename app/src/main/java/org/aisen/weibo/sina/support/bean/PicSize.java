@@ -7,6 +7,8 @@ import java.io.Serializable;
  */
 public class PicSize implements Serializable {
 
+    private static final long serialVersionUID = -2046887085192115167L;
+
     private int width;
 
     private int height;

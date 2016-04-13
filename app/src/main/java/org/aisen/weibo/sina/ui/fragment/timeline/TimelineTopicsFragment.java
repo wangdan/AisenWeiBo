@@ -4,12 +4,12 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 
+import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.support.paging.IPaging;
 import org.aisen.android.support.paging.PageIndexPaging;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.fragment.ABaseFragment;
-
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
 import org.aisen.weibo.sina.sinasdk.bean.PicUrls;
@@ -56,31 +56,35 @@ public class TimelineTopicsFragment extends ATimelineFragment {
 	}
 
 	@Override
-	protected void requestData(RefreshMode mode) {
+	public void requestData(RefreshMode mode) {
 		new TopicsTimelineTask(mode == RefreshMode.refresh ? RefreshMode.reset : mode).execute();
 	}
-	
+
 	@Override
-	protected IPaging<StatusContent, StatusContents> configPaging() {
+	protected IPaging<StatusContent, StatusContents> newPaging() {
 		return new PageIndexPaging<StatusContent, StatusContents>("total_number");
 	}
-	
-	class TopicsTimelineTask extends TimelineTask {
+
+	class TopicsTimelineTask extends ATimelineTask {
 
 		public TopicsTimelineTask(RefreshMode mode) {
 			super(mode);
 		}
 
 		@Override
-		protected StatusContents workInBackground(RefreshMode mode, String previousPage, String nextPage,
-				Void... params) throws TaskException {
-			
+		public StatusContents getStatusContents(Params params) throws TaskException {
 			// 搜索话题没有多图
-			StatusContents statuses = SinaSDK.getInstance(AppContext.getToken()).searchTopics(nextPage, query, "30");
+			String nextPage = "1";
+			if (!TextUtils.isEmpty(params.getParameter("max_id"))) {
+				nextPage = params.getParameter("max_id");
+				params.remove("max_id");
+			}
+
+			StatusContents statuses = SinaSDK.getInstance(AppContext.getAccount().getAdvancedToken()).searchTopics(nextPage, query, "30");
 			if (statuses != null && statuses.getStatuses().size() > 0) {
 				for (StatusContent status : statuses.getStatuses()) {
-                    if (status.getRetweeted_status() != null)
-                        status = status.getRetweeted_status();
+					if (status.getRetweeted_status() != null)
+						status = status.getRetweeted_status();
 
 					if (!TextUtils.isEmpty(status.getThumbnail_pic())) {
 						status.setPic_urls(new PicUrls[1]);
@@ -90,11 +94,10 @@ public class TimelineTopicsFragment extends ATimelineFragment {
 					}
 				}
 			}
-			
+
 			return statuses;
-	
 		}
-		
+
 	}
 
 }

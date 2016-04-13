@@ -29,19 +29,19 @@ import org.aisen.android.common.utils.BitmapUtil;
 import org.aisen.android.common.utils.FileUtils;
 import org.aisen.android.common.utils.ImagePickerUtils;
 import org.aisen.android.common.utils.Logger;
+import org.aisen.android.common.utils.PhotoChoice;
 import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.common.utils.ViewUtils;
 import org.aisen.android.component.bitmaploader.core.BitmapDecoder;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.support.inject.ViewInject;
-import org.aisen.android.support.utils.PhotoChoice;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.support.bean.AccountBean;
-import org.aisen.weibo.sina.support.db.AccountDB;
+import org.aisen.weibo.sina.support.utils.AccountUtils;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -131,7 +131,7 @@ public class WeiboClientActivity extends BaseActivity implements PhotoChoice.Pho
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.as_ui_weibo_client);
+        setContentView(R.layout.ui_weibo_client);
 
         if (!Intent.ACTION_VIEW.equals(getIntent().getAction())) {
             finish();
@@ -313,8 +313,8 @@ public class WeiboClientActivity extends BaseActivity implements PhotoChoice.Pho
         AppContext.getAccount().setPassword(password);
 
         // 刷新到DB
-        AccountDB.newAccount(AppContext.getAccount());
-        AccountDB.setLogedinAccount(AppContext.getAccount());
+        AccountUtils.updateAccount(AppContext.getAccount());
+        AccountUtils.setLogedinAccount(AppContext.getAccount());
 
         if (askForAuth) {
             setResult(Activity.RESULT_OK);
@@ -470,7 +470,7 @@ public class WeiboClientActivity extends BaseActivity implements PhotoChoice.Pho
             @Override
             public String workInBackground(Void... p) throws TaskException {
                 try {
-                    AccountBean accountBean = AccountDB.getLogedinAccount();
+                    AccountBean accountBean = AccountUtils.getLogedinAccount();
                     if (TextUtils.isEmpty(accountBean.getAccount()) || TextUtils.isEmpty(accountBean.getPassword()))
                         throw new TaskException("", getString(R.string.account_fillaccount_faild));
 

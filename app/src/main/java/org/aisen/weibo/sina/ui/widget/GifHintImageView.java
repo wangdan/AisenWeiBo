@@ -11,7 +11,6 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 
 import org.aisen.android.common.context.GlobalContext;
-import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.common.utils.Utils;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.weibo.sina.R;

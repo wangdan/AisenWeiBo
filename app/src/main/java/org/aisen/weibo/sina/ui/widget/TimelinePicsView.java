@@ -1,5 +1,6 @@
 package org.aisen.weibo.sina.ui.widget;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
@@ -26,8 +27,12 @@ import org.aisen.weibo.sina.sinasdk.bean.PicUrls;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.support.bean.PicSize;
 import org.aisen.weibo.sina.support.compress.TimelineThumbBitmapCompress;
-import org.aisen.weibo.sina.ui.fragment.basic.BizFragment;
+import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.fragment.profile.PhotosFragment;
+import org.aisen.weibo.sina.ui.fragment.profile.ProfileTimelineFragment;
+import org.aisen.weibo.sina.ui.fragment.timeline.ATimelineFragment;
+import org.aisen.weibo.sina.ui.fragment.timeline.TimelineDefFragment;
+import org.aisen.weibo.sina.ui.fragment.timeline.TimelineGroupsFragment;
 
 import java.io.File;
 
@@ -54,7 +59,6 @@ public class TimelinePicsView extends ViewGroup implements BitmapOwner {
 	
 	private boolean large = true;
 	
-	private BizFragment bizFragment;
 	private ABaseFragment ownerFragment;
 
     private PicSize picSize;// 当只显示了一个图片时有效
@@ -266,8 +270,18 @@ public class TimelinePicsView extends ViewGroup implements BitmapOwner {
 	private void setWifiTimelinePicsView() {
 		picRects = null;
 
-        int gap = getResources().getDimensionPixelSize(R.dimen.gap_pics);
-        mWidth = SystemUtils.getScreenWidth() - 2 * getResources().getDimensionPixelSize(R.dimen.comm_h_gap);
+		if (ownerFragment instanceof ProfileTimelineFragment) {
+			mWidth = SystemUtils.getScreenWidth() - Utils.dip2px(10 * 2);
+		}
+		else {
+			mWidth = SystemUtils.getScreenWidth() - Utils.dip2px(10 * 2 + 8 * 2);
+
+			if (ownerFragment instanceof ATimelineFragment) {
+				if ("5".equals(((ATimelineFragment) ownerFragment).getFeature())) {
+					mWidth = SystemUtils.getScreenWidth() - Utils.dip2px(10 * 2);
+				}
+			}
+		}
 
 		int size = picUrls.length;
 		int random = 0;
@@ -276,32 +290,60 @@ public class TimelinePicsView extends ViewGroup implements BitmapOwner {
 		Rect[] tempRects = new Rect[size];
 		switch (size) {
 		case 1:
-            int imgW = mWidth;
-            int imgH = Math.round(imgW * 4.0f / 3.0f);
+			int oneWidth = mWidth;
+			int height = 0;
+			float maxRadio = 13 * 1.0f / 16;
+			// 初始状态
+			if (picSize == null) {
+				height = oneWidth;
+			}
+			else {
+				// 宽度跟高度大小近似
+				if (picSize.getWidth() * 1.0f / picSize.getHeight() >= maxRadio) {
+					// 根据宽度计算高度
+					height = Math.round(oneWidth *
+							// 原图的比例
+							(picSize.getHeight() * 1.0f / picSize.getWidth()));
+				}
+				// 高度比较大于宽度，取屏幕一半为最大宽度
+				else {
+					height = mWidth;
+					// 高度比较大时，截图一部分
+					if (picSize.getHeight() > TimelineThumbBitmapCompress.maxHeight
+							&& picSize.getWidth() <= 440) {
+						oneWidth = TimelineThumbBitmapCompress.cutWidth;// 发现440是新浪截取的宽度
+						height = TimelineThumbBitmapCompress.cutHeight;
+					}
+					else {
+						oneWidth = Math.round(height / (picSize.getHeight() * 1.0f / picSize.getWidth()));
+					}
+				}
+			}
 
-            String url = getStatusMulImage(picUrls[0].getThumbnail_pic());
-            File file = BitmapLoader.getInstance().getCacheFile(url);
-            if (file != null && file.exists()) {
-                long time = System.currentTimeMillis();
-                BitmapFactory.Options opts = new BitmapFactory.Options();
-                opts.inJustDecodeBounds = true;
-                BitmapFactory.decodeFile(file.getAbsolutePath(), opts);
-                Logger.w(String.format("耗时%s毫秒", String.valueOf(System.currentTimeMillis() - time)));
-                imgH = Math.round(imgW * opts.outHeight * 1.0f / opts.outWidth);
-                if (imgH > SystemUtils.getScreenHeight())
-                    imgH = imgW;
-            }
+			Rect oneRect = new Rect();
+			oneRect.left = 0;
+			oneRect.top = 0;
+			oneRect.right = oneWidth;
+			oneRect.bottom = height;
 
-			Rect rect = new Rect(0, 0, imgW, imgH);
-			tempRects[0] = rect;
+			int imgSize = oneRect.right - oneRect.left;
+			if (large) {
+				if (imgSize < Utils.dip2px(100))
+					oneRect.left = (mWidth - imgSize) / 2;
+			}
+			else {
+				oneRect.left = Utils.dip2px(32);
+			}
+			oneRect.right += oneRect.left;
+			tempRects[0] = oneRect;
 			
-			layoutParams = new LinearLayout.LayoutParams(mWidth, imgH);
+			layoutParams = new LinearLayout.LayoutParams(mWidth, height);
 			break;
 		case 2:
-			imgW = (mWidth - gap) / 2;
-			imgH = Math.round(imgW * 4.0f / 3.0f);
+			int imgW = (mWidth - gap) / 2;
+			int imgH = imgW;
 			
-			rect = new Rect(0, 0, imgW, imgH);
+			Rect rect = new Rect(0, 0, imgW, imgH);
 			tempRects[0] = rect;
 			rect = new Rect(imgW + gap, 0, mWidth, imgH);
 			tempRects[1] = rect;
@@ -309,39 +351,21 @@ public class TimelinePicsView extends ViewGroup implements BitmapOwner {
 			layoutParams = new LinearLayout.LayoutParams(mWidth, imgH);
 			break;
 		case 3:
-			int imgW02 = Math.round((mWidth - gap) * 3.0f / 7.0f);
-			int imgH02 = imgW02;
-			int imgW01 = Math.round((mWidth - gap) * 4.0f / 7.0f);
-			int imgH01 = imgH02 * 2 + gap;
+			imgW = (mWidth - 2 * gap) / 3;
+			imgH = imgW;
+
+			rect = new Rect(0, 0, imgW, imgH);
+			tempRects[0] = rect;
+			rect = new Rect(imgW + gap, 0, imgW * 2 + gap, imgH);
+			tempRects[1] = rect;
+			rect = new Rect(imgW * 2 + gap * 2, 0, mWidth, imgH);
+			tempRects[2] = rect;
 			
-			try {
-				random = (int) (mStatusContent.getId() % 2);
-			} catch (Exception e) {
-			}
-			// 见/doc/3_0.png
-			if (random == 0) {
-				rect = new Rect(0, 0, imgW01, imgH01);
-				tempRects[0] = rect;
-				rect = new Rect(gap + imgW01, 0, mWidth, imgH02);
-				tempRects[1] = rect;
-				rect = new Rect(gap + imgW01, imgH02 + gap, mWidth, imgH01);
-				tempRects[2] = rect;
-			}
-			// 见/doc/3_1.png
-			else if (random == 1) {
-				rect = new Rect(0, 0, imgW02, imgH02);
-				tempRects[0] = rect;
-				rect = new Rect(0, imgH02 + gap, imgW02, imgH01);
-				tempRects[1] = rect;
-				rect = new Rect(gap + imgW02, 0, mWidth, imgH01);
-				tempRects[2] = rect;
-			}
-			
-			layoutParams = new LinearLayout.LayoutParams(mWidth, imgH01);
+			layoutParams = new LinearLayout.LayoutParams(mWidth, imgH);
 			break;
 		case 4:
-			imgW = Math.round((mWidth - gap) * 1.0f / 2);
-			imgH = Math.round(imgW * 4.0f / 3.0f);
+			imgW = (mWidth - gap) / 2;
+			imgH = imgW;
 			
 			rect = new Rect(0, 0, imgW, imgH);
 			tempRects[0] = rect;
@@ -355,204 +379,157 @@ public class TimelinePicsView extends ViewGroup implements BitmapOwner {
 			layoutParams = new LinearLayout.LayoutParams(mWidth, imgH * 2 + gap);
 			break;
 		case 5:
-			imgW01 = Math.round((mWidth - gap) * 1.0f / 2);
-			imgH01 = Math.round(imgW01 * 4.0f / 3.0f);
+			int imgW01 = (mWidth - gap) / 2;
+			int imgH01 = imgW01;
 			
-			imgW02 = Math.round((mWidth - gap * 2) * 1.0f / 3);
-			imgH02 = Math.round(imgW02 * 4.0f / 3.0f);
-			
-			try {
-				random = (int) (mStatusContent.getId() % 2);
-			} catch (Exception e) {
-			}
-			int height = imgH01 + imgH02 + gap;
-			// 见/doc/5_0.png
-			if (random == 0) {
-				rect = new Rect(0, 0, imgW01, imgH01);
-				tempRects[0] = rect;
-				rect = new Rect(gap + imgW01, 0, mWidth, imgH01);
-				tempRects[1] = rect;
-				rect = new Rect(0, imgH01 + gap, imgW02, height);
-				tempRects[2] = rect;
-				rect = new Rect(imgW02 + gap, imgH01 + gap, imgW02 * 2 + gap, height);
-				tempRects[3] = rect;
-				rect = new Rect(mWidth - imgW02, imgH01 + gap, mWidth, height);
-				tempRects[4] = rect;
-			}
-			// 见/doc/5_1.png
-			else if (random == 1) {
-				rect = new Rect(0, 0, imgW02, imgH02);
-				tempRects[0] = rect;
-				rect = new Rect(imgW02 + gap, 0, imgW02 * 2 + gap, imgH02);
-				tempRects[1] = rect;
-				rect = new Rect(mWidth - imgW02, 0, mWidth, imgH02);
-				tempRects[2] = rect;
-				rect = new Rect(0, imgH02 + gap, imgW01, height);
-				tempRects[3] = rect;
-				rect = new Rect(gap + imgW01, imgH02 + gap, mWidth, height);
-				tempRects[4] = rect;
-			}
-			
+			int imgW02 = (mWidth - gap * 2) / 3;
+			int imgH02 = imgW02;
+
+			rect = new Rect(0, 0, imgW01, imgH01);
+			tempRects[0] = rect;
+			rect = new Rect(gap + imgW01, 0, mWidth, imgH01);
+			tempRects[1] = rect;
+			rect = new Rect(0, imgH01 + gap, imgW02, imgH01 + imgH02 + gap);
+			tempRects[2] = rect;
+			rect = new Rect(gap + imgW02, imgH01 + gap, imgW02 * 2 + gap, imgH01 + imgH02 + gap);
+			tempRects[3] = rect;
+			rect = new Rect(gap * 2 + imgW02 * 2, imgH01 + gap, mWidth, imgH01 + imgH02 + gap);
+			tempRects[4] = rect;
+
 			layoutParams = new LinearLayout.LayoutParams(mWidth, imgH01 + imgH02 + gap);
 			break;
 		case 6:
-			imgW01 = Math.round((mWidth - 2 * gap) * 1.0f / 3.0f);
-			imgH01 = Math.round(imgW01 * 4.0f / 3.0f);
-			
-			imgW02 = imgW01 * 2 + gap;
-			imgH02 = imgH01 * 2 + gap;
-			
-			height = imgH01 + imgH02 + gap;
-			
+			imgW = (mWidth - gap * 2) / 3;
+			imgH = imgW;
+			height = imgH * 3 + gap * 2;
+
 			try {
 				random = (int) (mStatusContent.getId() % 3);
 			} catch (Exception e) {
 			}
-			// 见/doc/6_0.png
 			if (random == 0) {
-				rect = new Rect(0, 0, imgW01, imgH01);
+				height = imgH * 2 + gap;
+
+				rect = new Rect(0, 0, imgW, imgH);
 				tempRects[0] = rect;
-				rect = new Rect(gap + imgW01, 0, imgW01 * 2 + gap, imgH01);
+				rect = new Rect(gap + imgW, 0, imgW * 2 + gap, imgH);
 				tempRects[1] = rect;
-				rect = new Rect(mWidth - imgW01, 0, mWidth, imgH01);
+				rect = new Rect(mWidth - imgW, 0, mWidth, imgH);
 				tempRects[2] = rect;
-				rect = new Rect(0, imgH01 + gap, imgW02, height);
+				rect = new Rect(0, imgH + gap, imgW, height);
 				tempRects[3] = rect;
-				rect = new Rect(imgW02 + gap, imgH01 + gap, mWidth, height - imgH01 - gap);
+				rect = new Rect(imgW + gap, imgH + gap, imgW * 2 + gap, height);
 				tempRects[4] = rect;
-				rect = new Rect(imgW02 + gap, height - imgH01, mWidth, height);
+				rect = new Rect(mWidth - imgW, imgH + gap, mWidth, height);
 				tempRects[5] = rect;
 			}
-			// 见/doc/6_1.png
 			else if (random == 1) {
-				rect = new Rect(0, 0, imgW01, imgH01);
+				rect = new Rect(0, 0, imgW * 2 + gap, imgH * 2 + gap);
 				tempRects[0] = rect;
-				rect = new Rect(0, imgH01 + gap, imgW01, imgH01 * 2 + gap);
+				rect = new Rect(mWidth - imgW, 0, mWidth, imgH);
 				tempRects[1] = rect;
-				rect = new Rect(gap + imgW01, 0, mWidth, imgH02);
+				rect = new Rect(mWidth - imgW, imgH + gap, mWidth, imgH * 2 + gap);
 				tempRects[2] = rect;
-				rect = new Rect(0, height - imgH01, imgW01, height);
+				rect = new Rect(0, height - imgH, imgW, height);
 				tempRects[3] = rect;
-				rect = new Rect(gap + imgW01, height - imgH01, gap + imgW01 * 2, height);
+				rect = new Rect(gap + imgW, height - imgH, gap + imgW * 2, height);
 				tempRects[4] = rect;
-				rect = new Rect(imgW02 + gap, height - imgH01, mWidth, height);
+				rect = new Rect(mWidth - imgW, height - imgH, mWidth, height);
 				tempRects[5] = rect;
 			}
-			// 见/doc/6_2.png
 			else if (random == 2) {
-				rect = new Rect(0, 0, imgW02, imgH02);
+				rect = new Rect(0, 0, imgW, imgH);
 				tempRects[0] = rect;
-				rect = new Rect(imgW02 + gap, 0, mWidth, imgH01);
+				rect = new Rect(imgW + gap, 0, imgW * 2 + gap, imgH);
 				tempRects[1] = rect;
-				rect = new Rect(gap + imgW02, imgH01 + gap, mWidth, imgH01 * 2 + gap);
+				rect = new Rect(mWidth - imgW, 0, mWidth, imgH);
 				tempRects[2] = rect;
-				rect = new Rect(0, height - imgH01, imgW01, height);
+				rect = new Rect(0, imgH + gap, imgW, imgH * 2 + gap);
 				tempRects[3] = rect;
-				rect = new Rect(gap + imgW01, height - imgH01, gap + imgW01 * 2, height);
+				rect = new Rect(0, height - imgH, imgW, height);
 				tempRects[4] = rect;
-				rect = new Rect(imgW02 + gap, height - imgH01, mWidth, height);
-				tempRects[5] = rect;
-			}
-			// 见/doc/6_3.png
-			else if (random == 3) {
-				rect = new Rect(0, 0, imgW01, imgH01);
-				tempRects[0] = rect;
-				rect = new Rect(gap + imgW01, 0, imgW01 * 2 + gap, imgH01);
-				tempRects[1] = rect;
-				rect = new Rect(mWidth - imgW01, 0, mWidth, imgH01);
-				tempRects[2] = rect;
-				rect = new Rect(0, imgH01 + gap, imgW01, imgH01 * 2 + gap);
-				tempRects[3] = rect;
-				rect = new Rect(0, height - imgH01, imgW01, height);
-				tempRects[4] = rect;
-				rect = new Rect(imgW01 + gap, imgH01 + gap, mWidth, height);
+				rect = new Rect(imgW + gap, imgH + gap, mWidth, height);
 				tempRects[5] = rect;
 			}
 			layoutParams = new LinearLayout.LayoutParams(mWidth, height);
 			break;
 		case 7:
-			imgW01 = Math.round((mWidth - 2 * gap) * 1.0f / 3.0f);
-			imgH01 = Math.round(imgW01 * 4.0f / 3.0f);
-			
-			imgW02 = mWidth;
-			imgH02 = Math.round(imgW02 * 3.0f / 4.0f);
-			
-			height = imgH01 * 2 + imgH02 + gap * 2;
-			
-			rect = new Rect(0, 0, imgW01, imgH01);
+			imgW = (mWidth - gap * 2) / 3;
+			imgH = imgW;
+
+			imgW01 = (mWidth - gap * 3) / 4;
+			imgH01 = imgW01;
+
+			height = imgH * 2 + imgH01 + gap * 2;
+
+			rect = new Rect(0, 0, imgW * 2 + gap, imgH * 2 + gap);
 			tempRects[0] = rect;
-			rect = new Rect(gap + imgW01, 0, imgW01 * 2 + gap, imgH01);
+			rect = new Rect(mWidth - imgW, 0, mWidth, imgH);
 			tempRects[1] = rect;
-			rect = new Rect(mWidth - imgW01, 0, mWidth, imgH01);
+			rect = new Rect(mWidth - imgW, imgH + gap, mWidth, imgH * 2 + gap);
 			tempRects[2] = rect;
 			
-			rect = new Rect(0, imgH01 + gap, imgW02, imgH01 + gap + imgH02);
+			rect = new Rect(0, height - imgH01, imgW01, height);
 			tempRects[3] = rect;
-			
-			rect = new Rect(0, imgH01 + gap * 2 + imgH02, imgW01, height);
+			rect = new Rect(imgW01 + gap, height - imgH01, imgW01 * 2 + gap, height);
 			tempRects[4] = rect;
-			rect = new Rect(gap + imgW01, imgH01 + gap * 2 + imgH02, imgW01 * 2 + gap, height);
+			rect = new Rect(imgW01 * 2 + gap * 2, height - imgH01, imgH01 * 3 + gap * 2, height);
 			tempRects[5] = rect;
-			rect = new Rect(mWidth - imgW01, imgH01 + gap * 2 + imgH02, mWidth, height);
+			rect = new Rect(mWidth - imgW01, height - imgH01, mWidth, height);
 			tempRects[6] = rect;
 			
 			layoutParams = new LinearLayout.LayoutParams(mWidth, height);
 			break;
 		case 8:
-			imgW01 = Math.round((mWidth - 2 * gap) * 1.0f / 3.0f);
-			imgH01 = Math.round(imgW01 * 4.0f / 3.0f);
+			imgW = (mWidth - gap * 3) / 4;
+			imgH = imgW;
+			height = imgH * 4 + gap * 3;
 			
-			imgW02 = Math.round((mWidth - gap) * 1.0f / 2.0f);
-			imgH02 = Math.round(imgW02 * 4.0f / 3.0f);
-			
-			height = imgH01 * 2 + imgH02 + gap * 2;
-			
-			rect = new Rect(0, 0, imgW01, imgH01);
+			rect = new Rect(0, 0, mWidth - imgW - gap, height - imgH - gap);
 			tempRects[0] = rect;
-			rect = new Rect(gap + imgW01, 0, imgW01 * 2 + gap, imgH01);
+
+			rect = new Rect(mWidth - imgW, 0, mWidth, imgH);
 			tempRects[1] = rect;
-			rect = new Rect(mWidth - imgW01, 0, mWidth, imgH01);
+			rect = new Rect(mWidth - imgW, imgH + gap, mWidth, imgH * 2 + gap);
 			tempRects[2] = rect;
-			
-			rect = new Rect(0, imgH01 + gap, imgW02, imgH01 + gap + imgH02);
+			rect = new Rect(mWidth - imgW, imgH * 2 + gap * 2, mWidth, imgH * 3 + gap * 2);
 			tempRects[3] = rect;
-			rect = new Rect(imgW02 + gap, imgH01 + gap, mWidth, imgH01 + gap + imgH02);
+
+			rect = new Rect(0, height - imgH, imgW, height);
 			tempRects[4] = rect;
-			
-			rect = new Rect(0, imgH01 + gap * 2 + imgH02, imgW01, height);
+			rect = new Rect(imgW + gap, height - imgH, imgW * 2 + gap, height);
 			tempRects[5] = rect;
-			rect = new Rect(gap + imgW01, imgH01 + gap * 2 + imgH02, imgW01 * 2 + gap, height);
+			rect = new Rect(imgW * 2 + gap * 2, height - imgH, imgW * 3 + gap * 2, height);
 			tempRects[6] = rect;
-			rect = new Rect(mWidth - imgW01, imgH01 + gap * 2 + imgH02, mWidth, height);
+			rect = new Rect(imgW * 3 + gap * 3, height - imgH, mWidth, height);
 			tempRects[7] = rect;
 			
 			layoutParams = new LinearLayout.LayoutParams(mWidth, height);
 			break;
 		case 9:
-			imgW01 = Math.round((mWidth - 2 * gap) * 1.0f / 3.0f);
-			imgH01 = Math.round(imgW01 * 4.0f / 3.0f);
+			imgW = (mWidth - gap * 2) / 3;
+			imgH = imgW;
+			height = imgH * 3 + gap * 2;
 			
-			height = imgH01 * 2 + imgH01 + gap * 2;
-			
-			rect = new Rect(0, 0, imgW01, imgH01);
+			rect = new Rect(0, 0, imgW, imgH);
 			tempRects[0] = rect;
-			rect = new Rect(gap + imgW01, 0, imgW01 * 2 + gap, imgH01);
+			rect = new Rect(gap + imgW, 0, imgW * 2 + gap, imgH);
 			tempRects[1] = rect;
-			rect = new Rect(mWidth - imgW01, 0, mWidth, imgH01);
+			rect = new Rect(mWidth - imgW, 0, mWidth, imgH);
 			tempRects[2] = rect;
 			
-			rect = new Rect(0, imgH01 + gap, imgW01, imgH01 * 2 + gap);
+			rect = new Rect(0, imgH + gap, imgW, imgH * 2 + gap);
 			tempRects[3] = rect;
-			rect = new Rect(gap + imgW01, imgH01 + gap, imgW01 * 2 + gap, imgH01 * 2 + gap);
+			rect = new Rect(gap + imgW, imgH + gap, imgW * 2 + gap, imgH * 2 + gap);
 			tempRects[4] = rect;
-			rect = new Rect(mWidth - imgW01, imgH01 + gap, mWidth, imgH01 * 2 + gap);
+			rect = new Rect(mWidth - imgW, imgH + gap, mWidth, imgH * 2 + gap);
 			tempRects[5] = rect;
 			
-			rect = new Rect(0, imgH01 + gap * 2 + imgH01, imgW01, height);
+			rect = new Rect(0, imgH + gap * 2 + imgH, imgW, height);
 			tempRects[6] = rect;
-			rect = new Rect(gap + imgW01, imgH01 + gap * 2 + imgH01, imgW01 * 2 + gap, height);
+			rect = new Rect(gap + imgW, imgH + gap * 2 + imgH, imgW * 2 + gap, height);
 			tempRects[7] = rect;
-			rect = new Rect(mWidth - imgW01, imgH01 + gap * 2 + imgH01, mWidth, height);
+			rect = new Rect(mWidth - imgW, imgH + gap * 2 + imgH, mWidth, height);
 			tempRects[8] = rect;
 			
 			layoutParams = new LinearLayout.LayoutParams(mWidth, height);
@@ -634,9 +611,7 @@ public class TimelinePicsView extends ViewGroup implements BitmapOwner {
                 }
 				BitmapLoader.getInstance().display(this, url, imgView, config);
 				
-				if (bizFragment != null) {
-					bizFragment.previousPics(imgView, mStatusContent, i);
-				}
+				BizFragment.createBizFragment((Activity) getContext()).previousPics(imgView, mStatusContent, i);
 			}
 		}
 	}
@@ -730,8 +705,7 @@ public class TimelinePicsView extends ViewGroup implements BitmapOwner {
 		}
 	}
 	
-	public void setPics(StatusContent status, BizFragment bizFragment, ABaseFragment ownerFragment) {
-		this.bizFragment = bizFragment;
+	public void setPics(StatusContent status, ABaseFragment ownerFragment) {
 		this.ownerFragment = ownerFragment;
 		
 		boolean replace = true;
@@ -813,10 +787,8 @@ public class TimelinePicsView extends ViewGroup implements BitmapOwner {
         if (ownerFragment == null)
             return large;
 
-		// 强制关闭
-        return large && false;
-//				&& (ownerFragment instanceof TimelineCommentFragment ||
-//                ownerFragment instanceof TimelineRepostFragment);
+        return large &&
+				(ownerFragment instanceof TimelineDefFragment || ownerFragment instanceof TimelineGroupsFragment || ownerFragment instanceof ProfileTimelineFragment);
     }
 
 	@Override

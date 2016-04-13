@@ -7,12 +7,13 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 
+import com.umeng.analytics.MobclickAgent;
+
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.common.utils.Utils;
 import org.aisen.android.common.utils.ViewUtils;
 import org.aisen.android.ui.activity.basic.BaseActivity;
-
 import org.aisen.weibo.sina.R;
 
 public class VersionSettingsFragment extends BasePreferenceFragment
@@ -35,12 +36,12 @@ public class VersionSettingsFragment extends BasePreferenceFragment
 	
 	private void refreshVersion() {
 		if (pVersion == null) {
-			pVersion = (Preference) (Preference) getPreferenceManager().findPreference("pVersion");
+			pVersion = getPreferenceManager().findPreference("pVersion");
 			pVersion.setOnPreferenceClickListener(this);
 		}
 		
 		if (pGrade == null) {
-			pGrade = (Preference) (Preference) getPreferenceManager().findPreference("pGrade");
+			pGrade = getPreferenceManager().findPreference("pGrade");
 			pGrade.setOnPreferenceClickListener(this);
 		}
 		
@@ -52,6 +53,8 @@ public class VersionSettingsFragment extends BasePreferenceFragment
 	public boolean onPreferenceClick(Preference preference) {
 		if ("pVersion".equals(preference.getKey())) {
             showVersionDialog(getActivity());
+
+			MobclickAgent.onEvent(getActivity(), "show_version");
         }
 		else if ("pGrade".equals(preference.getKey())) {
 			startMarket();

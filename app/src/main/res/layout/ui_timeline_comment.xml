@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ListView
+    android:id="@+id/listView" xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:cacheColorHint="#00000000" android:divider="@color/divider_timeline_item"
+    android:dividerHeight="1dip" android:fadingEdge="none" android:fastScrollEnabled="false" android:footerDividersEnabled="true" android:headerDividersEnabled="false"
+    android:smoothScrollbar="true"/>
+<!--因为包裹在ScrollView里面，没法使用RecycleView-->

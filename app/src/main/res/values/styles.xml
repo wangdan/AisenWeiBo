@@ -1,4 +1,5 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
     <style name="GNowProgressBar" parent="SmoothProgressBar">
         <item name="spb_stroke_separator_length">8dp</item>
         <item name="spb_sections_count">2</item>
@@ -12,10 +13,25 @@
         <item name="spb_progressiveStart_activated">true</item>
         <item name="spb_generate_background_with_colors">false</item>
     </style>
-    <style name="timelinePicture">
-        <item name="android:scaleType">centerCrop</item>
+
+    <style name="main_overflow_menus" parent="android:Theme.Holo.Light.Dialog">
+        <item name="android:listPreferredItemHeightSmall">48dip</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
+    <style name="TextAppearance.Body2" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
+    <style name="TextAppearance.Body1" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
 
     <style name="hintText">
         <item name="android:textColor">@drawable/hint</item>
@@ -23,7 +39,6 @@
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
     </style>
-
 
     <style name="TextTitle">
         <item name="android:textColor">?attr/text_title</item>
@@ -51,4 +66,58 @@
     <style name="TextBody.Inverse">
         <item name="android:textColor">@color/text_87_inverse</item>
     </style>
+
+    <style name="Widget.MaterialSheetFab.MainFab" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/fab_spacing</item>
+        <item name="android:layout_marginBottom">@dimen/fab_spacing</item>
+        <item name="android:layout_marginLeft">@dimen/fab_spacing</item>
+        <item name="android:layout_marginRight">@dimen/fab_spacing</item>
+        <!--默认状态下FAB的阴影大小-->
+        <item name="android:elevation" tools:ignore="NewApi">@dimen/fab_elevation</item>
+        <!--设置FAB的图标，Google建议符合Design设计的该图标大小为24dp-->
+        <item name="android:src">@drawable/ic_list_white_48dp</item>
+        <!--设置FAB的大小，该属性有两个值，分别为normal和mini，对应的FAB大小分别为56dp和40dp-->
+        <item name="fabSize">normal</item>
+        <!--该属性尤为重要，如果不设置0dp，那么在4.1的sdk上FAB会显示为正方形，而且在5.0以后的sdk没有阴影效果-->
+        <item name="borderWidth">0dp</item>
+        <!--FAB的背景颜色-->
+        <!--<item name="backgroundTint"></item>-->
+        <!--FAB点击时的背景颜色-->
+        <!--<item name="rippleColor"></item>-->
+        <!--点击时候FAB的阴影大小-->
+        <!--<item name="pressedTranslationZ"></item>-->
+    </style>
+
+    <style name="Widget.MaterialSheetFab.Sheet" parent="">
+        <item name="android:layout_marginTop">@dimen/sheet_spacing</item>
+        <item name="android:layout_marginBottom">@dimen/sheet_spacing</item>
+        <item name="android:layout_marginLeft">@dimen/sheet_spacing</item>
+        <item name="android:layout_marginRight">@dimen/sheet_spacing</item>
+        <item name="cardBackgroundColor">@color/comm_white</item>
+        <item name="cardElevation">@dimen/fab_sheet_elevation</item>
+        <item name="cardMaxElevation">@dimen/fab_sheet_elevation</item>
+        <item name="contentPadding">-3dp</item>
+    </style>
+
+    <style name="Widget.MaterialSheetFab.SheetList" parent="">
+        <item name="android:divider">@null</item>
+        <item name="android:dividerHeight">0dip</item>
+        <item name="android:listSelector">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="timelinePicture">
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+
+    <style name="Widget.MDButton" parent="">
+        <item name="android:textSize">14sp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingRight">2dp</item>
+    </style>
+
 </resources>

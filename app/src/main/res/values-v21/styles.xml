@@ -1,0 +1,10 @@
+<resources>
+
+    <style name="main_overflow_menus" parent="android:Theme.Material.Light.Dialog">
+        <item name="android:listPreferredItemHeightSmall">48dip</item>
+        <item name="android:windowIsFloating">false</item>
+        <!--<item name="android:windowContentOverlay">@null</item>-->
+        <item name="android:windowCloseOnTouchOutside">true</item>
+    </style>
+
+</resources>

@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--定义所有Theme的基本属性-->
+    <style name="AppCommonTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--默认主题色-->
+        <item name="themeColor">@color/md_teal_500</item>
+        <item name="themeStatusbarColor">@color/md_teal_700</item>
+        <!--ActionBar颜色-->
+        <item name="colorPrimary">?attr/themeColor</item>
+        <!--StatusBar颜色-->
+        <item name="colorPrimaryDark">?attr/themeStatusbarColor</item>
+        <item name="colorAccent">?attr/themeColor</item>
+
+        <item name="theme_background">@color/material_grey_100</item>
+
+        <!--默认不适配，只有在19的时候在适配-->
+        <item name="fitSystemWindows">false</item>
+        <item name="menuHeaderHeight">165dip</item>
+        <item name="menuHeaderPaddingTop">20dip</item>
+
+        <!--timeline-->
+        <item name="text_title">@color/text_100</item>
+        <item name="text_subhead">@color/text_54</item>
+        <item name="text_body">@color/text_80</item>
+
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <!--Values-vxx之间的差异属性-->
+    <style name="AppBaseTheme" parent="AppCommonTheme">
+        <item name="android:selectableItemBackground">@drawable/selector_list_holo</item>
+        <item name="MDbuttonSelector">@drawable/selector_list_holo</item>
+    </style>
+
+    <style name="AppTheme" parent="AppBaseTheme">
+    </style>
+
+    <style name="AppTheme.Main">
+        <item name="android:windowIsTranslucent">false</item>
+    </style>
+
+    <style name="AppTheme.Search">
+        <item name="android:windowBackground">@color/comm_transparent</item>
+    </style>
+
+    <style name="AppTheme.Profile">
+    </style>
+
+    <style name="AppTheme.Pics">
+        <item name="themeColor">@color/comm_black</item>
+    </style>
+
+
+    <!-- red -->
+    <style name="AppTheme.Red">
+        <item name="themeColor">@color/md_red_500</item>
+        <item name="themeStatusbarColor">@color/md_red_700</item>
+    </style>
+
+    <style name="AppTheme.Main.Red">
+        <item name="themeColor">@color/md_red_500</item>
+        <item name="themeStatusbarColor">@color/md_red_700</item>
+    </style>
+
+    <style name="AppTheme.Search.Red">
+        <item name="themeColor">@color/md_red_500</item>
+        <item name="themeStatusbarColor">@color/md_red_700</item>
+    </style>
+
+    <style name="AppTheme.Profile.Red">
+        <item name="themeColor">@color/md_red_500</item>
+        <item name="themeStatusbarColor">@color/md_red_700</item>
+    </style>
+
+    <!-- pink -->
+    <style name="AppTheme.Pink">
+        <item name="themeColor">@color/md_pink_500</item>
+        <item name="themeStatusbarColor">@color/md_pink_700</item>
+    </style>
+
+    <style name="AppTheme.Main.Pink">
+        <item name="themeColor">@color/md_pink_500</item>
+        <item name="themeStatusbarColor">@color/md_pink_700</item>
+    </style>
+
+    <style name="AppTheme.Profile.Pink">
+        <item name="themeColor">@color/md_pink_500</item>
+        <item name="themeStatusbarColor">@color/md_pink_700</item>
+    </style>
+
+    <style name="AppTheme.Search.Pink">
+        <item name="themeColor">@color/md_pink_500</item>
+        <item name="themeStatusbarColor">@color/md_pink_700</item>
+    </style>
+
+    <!-- purple -->
+    <style name="AppTheme.Purple">
+        <item name="themeColor">@color/md_purple_500</item>
+        <item name="themeStatusbarColor">@color/md_purple_700</item>
+    </style>
+
+    <style name="AppTheme.Main.Purple">
+        <item name="themeColor">@color/md_purple_500</item>
+        <item name="themeStatusbarColor">@color/md_purple_700</item>
+    </style>
+
+    <style name="AppTheme.Profile.Purple">
+        <item name="themeColor">@color/md_purple_500</item>
+        <item name="themeStatusbarColor">@color/md_purple_700</item>
+    </style>
+
+    <style name="AppTheme.Search.Purple">
+        <item name="themeColor">@color/md_purple_500</item>
+        <item name="themeStatusbarColor">@color/md_purple_700</item>
+    </style>
+
+    <!-- deep_purple -->
+    <style name="AppTheme.DeepPurple">
+        <item name="themeColor">@color/md_deep_purple_500</item>
+        <item name="themeStatusbarColor">@color/md_deep_purple_700</item>
+    </style>
+
+    <style name="AppTheme.Main.DeepPurple">
+        <item name="themeColor">@color/md_deep_purple_500</item>
+        <item name="themeStatusbarColor">@color/md_deep_purple_700</item>
+    </style>
+
+    <style name="AppTheme.Profile.DeepPurple">
+        <item name="themeColor">@color/md_deep_purple_500</item>
+        <item name="themeStatusbarColor">@color/md_deep_purple_700</item>
+    </style>
+
+    <style name="AppTheme.Search.DeepPurple">
+        <item name="themeColor">@color/md_deep_purple_500</item>
+        <item name="themeStatusbarColor">@color/md_deep_purple_700</item>
+    </style>
+
+    <!-- indigo -->
+    <style name="AppTheme.Indigo">
+        <item name="themeColor">@color/md_indigo_500</item>
+        <item name="themeStatusbarColor">@color/md_indigo_700</item>
+    </style>
+
+    <style name="AppTheme.Main.Indigo">
+        <item name="themeColor">@color/md_indigo_500</item>
+        <item name="themeStatusbarColor">@color/md_indigo_700</item>
+    </style>
+
+    <style name="AppTheme.Profile.Indigo">
+        <item name="themeColor">@color/md_indigo_500</item>
+        <item name="themeStatusbarColor">@color/md_indigo_700</item>
+    </style>
+
+    <style name="AppTheme.Search.Indigo">
+        <item name="themeColor">@color/md_indigo_500</item>
+        <item name="themeStatusbarColor">@color/md_indigo_700</item>
+    </style>
+
+    <!-- blue -->
+    <style name="AppTheme.Blue">
+        <item name="themeColor">@color/md_blue_500</item>
+        <item name="themeStatusbarColor">@color/md_blue_700</item>
+    </style>
+
+    <style name="AppTheme.Main.Blue">
+        <item name="themeColor">@color/md_blue_500</item>
+        <item name="themeStatusbarColor">@color/md_blue_700</item>
+    </style>
+
+    <style name="AppTheme.Profile.Blue">
+        <item name="themeColor">@color/md_blue_500</item>
+        <item name="themeStatusbarColor">@color/md_blue_700</item>
+    </style>
+
+    <style name="AppTheme.Search.Blue">
+        <item name="themeColor">@color/md_blue_500</item>
+        <item name="themeStatusbarColor">@color/md_blue_700</item>
+    </style>
+
+    <!-- light_blue -->
+    <style name="AppTheme.LightBlue">
+        <item name="themeColor">@color/md_light_blue_500</item>
+        <item name="themeStatusbarColor">@color/md_light_blue_700</item>
+    </style>
+
+    <style name="AppTheme.Main.LightBlue">
+        <item name="themeColor">@color/md_light_blue_500</item>
+        <item name="themeStatusbarColor">@color/md_light_blue_700</item>
+    </style>
+
+    <style name="AppTheme.Profile.LightBlue">
+        <item name="themeColor">@color/md_light_blue_500</item>
+        <item name="themeStatusbarColor">@color/md_light_blue_700</item>
+    </style>
+
+    <style name="AppTheme.Search.LightBlue">
+        <item name="themeColor">@color/md_light_blue_500</item>
+        <item name="themeStatusbarColor">@color/md_light_blue_700</item>
+    </style>
+
+    <!-- cyan -->
+    <style name="AppTheme.Cyan">
+        <item name="themeColor">@color/md_cyan_500</item>
+        <item name="themeStatusbarColor">@color/md_cyan_700</item>
+    </style>
+
+    <style name="AppTheme.Main.Cyan">
+        <item name="themeColor">@color/md_cyan_500</item>
+        <item name="themeStatusbarColor">@color/md_cyan_700</item>
+    </style>
+
+    <style name="AppTheme.Profile.Cyan">
+        <item name="themeColor">@color/md_cyan_500</item>
+        <item name="themeStatusbarColor">@color/md_cyan_700</item>
+    </style>
+
+    <style name="AppTheme.Search.Cyan">
+        <item name="themeColor">@color/md_cyan_500</item>
+        <item name="themeStatusbarColor">@color/md_cyan_700</item>
+    </style>
+
+    <!-- teal -->
+    <style name="AppTheme.Teal">
+        <item name="themeColor">@color/md_teal_500</item>
+        <item name="themeStatusbarColor">@color/md_teal_700</item>
+    </style>
+
+    <style name="AppTheme.Main.Teal">
+        <item name="themeColor">@color/md_teal_500</item>
+        <item name="themeStatusbarColor">@color/md_teal_700</item>
+    </style>
+
+    <style name="AppTheme.Profile.Teal">
+        <item name="themeColor">@color/md_teal_500</item>
+        <item name="themeStatusbarColor">@color/md_teal_700</item>
+    </style>
+
+    <style name="AppTheme.Search.Teal">
+        <item name="themeColor">@color/md_teal_500</item>
+        <item name="themeStatusbarColor">@color/md_teal_700</item>
+    </style>
+
+    <!-- green -->
+    <style name="AppTheme.Green">
+        <item name="themeColor">@color/md_green_500</item>
+        <item name="themeStatusbarColor">@color/md_green_700</item>
+    </style>
+
+    <style name="AppTheme.Main.Green">
+        <item name="themeColor">@color/md_green_500</item>
+        <item name="themeStatusbarColor">@color/md_green_700</item>
+    </style>
+
+    <style name="AppTheme.Profile.Green">
+        <item name="themeColor">@color/md_green_500</item>
+        <item name="themeStatusbarColor">@color/md_green_700</item>
+    </style>
+
+    <style name="AppTheme.Search.Green">
+        <item name="themeColor">@color/md_green_500</item>
+        <item name="themeStatusbarColor">@color/md_green_700</item>
+    </style>
+
+    <!-- light_green -->
+    <style name="AppTheme.LightGreen">
+        <item name="themeColor">@color/md_light_green_500</item>
+        <item name="themeStatusbarColor">@color/md_light_green_700</item>
+    </style>
+
+    <style name="AppTheme.Main.LightGreen">
+        <item name="themeColor">@color/md_light_green_500</item>
+        <item name="themeStatusbarColor">@color/md_light_green_700</item>
+    </style>
+
+    <style name="AppTheme.Profile.LightGreen">
+        <item name="themeColor">@color/md_light_green_500</item>
+        <item name="themeStatusbarColor">@color/md_light_green_700</item>
+    </style>
+
+    <style name="AppTheme.Search.LightGreen">
+        <item name="themeColor">@color/md_light_green_500</item>
+        <item name="themeStatusbarColor">@color/md_light_green_700</item>
+    </style>
+
+    <!-- lime -->
+    <style name="AppTheme.Lime">
+        <item name="themeColor">@color/md_lime_500</item>
+        <item name="themeStatusbarColor">@color/md_lime_700</item>
+    </style>
+
+    <style name="AppTheme.Main.Lime">
+        <item name="themeColor">@color/md_lime_500</item>
+        <item name="themeStatusbarColor">@color/md_lime_700</item>
+    </style>
+
+    <style name="AppTheme.Profile.Lime">
+        <item name="themeColor">@color/md_lime_500</item>
+        <item name="themeStatusbarColor">@color/md_lime_700</item>
+    </style>
+
+    <style name="AppTheme.Search.Lime">
+        <item name="themeColor">@color/md_lime_500</item>
+        <item name="themeStatusbarColor">@color/md_lime_700</item>
+    </style>
+
+    <!-- yellow -->
+    <style name="AppTheme.Yellow">
+        <item name="themeColor">@color/md_yellow_500</item>
+        <item name="themeStatusbarColor">@color/md_yellow_700</item>
+    </style>
+
+    <style name="AppTheme.Main.Yellow">
+        <item name="themeColor">@color/md_yellow_500</item>
+        <item name="themeStatusbarColor">@color/md_yellow_700</item>
+    </style>
+
+    <style name="AppTheme.Profile.Yellow">
+        <item name="themeColor">@color/md_yellow_500</item>
+        <item name="themeStatusbarColor">@color/md_yellow_700</item>
+    </style>
+
+    <style name="AppTheme.Search.Yellow">
+        <item name="themeColor">@color/md_yellow_500</item>
+        <item name="themeStatusbarColor">@color/md_yellow_700</item>
+    </style>
+
+    <!-- amber -->
+    <style name="AppTheme.Amber">
+        <item name="themeColor">@color/md_amber_500</item>
+        <item name="themeStatusbarColor">@color/md_amber_700</item>
+    </style>
+
+    <style name="AppTheme.Main.Amber">
+        <item name="themeColor">@color/md_amber_500</item>
+        <item name="themeStatusbarColor">@color/md_amber_700</item>
+    </style>
+
+    <style name="AppTheme.Profile.Amber">
+        <item name="themeColor">@color/md_amber_500</item>
+        <item name="themeStatusbarColor">@color/md_amber_700</item>
+    </style>
+
+    <style name="AppTheme.Search.Amber">
+        <item name="themeColor">@color/md_amber_500</item>
+        <item name="themeStatusbarColor">@color/md_amber_700</item>
+    </style>
+
+    <!-- orange -->
+    <style name="AppTheme.Orange">
+        <item name="themeColor">@color/md_orange_500</item>
+        <item name="themeStatusbarColor">@color/md_orange_700</item>
+    </style>
+
+    <style name="AppTheme.Main.Orange">
+        <item name="themeColor">@color/md_orange_500</item>
+        <item name="themeStatusbarColor">@color/md_orange_700</item>
+    </style>
+
+    <style name="AppTheme.Profile.Orange">
+        <item name="themeColor">@color/md_orange_500</item>
+        <item name="themeStatusbarColor">@color/md_orange_700</item>
+    </style>
+
+    <style name="AppTheme.Search.Orange">
+        <item name="themeColor">@color/md_orange_500</item>
+        <item name="themeStatusbarColor">@color/md_orange_700</item>
+    </style>
+
+    <!-- deep_orange -->
+    <style name="AppTheme.DeepOrange">
+        <item name="themeColor">@color/md_deep_orange_500</item>
+        <item name="themeStatusbarColor">@color/md_deep_orange_700</item>
+    </style>
+
+    <style name="AppTheme.Main.DeepOrange">
+        <item name="themeColor">@color/md_deep_orange_500</item>
+        <item name="themeStatusbarColor">@color/md_deep_orange_700</item>
+    </style>
+
+    <style name="AppTheme.Profile.DeepOrange">
+        <item name="themeColor">@color/md_deep_orange_500</item>
+        <item name="themeStatusbarColor">@color/md_deep_orange_700</item>
+    </style>
+
+    <style name="AppTheme.Search.DeepOrange">
+        <item name="themeColor">@color/md_deep_orange_500</item>
+        <item name="themeStatusbarColor">@color/md_deep_orange_700</item>
+    </style>
+
+    <!-- brown -->
+    <style name="AppTheme.Brown">
+        <item name="themeColor">@color/md_brown_500</item>
+        <item name="themeStatusbarColor">@color/md_brown_700</item>
+    </style>
+
+    <style name="AppTheme.Main.Brown">
+        <item name="themeColor">@color/md_brown_500</item>
+        <item name="themeStatusbarColor">@color/md_brown_700</item>
+    </style>
+
+    <style name="AppTheme.Profile.Brown">
+        <item name="themeColor">@color/md_brown_500</item>
+        <item name="themeStatusbarColor">@color/md_brown_700</item>
+    </style>
+
+    <style name="AppTheme.Search.Brown">
+        <item name="themeColor">@color/md_brown_500</item>
+        <item name="themeStatusbarColor">@color/md_brown_700</item>
+    </style>
+
+    <!-- grey -->
+    <style name="AppTheme.Grey">
+        <item name="themeColor">@color/md_grey_500</item>
+        <item name="themeStatusbarColor">@color/md_grey_700</item>
+    </style>
+
+    <style name="AppTheme.Main.Grey">
+        <item name="themeColor">@color/md_grey_500</item>
+        <item name="themeStatusbarColor">@color/md_grey_700</item>
+    </style>
+
+    <style name="AppTheme.Profile.Grey">
+        <item name="themeColor">@color/md_grey_500</item>
+        <item name="themeStatusbarColor">@color/md_grey_700</item>
+    </style>
+
+    <style name="AppTheme.Search.Grey">
+        <item name="themeColor">@color/md_grey_500</item>
+        <item name="themeStatusbarColor">@color/md_grey_700</item>
+    </style>
+
+    <!-- blue_grey -->
+    <style name="AppTheme.BlueGrey">
+        <item name="themeColor">@color/md_blue_grey_500</item>
+        <item name="themeStatusbarColor">@color/md_blue_grey_700</item>
+    </style>
+
+    <style name="AppTheme.Main.BlueGrey">
+        <item name="themeColor">@color/md_blue_grey_500</item>
+        <item name="themeStatusbarColor">@color/md_blue_grey_700</item>
+    </style>
+
+    <style name="AppTheme.Profile.BlueGrey">
+        <item name="themeColor">@color/md_blue_grey_500</item>
+        <item name="themeStatusbarColor">@color/md_blue_grey_700</item>
+    </style>
+
+    <style name="AppTheme.Search.BlueGrey">
+        <item name="themeColor">@color/md_blue_grey_500</item>
+        <item name="themeStatusbarColor">@color/md_blue_grey_700</item>
+    </style>
+
+</resources>

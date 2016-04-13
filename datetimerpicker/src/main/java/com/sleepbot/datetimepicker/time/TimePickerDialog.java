@@ -198,7 +198,7 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
         mSelectHours = res.getString(R.string.select_hours);
         mMinutePickerDescription = res.getString(R.string.minute_picker_description);
         mSelectMinutes = res.getString(R.string.select_minutes);
-        mBlue = Utils.resolveColor(getActivity(), R.attr.theme_color, res.getColor(R.color.comm_blue));
+        mBlue = Utils.resolveColor(getActivity(), R.attr.themeColor, res.getColor(R.color.comm_blue));
         mBlack = res.getColor(R.color.numbers_text_color);
 
         mHourView = (TextView) view.findViewById(R.id.hours);

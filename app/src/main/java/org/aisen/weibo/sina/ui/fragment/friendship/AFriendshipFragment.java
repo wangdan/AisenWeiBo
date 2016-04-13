@@ -4,37 +4,34 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import org.aisen.android.component.bitmaploader.BitmapLoader;
-import org.aisen.android.component.container.FragmentContainerActivity;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
-import org.aisen.android.support.adapter.ABaseAdapter.AbstractItemView;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.support.paging.IPaging;
 import org.aisen.android.ui.activity.basic.BaseActivity;
-import org.aisen.android.ui.fragment.ABaseFragment;
-import org.aisen.android.ui.fragment.ARefreshFragment;
-import org.aisen.android.ui.fragment.AStripTabsFragment;
-
+import org.aisen.android.ui.fragment.AListSwipeRefreshFragment;
+import org.aisen.android.ui.fragment.ATabsFragment;
+import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
+import org.aisen.android.ui.fragment.itemview.IITemView;
+import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
-import org.aisen.weibo.sina.support.paging.FriendshipPagingProcessor;
-import org.aisen.weibo.sina.support.utils.AisenUtils;
-import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
-import org.aisen.weibo.sina.ui.fragment.basic.AWeiboRefreshListFragment;
-import org.aisen.weibo.sina.ui.fragment.basic.BizFragment;
-import org.aisen.weibo.sina.ui.fragment.profile.UserProfilePagerFragment;
-import org.aisen.weibo.sina.sinasdk.bean.AccessToken;
 import org.aisen.weibo.sina.sinasdk.bean.Friendship;
 import org.aisen.weibo.sina.sinasdk.bean.Token;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
+import org.aisen.weibo.sina.support.paging.FriendshipPaging;
+import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
+import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
+import org.aisen.weibo.sina.ui.fragment.profile.ProfilePagerFragment;
 
 import java.util.List;
 
@@ -44,8 +41,8 @@ import java.util.List;
  * @author wangdan
  * 
  */
-public abstract class AFriendshipFragment extends AWeiboRefreshListFragment<WeiBoUser, Friendship>
-												implements OnItemClickListener {
+public abstract class AFriendshipFragment extends AListSwipeRefreshFragment<WeiBoUser, Friendship>
+												implements OnItemClickListener, ATabsFragment.ITabInitData {
 
 	private WeiBoUser mUser;
 	
@@ -82,26 +79,55 @@ public abstract class AFriendshipFragment extends AWeiboRefreshListFragment<WeiB
 	}
 	
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		int header = ((ListView) getRefreshView()).getHeaderViewsCount();
-		UserProfilePagerFragment.launch(getActivity(), getAdapterItems().get(position - header));
+		int header = getRefreshView().getHeaderViewsCount();
+		ProfilePagerFragment.launch(getActivity(), getAdapterItems().get(position - header));
 	}
 
 	@Override
-	protected AbstractItemView<WeiBoUser> newItemView() {
-		return new FriendshipItemView();
-	}
-	
-	@Override
-	protected IPaging<WeiBoUser, Friendship> configPaging() {
-		return new FriendshipPagingProcessor();
+	public IItemViewCreator<WeiBoUser> configItemViewCreator() {
+		return new IItemViewCreator<WeiBoUser>() {
+
+			@Override
+			public View newContentView(LayoutInflater inflater, ViewGroup parent, int viewType) {
+				return inflater.inflate(R.layout.item_friendship, parent, false);
+			}
+
+			@Override
+			public IITemView<WeiBoUser> newItemView(View convertView, int viewType) {
+				return new FriendshipItemView(convertView);
+			}
+
+		};
 	}
 
 	@Override
-	protected void requestData(ARefreshFragment.RefreshMode mode) {
-		new FriendshipTask(mode == ARefreshFragment.RefreshMode.refresh ? ARefreshFragment.RefreshMode.reset : mode).execute();
+	protected IPaging<WeiBoUser, Friendship> newPaging() {
+		return new FriendshipPaging();
 	}
-	
-	class FriendshipItemView extends AbstractItemView<WeiBoUser> {
+
+	@Override
+	public void requestData(RefreshMode mode) {
+		boolean load = true;
+
+		// 如果还没有加载过数据，切且显示的是当前的页面
+		if (getTaskCount(PAGING_TASK_ID) == 0) {
+			load = AisenUtils.checkTabsFragmentCanRequestData(this);
+		}
+
+		if (load) {
+			new FriendshipTask(mode == RefreshMode.refresh ? RefreshMode.reset : mode).execute();
+		}
+	}
+
+	@Override
+	public void onTabRequestData() {
+		// 如果还没有加载过数据，就开始加载
+		if (getTaskCount(PAGING_TASK_ID) == 0) {
+			requestData(RefreshMode.reset);
+		}
+	}
+
+	class FriendshipItemView extends ARecycleViewItemView<WeiBoUser> {
 
 		@ViewInject(id = R.id.imgPhoto)
 		ImageView imgPhoto;
@@ -109,40 +135,39 @@ public abstract class AFriendshipFragment extends AWeiboRefreshListFragment<WeiB
 		TextView txtName;
 		@ViewInject(id = R.id.txtRemark)
 		TextView txtRemark;
-        @ViewInject(id = R.id.divider)
-        View divider;
-		
-		@Override
-		public int inflateViewId() {
-			return R.layout.as_item_friendship;
+		@ViewInject(id = R.id.divider)
+		View divider;
+
+		public FriendshipItemView(View itemView) {
+			super(itemView);
 		}
 
 		@Override
-		public void bindingData(View convertView, WeiBoUser data) {
+		public void onBindData(View convertView, WeiBoUser data, int position) {
 			BitmapLoader.getInstance().display(AFriendshipFragment.this,
-							AisenUtils.getUserPhoto(data), imgPhoto, ImageConfigUtils.getLargePhotoConfig());
-            String name = data.getScreen_name();
-            if (!TextUtils.isEmpty(data.getRemark()))
-                name = String.format("%s(%s)", name, data.getRemark());
+					AisenUtils.getUserPhoto(data), imgPhoto, ImageConfigUtils.getLargePhotoConfig());
+			String name = data.getScreen_name();
+			if (!TextUtils.isEmpty(data.getRemark()))
+				name = String.format("%s(%s)", name, data.getRemark());
 			txtName.setText(name);
-            txtRemark.setVisibility(View.VISIBLE);
-            if (data.getStatus() != null)
-                txtRemark.setText(data.getStatus().getText());
-            else if (!TextUtils.isEmpty(data.getDescription()))
-                txtRemark.setText(data.getDescription());
-            else {
-                txtRemark.setVisibility(View.GONE);
-                txtRemark.setText("");
-            }
-            divider.setVisibility(getPosition() == getSize() - 1 ? View.GONE : View.VISIBLE);
+			txtRemark.setVisibility(View.VISIBLE);
+			if (data.getStatus() != null)
+				txtRemark.setText(data.getStatus().getText());
+			else if (!TextUtils.isEmpty(data.getDescription()))
+				txtRemark.setText(data.getDescription());
+			else {
+				txtRemark.setVisibility(View.GONE);
+				txtRemark.setText("");
+			}
+			divider.setVisibility(itemPosition() == getSize() - 1 ? View.GONE : View.VISIBLE);
 		}
-		
+
 	}
 	
-	class FriendshipTask extends PagingTask<Void, Void, Friendship> {
+	class FriendshipTask extends APagingTask<Void, Void, Friendship> {
 
-		public FriendshipTask(ARefreshFragment.RefreshMode mode) {
-			super("FriendshipTask", mode);
+		public FriendshipTask(RefreshMode mode) {
+			super(mode);
 		}
 
 		@Override
@@ -151,34 +176,18 @@ public abstract class AFriendshipFragment extends AWeiboRefreshListFragment<WeiB
 		}
 		
 		@Override
-		protected Friendship workInBackground(ARefreshFragment.RefreshMode mode, String previousPage, String nextPage,
+		protected Friendship workInBackground(RefreshMode mode, String previousPage, String nextPage,
 				Void... params) throws TaskException {
-			if (mode != ARefreshFragment.RefreshMode.update)
+			if (mode != RefreshMode.update)
 				nextPage = "0";
 			
-			Token token = AppContext.getToken();
-			// 是当前登录用户
-			if (mUser.getIdstr().equals(AppContext.getUser().getIdstr())) {
-                if (AppContext.getAccount().getAdvancedToken() != null)
-                    token = AppContext.getAccount().getAdvancedToken();
+			Token token = AppContext.getAccount().getAdvancedToken();
+			if (token == null) {
+				token = AppContext.getAccount().getAccessToken();
 			}
-			else if (mUser.getScreen_name().equals(AppContext.getUser().getScreen_name())) {
-                if (AppContext.getAccount().getAdvancedToken() != null)
-                    token = AppContext.getAccount().getAdvancedToken();
-			}
-			else {
-				if (AppContext.getAdvancedToken() != null) {
-					AccessToken accessToken = AppContext.getAdvancedToken();
-					
-					token = new Token();
-					token.setToken(accessToken.getToken());
-					token.setSecret(accessToken.getSecret());
-				}
-			}
-			
 			Friendship resut = getFriendship(this, mode, previousPage, nextPage, token, params);
 			if (resut.getNext_cursor() <= 0)
-				resut.setNoMore(true);
+				resut.setEndPaging(true);
 			
 			return resut;
 		}
@@ -187,16 +196,16 @@ public abstract class AFriendshipFragment extends AWeiboRefreshListFragment<WeiB
 		protected void onSuccess(Friendship result) {
 			super.onSuccess(result);
 			
-			if (result == null)
+			if (result == null || isDestory())
 				return;
 			
 			if (AFriendshipFragment.this instanceof FollowersFragment &&
-					AppContext.getUnreadCount() != null && AppContext.getUnreadCount().getFollower() > 0) {
-                if (result.isCache())
+					AppContext.getAccount().getUnreadCount() != null && AppContext.getAccount().getUnreadCount().getFollower() > 0) {
+                if (result.fromCache())
 				    requestDataDelay(AppSettings.REQUEST_DATA_DELAY);
 
 				if (getActivity() != null)
-					BizFragment.getBizFragment(AFriendshipFragment.this).remindSetCount(BizFragment.RemindType.follower);
+					BizFragment.createBizFragment(AFriendshipFragment.this).remindSetCount(BizFragment.RemindType.follower);
 			}
 		}
 		
@@ -210,12 +219,12 @@ public abstract class AFriendshipFragment extends AWeiboRefreshListFragment<WeiB
 		@Override
 		protected void onFinished() {
 			super.onFinished();
-			if (mode != ARefreshFragment.RefreshMode.update)
+			if (mode != RefreshMode.update)
 				getRefreshView().postDelayed(new Runnable() {
 					
 					@Override
 					public void run() {
-						((ListView) getRefreshView()).setSelectionFromTop(0, 0);
+						getRefreshView().setSelectionFromTop(0, 0);
 					}
 				}, 20);
 		}
@@ -226,10 +235,6 @@ public abstract class AFriendshipFragment extends AWeiboRefreshListFragment<WeiB
 		return mUser;
 	}
 	
-
-	@Override
-	public void onMovedToScrapHeap(View view) {
-	}
 
 	/**
 	 * Pager页面，用来设置actionbar的subtitle的提示信息
@@ -242,39 +247,17 @@ public abstract class AFriendshipFragment extends AWeiboRefreshListFragment<WeiB
 	
     @Override
     public boolean onToolbarDoubleClick() {
-        ABaseFragment aFragment = (ABaseFragment) getActivity().getFragmentManager().findFragmentByTag("MainFragment");
-        if (aFragment instanceof AStripTabsFragment) {
-            @SuppressWarnings("rawtypes")
-            AStripTabsFragment tabTitlePagerFragment = (AStripTabsFragment) aFragment;
-            if (tabTitlePagerFragment.getCurrentFragment() == this) {
-                requestDataDelay(200);
+		if (AisenUtils.checkTabsFragmentCanRequestData(this)) {
+			requestDataDelaySetRefreshing(AppSettings.REQUEST_DATA_DELAY);
+			getRefreshView().setSelectionFromTop(0, 0);
 
-                ((ListView) getRefreshView()).setSelectionFromTop(0, 0);
+			return true;
+		}
 
-                return true;
-            }
-            else
-                return false;
-        }
-
-        if (getActivity() instanceof FragmentContainerActivity) {
-            @SuppressWarnings("rawtypes")
-            AStripTabsFragment aTabTitlePagerFragment = (AStripTabsFragment) getActivity().getFragmentManager().findFragmentByTag(FragmentContainerActivity.FRAGMENT_TAG);
-            if (aTabTitlePagerFragment.getCurrentFragment() == this) {
-                requestDataDelay(200);
-
-                ((ListView) getRefreshView()).setSelectionFromTop(0, 0);
-
-                return true;
-            }
-            else
-                return false;
-        }
-
-        return super.onToolbarDoubleClick();
+		return false;
     }
 
-	abstract Friendship getFriendship(@SuppressWarnings("rawtypes") WorkTask task, ARefreshFragment.RefreshMode mode,
+	abstract Friendship getFriendship(@SuppressWarnings("rawtypes") WorkTask task, RefreshMode mode,
 											String previousPage, String nextPage,
 											Token extraToken, Void... params) throws TaskException;
 	

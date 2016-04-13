@@ -1,6 +1,8 @@
 package org.aisen.weibo.sina.sinasdk.bean;
 
-import org.aisen.orm.annotation.PrimaryKey;
+import android.text.TextUtils;
+
+import org.aisen.android.component.orm.annotation.PrimaryKey;
 
 import java.io.Serializable;
 
@@ -395,6 +397,9 @@ public class WeiBoUser implements Serializable {
 	}
 
 	public String getIdstr() {
+		if (TextUtils.isEmpty(idstr))
+			return id;
+
 		return idstr;
 	}
 

@@ -12,7 +12,7 @@ import org.aisen.android.network.task.WorkTask;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.support.bean.AccountBean;
-import org.aisen.weibo.sina.support.db.AccountDB;
+import org.aisen.weibo.sina.support.utils.AccountUtils;
 import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
 import org.aisen.weibo.sina.ui.widget.AisenTextView;
 
@@ -102,7 +102,7 @@ public class AdvancedItemFragment extends BasePreferenceFragment
 	public void onResume() {
 		super.onResume();
 		
-		if (AppContext.isLogedin())
+		if (AppContext.isLoggedIn())
 			new AccountTask().execute();
 	}
 	
@@ -115,7 +115,7 @@ public class AdvancedItemFragment extends BasePreferenceFragment
 
 		@Override
 		public List<AccountBean> workInBackground(Void... params) throws TaskException {
-			return AccountDB.query();
+			return AccountUtils.queryAccount();
 		}
 		
 		@Override

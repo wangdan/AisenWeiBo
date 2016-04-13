@@ -7,8 +7,8 @@ import android.os.Bundle;
 
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.fragment.ABaseFragment;
-
 import org.aisen.weibo.sina.R;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineTopicsFragment;
 
 /**
@@ -54,6 +54,20 @@ public class TopicsActivity extends BaseActivity {
 			}
 		}
 
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		UMengUtil.onPageStart(this, "话题页");
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		UMengUtil.onPageEnd(this, "话题页");
 	}
 	
 }

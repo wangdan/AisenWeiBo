@@ -2,7 +2,6 @@ package org.aisen.weibo.sina.support.utils;
 
 import org.aisen.android.common.utils.ActivityHelper;
 import org.aisen.android.common.utils.Logger;
-
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 
@@ -19,7 +18,7 @@ public class CacheTimeUtils {
 		Logger.d("CacheTimeUtils", String.format("保存缓存 %s, saveTime = %s", key, time));
 	}
 	
-	public static boolean isExpired(String key, WeiBoUser owner) {
+	public static boolean isOutofdate(String key, WeiBoUser owner) {
 		if (owner != null)
 			key = String.format("%s-%s", key, owner.getIdstr());
 			

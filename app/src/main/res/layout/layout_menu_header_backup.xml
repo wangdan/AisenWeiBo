@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/layMenuHeader"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/imgCover" android:layout_width="match_parent" android:layout_height="?attr/menuHeaderHeight" android:scaleType="centerCrop"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/menuHeaderHeight" android:paddingTop="?attr/menuHeaderPaddingTop">
+
+        <org.aisen.android.ui.widget.CircleImageView
+            android:id="@+id/imgPhoto" android:layout_width="80dip" android:layout_height="80dip" android:layout_marginLeft="16dip"
+            app:border_color="@color/comm_white"
+            app:border_width="2dp"/>
+
+        <TextView
+            android:id="@+id/txtFollowersNewHint" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_alignRight="@id/imgPhoto" android:layout_alignTop="@id/imgPhoto" android:background="@drawable/menu_followers_counter" android:gravity="center"
+            android:minWidth="18dip" android:text="10"
+            android:textColor="@color/comm_white" android:textSize="12sp"/>
+
+        <LinearLayout
+            android:id="@+id/btnAccount" android:layout_width="match_parent" android:layout_height="35dip"
+            android:layout_alignParentBottom="true"
+            android:background="?attr/selectableItemBackground" android:clickable="true" android:gravity="center_vertical"
+            android:paddingLeft="16dip" android:paddingRight="16dip">
+
+            <TextView
+                android:id="@+id/txtName" android:layout_width="0dip" android:layout_height="wrap_content"
+                android:layout_weight="1" android:singleLine="true" android:text="wangd.info@gmail.com"
+                android:textColor="@color/comm_white" android:textSize="16.0sp" android:textStyle="bold"/>
+
+            <ImageView
+                android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8dip"
+                android:src="@drawable/ic_arrow_down_light"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

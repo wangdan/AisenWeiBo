@@ -1,0 +1,4 @@
+没有记录问题的习惯，导致解决了一个问题，过阵子又复现时忘记了解题思路导致重复工作，特新建此文档
+
+1、PicsActivity、PhotosActivity两个界面，手势返回背景为黑色9（2016-02-21）
+Application要配置这个主题：android:theme="@style/AppBaseTheme"

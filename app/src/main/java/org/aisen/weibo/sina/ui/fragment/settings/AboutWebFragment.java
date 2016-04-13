@@ -12,14 +12,13 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import org.aisen.android.common.setting.SettingUtility;
-import org.aisen.android.component.container.FragmentArgs;
-import org.aisen.android.component.container.FragmentContainerActivity;
+import org.aisen.android.ui.activity.container.FragmentArgs;
+import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.fragment.ABaseFragment;
-
 import org.aisen.weibo.sina.R;
-import org.aisen.weibo.sina.ui.activity.basic.BrowserActivity;
+import org.aisen.weibo.sina.ui.activity.browser.BrowserActivity;
 
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
@@ -35,7 +34,7 @@ public class AboutWebFragment extends ABaseFragment {
 		FragmentArgs args = new FragmentArgs();
 		args.add("type", 0);
 
-//		FragmentContainerActivity.launch(from, AboutWebFragment.class, args);
+//		SinaCommonActivity.launch(from, AboutWebFragment.class, args);
 		Intent intent = new Intent(from, BrowserActivity.class);
 		intent.setAction(Intent.ACTION_VIEW);
 		intent.putExtra("url", SettingUtility.getStringSetting("about_url"));
@@ -46,7 +45,7 @@ public class AboutWebFragment extends ABaseFragment {
 //		FragmentArgs args = new FragmentArgs();
 //		args.add("type", 1);
 //
-//		FragmentContainerActivity.launch(from, AboutWebFragment.class, args);
+//		SinaCommonActivity.launch(from, AboutWebFragment.class, args);
 
         Intent intent = new Intent(from, BrowserActivity.class);
         intent.setAction(Intent.ACTION_VIEW);
@@ -58,19 +57,19 @@ public class AboutWebFragment extends ABaseFragment {
 		FragmentArgs args = new FragmentArgs();
 		args.add("type", 2);
 
-		FragmentContainerActivity.launch(from, AboutWebFragment.class, args);
+		SinaCommonActivity.launch(from, AboutWebFragment.class, args);
 	}
 	
 	@ViewInject(id = R.id.webView)
 	WebView webView;
 	@ViewInject(id = R.id.progress)
-    SmoothProgressBar progressbar;
+	SmoothProgressBar progressbar;
 	
 	private int type;
 	
 	@Override
-	protected int inflateContentView() {
-		return R.layout.as_ui_about_web;
+	public int inflateContentView() {
+		return R.layout.ui_about_web;
 	}
 	
 	@SuppressLint("SetJavaScriptEnabled") @Override

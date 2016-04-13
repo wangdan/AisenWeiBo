@@ -7,14 +7,14 @@ import android.preference.Preference.OnPreferenceClickListener;
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.GravityEnum;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.umeng.analytics.MobclickAgent;
+
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.DateUtils;
 import org.aisen.android.common.utils.Logger;
-import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.ui.fragment.ABaseFragment;
-
 import org.aisen.weibo.sina.R;
 
 import java.io.File;
@@ -28,7 +28,7 @@ import java.text.DecimalFormat;
  */
 public class CacheClearFragment extends ABaseFragment implements OnPreferenceClickListener {
 
-	private static final int RETAIN_TIME = 2 * 24 * 60 * 60 * 1000;
+	private static final int RETAIN_TIME = 24 * 60 * 60 * 1000;
 	private Preference clearCachePref;
 //	private ProgressDialog mProgressDialog;
     private MaterialDialog materialDialog;
@@ -37,8 +37,8 @@ public class CacheClearFragment extends ABaseFragment implements OnPreferenceCli
 	private String cachePath;
 	
 	@Override
-	protected int inflateContentView() {
-		return 0;
+	public int inflateContentView() {
+		return -1;
 	}
 	
 	public void setPreference(Preference pref, String path) {
@@ -76,6 +76,8 @@ public class CacheClearFragment extends ABaseFragment implements OnPreferenceCli
 	}
 	
 	private void clearCache(final boolean all) {
+		MobclickAgent.onEvent(getActivity(), all ? "clear_cache_all" : "clear_cache_outofdate");
+
 		final WorkTask<Void, String, Void> task = new WorkTask<Void, String, Void>() {
 
 			@Override
@@ -219,27 +221,38 @@ public class CacheClearFragment extends ABaseFragment implements OnPreferenceCli
 
 			@Override
 			public Void workInBackground(Void... params) throws TaskException {
-				String path = GlobalContext.getInstance().getImagePath() + File.separator + "compression";
-				
-				File cacheRootFile = new File(path);
-				
-				deleteFile(cacheRootFile);
-				
+				File cacheRootFile = new File(GlobalContext.getInstance().getImagePath());
+
+				deleteFile(cacheRootFile, false);
+
 				return null;
 			}
-			
-			void deleteFile(File file) {
-				if (!isCancelled()) {	
+
+			void deleteFile(File file, boolean all) {
+				if (!file.exists())
+					return;
+
+				if (!isCancelled()) {
 					if (file.isDirectory()) {
 						File[] childFiles = file.listFiles();
 						for (File childFile : childFiles)
-							deleteFile(childFile);
+							deleteFile(childFile, all);
 					} else {
-//						if (file.delete())
-//							SystemUtils.scanPhoto(file);
+						boolean clear = all;
+						if (!clear) {
+							Logger.v("ClearCache", String.format("文件最后修改时间是%s", DateUtils.formatDate(file.lastModified(), DateUtils.TYPE_01)));
+							clear = System.currentTimeMillis() - file.lastModified() >= RETAIN_TIME;
+							if (clear) {
+								Logger.v("ClearCache", "缓存超过1天，删除该缓存");
+								file.delete();
+							}
+						}
+						else {
+							file.delete();
+						}
 					}
 				}
-				
+
 			}
 			
 		}.execute();

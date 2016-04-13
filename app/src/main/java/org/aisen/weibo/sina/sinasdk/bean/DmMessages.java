@@ -1,11 +1,12 @@
 package org.aisen.weibo.sina.sinasdk.bean;
 
 import org.aisen.android.network.biz.IResult;
+import org.aisen.android.support.bean.ResultBean;
 
 import java.io.Serializable;
 import java.util.List;
 
-public class DmMessages implements Serializable, IResult {
+public class DmMessages extends ResultBean implements Serializable {
 
 	private static final long serialVersionUID = -6212279307812708266L;
 	
@@ -16,12 +17,6 @@ public class DmMessages implements Serializable, IResult {
 	private int previous_cursor;
 
 	private String totalNumber;
-
-	private boolean cache;// 是否是缓存数据
-
-	private boolean _expired;
-
-	private boolean _noMore;
 
 	public List<DmMessage> getUser_list() {
 		return user_list;
@@ -55,35 +50,4 @@ public class DmMessages implements Serializable, IResult {
 		this.totalNumber = totalNumber;
 	}
 	
-	@Override
-	public boolean isCache() {
-		return cache;
-	}
-
-	public void setCache(boolean cache) {
-		this.cache = cache;
-	}
-
-	@Override
-	public boolean expired() {
-		return _expired;
-	}
-	
-	public void setExpired(boolean expired) {
-		this._expired = expired;
-	}
-
-	public boolean noMore() {
-		return _noMore;
-	}
-
-	public void setNoMore(boolean noMore) {
-		this._noMore = noMore;
-	}
-
-	@Override
-	public String[] pagingIndex() {
-		return null;
-	}
-
 }

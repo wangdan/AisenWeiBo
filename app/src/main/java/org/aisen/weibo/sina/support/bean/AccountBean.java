@@ -1,88 +1,69 @@
 package org.aisen.weibo.sina.support.bean;
 
-import java.io.Serializable;
-
+import org.aisen.android.component.orm.annotation.PrimaryKey;
 import org.aisen.weibo.sina.sinasdk.bean.AccessToken;
+import org.aisen.weibo.sina.sinasdk.bean.BaseSinaBean;
 import org.aisen.weibo.sina.sinasdk.bean.Groups;
-import org.aisen.weibo.sina.sinasdk.bean.Token;
-import org.aisen.weibo.sina.sinasdk.bean.TokenInfo;
+import org.aisen.weibo.sina.sinasdk.bean.UnreadCount;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 
-import org.aisen.orm.annotation.PrimaryKey;
+/**
+ * Created by wangdan on 15/12/31.
+ */
+public class AccountBean extends BaseSinaBean {
 
-public class AccountBean implements Serializable {
+    private static final long serialVersionUID = -8974889891999245818L;
 
-	private static final long serialVersionUID = -6805443927915693862L;
+    @PrimaryKey(column = "uid")
+    private String uid;
 
-	@PrimaryKey(column = "userId")
-	private String userId;
-	
-	private WeiBoUser user;// 用户的个人信息
-	
-	private Groups groups;// 用户的分组信息
-	
-	private AccessToken advancedToken;// 高级授权的Token
+    private String account;
 
-	private AccessToken token;// 应用授权的token
+    private String password;
 
-    private String account;// 用户的账号
+    private AccessToken accessToken;
 
-    private String password;// 用户的密码
+    private WeiBoUser user;
+
+    private Groups groups;
+
+    private AccessToken advancedToken;
+
+    private UnreadCount unreadCount = new UnreadCount();
 
     private String cookie;// 网页授权的cookie
 
-	public WeiBoUser getUser() {
-		return user;
-	}
+    public AccessToken getAccessToken() {
+        return accessToken;
+    }
 
-	public void setUser(WeiBoUser user) {
-		this.user = user;
-	}
+    public void setAccessToken(AccessToken accessToken) {
+        this.accessToken = accessToken;
+    }
 
-	public String getUserId() {
-		return userId;
-	}
+    public String getUid() {
+        return uid;
+    }
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
-	public AccessToken getToken() {
-		return token;
-	}
+    public WeiBoUser getUser() {
+        return user;
+    }
 
-	public void setToken(AccessToken token) {
-		this.token = token;
-	}
+    public void setUser(WeiBoUser user) {
+        this.user = user;
+    }
 
-	public Groups getGroups() {
-		return groups;
-	}
+    public Groups getGroups() {
+        return groups;
+    }
 
-	public void setGroups(Groups groups) {
-		this.groups = groups;
-	}
-
-//	public static boolean isExpired(AccountBean account) {
-//		TokenInfo tokenInfo = account.getTokenInfo();
-//		if (tokenInfo != null) {
-//			long validSecond = Long.parseLong(tokenInfo.getCreate_at()) + Long.parseLong(tokenInfo.getExpire_in());
-//			if (System.currentTimeMillis() > validSecond * 1000) {
-//
-//				return true;
-//			}
-//		}
-
-//		return false;
-//	}
-
-	public AccessToken getAdvancedToken() {
-		return advancedToken;
-	}
-
-	public void setAdvancedToken(AccessToken advancedToken) {
-		this.advancedToken = advancedToken;
-	}
+    public void setGroups(Groups groups) {
+        this.groups = groups;
+    }
 
     public String getAccount() {
         return account;
@@ -98,6 +79,22 @@ public class AccountBean implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public AccessToken getAdvancedToken() {
+        return advancedToken;
+    }
+
+    public void setAdvancedToken(AccessToken advancedToken) {
+        this.advancedToken = advancedToken;
+    }
+
+    public UnreadCount getUnreadCount() {
+        return unreadCount;
+    }
+
+    public void setUnreadCount(UnreadCount unreadCount) {
+        this.unreadCount = unreadCount;
     }
 
     public String getCookie() {

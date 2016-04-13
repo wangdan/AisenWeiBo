@@ -13,14 +13,14 @@ import org.aisen.android.network.http.Params;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.fragment.ABaseFragment;
-
 import org.aisen.weibo.sina.R;
+import org.aisen.weibo.sina.sinasdk.bean.StatusComment;
 import org.aisen.weibo.sina.support.bean.PublishBean;
 import org.aisen.weibo.sina.support.bean.PublishBean.PublishStatus;
 import org.aisen.weibo.sina.support.bean.PublishType;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
-import org.aisen.weibo.sina.sinasdk.bean.StatusComment;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 
 /**
  * 回复评论
@@ -72,7 +72,7 @@ public class PublishCommentReplyFragment extends APublishFragment implements OnC
 	}
 	
 	@Override
-    PublishBean newPublishBean() {
+	PublishBean newPublishBean() {
 		return null;
 	}
 	
@@ -112,8 +112,22 @@ public class PublishCommentReplyFragment extends APublishFragment implements OnC
 	}
 
 	@Override
-	protected int inflateContentView() {
-		return R.layout.as_ui_publish_comment_replay;
+	public int inflateContentView() {
+		return R.layout.ui_publish_comment_replay;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		UMengUtil.onPageStart(getActivity(), "发布回复评论页");
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		UMengUtil.onPageEnd(getActivity(), "发布回复评论页");
 	}
 
 }

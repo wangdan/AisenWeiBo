@@ -8,6 +8,11 @@
         chg:changeLogFileResourceId="@raw/custom_changelog"
         in your View component in layout file -->
 
+	<changelogversion versionName="6.0.2" changeDate="2016-04">
+		<changelogtext>适配了Android M.</changelogtext>
+		<changelogtext>更新了大部分界面.</changelogtext>
+	</changelogversion>
+
 	<changelogversion versionName="5.0.6" changeDate="2015-07">
 		<changelogtext>修复5.0以上设置通知间隔崩溃的bug.</changelogtext>
 		<changelogtext>更新授权方式，必须高级授权.</changelogtext>

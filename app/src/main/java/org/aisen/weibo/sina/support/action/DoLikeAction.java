@@ -1,26 +1,27 @@
 package org.aisen.weibo.sina.support.action;
 
-import java.util.List;
-
-import org.aisen.weibo.sina.base.AppContext;
-import org.aisen.weibo.sina.support.bean.LikeBean;
-import org.aisen.weibo.sina.support.bean.LikeResultBean;
-import org.aisen.weibo.sina.support.biz.BaseBizlogic;
-import org.aisen.weibo.sina.support.db.LikeDB;
-import org.aisen.weibo.sina.support.db.SinaDB;
-import org.aisen.weibo.sina.ui.fragment.basic.BizFragment;
-import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
-
 import android.app.Activity;
 import android.view.View;
 
+import com.umeng.analytics.MobclickAgent;
+
 import org.aisen.android.common.utils.ViewUtils;
 import org.aisen.android.component.bitmaploader.core.LruMemoryCache;
+import org.aisen.android.component.orm.extra.Extra;
+import org.aisen.android.component.orm.utils.FieldUtils;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.support.action.IAction;
-import org.aisen.orm.extra.Extra;
-import org.aisen.orm.utils.FieldUtils;
+import org.aisen.weibo.sina.base.AppContext;
+import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
+import org.aisen.weibo.sina.support.bean.LikeBean;
+import org.aisen.weibo.sina.support.bean.LikeResultBean;
+import org.aisen.weibo.sina.support.sdk.SDK;
+import org.aisen.weibo.sina.support.sqlit.LikeDB;
+import org.aisen.weibo.sina.support.sqlit.SinaDB;
+import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
+
+import java.util.List;
 
 /**
  * Created by wangdan on 15/5/1.
@@ -36,7 +37,7 @@ public class DoLikeAction extends IAction {
     View likeView;
 
     public DoLikeAction(Activity context, BizFragment bizFragment, View likeView,
-                                StatusContent data, boolean like, OnLikeCallback callback) {
+                        StatusContent data, boolean like, OnLikeCallback callback) {
         super(context, new WebLoginAction(context, bizFragment));
 
         this.bizFragment = bizFragment;
@@ -70,6 +71,8 @@ public class DoLikeAction extends IAction {
 
         // 开始处理点赞
         new LikeTask().execute();
+
+        MobclickAgent.onEvent(bizFragment.getActivity(), "do_like");
     }
 
     public static void refreshLikeCache() {
@@ -79,13 +82,13 @@ public class DoLikeAction extends IAction {
 
             @Override
             public Void workInBackground(Void... params) throws TaskException {
-                String uid = AppContext.getUser().getIdstr();
+                String uid = AppContext.getAccount().getUser().getIdstr();
 
                 String selection = String.format(" %s = ? ", FieldUtils.OWNER);
                 String[] args = new String[]{ uid };
-                List<LikeBean> likeBeans = SinaDB.getSqlite().select(LikeBean.class, selection, args);
-                SinaDB.getSqlite().deleteAll(new Extra(uid, null), LikeBean.class);
-                SinaDB.getSqlite().insert(new Extra(uid, null), likeBeans);
+                List<LikeBean> likeBeans = SinaDB.getDB().select(LikeBean.class, selection, args);
+                SinaDB.getDB().deleteAll(new Extra(uid, null), LikeBean.class);
+                SinaDB.getDB().insert(new Extra(uid, null), likeBeans);
 
                 for (LikeBean likeBean : likeBeans)
                     likeCache.put(likeBean.getStatusId(), likeBean);
@@ -98,9 +101,9 @@ public class DoLikeAction extends IAction {
     public interface OnLikeCallback {
 
         // 点赞失败或者成功后，有必要时会回调这个方法刷新UI
-        public void onLikeRefreshUI();
+        void onLikeFaild();
 
-        public void onLikeRefreshView(StatusContent data, View likeView);
+        void onLikeSuccess(StatusContent data, View likeView);
 
     }
 
@@ -117,7 +120,7 @@ public class DoLikeAction extends IAction {
 
         @Override
         public LikeResultBean workInBackground(Void... params) throws TaskException {
-            return BaseBizlogic.newInstance().doLike(data.getId() + "", like, AppContext.getAccount().getCookie());
+            return SDK.newInstance().doLike(data.getId() + "", like, AppContext.getAccount().getCookie());
         }
 
         @Override
@@ -125,7 +128,6 @@ public class DoLikeAction extends IAction {
             super.onFailure(exception);
 
             final String key = String.valueOf(data.getId());
-
             LikeBean likeBean = likeCache.get(key);
             if (likeBean != null) {
                 likeBean.setLiked(!like);
@@ -137,21 +139,31 @@ public class DoLikeAction extends IAction {
 
             // 未登录，或者登录失效
             if ("-100".equalsIgnoreCase(exception.getCode())) {
+                AppContext.clearCookie();
 
-                ((WebLoginAction) getParent()).doAction();
+                run();
             }
             else {
                 ViewUtils.showMessage(exception.getMessage());
             }
 
-            callback.onLikeRefreshUI();
+            callback.onLikeFaild();
         }
 
         @Override
         protected void onSuccess(LikeResultBean likeResultBean) {
             super.onSuccess(likeResultBean);
 
-            callback.onLikeRefreshView(data, likeView);
+            final String key = String.valueOf(data.getId());
+            LikeBean likeBean = likeCache.get(key);
+            likeBean.setLiked(like);
+            LikeDB.insert(likeBean);
+
+            if (bizFragment.getActivity() == null) {
+                return;
+            }
+
+            callback.onLikeSuccess(data, likeView);
         }
 
         @Override

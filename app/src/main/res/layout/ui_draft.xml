@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent"
+                android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@id/layoutContent" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@id/recycleview"
+            android:layout_width="match_parent" android:layout_height="match_parent"/>
+    </LinearLayout>
+
+    <include
+        android:id="@id/layoutLoading" layout="@layout/comm_lay_loading" android:layout_width="fill_parent" android:layout_height="fill_parent"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@id/layoutEmpty"
+        android:layout_width="match_parent" android:layout_height="match_parent"
+        android:gravity="center" android:visibility="gone">
+
+        <TextView
+            android:id="@id/txtLoadEmpty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/empty_draft" android:textSize="16sp"/>
+    </LinearLayout>
+</RelativeLayout>

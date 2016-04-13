@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    android:id="@+id/cardView"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/spacing_micro"
+    android:layout_marginLeft="@dimen/spacing_normal"
+    android:layout_marginRight="@dimen/spacing_normal"
+    android:layout_marginTop="@dimen/spacing_micro"
+    android:clickable="true"
+    android:foreground="?attr/selectableItemBackground" app:cardBackgroundColor="#ffffff"
+    app:cardCornerRadius="3dip" app:cardElevation="1.5dip">
+
+    <LinearLayout
+        android:id="@+id/container" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:minHeight="70dip"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/item_padding" android:paddingRight="@dimen/item_padding" android:paddingTop="@dimen/item_padding">
+
+        <LinearLayout
+            android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtType" style="@style/TextSubhead" android:layout_width="0dip"
+                android:layout_height="wrap_content" android:layout_marginBottom="@dimen/comm_v_gap" android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/txtTiming" style="@style/TextSubhead" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:layout_marginBottom="@dimen/comm_v_gap"/>
+        </LinearLayout>
+
+        <org.aisen.weibo.sina.ui.widget.AisenTextView
+            android:id="@+id/txtContent" style="@style/TextBody" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:ellipsize="end" android:lineSpacingExtra="4dip" android:maxLines="3"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:gravity="center_vertical" android:paddingRight="6dip">
+
+            <TextView
+                android:id="@+id/txtError" style="@style/TextSubhead" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_msg_error" android:drawablePadding="4dip"
+                android:textColor="@color/comm_red" android:visibility="gone"/>
+
+            <View
+                android:layout_width="0dip" android:layout_height="wrap_content" android:layout_weight="1"/>
+
+            <LinearLayout
+                android:id="@+id/btnDel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="@dimen/comm_h_gap"
+                android:background="?attr/selectableItemBackground" android:clickable="true" android:gravity="center">
+
+                <ImageView
+                    android:layout_width="40dip" android:layout_height="40dip" android:padding="8dip"
+                    android:src="@drawable/ic_delete_dark"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnResend" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground" android:clickable="true" android:gravity="center">
+
+                <ImageView
+                    android:layout_width="40dip" android:layout_height="40dip" android:padding="4dip"
+                    android:src="@drawable/ic_action_send_now_light"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

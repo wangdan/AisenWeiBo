@@ -11,11 +11,11 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
 
 import org.aisen.android.common.context.GlobalContext;
-import org.aisen.android.component.container.FragmentContainerActivity;
 import org.aisen.android.ui.activity.basic.BaseActivity;
-
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
+import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 
 /**
  * 流量控制
@@ -27,7 +27,7 @@ public class FlowSettingsFragment extends BasePreferenceFragment
 									implements OnPreferenceClickListener , OnPreferenceChangeListener {
 
 	public static void launch(Activity from) {
-		FragmentContainerActivity.launch(from, FlowSettingsFragment.class, null);
+		SinaCommonActivity.launch(from, FlowSettingsFragment.class, null);
 	}
 	
 	private ListPreference pUploadSetting;// 图片上传设置
@@ -123,6 +123,20 @@ public class FlowSettingsFragment extends BasePreferenceFragment
 			pPicMode.setEnabled(!Boolean.parseBoolean(newValue.toString()));
 		}
 		return true;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		UMengUtil.onPageStart(getActivity(), "流量设置页");
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		UMengUtil.onPageEnd(getActivity(), "流量设置页");
 	}
 
 }
