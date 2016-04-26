@@ -7,6 +7,8 @@ import java.io.Serializable;
  */
 public class OfflinePictureBean implements Serializable {
 
+    private static final long serialVersionUID = -8360317840805209421L;
+
     private String thumb;// 缩略图
 
     private long length;// 图片大小

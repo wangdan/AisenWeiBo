@@ -412,7 +412,7 @@ public abstract class APublishFragment extends ABaseFragment
 			editAble.insert(start, "→_→");
 		else
 			editAble.insert(start, emotion.getKey());
-	};
+	}
 	
 	/**
 	 * 微博内容监听，刷新提示信息
@@ -746,7 +746,7 @@ public abstract class APublishFragment extends ABaseFragment
 				
 				protected void onSuccess(String result) {
 					setPicUri(result);
-				};
+				}
 				
 			}.execute();
 		}
@@ -849,7 +849,7 @@ public abstract class APublishFragment extends ABaseFragment
 				else {
 					showMessage(R.string.publish_recent_pic_none);
 				}
-			};
+			}
 			
 		}.execute();
 	}

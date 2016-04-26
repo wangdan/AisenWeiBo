@@ -206,7 +206,7 @@ import java.io.File;
                     Resources res = GlobalContext.getInstance().getResources();
                     pClearRecentMention.setSummary(String.format(res.getString(R.string.settings_basic_history_remind), result));
                 }
-			};
+			}
 			
 		}.execute();
 	}

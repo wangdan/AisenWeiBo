@@ -1,11 +1,11 @@
 package org.aisen.weibo.sina.sinasdk.bean;
 
-import java.io.Serializable;
-
 /**
  * Created by wangdan on 15/6/29.
  */
 public class UploadPictureResultBean extends BaseSinaBean {
+
+    private static final long serialVersionUID = -5742423620822198794L;
 
     private String pic_id;
 

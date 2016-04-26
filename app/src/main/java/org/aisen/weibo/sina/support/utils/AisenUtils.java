@@ -511,21 +511,21 @@ public class AisenUtils {
 
                                 Resources res = GlobalContext.getInstance().getResources();
                                 ViewUtils.createProgressDialog(fragment.getActivity(), res.getString(R.string.processing), ThemeUtils.getThemeColor()).show();
-                            };
+                            }
 
                             @Override
                             protected void onFinished() {
                                 super.onFinished();
 
                                 ViewUtils.dismissProgressDialog();
-                            };
+                            }
 
                             @Override
                             protected void onFailure(TaskException exception) {
                                 super.onFailure(exception);
 
                                 ViewUtils.showMessage(exception.getMessage());
-                            };
+                            }
 
                             @Override
                             protected void onSuccess(GroupSortResult result) {
@@ -535,7 +535,7 @@ public class AisenUtils {
                                     ViewUtils.showMessage(R.string.msg_shield_success);
                                 else
                                     ViewUtils.showMessage(R.string.msg_shield_faild);
-                            };
+                            }
 
                             @Override
                             public GroupSortResult workInBackground(Void... params) throws TaskException {
