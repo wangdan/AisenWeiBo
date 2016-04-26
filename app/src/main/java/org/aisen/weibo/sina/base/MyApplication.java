@@ -2,12 +2,14 @@ package org.aisen.weibo.sina.base;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.os.Environment;
 
 import com.tencent.bugly.crashreport.CrashReport;
-import com.umeng.analytics.AnalyticsConfig;
 import com.umeng.analytics.MobclickAgent;
 
 import org.aisen.android.common.context.GlobalContext;
+import org.aisen.android.common.setting.SettingUtility;
+import org.aisen.android.common.utils.CrashHandler;
 import org.aisen.android.common.utils.DateUtils;
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
@@ -27,6 +29,7 @@ import org.aisen.weibo.sina.support.utils.AccountUtils;
 import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
 
+import java.io.File;
 import java.util.List;
 import java.util.Random;
 
@@ -39,6 +42,10 @@ public class MyApplication extends GlobalContext {
     public void onCreate() {
         super.onCreate();
 
+        // 添加一些配置项
+        SettingUtility.addSettings("actions");
+        SettingUtility.addSettings("settings");
+        // 初始化一个颜色主题
         setupTheme();
         // 打开Debug日志
         Logger.DEBUG = BuildConfig.LOG_DEBUG;
@@ -60,6 +67,10 @@ public class MyApplication extends GlobalContext {
             AppContext.login(AppContext.getAccount());
     }
 
+    public static String getImagePath() {
+        return GlobalContext.getInstance().getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() + File.separator;
+    }
+
     private void setupTheme() {
         int position = AppSettings.getThemeColor();
         if (position == -1) {
@@ -72,6 +83,9 @@ public class MyApplication extends GlobalContext {
     }
 
     public void setupCrash() {
+        if (BuildConfig.LOG_DEBUG) {
+            CrashHandler.setupCrashHandler();
+        }
         // UMENG统计设置
         MobclickAgent.setDebugMode(Logger.DEBUG);
 //        AnalyticsConfig.setAppkey(this, BuildConfig.UMENG_APP_ID);

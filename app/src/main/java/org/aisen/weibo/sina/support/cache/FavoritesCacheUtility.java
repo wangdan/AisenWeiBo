@@ -1,5 +1,7 @@
 package org.aisen.weibo.sina.support.cache;
 
+import android.os.Environment;
+
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.setting.Setting;
 import org.aisen.android.common.utils.FileUtils;
@@ -32,7 +34,7 @@ public class FavoritesCacheUtility implements ICacheUtility {
 	}
 	
 	private File getCacheFile() {
-		File extenrnalDir = new File(GlobalContext.getInstance().getDataPath());
+		File extenrnalDir = new File(GlobalContext.getInstance().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath());
 		Logger.v(TAG, String.format("缓存目录 = %s", extenrnalDir.getAbsolutePath()));
 		
 		File favoritesFile = new File(String.format("%s%s%s-favorites.o", 

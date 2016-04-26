@@ -9,13 +9,13 @@ import com.afollestad.materialdialogs.GravityEnum;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.umeng.analytics.MobclickAgent;
 
-import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.DateUtils;
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.ui.fragment.ABaseFragment;
 import org.aisen.weibo.sina.R;
+import org.aisen.weibo.sina.base.MyApplication;
 
 import java.io.File;
 import java.text.DecimalFormat;
@@ -221,7 +221,7 @@ public class CacheClearFragment extends ABaseFragment implements OnPreferenceCli
 
 			@Override
 			public Void workInBackground(Void... params) throws TaskException {
-				File cacheRootFile = new File(GlobalContext.getInstance().getImagePath());
+				File cacheRootFile = new File(MyApplication.getImagePath());
 
 				deleteFile(cacheRootFile, false);
 

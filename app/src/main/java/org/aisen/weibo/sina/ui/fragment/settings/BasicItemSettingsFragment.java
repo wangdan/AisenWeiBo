@@ -29,6 +29,7 @@ import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
+import org.aisen.weibo.sina.base.MyApplication;
 import org.aisen.weibo.sina.support.sqlit.FriendMentionDB;
 import org.aisen.weibo.sina.ui.activity.base.AisenActivityHelper;
 
@@ -127,7 +128,7 @@ import java.io.File;
             clearFragment = new CacheClearFragment();
             getActivity().getFragmentManager().beginTransaction().add(clearFragment, "CacheClearFragment").commit();
         }
-        clearFragment.setPreference(pClearCache, GlobalContext.getInstance().getImagePath());
+        clearFragment.setPreference(pClearCache, MyApplication.getImagePath());
 	}
 	
 	@Override

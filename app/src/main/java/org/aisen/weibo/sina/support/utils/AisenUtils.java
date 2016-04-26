@@ -14,6 +14,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.provider.Settings;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
@@ -106,7 +107,8 @@ public class AisenUtils {
 
         File file = null;
 
-        String imagePath = GlobalContext.getInstance().getAppPath() + SettingUtility.getStringSetting("draft") + File.separator;
+        String imagePath = GlobalContext.getInstance().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS) + File.separator +
+                                        SettingUtility.getStringSetting("draft") + File.separator;
 
         int sample = 1;
         int maxSize = 0;
