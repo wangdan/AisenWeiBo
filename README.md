@@ -27,21 +27,17 @@ Aisen微博是新浪微博的第三方客户端，UI遵循Material Design。
 
 ## 应用截图
 
-![](https://github.com/wangdan/AisenWeibo/raw/master/resource/aisen1.gif) 
+![](https://github.com/wangdan/AisenWeibo/raw/master/resource/444.gif) 
 
-![](https://github.com/wangdan/AisenWeibo/raw/master/resource/aisen2.gif) 
+![](https://github.com/wangdan/AisenWeibo/raw/master/resource/222.gif) 
 
-![](https://github.com/wangdan/AisenWeibo/raw/master/resource/aisen3.gif) 
+![](https://github.com/wangdan/AisenWeibo/raw/master/resource/333.gif) 
 
-![](https://github.com/wangdan/AisenWeibo/raw/master/resource/aisen4.gif) 
+![](https://github.com/wangdan/AisenWeibo/raw/master/resource/555.gif) 
 
-![](https://github.com/wangdan/AisenWeibo/raw/master/resource/aisen5.gif) 
+![](https://github.com/wangdan/AisenWeibo/raw/master/resource/777.gif) 
 
-![](https://github.com/wangdan/AisenWeibo/raw/master/resource/aisen6.gif) 
-
-![](https://github.com/wangdan/AisenWeibo/raw/master/resource/aisen7.gif) 
-
-![](https://github.com/wangdan/AisenWeibo/raw/master/resource/aisen8.gif) 
+![](https://github.com/wangdan/AisenWeibo/raw/master/resource/666.gif) 
 
 ![](https://github.com/wangdan/AisenWeibo/raw/master/resource/git_2.png)
 
