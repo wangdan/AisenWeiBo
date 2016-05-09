@@ -5,7 +5,8 @@ buildscript {
         jcenter()
         mavenCentral()
         maven {
-            url "https://raw.githubusercontent.com/wangdan/mvn-repo-aiwen/master/repository/"
+//            url "https://raw.githubusercontent.com/wangdan/mvn-repo-aiwen/master/repository/"
+            url "/Users/wangdan/Documents/github/mvn-repo-aiwen/repository/"
         }
     }
     dependencies {
@@ -24,7 +25,8 @@ allprojects {
             url "http://dl.bintray.com/fir/maven"
         }
         maven {
-            url "https://raw.githubusercontent.com/wangdan/mvn-repo-aiwen/master/repository/"
+//            url "https://raw.githubusercontent.com/wangdan/mvn-repo-aiwen/master/repository/"
+            url "/Users/wangdan/Documents/github/mvn-repo-aiwen/repository/"
         }
         maven { url "https://jitpack.io" }
     }
