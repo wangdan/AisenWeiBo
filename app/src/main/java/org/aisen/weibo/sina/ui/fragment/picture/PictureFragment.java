@@ -186,7 +186,7 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 			progressView.setVisibility(View.VISIBLE);
 
             // 如果网络不是WIFI，且原图和中图都没缓存，那么只加载当前看的那个图片
-            if (SystemUtils.NetWorkType.wifi != SystemUtils.getNetworkType()) {
+            if (SystemUtils.NetWorkType.wifi != SystemUtils.getNetworkType(getActivity())) {
                 if (getActivity() instanceof PicsActivity) {
                     PicsActivity picsActivity = (PicsActivity) getActivity();
                     if (!picsActivity.getCurrent().getThumbnail_pic().equalsIgnoreCase(image.getThumbnail_pic()))
@@ -290,7 +290,7 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 
 		int picWidth = options.outWidth;
 		int picHeight = options.outHeight;
-		int availableWidth = SystemUtils.getScreenWidth() - getResources().getDimensionPixelOffset(R.dimen.normal_gif_webview_margin_left)
+		int availableWidth = SystemUtils.getScreenWidth(getActivity()) - getResources().getDimensionPixelOffset(R.dimen.normal_gif_webview_margin_left)
 				- getResources().getDimensionPixelOffset(R.dimen.normal_gif_webview_margin_right);
 		int availableHeight = getAppHeight(getActivity());
 
@@ -441,7 +441,7 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 
 	private void readPicture(byte[] bytes, File file, ImageView imageView) {
 		try {
-			Bitmap bitmap = BitmapDecoder.decodeSampledBitmapFromByte(bytes);
+			Bitmap bitmap = BitmapDecoder.decodeSampledBitmapFromByte(getActivity(), bytes);
 			imageView.setImageBitmap(bitmap);
 			imageView.setVisibility(View.VISIBLE);
 		} catch (OutOfMemoryError e) {
@@ -541,7 +541,7 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 		else if (item.getItemId() == R.id.copy) {
 			AisenUtils.copyToClipboard(getImage());
 			
-			ViewUtils.showMessage(R.string.msg_image_copyed);
+			ViewUtils.showMessage(getActivity(), R.string.msg_image_copyed);
 		}
         // 下载原图
         else if (item.getItemId() == R.id.origPicture) {
@@ -575,7 +575,7 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 					}
 
 					private void notifyFileSys(File file) {
-						SystemUtils.scanPhoto(file);
+						SystemUtils.scanPhoto(getActivity(), file);
 					}
 
 					@Override

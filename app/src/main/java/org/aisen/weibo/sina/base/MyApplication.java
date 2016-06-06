@@ -43,8 +43,8 @@ public class MyApplication extends GlobalContext {
         super.onCreate();
 
         // 添加一些配置项
-        SettingUtility.addSettings("actions");
-        SettingUtility.addSettings("settings");
+        SettingUtility.addSettings(this, "actions");
+        SettingUtility.addSettings(this, "settings");
         // 初始化一个颜色主题
         setupTheme();
         // 打开Debug日志
@@ -84,7 +84,7 @@ public class MyApplication extends GlobalContext {
 
     public void setupCrash() {
         if (BuildConfig.LOG_DEBUG) {
-            CrashHandler.setupCrashHandler();
+            CrashHandler.setupCrashHandler(this);
         }
         // UMENG统计设置
         MobclickAgent.setDebugMode(Logger.DEBUG);

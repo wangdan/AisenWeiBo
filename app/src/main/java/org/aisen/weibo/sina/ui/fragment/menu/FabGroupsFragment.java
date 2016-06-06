@@ -97,12 +97,12 @@ public class FabGroupsFragment extends AListFragment<Group, Groups> {
         super.setItems(items);
 
         // 设置列表的尺寸
-        int width = Utils.dip2px(175);
-        if (width > SystemUtils.getScreenWidth() / 2) {
-            width = SystemUtils.getScreenWidth() / 2;
+        int width = Utils.dip2px(getActivity(), 175);
+        if (width > SystemUtils.getScreenWidth(getActivity()) / 2) {
+            width = SystemUtils.getScreenWidth(getActivity()) / 2;
         }
         if (items.size() > 7) {
-            getContentView().setLayoutParams(new FrameLayout.LayoutParams(width, Utils.dip2px(340)));
+            getContentView().setLayoutParams(new FrameLayout.LayoutParams(width, Utils.dip2px(getActivity(), 340)));
         }
         else {
             getContentView().setLayoutParams(new FrameLayout.LayoutParams(width, FrameLayout.LayoutParams.WRAP_CONTENT));
@@ -115,7 +115,7 @@ public class FabGroupsFragment extends AListFragment<Group, Groups> {
             top = getRefreshView().getChildAt(0).getHeight() * 3;
         }
         else {
-            top = Utils.dip2px(175);
+            top = Utils.dip2px(getActivity(), 175);
         }
         getRefreshView().setSelectionFromTop(selectedPosition, top);
     }
@@ -134,7 +134,7 @@ public class FabGroupsFragment extends AListFragment<Group, Groups> {
         TextView txtTitle;
 
         public FabGroupsItemView(View convertView) {
-            super(convertView);
+            super(getActivity(), convertView);
         }
 
 

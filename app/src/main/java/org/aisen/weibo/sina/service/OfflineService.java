@@ -411,7 +411,7 @@ public class OfflineService extends Service {
 
                         Request request = new Request.Builder().url(url).build();
 
-                        Response response = GlobalContext.getInstance().getOkHttpClient().newCall(request).execute();
+                        Response response = GlobalContext.getOkHttpClient().newCall(request).execute();
 
                         InputStream in = response.body().byteStream();
 
@@ -526,7 +526,7 @@ public class OfflineService extends Service {
             return true;
         }
 
-        if (SystemUtils.getNetworkType() != SystemUtils.NetWorkType.wifi) {
+        if (SystemUtils.getNetworkType(this) != SystemUtils.NetWorkType.wifi) {
             stopSelf();
 
             mStatus = OfflineStatus.cancel;

@@ -100,7 +100,7 @@ public class JokesFragment extends AWaterfallSwipeRefreshFragment<JokeBean, Joke
 
     private void setViewPadding(View viewGroup) {
         viewGroup.setPadding(viewGroup.getPaddingLeft(), viewGroup.getPaddingTop(),
-                viewGroup.getPaddingRight(), Utils.dip2px(56));
+                viewGroup.getPaddingRight(), Utils.dip2px(getActivity(), 56));
     }
 
     @Override
@@ -144,7 +144,7 @@ public class JokesFragment extends AWaterfallSwipeRefreshFragment<JokeBean, Joke
     protected void setupRefreshView(Bundle savedInstanceSate) {
         super.setupRefreshView(savedInstanceSate);
 
-        int padding = Utils.dip2px(4);
+        int padding = Utils.dip2px(getActivity(), 4);
         getRefreshView().setPadding(padding, 0, padding, 0);
     }
 
@@ -218,7 +218,7 @@ public class JokesFragment extends AWaterfallSwipeRefreshFragment<JokeBean, Joke
         CardView cardView;
 
         public JokeTextItemView(View itemView) {
-            super(itemView);
+            super(getActivity(), itemView);
         }
 
         @Override
@@ -244,7 +244,7 @@ public class JokesFragment extends AWaterfallSwipeRefreshFragment<JokeBean, Joke
         public JokeImageItemView(View itemView) {
             super(itemView);
 
-            width = (SystemUtils.getScreenWidth() - Utils.dip2px(8) * 3) / 2;
+            width = (SystemUtils.getScreenWidth(getActivity()) - Utils.dip2px(getActivity(), 8) * 3) / 2;
         }
 
         @Override

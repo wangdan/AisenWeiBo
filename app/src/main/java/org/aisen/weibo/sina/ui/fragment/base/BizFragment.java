@@ -807,7 +807,7 @@ public class BizFragment extends ABaseFragment {
                     return;
                 }
 
-                ViewUtils.showMessage(R.string.biz_fav_success);
+                ViewUtils.showMessage(getRealActivity(), R.string.biz_fav_success);
 
                 if (callback != null)
                     callback.onFavorityCreate(result);
@@ -872,7 +872,7 @@ public class BizFragment extends ABaseFragment {
                 getRealActivity().setResult(Activity.RESULT_OK, intent);
                 GlobalContext.getInstance().sendBroadcast(intent);
 
-                ViewUtils.showMessage(R.string.biz_fav_removed);
+                ViewUtils.showMessage(getRealActivity(), R.string.biz_fav_removed);
 
                 if (callback != null)
                     callback.onFavorityDestory(result);
@@ -888,7 +888,7 @@ public class BizFragment extends ABaseFragment {
                     showMessage(exception.getMessage());
                 }
                 else {
-                    ViewUtils.showMessage(R.string.biz_fav_remove_faild);
+                    ViewUtils.showMessage(getRealActivity(), R.string.biz_fav_remove_faild);
                 }
             };
 

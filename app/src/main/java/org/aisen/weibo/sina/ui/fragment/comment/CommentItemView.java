@@ -61,7 +61,7 @@ public class CommentItemView extends ARecycleViewItemView<StatusComment> impleme
     private StatusContent mStatus;
 
     public CommentItemView(ABaseFragment fragment, View itemView) {
-        super(itemView);
+        super(fragment.getActivity(), itemView);
 
         this.fragment = fragment;
     }

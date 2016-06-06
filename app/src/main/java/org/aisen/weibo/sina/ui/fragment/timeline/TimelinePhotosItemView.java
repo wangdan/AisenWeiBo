@@ -33,7 +33,7 @@ public class TimelinePhotosItemView extends ARecycleViewItemView<StatusContent> 
     private StatusContent data;
 
     public TimelinePhotosItemView(View itemView, ABaseFragment fragment) {
-        super(itemView);
+        super(fragment.getActivity(), itemView);
 
         this.fragment = fragment;
         bizFragment = BizFragment.createBizFragment(fragment);

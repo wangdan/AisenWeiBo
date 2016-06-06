@@ -227,7 +227,7 @@ import java.io.File;
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
 									if (TextUtils.isEmpty(editRemark.getText().toString())) {
-										ViewUtils.showMessage(R.string.update_faild);
+										ViewUtils.showMessage(getActivity(), R.string.update_faild);
 										return;
 									}
 									
@@ -239,10 +239,10 @@ import java.io.File;
 //										pPicSavePath.setSummary(path);
 										pPicSavePath.setSummary("/sdcard" + File.separator + editRemark.getText().toString() + File.separator);
 										
-										ViewUtils.showMessage(R.string.update_success);
+										ViewUtils.showMessage(getActivity(), R.string.update_success);
 									}
 									else {
-										ViewUtils.showMessage(R.string.update_faild);
+										ViewUtils.showMessage(getActivity(), R.string.update_faild);
 									}
 								}
 										

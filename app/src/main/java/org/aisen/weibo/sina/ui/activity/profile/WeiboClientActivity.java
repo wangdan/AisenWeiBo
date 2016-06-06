@@ -373,7 +373,7 @@ public class WeiboClientActivity extends BaseActivity implements PhotoChoice.Pho
                 @Override
                 public String workInBackground(Void... params) throws TaskException {
                     try {
-                        Bitmap bitmap = BitmapDecoder.decodeSampledBitmapFromFile(path, SystemUtils.getScreenHeight(), SystemUtils.getScreenHeight());
+                        Bitmap bitmap = BitmapDecoder.decodeSampledBitmapFromFile(path, SystemUtils.getScreenHeight(WeiboClientActivity.this), SystemUtils.getScreenHeight(WeiboClientActivity.this));
                         bitmap = BitmapUtil.rotateBitmap(bitmap, 90);
 
                         ByteArrayOutputStream outArray = new ByteArrayOutputStream();
@@ -414,7 +414,7 @@ public class WeiboClientActivity extends BaseActivity implements PhotoChoice.Pho
                 Logger.v(TAG, "拍照图片地址, path = " + path);
 
                 // 扫描文件
-                SystemUtils.scanPhoto(new File(path));
+                SystemUtils.scanPhoto(WeiboClientActivity.this, new File(path));
             }
             File file = new File(path);
             if (file.exists())

@@ -5,6 +5,7 @@ import android.graphics.Bitmap.Config;
 import android.graphics.BitmapRegionDecoder;
 import android.graphics.Rect;
 
+import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.component.bitmaploader.core.BitmapDecoder;
@@ -23,8 +24,8 @@ public class TimelineBitmapCompress implements IBitmapCompress {
 		
 		Bitmap bitmap = null;
 
-		int maxWidth = config.getMaxWidth() == 0 ? SystemUtils.getScreenWidth() : config.getMaxWidth();
-		int maxHeight = config.getMaxHeight() == 0 ? SystemUtils.getScreenHeight() : config.getMaxHeight();
+		int maxWidth = config.getMaxWidth() == 0 ? SystemUtils.getScreenWidth(GlobalContext.getInstance()) : config.getMaxWidth();
+		int maxHeight = config.getMaxHeight() == 0 ? SystemUtils.getScreenHeight(GlobalContext.getInstance()) : config.getMaxHeight();
 		
 		// 如果高度比宽度在2倍以上，取高度的一部分
 		if (origH * 1.0f / origW > 2) {

@@ -110,7 +110,7 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        InjectUtility.initInjectedView(this, ((BaseActivity) getActivity()).getRootView());
+        InjectUtility.initInjectedView(getActivity(), this, ((BaseActivity) getActivity()).getRootView());
         layoutInit(inflater, savedInstanceState);
 
         // 添加HeaderView
@@ -148,7 +148,7 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
     protected void setupTabLayout(Bundle savedInstanceSate, TabLayout tabLayout) {
         super.setupTabLayout(savedInstanceSate, tabLayout);
 
-        tabLayout.setPadding(Utils.dip2px(8), tabLayout.getPaddingTop(), tabLayout.getPaddingRight(), tabLayout.getPaddingBottom());
+        tabLayout.setPadding(Utils.dip2px(getActivity(), 8), tabLayout.getPaddingTop(), tabLayout.getPaddingRight(), tabLayout.getPaddingBottom());
         tabLayout.setTabTextColors(getResources().getColor(R.color.text_54),
                 getResources().getColor(R.color.text_80));
     }

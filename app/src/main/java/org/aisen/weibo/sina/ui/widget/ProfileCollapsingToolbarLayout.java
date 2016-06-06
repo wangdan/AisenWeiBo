@@ -89,12 +89,12 @@ public class ProfileCollapsingToolbarLayout extends CollapsingToolbarLayout {
 
         coverHeight = getResources().getDimensionPixelSize(R.dimen.profile_cover);
 
-        avatarSize = Utils.dip2px(100);
-        finalAvatarSize = Utils.dip2px(36);
-        avatarFinalMarginLeft = Utils.dip2px(16);
-        layNameMarginTop = Utils.dip2px(32);
-        finalLayNameSize = Utils.dip2px(28);
-        layNameMarginLeft = Utils.dip2px(12);
+        avatarSize = Utils.dip2px(context, 100);
+        finalAvatarSize = Utils.dip2px(context, 36);
+        avatarFinalMarginLeft = Utils.dip2px(context, 16);
+        layNameMarginTop = Utils.dip2px(context, 32);
+        finalLayNameSize = Utils.dip2px(context, 28);
+        layNameMarginLeft = Utils.dip2px(context, 12);
         avatarMarginLeft = getResources().getDimensionPixelSize(R.dimen.padding_normal);
         Bitmap sourceBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.user_placeholder);
         avatarBitmap = BitmapUtil.setImageCorner(sourceBitmap, sourceBitmap.getWidth());

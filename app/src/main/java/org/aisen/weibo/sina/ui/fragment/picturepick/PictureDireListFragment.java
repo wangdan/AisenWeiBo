@@ -14,7 +14,6 @@ import org.aisen.android.component.bitmaploader.core.ImageConfig;
 import org.aisen.android.component.bitmaploader.download.SdcardDownloader;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.fragment.AListFragment;
-import org.aisen.android.ui.fragment.APagingFragment;
 import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
 import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
@@ -119,7 +118,7 @@ public class PictureDireListFragment extends AListFragment<PictureDireListFragme
         View imgSelected;
 
         public PictureDireItemView(View itemView) {
-            super(itemView);
+            super(getActivity(), itemView);
         }
 
         @Override
@@ -127,8 +126,8 @@ public class PictureDireListFragment extends AListFragment<PictureDireListFragme
             ImageConfig config = new ImageConfig();
             config.setLoadfaildRes(R.drawable.bg_timeline_loading);
             config.setLoadingRes(R.drawable.bg_timeline_loading);
-            config.setMaxWidth(SystemUtils.getScreenWidth() / 3);
-            config.setMaxHeight(SystemUtils.getScreenWidth() / 3);
+            config.setMaxWidth(SystemUtils.getScreenWidth(getActivity()) / 3);
+            config.setMaxHeight(SystemUtils.getScreenWidth(getActivity()) / 3);
             config.setCacheEnable(false);
             config.setDownloaderClass(SdcardDownloader.class);
             config.setId("thumb_dir");

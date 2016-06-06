@@ -154,7 +154,7 @@ public class AddFriendMentionFragment extends AListSwipeRefreshFragment<WeiBoUse
         View layDivider;
 
         public FriendItemView(View itemView) {
-            super(itemView);
+            super(getActivity(), itemView);
         }
 
         @Override

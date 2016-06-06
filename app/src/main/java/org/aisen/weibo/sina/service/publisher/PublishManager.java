@@ -384,7 +384,7 @@ public class PublishManager extends Handler implements PublishQueue.PublishQueue
 								throw new TaskException("图片不存在或已删除");
 
 							// 压缩文件
-							file = AisenUtils.getUploadFile(file);
+							file = AisenUtils.getUploadFile(context, file);
 							Logger.w("上传图片大小" + (file.length() / 1024) + "KB");
 
 							result = SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).statusesUpload(bean.getParams(), file);
@@ -425,7 +425,7 @@ public class PublishManager extends Handler implements PublishQueue.PublishQueue
 										throw new TaskException("图片不存在或已删除");
 
 									// 压缩文件
-									file = AisenUtils.getUploadFile(file);
+									file = AisenUtils.getUploadFile(context, file);
 									Logger.w("上传图片大小" + (file.length() / 1024) + "KB");
 
 									// 开始上传

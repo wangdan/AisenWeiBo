@@ -4,14 +4,9 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import org.aisen.android.common.context.GlobalContext;
-import org.aisen.android.common.setting.SettingUtility;
 import org.aisen.android.common.utils.ActivityHelper;
 import org.aisen.android.common.utils.SystemUtils;
-
 import org.aisen.weibo.sina.R;
-import org.aisen.weibo.sina.support.utils.ThemeUtils;
-
-import java.io.File;
 
 /**
  * Created by wangdan on 15/4/12.
@@ -208,8 +203,8 @@ public class AppSettings {
         int index = Integer.parseInt(prefs.getString("pTimelineCount", "0"));
 
         int count = countArr[0];
-        if (index == 3) {
-            if (SystemUtils.getNetworkType() == SystemUtils.NetWorkType.wifi)
+        if (index == 3 && GlobalContext.getInstance() != null) {
+            if (SystemUtils.getNetworkType(GlobalContext.getInstance()) == SystemUtils.NetWorkType.wifi)
                 count = 100;
         }
         else {
@@ -229,8 +224,8 @@ public class AppSettings {
         int index = Integer.parseInt(prefs.getString("pCommentCount", "0"));
 
         int count = 50;
-        if (index == 3) {
-            if (SystemUtils.getNetworkType() == SystemUtils.NetWorkType.wifi)
+        if (index == 3 && GlobalContext.getInstance() != null) {
+            if (SystemUtils.getNetworkType(GlobalContext.getInstance()) == SystemUtils.NetWorkType.wifi)
                 count = 100;
         }
         else {

@@ -71,7 +71,7 @@
             </org.aisen.weibo.sina.ui.widget.TimelineDetailScrollView>
         </android.support.v4.widget.SwipeRefreshLayout>
 
-        <org.aisen.android.component.sheetfab.DimOverlayFrameLayout
+        <org.aisen.weibo.sina.ui.widget.sheetfab.DimOverlayFrameLayout
             android:id="@+id/overlay" android:layout_width="match_parent"
             android:layout_height="match_parent" android:alpha="0"
             android:visibility="gone"/>

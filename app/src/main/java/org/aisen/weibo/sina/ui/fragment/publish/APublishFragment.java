@@ -250,8 +250,8 @@ public abstract class APublishFragment extends ABaseFragment
 			ImageConfig config = new ImageConfig();
 			config.setLoadfaildRes(R.drawable.bg_timeline_loading);
 			config.setLoadingRes(R.drawable.bg_timeline_loading);
-			config.setMaxWidth(SystemUtils.getScreenWidth());
-			config.setMaxHeight(SystemUtils.getScreenHeight() / 2);
+			config.setMaxWidth(SystemUtils.getScreenWidth(getActivity()));
+			config.setMaxHeight(SystemUtils.getScreenHeight(getActivity()) / 2);
 			config.setBitmapCompress(TimelineBitmapCompress.class);
 			config.setProgress(new PublishDownloadProcess());
 
@@ -279,7 +279,7 @@ public abstract class APublishFragment extends ABaseFragment
 					Logger.v(TAG, "拍照图片地址, path = " + path);
 
 					// 扫描文件
-					SystemUtils.scanPhoto(new File(path));
+					SystemUtils.scanPhoto(getActivity(), new File(path));
 					config.setDownloaderClass(SdcardDownloader.class);
 				}
 
@@ -591,7 +591,7 @@ public abstract class APublishFragment extends ABaseFragment
 	            layEmotion.setVisibility(View.GONE);
 	            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
-	            SystemUtils.showKeyBoard(editContent);
+	            SystemUtils.showKeyBoard(getActivity(), editContent);
 	            editContent.postDelayed(new Runnable() {
 
 	            	@Override
@@ -618,7 +618,7 @@ public abstract class APublishFragment extends ABaseFragment
         int statusBarHeight = SystemUtils.getStatusBarHeight(getActivity());
 		emotionHeight = SystemUtils.getKeyboardHeight(getActivity());
 
-        SystemUtils.hideSoftInput(editContent);
+        SystemUtils.hideSoftInput(getActivity(), editContent);
         layEmotion.getLayoutParams().height = emotionHeight;
         layEmotion.setVisibility(View.VISIBLE);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -731,7 +731,7 @@ public abstract class APublishFragment extends ABaseFragment
 				@Override
 				public String workInBackground(Void... params) throws TaskException {
 					try {
-						Bitmap bitmap = BitmapDecoder.decodeSampledBitmapFromFile(path, SystemUtils.getScreenHeight(), SystemUtils.getScreenHeight());
+						Bitmap bitmap = BitmapDecoder.decodeSampledBitmapFromFile(path, SystemUtils.getScreenHeight(getActivity()), SystemUtils.getScreenHeight(getActivity()));
 						bitmap = BitmapUtil.rotateBitmap(bitmap, 90);
 						
 						ByteArrayOutputStream outArray = new ByteArrayOutputStream();

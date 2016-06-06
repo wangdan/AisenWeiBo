@@ -16,7 +16,6 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,7 +28,6 @@ import org.aisen.android.common.utils.Utils;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.component.bitmaploader.core.ImageConfig;
 import org.aisen.android.component.bitmaploader.display.FadeInDisplayer;
-import org.aisen.android.component.bitmaploader.view.MyDrawable;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.support.inject.InjectUtility;
@@ -39,7 +37,6 @@ import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.utils.AccountUtils;
-import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
 import org.aisen.weibo.sina.ui.activity.base.MainActivity;
 import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
@@ -80,7 +77,7 @@ public class MenuHeaderView implements View.OnClickListener {
             parent.addView(mHeaderView, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, height));
 
             // 绑定视图
-            InjectUtility.initInjectedView(this, mHeaderView);
+            InjectUtility.initInjectedView(GlobalContext.getInstance(), this, mHeaderView);
         }
         View view = mHeaderView.findViewById(R.id.material_drawer_account_header);
         if (Build.VERSION.SDK_INT >= 19) {
@@ -234,7 +231,7 @@ public class MenuHeaderView implements View.OnClickListener {
         Rect rootRect = new Rect();
         mHeaderView.getGlobalVisibleRect(rootRect);
 
-        int border = Utils.dip2px(1);
+        int border = Utils.dip2px(GlobalContext.getInstance(), 1);
 
         int fromX = fromRect.left;
         int toX = targetRect.left + border;

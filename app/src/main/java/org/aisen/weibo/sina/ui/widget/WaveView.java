@@ -16,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.Utils;
 import org.aisen.weibo.sina.R;
 
@@ -98,7 +99,7 @@ public class WaveView extends View {
 
         aboveWaveColor = context.getResources().getColor(R.color.wave);
         blowWaveColor = context.getResources().getColor(R.color.wave);
-        text_default_size = Utils.dip2px(14);
+        text_default_size = Utils.dip2px(GlobalContext.getInstance(), 14);
         setProgress(default_progress);
 
         initializePainters();
@@ -149,7 +150,7 @@ public class WaveView extends View {
             paintR.setAntiAlias(true);
             // 设置画笔的颜色
             paintR.setColor(Color.parseColor("#ffffff"));
-            paintR.setStrokeWidth(Utils.dip2px(1.5f));
+            paintR.setStrokeWidth(Utils.dip2px(GlobalContext.getInstance(), 1.5f));
             paintR.setStyle(Paint.Style.STROKE);
             paintR.setTextSize(text_default_size);
         }
@@ -175,7 +176,7 @@ public class WaveView extends View {
                 paintT = new Paint();
                 paintT.setAntiAlias(true);
                 paintT.setColor(Color.parseColor("#ffffff"));
-                paintT.setStrokeWidth(Utils.dip2px(1.5f));
+                paintT.setStrokeWidth(Utils.dip2px(GlobalContext.getInstance(), 1.5f));
                 paintT.setTextSize(text_default_size);
 
                 Paint.FontMetricsInt fontMetrics = paintT.getFontMetricsInt();

@@ -45,7 +45,7 @@ public class SearchUserFragment extends ARecycleViewFragment<SuggestionsUser, Su
         TextView txtRemark;
 
         public SearchUserItemView(View itemView) {
-            super(itemView);
+            super(getActivity(), itemView);
         }
 
         @Override

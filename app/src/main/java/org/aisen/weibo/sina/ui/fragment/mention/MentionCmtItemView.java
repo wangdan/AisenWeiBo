@@ -67,7 +67,7 @@ public class MentionCmtItemView extends ARecycleViewItemView<StatusComment> impl
     private ABaseFragment fragment;
 
     public MentionCmtItemView(View itemView, ABaseFragment fragment, BizFragment bizFragment) {
-        super(itemView);
+        super(fragment.getActivity(), itemView);
 
         this.fragment = fragment;
         this.bizFragment = bizFragment;

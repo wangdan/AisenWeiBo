@@ -105,7 +105,7 @@ public class TimelineItemView extends ARecycleViewItemView<StatusContent> implem
     private StatusContent data;
 
     public TimelineItemView(View convertView, ABaseFragment fragment) {
-        super(convertView);
+        super(fragment.getActivity(), convertView);
 
         this.fragment = fragment;
         bizFragment = BizFragment.createBizFragment(fragment);

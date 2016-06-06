@@ -78,7 +78,7 @@ public class MentionCmtsFragment extends ARecycleViewSwipeRefreshFragment<Status
 
             @Override
             public IITemView<StatusComment> newItemView(View convertView, int viewType) {
-                return new BasicFooterView<StatusComment>(convertView, MentionCmtsFragment.this) {
+                return new BasicFooterView<StatusComment>(getActivity(), convertView, MentionCmtsFragment.this) {
 
                     @Override
                     protected String endpagingText() {
