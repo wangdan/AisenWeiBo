@@ -22,7 +22,7 @@ android {
             buildConfigField "String", "UMENG_APP_ID", "\"56dee57be0f55a98a00032d8\""
             buildConfigField "boolean", "LOG_DEBUG", "false"
 
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
@@ -40,7 +40,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     //    compile project(':library')
     compile project(':datetimerpicker')
-    compile 'org.aisen.android:aisen:1.0.0@aar'
+    compile 'org.aisen.android:aisen:1.0.1-SNAPSHOT@aar'
     compile 'com.android.support:cardview-v7:23.2.1'
     compile 'com.github.gabrielemariotti.changeloglib:changelog:2.0.0'
     compile 'com.melnykov:floatingactionbutton:1.3.0'
