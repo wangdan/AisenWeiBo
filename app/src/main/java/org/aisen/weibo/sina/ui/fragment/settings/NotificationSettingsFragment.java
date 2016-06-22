@@ -113,7 +113,7 @@ public class NotificationSettingsFragment extends BasePreferenceFragment impleme
 	
 	@Override
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-		ActivityHelper.putBooleanShareData("org.aisen.weibo.sina.NOTIFICATION", isChecked);
+		ActivityHelper.putBooleanShareData(GlobalContext.getInstance(), "org.aisen.weibo.sina.NOTIFICATION", isChecked);
 
 		refreshSettings();
 		

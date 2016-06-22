@@ -1,5 +1,6 @@
 package org.aisen.weibo.sina.support.sqlit;
 
+import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.setting.Setting;
 import org.aisen.android.common.utils.ActivityHelper;
 import org.aisen.android.component.orm.extra.Extra;
@@ -46,7 +47,7 @@ public class FollowersDB implements ICacheUtility {
 			users.setUsers(userList);
 			users.setFromCache(true);
 			users.setOutofdate(CacheTimeUtils.isOutofdate("Followers", AppContext.getAccount().getUser()));
-			users.setNext_cursor(ActivityHelper.getIntShareData("Followers" + AppContext.getAccount().getUser().getIdstr(), 0));
+			users.setNext_cursor(ActivityHelper.getIntShareData(GlobalContext.getInstance(), "Followers" + AppContext.getAccount().getUser().getIdstr(), 0));
 			return users;
 		}
 		
@@ -74,7 +75,7 @@ public class FollowersDB implements ICacheUtility {
 				}
 				
 				insertFriends(users.getUsers());
-				ActivityHelper.putIntShareData("Followers" + AppContext.getAccount().getUser().getIdstr(), users.getNext_cursor());
+				ActivityHelper.putIntShareData(GlobalContext.getInstance(), "Followers" + AppContext.getAccount().getUser().getIdstr(), users.getNext_cursor());
 			}
 		}
 	}

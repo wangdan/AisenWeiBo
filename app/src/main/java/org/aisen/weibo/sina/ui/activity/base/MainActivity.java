@@ -223,14 +223,14 @@ public class MainActivity extends BaseActivity
         }
         // 新提及微博
         else if (ACTION_NOTIFICATION_MS.equals(action)) {
-            ActivityHelper.putShareData("showMensitonType", "showMentionStatus");
+            ActivityHelper.putShareData(this, "showMensitonType", "showMentionStatus");
 
             newIntentNotificationIndex = 1;
             type = MenuFragment.MENU_NOTIFICATION;
         }
         // 新提及评论
         else if (ACTION_NOTIFICATION_MC.equals(action)) {
-            ActivityHelper.putShareData("showMensitonType", "showMentionCmt");
+            ActivityHelper.putShareData(this, "showMensitonType", "showMentionCmt");
 
             newIntentNotificationIndex = 2;
             type = MenuFragment.MENU_NOTIFICATION;

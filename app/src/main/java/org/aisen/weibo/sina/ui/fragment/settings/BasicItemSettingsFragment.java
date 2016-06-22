@@ -159,7 +159,7 @@ import java.io.File;
 	public boolean onPreferenceChange(Preference preference, Object newValue) {
 		// 是否显示默认分组
 		if ("pShowDefGroup".equals(preference.getKey())) {
-			ActivityHelper.putBooleanShareData("ChanneSortHasChanged", true);
+			ActivityHelper.putBooleanShareData(GlobalContext.getInstance(), "ChanneSortHasChanged", true);
 		}
 		// 列表字体
 		else if ("pTextSize".equals(preference.getKey())) {

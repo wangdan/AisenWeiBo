@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
+import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.ActivityHelper;
 import org.aisen.android.common.utils.Utils;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
@@ -111,7 +112,7 @@ public class WallpaperFragment extends AWaterfallSwipeRefreshFragment<WallpaperB
         public WallpaperItemView(View itemView) {
             super(getActivity(), itemView);
 
-            width = ActivityHelper.getIntShareData("WallpaperWidth", 0);
+            width = ActivityHelper.getIntShareData(GlobalContext.getInstance(), "WallpaperWidth", 0);
         }
 
         @Override
@@ -124,7 +125,7 @@ public class WallpaperFragment extends AWaterfallSwipeRefreshFragment<WallpaperB
                         img.getViewTreeObserver().removeOnPreDrawListener(this);
 
                         width = img.getWidth();
-                        ActivityHelper.putIntShareData("WallpaperWidth", width);
+                        ActivityHelper.putIntShareData(GlobalContext.getInstance(), "WallpaperWidth", width);
 
                         onBindData(convertView, data, position);
                         return true;

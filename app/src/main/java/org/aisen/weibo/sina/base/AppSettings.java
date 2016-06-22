@@ -37,7 +37,7 @@ public class AppSettings {
      * @return
      */
     public static boolean isNotifyEnable() {
-        return ActivityHelper.getBooleanShareData("org.aisen.weibo.sina.NOTIFICATION", true);
+        return ActivityHelper.getBooleanShareData(GlobalContext.getInstance(), "org.aisen.weibo.sina.NOTIFICATION", true);
     }
 
     /**
@@ -389,11 +389,11 @@ public class AppSettings {
     }
 
     public static String getImageSavePath() {
-        return ActivityHelper.getShareData("org.aisen.weibo.sina.Images", "Images");
+        return ActivityHelper.getShareData(GlobalContext.getInstance(), "org.aisen.weibo.sina.Images", "Images");
     }
 
     public static void setImageSavePath(String path) {
-        ActivityHelper.putShareData("org.aisen.weibo.sina.Images", path);
+        ActivityHelper.putShareData(GlobalContext.getInstance(), "org.aisen.weibo.sina.Images", path);
     }
 
     /**
@@ -427,11 +427,11 @@ public class AppSettings {
     }
 
     public static int getThemeColor() {
-        return ActivityHelper.getIntShareData("Theme_index", -1);
+        return ActivityHelper.getIntShareData(GlobalContext.getInstance(), "Theme_index", -1);
     }
 
     public static void setThemeColor(int theme) {
-        ActivityHelper.putIntShareData("Theme_index", theme);
+        ActivityHelper.putIntShareData(GlobalContext.getInstance(), "Theme_index", theme);
     }
 
     /**

@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.ActivityHelper;
 import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.common.utils.Utils;
@@ -36,12 +37,12 @@ public class FabGroupsFragment extends AListFragment<Group, Groups> {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        selectedPosition = savedInstanceState == null ? ActivityHelper.getIntShareData(getPositionKey(), 0)
+        selectedPosition = savedInstanceState == null ? ActivityHelper.getIntShareData(GlobalContext.getInstance(), getPositionKey(), 0)
                                                       : savedInstanceState.getInt(getPositionKey(), 0);
     }
 
     public void resetSelectedPosition() {
-        selectedPosition = ActivityHelper.getIntShareData(getPositionKey(), 0);
+        selectedPosition = ActivityHelper.getIntShareData(GlobalContext.getInstance(), getPositionKey(), 0);
     }
 
     @Override
@@ -80,7 +81,7 @@ public class FabGroupsFragment extends AListFragment<Group, Groups> {
         selectedPosition = position;
         getAdapter().notifyDataSetChanged();
 
-        ActivityHelper.putIntShareData(getPositionKey(), position);
+        ActivityHelper.putIntShareData(GlobalContext.getInstance(), getPositionKey(), position);
 
         if (getActivity() instanceof OnFabGroupSelectedCallback) {
             ((OnFabGroupSelectedCallback) getActivity()).onGroupSelected(position, getAdapterItems().get(position));

@@ -708,14 +708,14 @@ public abstract class APublishFragment extends ABaseFragment
 		Logger.e(uri.toString());
 
 		// 当拍摄照片时，提示是否设置旋转90度
-		if (!AppSettings.isRotatePic() && !ActivityHelper.getBooleanShareData("RotatePicNoRemind", false)) {
+		if (!AppSettings.isRotatePic() && !ActivityHelper.getBooleanShareData(GlobalContext.getInstance(), "RotatePicNoRemind", false)) {
 			new AlertDialogWrapper.Builder(getActivity()).setTitle(R.string.remind)
 									.setMessage(R.string.publish_rotate_remind)
 									.setNegativeButton(R.string.donnot_remind, new OnClickListener() {
 										
 										@Override
 										public void onClick(DialogInterface dialog, int which) {
-											ActivityHelper.putBooleanShareData("RotatePicNoRemind", true);
+											ActivityHelper.putBooleanShareData(GlobalContext.getInstance(), "RotatePicNoRemind", true);
 										}
 									})
 									.setPositiveButton(R.string.i_know, null)

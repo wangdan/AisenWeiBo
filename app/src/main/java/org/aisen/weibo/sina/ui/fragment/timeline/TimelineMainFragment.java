@@ -19,8 +19,8 @@ public abstract class TimelineMainFragment extends ATimelineFragment {
 
     public static void clearLastRead(Group group, WeiBoUser user) {
         String key = AisenUtils.getUserKey(group.getIdstr(), user);
-        ActivityHelper.putIntShareData(key + "Position", 0);
-        ActivityHelper.putIntShareData(key + "Top", 0);
+        ActivityHelper.putIntShareData(GlobalContext.getInstance(), key + "Position", 0);
+        ActivityHelper.putIntShareData(GlobalContext.getInstance(), key + "Top", 0);
     }
 
 }

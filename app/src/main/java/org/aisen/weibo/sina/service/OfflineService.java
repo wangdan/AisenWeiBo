@@ -561,11 +561,11 @@ public class OfflineService extends Service {
     }
 
     public static void setOfflineFinished(WeiBoUser user, boolean finished) {
-        ActivityHelper.putBooleanShareData(user.getIdstr() + "Offline_finished", finished);
+        ActivityHelper.putBooleanShareData(GlobalContext.getInstance(), user.getIdstr() + "Offline_finished", finished);
     }
 
     public static boolean isOfflineFinished(WeiBoUser user) {
-        return ActivityHelper.getBooleanShareData(user.getIdstr() + "Offline_finished", false);
+        return ActivityHelper.getBooleanShareData(GlobalContext.getInstance(), user.getIdstr() + "Offline_finished", false);
     }
 
 }
