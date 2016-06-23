@@ -146,7 +146,9 @@ public class WebLoginFragment extends ABaseFragment {
                     }
                 }
 
-                view.loadUrl(url);
+                if (!TextUtils.isEmpty(url) && !url.startsWith("sinaweibo://")) {
+                    view.loadUrl(url);
+                }
 
                 Logger.d(TAG, "load url = %s", view.getUrl());
 
