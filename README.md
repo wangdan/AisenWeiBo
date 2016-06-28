@@ -13,7 +13,7 @@ Aisen微博是新浪微博的第三方客户端，UI遵循Material Design。
 
 
 ## 说明
-新浪目前已经限制了第三方微博的很多API接口，加上平常时间不够，所以后续可能不会面向产品的去维护Aisen，不过也有了一些新的方向，例如引入最新[Android-support-library](https://blog.leancloud.cn/3306/)，在一个完整的APP项目中示例最新的玩意儿，如果你也想以Aisen作为示例项目切入自己的Library库或者UI控件实现某部分的功能，可以联系我。
+现在当爹了，码不动了，所以基本不再更新，仅继续维护Library。Master分支代码是6.0.3版本代码，仅支持5.0以上。
 
 ## 基本功能
  
@@ -58,26 +58,6 @@ Aisen微博是新浪微博的第三方客户端，UI遵循Material Design。
  * 多图上传、点赞功能没有权限
  * 用户粉丝、关注只能获取30%的数据
  * 用户搜索限制：v用户、粉丝500以上的达人、粉丝600以上的普通用户
-
-## 配置
- * 导入[AisenForAndroid](https://github.com/wangdan/AisenForAndroid)，已包含所有依赖项目；
- * 配置action.xml，设置你的appkey等相关参数
-```java	
-	<setting type="app_key">
-		<des>APP应用授权key</des>
-		<value></value>
-	</setting>
-
-	<setting type="app_secret">
-		<des>APP应用授权secret</des>
-		<value></value>
-	</setting>
-
-	<setting type="callback_url">
-		<des>授权回调地址</des>
-		<value></value>
-	</setting>
-```
 
 ## License
 
