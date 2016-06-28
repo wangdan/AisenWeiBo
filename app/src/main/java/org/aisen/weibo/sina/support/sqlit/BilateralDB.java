@@ -1,5 +1,6 @@
 package org.aisen.weibo.sina.support.sqlit;
 
+import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.setting.Setting;
 import org.aisen.android.common.utils.ActivityHelper;
 import org.aisen.android.component.orm.extra.Extra;
@@ -46,7 +47,7 @@ public class BilateralDB implements ICacheUtility {
 			users.setUsers(userList);
 			users.setFromCache(true);
 			users.setOutofdate(CacheTimeUtils.isOutofdate("Bilateral", AppContext.getAccount().getUser()));
-			users.setNext_cursor(ActivityHelper.getIntShareData("Bilateral" + AppContext.getAccount().getUser().getIdstr(), 0));
+			users.setNext_cursor(ActivityHelper.getIntShareData(GlobalContext.getInstance(), "Bilateral" + AppContext.getAccount().getUser().getIdstr(), 0));
 			return users;
 		}
 		
@@ -74,7 +75,7 @@ public class BilateralDB implements ICacheUtility {
 				}
 				
 				insertFriends(users.getUsers());
-				ActivityHelper.putIntShareData("Bilateral" + AppContext.getAccount().getUser().getIdstr(), users.getNext_cursor());
+				ActivityHelper.putIntShareData(GlobalContext.getInstance(), "Bilateral" + AppContext.getAccount().getUser().getIdstr(), users.getNext_cursor());
 			}
 		}
 	}

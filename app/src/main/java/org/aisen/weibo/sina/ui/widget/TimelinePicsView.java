@@ -92,7 +92,7 @@ public class TimelinePicsView extends ViewGroup implements BitmapOwner {
 	private void init() {
 		gap = getResources().getDimensionPixelSize(R.dimen.gap_pics);
 		
-		Logger.v(TAG, String.format("screenWidth = %d", SystemUtils.getScreenWidth()));
+		Logger.v(TAG, String.format("screenWidth = %d", SystemUtils.getScreenWidth(getContext())));
 		Logger.v(TAG, String.format("gap = %d, width = %d", gap, mWidth));
 	}
 	
@@ -100,12 +100,12 @@ public class TimelinePicsView extends ViewGroup implements BitmapOwner {
 		for (int i = 0; i < getChildCount(); i++) {
 			ImageView imgView = (ImageView) getChildAt(i);
 			
-			imgView.setImageDrawable(BitmapLoader.getLoadingDrawable(imgView));
+			imgView.setImageDrawable(BitmapLoader.getLoadingDrawable(getContext(), imgView));
 		}
 	}
 	
 	private void setMobileTimelinePicsView() {
-        int maxWidth = SystemUtils.getScreenWidth() - Utils.dip2px(18 * 2);
+        int maxWidth = SystemUtils.getScreenWidth(getContext()) - Utils.dip2px(getContext(), 18 * 2);
         mWidth = Math.round(maxWidth * 1.0f * 4 / 5);
 
 		picRects = null;
@@ -207,11 +207,11 @@ public class TimelinePicsView extends ViewGroup implements BitmapOwner {
 
                 int imgSize = oneRect.right - oneRect.left;
                 if (large) {
-                    if (imgSize < Utils.dip2px(100))
+                    if (imgSize < Utils.dip2px(getContext(), 100))
                         oneRect.left = (maxWidth - imgSize) / 2;
                 }
                 else {
-                    oneRect.left = Utils.dip2px(32);
+                    oneRect.left = Utils.dip2px(getContext(), 32);
                 }
                 oneRect.right += oneRect.left;
 
@@ -271,14 +271,14 @@ public class TimelinePicsView extends ViewGroup implements BitmapOwner {
 		picRects = null;
 
 		if (ownerFragment instanceof ProfileTimelineFragment) {
-			mWidth = SystemUtils.getScreenWidth() - Utils.dip2px(10 * 2);
+			mWidth = SystemUtils.getScreenWidth(getContext()) - Utils.dip2px(getContext(), 10 * 2);
 		}
 		else {
-			mWidth = SystemUtils.getScreenWidth() - Utils.dip2px(10 * 2 + 8 * 2);
+			mWidth = SystemUtils.getScreenWidth(getContext()) - Utils.dip2px(getContext(), 10 * 2 + 8 * 2);
 
 			if (ownerFragment instanceof ATimelineFragment) {
 				if ("5".equals(((ATimelineFragment) ownerFragment).getFeature())) {
-					mWidth = SystemUtils.getScreenWidth() - Utils.dip2px(10 * 2);
+					mWidth = SystemUtils.getScreenWidth(getContext()) - Utils.dip2px(getContext(), 10 * 2);
 				}
 			}
 		}
@@ -328,11 +328,11 @@ public class TimelinePicsView extends ViewGroup implements BitmapOwner {
 
 			int imgSize = oneRect.right - oneRect.left;
 			if (large) {
-				if (imgSize < Utils.dip2px(100))
+				if (imgSize < Utils.dip2px(getContext(), 100))
 					oneRect.left = (mWidth - imgSize) / 2;
 			}
 			else {
-				oneRect.left = Utils.dip2px(32);
+				oneRect.left = Utils.dip2px(getContext(), 32);
 			}
 			oneRect.right += oneRect.left;
 			tempRects[0] = oneRect;
@@ -557,7 +557,7 @@ public class TimelinePicsView extends ViewGroup implements BitmapOwner {
 			if (i >= picRects.length) {
 				getChildAt(i).setVisibility(View.GONE);
 				
-				imgView.setImageDrawable(BitmapLoader.getLoadingDrawable(imgView));
+				imgView.setImageDrawable(BitmapLoader.getLoadingDrawable(getContext(), imgView));
 			}
 			else {
 				Rect imgRect = picRects[i];
@@ -701,7 +701,7 @@ public class TimelinePicsView extends ViewGroup implements BitmapOwner {
 		
 		for (int i = 0; i < getChildCount(); i++) {
 			ImageView imgView = (ImageView) getChildAt(i);
-			imgView.setImageDrawable(BitmapLoader.getLoadingDrawable(imgView));
+			imgView.setImageDrawable(BitmapLoader.getLoadingDrawable(getContext(), imgView));
 		}
 	}
 	
@@ -728,7 +728,7 @@ public class TimelinePicsView extends ViewGroup implements BitmapOwner {
 			large = true;
 		}
 		// 图片模式是自动，且当前是WIFI网络
-		else if (AppSettings.getPictureMode() == 2 && SystemUtils.getNetworkType() == NetWorkType.wifi) {
+		else if (AppSettings.getPictureMode() == 2 && SystemUtils.getNetworkType(getContext()) == NetWorkType.wifi) {
 			// 如果当前不是large
 			if (!large) 
 				replace = true;
@@ -736,7 +736,7 @@ public class TimelinePicsView extends ViewGroup implements BitmapOwner {
 			large = true;
 		}
 		// 图片模式是自动，且当前是Mobile网络
-		else if (AppSettings.getPictureMode() == 2 && SystemUtils.getNetworkType() != NetWorkType.wifi) {
+		else if (AppSettings.getPictureMode() == 2 && SystemUtils.getNetworkType(getContext()) != NetWorkType.wifi) {
 			// 如果当前不是large
 			if (large) 
 				replace = true;
@@ -753,7 +753,7 @@ public class TimelinePicsView extends ViewGroup implements BitmapOwner {
 		this.picUrls = picUrls;
 		
 		if (ownerFragment instanceof PhotosFragment) {
-			mWidth = SystemUtils.getScreenWidth();
+			mWidth = SystemUtils.getScreenWidth(getContext());
 			large = true;
 		}
 		

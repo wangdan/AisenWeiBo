@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
+import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.ActivityHelper;
-import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.common.utils.Utils;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.component.bitmaploader.core.ImageConfig;
@@ -48,7 +48,7 @@ public class WallpaperFragment extends AWaterfallSwipeRefreshFragment<WallpaperB
     protected void setupRefreshView(Bundle savedInstanceSate) {
         super.setupRefreshView(savedInstanceSate);
 
-        int padding = Utils.dip2px(4);
+        int padding = Utils.dip2px(getActivity(), 4);
         getRefreshView().setPadding(padding, 0, padding, 0);
     }
 
@@ -61,7 +61,7 @@ public class WallpaperFragment extends AWaterfallSwipeRefreshFragment<WallpaperB
 
     private void setViewPadding(View viewGroup) {
         viewGroup.setPadding(viewGroup.getPaddingLeft(), viewGroup.getPaddingTop(),
-                viewGroup.getPaddingRight(), Utils.dip2px(56));
+                viewGroup.getPaddingRight(), Utils.dip2px(getActivity(), 56));
     }
 
     @Override
@@ -110,9 +110,9 @@ public class WallpaperFragment extends AWaterfallSwipeRefreshFragment<WallpaperB
         int width;
 
         public WallpaperItemView(View itemView) {
-            super(itemView);
+            super(getActivity(), itemView);
 
-            width = ActivityHelper.getIntShareData("WallpaperWidth", 0);
+            width = ActivityHelper.getIntShareData(GlobalContext.getInstance(), "WallpaperWidth", 0);
         }
 
         @Override
@@ -125,7 +125,7 @@ public class WallpaperFragment extends AWaterfallSwipeRefreshFragment<WallpaperB
                         img.getViewTreeObserver().removeOnPreDrawListener(this);
 
                         width = img.getWidth();
-                        ActivityHelper.putIntShareData("WallpaperWidth", width);
+                        ActivityHelper.putIntShareData(GlobalContext.getInstance(), "WallpaperWidth", width);
 
                         onBindData(convertView, data, position);
                         return true;

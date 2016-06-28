@@ -75,7 +75,7 @@ public class VersionSettingsFragment extends BasePreferenceFragment
 		}
 		// 没有安装市场
 		else {
-			ViewUtils.showMessage(R.string.settings_error_market);
+			ViewUtils.showMessage(GlobalContext.getInstance(), R.string.settings_error_market);
 		}
 	}
 	

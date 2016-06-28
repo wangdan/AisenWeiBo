@@ -9,6 +9,8 @@ import java.io.Serializable;
  */
 public class UploadPictureBean implements Serializable {
 
+    private static final long serialVersionUID = 6074139799176006180L;
+
     @PrimaryKey(column = "key")
     private String key;
 

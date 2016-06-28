@@ -25,7 +25,7 @@ public class PictureSizeHttpUtility implements IHttpUtility {
 
     @Override
     public <T> T doGet(HttpConfig config, Setting action, Params urlParams, Class<T> responseCls) throws TaskException {
-        if (SystemUtils.getNetworkType() == SystemUtils.NetWorkType.none)
+        if (GlobalContext.getInstance() == null || SystemUtils.getNetworkType(GlobalContext.getInstance()) == SystemUtils.NetWorkType.none)
             return null;
 
         String url = urlParams.getParameter("path");
@@ -36,7 +36,7 @@ public class PictureSizeHttpUtility implements IHttpUtility {
         Request request = new Request.Builder().url(url).build();
 
         try {
-            Response response = GlobalContext.getInstance().getOkHttpClient().newCall(request).execute();
+            Response response = GlobalContext.getOkHttpClient().newCall(request).execute();
             if (!(response.code() == HttpURLConnection.HTTP_OK || response.code() == HttpURLConnection.HTTP_PARTIAL)) {
                 throw new TaskException(String.valueOf(TaskException.TaskError.failIOError));
             }

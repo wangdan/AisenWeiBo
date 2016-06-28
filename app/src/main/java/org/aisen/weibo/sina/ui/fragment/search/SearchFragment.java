@@ -246,7 +246,7 @@ public class SearchFragment extends ATimelineFragment {
                     inMethod.invoke(mSearchView);
 
                     editSearch.requestFocus();
-                    SystemUtils.showKeyBoard(editSearch);
+                    SystemUtils.showKeyBoard(getActivity(), editSearch);
                 } catch (Exception e) {
                     Logger.printExc(SearchFragment.class, e);
                 }

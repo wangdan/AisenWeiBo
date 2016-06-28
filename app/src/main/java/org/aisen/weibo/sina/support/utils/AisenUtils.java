@@ -14,6 +14,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.provider.Settings;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
@@ -96,7 +97,7 @@ public class AisenUtils {
         return key + "-" + user.getIdstr();
     }
 
-    public static File getUploadFile(File source) {
+    public static File getUploadFile(Context context, File source) {
         Logger.w("原图图片大小" + (source.length() / 1024) + "KB");
 
         if (source.getName().toLowerCase().endsWith(".gif")) {
@@ -106,7 +107,8 @@ public class AisenUtils {
 
         File file = null;
 
-        String imagePath = GlobalContext.getInstance().getAppPath() + SettingUtility.getStringSetting("draft") + File.separator;
+        String imagePath = GlobalContext.getInstance().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS) + File.separator +
+                                        SettingUtility.getStringSetting("draft") + File.separator;
 
         int sample = 1;
         int maxSize = 0;
@@ -114,7 +116,7 @@ public class AisenUtils {
         int type = AppSettings.getUploadSetting();
         // 自动，WIFI时原图，移动网络时高
         if (type == 0) {
-            if (SystemUtils.getNetworkType() == SystemUtils.NetWorkType.wifi)
+            if (SystemUtils.getNetworkType(context) == SystemUtils.NetWorkType.wifi)
                 type = 1;
             else
                 type = 2;
@@ -412,7 +414,8 @@ public class AisenUtils {
                 case 1:
                     AisenUtils.copyToClipboard(status.getText());
 
-                    ViewUtils.showMessage(R.string.msg_text_copyed);
+                    if (fragment.getActivity() != null)
+                        ViewUtils.showMessage(fragment.getActivity(), R.string.msg_text_copyed);
                     break;
                 // 转发
                 case 2:
@@ -479,13 +482,16 @@ public class AisenUtils {
                                         fragment.getActivity().setResult(Activity.RESULT_OK, data);
                                         fragment.getActivity().finish();
                                     }
-                                    ViewUtils.showMessage(R.string.delete_success);
+
+                                    if (fragment.getActivity() != null)
+                                        ViewUtils.showMessage(fragment.getActivity(), R.string.delete_success);
                                 }
                             }
 
                             @Override
                             public boolean onFaild(TaskException e) {
-                                ViewUtils.showMessage(R.string.delete_faild);
+                                if (fragment.getActivity() != null)
+                                    ViewUtils.showMessage(fragment.getActivity(), R.string.delete_faild);
 
                                 return true;
                             }
@@ -511,31 +517,34 @@ public class AisenUtils {
 
                                 Resources res = GlobalContext.getInstance().getResources();
                                 ViewUtils.createProgressDialog(fragment.getActivity(), res.getString(R.string.processing), ThemeUtils.getThemeColor()).show();
-                            };
+                            }
 
                             @Override
                             protected void onFinished() {
                                 super.onFinished();
 
                                 ViewUtils.dismissProgressDialog();
-                            };
+                            }
 
                             @Override
                             protected void onFailure(TaskException exception) {
                                 super.onFailure(exception);
 
-                                ViewUtils.showMessage(exception.getMessage());
-                            };
+                                if (fragment.getActivity() != null)
+                                    ViewUtils.showMessage(fragment.getActivity(), exception.getMessage());
+                            }
 
                             @Override
                             protected void onSuccess(GroupSortResult result) {
                                 super.onSuccess(result);
 
-                                if ("true".equals(result.getResult()))
-                                    ViewUtils.showMessage(R.string.msg_shield_success);
-                                else
-                                    ViewUtils.showMessage(R.string.msg_shield_faild);
-                            };
+                                if (fragment.getActivity() != null) {
+                                    if ("true".equals(result.getResult()))
+                                        ViewUtils.showMessage(fragment.getActivity(), R.string.msg_shield_success);
+                                    else
+                                        ViewUtils.showMessage(fragment.getActivity(), R.string.msg_shield_faild);
+                                }
+                            }
 
                             @Override
                             public GroupSortResult workInBackground(Void... params) throws TaskException {
@@ -603,7 +612,8 @@ public class AisenUtils {
                 case 0:
                     AisenUtils.copyToClipboard(comment.getText());
 
-                    ViewUtils.showMessage(R.string.msg_text_copyed);
+                    if (fragment.getActivity() != null)
+                        ViewUtils.showMessage(fragment.getActivity(), R.string.msg_text_copyed);
                     break;
                 // 转发
                 case 1:
@@ -667,11 +677,11 @@ public class AisenUtils {
         from.startActivity(intent);
     }
 
-    public static String getStatusMulImage(String thumbImage) {
+    public static String getStatusMulImage(Context context, String thumbImage) {
         switch (AppSettings.getPictureMode()) {
             // MODE_AUTO
             case 2:
-                if (SystemUtils.getNetworkType() == SystemUtils.NetWorkType.wifi)
+                if (SystemUtils.getNetworkType(context) == SystemUtils.NetWorkType.wifi)
                     return thumbImage.replace("thumbnail", "bmiddle");
 
                 return thumbImage;
@@ -704,7 +714,9 @@ public class AisenUtils {
                 break;
             case R.id.copy:
                 copyToClipboard(status.getText());
-                ViewUtils.showMessage(R.string.msg_text_copyed);
+
+                if (fragment.getActivity() != null)
+                    ViewUtils.showMessage(fragment.getActivity(), R.string.msg_text_copyed);
                 break;
             case R.id.delete:
                 deleteStatus(fragment, status);

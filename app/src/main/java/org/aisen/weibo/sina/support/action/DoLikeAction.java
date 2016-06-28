@@ -144,7 +144,7 @@ public class DoLikeAction extends IAction {
                 run();
             }
             else {
-                ViewUtils.showMessage(exception.getMessage());
+                ViewUtils.showMessage(getContext(), exception.getMessage());
             }
 
             callback.onLikeFaild();

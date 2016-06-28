@@ -9,7 +9,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import android.view.animation.ScaleAnimation;
 
-import org.aisen.android.component.sheetfab.AnimatedFab;
+import org.aisen.weibo.sina.ui.widget.sheetfab.AnimatedFab;
 import org.aisen.weibo.sina.R;
 
 /**

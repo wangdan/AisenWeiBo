@@ -79,7 +79,7 @@ public class CommentHeaderItemView extends ARecycleViewItemView<StatusComment> i
     private StatusContent statusContent;
 
     public CommentHeaderItemView(ABaseFragment fragment, View itemView, StatusContent statusContent) {
-        super(itemView);
+        super(fragment.getActivity(), itemView);
 
         this.fragment = fragment;
         this.statusContent = statusContent;
@@ -195,7 +195,7 @@ public class CommentHeaderItemView extends ARecycleViewItemView<StatusComment> i
         // 如果没有图片，有原微博，底部加点空隙
         if (statusContent.getRetweeted_status() != null &&
                 (statusContent.getPic_urls() == null || statusContent.getPic_urls().length == 0)) {
-            txtReContent.setPadding(txtReContent.getPaddingLeft(), txtReContent.getPaddingTop(), txtReContent.getPaddingRight(), Utils.dip2px(8));
+            txtReContent.setPadding(txtReContent.getPaddingLeft(), txtReContent.getPaddingTop(), txtReContent.getPaddingRight(), Utils.dip2px(getContext(), 8));
         }
     }
 

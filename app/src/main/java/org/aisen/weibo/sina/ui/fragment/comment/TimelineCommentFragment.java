@@ -140,7 +140,7 @@ public class TimelineCommentFragment extends AListFragment<StatusComment, Status
 
             @Override
             public IITemView<StatusComment> newItemView(View convertView, int viewType) {
-                return new BasicFooterView<StatusComment>(convertView, TimelineCommentFragment.this) {
+                return new BasicFooterView<StatusComment>(getActivity(), convertView, TimelineCommentFragment.this) {
 
                     @Override
                     protected String endpagingText() {

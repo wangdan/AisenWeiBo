@@ -95,7 +95,7 @@ public class CommentsFragment extends ARecycleViewSwipeRefreshFragment<StatusCom
 
             @Override
             public IITemView<StatusComment> newItemView(View convertView, int viewType) {
-                return new BasicFooterView<StatusComment>(convertView, CommentsFragment.this) {
+                return new BasicFooterView<StatusComment>(getActivity(), convertView, CommentsFragment.this) {
 
                     @Override
                     protected String endpagingText() {

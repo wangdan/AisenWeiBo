@@ -250,10 +250,10 @@ public class PhotosFragment extends AGridSwipyRefreshFragment<PhotoBean, PhotosB
         GifHintImageView imgPhoto;
 
         public PhotoItemView(View itemView) {
-            super(itemView);
+            super(getActivity(), itemView);
 
             int gap = getResources().getDimensionPixelSize(R.dimen.gap_photo);
-            size = (SystemUtils.getScreenWidth() - gap * 4) / 3;
+            size = (SystemUtils.getScreenWidth(getContext()) - gap * 4) / 3;
 
             config.setLoadfaildRes(R.drawable.bg_timeline_loading);
             config.setLoadingRes(R.drawable.bg_timeline_loading);
@@ -270,7 +270,7 @@ public class PhotosFragment extends AGridSwipyRefreshFragment<PhotoBean, PhotosB
             config.setShowHeight(size);
             config.setSize(1);
 
-            String image = AisenUtils.getStatusMulImage(data.getPhoto().getThumbnail_pic());
+            String image = AisenUtils.getStatusMulImage(getContext(), data.getPhoto().getThumbnail_pic());
             Logger.w(image);
             boolean large = image.indexOf("bmiddle") != -1;
 

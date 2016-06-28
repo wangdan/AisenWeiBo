@@ -159,7 +159,7 @@ public class OtherItemFragment extends VersionSettingsFragment
 			@Override
 			protected void onPermissionDenied(boolean alwaysDenied) {
 				if (alwaysDenied) {
-					if (shownever && ActivityHelper.getBooleanShareData("donot_crash_remind", false)) {
+					if (shownever && ActivityHelper.getBooleanShareData(GlobalContext.getInstance(), "donot_crash_remind", false)) {
 						return;
 					}
 
@@ -171,7 +171,7 @@ public class OtherItemFragment extends VersionSettingsFragment
 
 															@Override
 															public void onClick(MaterialDialog dialog, DialogAction which) {
-																ActivityHelper.putBooleanShareData("donot_crash_remind", true);
+																ActivityHelper.putBooleanShareData(GlobalContext.getInstance(), "donot_crash_remind", true);
 															}
 
 														})

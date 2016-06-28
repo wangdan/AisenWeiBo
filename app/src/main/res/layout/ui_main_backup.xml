@@ -34,12 +34,12 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"/>
 
-                <org.aisen.android.component.sheetfab.DimOverlayFrameLayout
+                <org.aisen.weibo.sina.ui.widget.sheetfab.DimOverlayFrameLayout
                     android:id="@+id/overlay"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
-                <org.aisen.android.component.io.codetail.widget.RevealFrameLayout
+                <org.aisen.weibo.sina.ui.widget.io.codetail.RevealFrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="end|bottom"
@@ -54,7 +54,7 @@
                             android:layout_height="wrap_content"/>
 
                     </android.support.v7.widget.CardView>
-                </org.aisen.android.component.io.codetail.widget.RevealFrameLayout>
+                </org.aisen.weibo.sina.ui.widget.io.codetail.RevealFrameLayout>
             </RelativeLayout>
 
             <include

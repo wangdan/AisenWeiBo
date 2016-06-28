@@ -194,7 +194,7 @@ public class DraftFragment extends ARecycleViewFragment<PublishBean, ArrayList<P
         View btnResend;
 
         public DraftboxItemView(View itemView) {
-            super(itemView);
+            super(getActivity(), itemView);
         }
 
         @Override

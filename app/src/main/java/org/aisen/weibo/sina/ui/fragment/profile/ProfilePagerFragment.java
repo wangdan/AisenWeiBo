@@ -123,7 +123,7 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        InjectUtility.initInjectedView(this, ((BaseActivity) getActivity()).getRootView());
+        InjectUtility.initInjectedView(getActivity(), this, ((BaseActivity) getActivity()).getRootView());
         layoutInit(inflater, savedInstanceState);
 
         return null;

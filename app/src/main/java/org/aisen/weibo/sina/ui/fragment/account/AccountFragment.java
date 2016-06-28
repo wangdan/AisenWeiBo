@@ -224,7 +224,7 @@ public class AccountFragment extends ARecycleViewFragment<AccountBean, ArrayList
         ColorDrawable grayDrawable;
 
         public AccountItemView(View itemView) {
-            super(itemView);
+            super(getActivity(), itemView);
         }
 
         @Override

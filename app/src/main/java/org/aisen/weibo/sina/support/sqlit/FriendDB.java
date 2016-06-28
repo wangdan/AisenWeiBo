@@ -2,6 +2,7 @@ package org.aisen.weibo.sina.support.sqlit;
 
 import android.text.TextUtils;
 
+import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.setting.Setting;
 import org.aisen.android.common.utils.ActivityHelper;
 import org.aisen.android.component.orm.extra.Extra;
@@ -69,7 +70,7 @@ public class FriendDB implements ICacheUtility {
 			users.setUsers(userList);
 			users.setFromCache(true);
 			users.setOutofdate(CacheTimeUtils.isOutofdate("Friends", AppContext.getAccount().getUser()));
-			users.setNext_cursor(ActivityHelper.getIntShareData("Friends" + AppContext.getAccount().getUser().getIdstr(), 0));
+			users.setNext_cursor(ActivityHelper.getIntShareData(GlobalContext.getInstance(), "Friends" + AppContext.getAccount().getUser().getIdstr(), 0));
 			return users;
 		}
 		
@@ -98,7 +99,7 @@ public class FriendDB implements ICacheUtility {
 				
 				insertFriends(users.getUsers());
 				
-				ActivityHelper.putIntShareData("Friends" + AppContext.getAccount().getUser().getIdstr(), users.getNext_cursor());
+				ActivityHelper.putIntShareData(GlobalContext.getInstance(), "Friends" + AppContext.getAccount().getUser().getIdstr(), users.getNext_cursor());
 			}
 		}
 	}

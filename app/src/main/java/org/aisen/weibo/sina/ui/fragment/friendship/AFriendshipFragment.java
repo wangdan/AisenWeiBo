@@ -139,7 +139,7 @@ public abstract class AFriendshipFragment extends AListSwipeRefreshFragment<WeiB
 		View divider;
 
 		public FriendshipItemView(View itemView) {
-			super(itemView);
+			super(getActivity(), itemView);
 		}
 
 		@Override

@@ -350,14 +350,14 @@ public class WeiboClientActivity extends BaseActivity implements PhotoChoice.Pho
     @Override
     public void choieUri(Uri uri, int requestCode) {
         // 当拍摄照片时，提示是否设置旋转90度
-        if (!AppSettings.isRotatePic() && !ActivityHelper.getBooleanShareData("RotatePicNoRemind", false)) {
+        if (!AppSettings.isRotatePic() && !ActivityHelper.getBooleanShareData(GlobalContext.getInstance(), "RotatePicNoRemind", false)) {
             new AlertDialogWrapper.Builder(this).setTitle(R.string.remind)
                     .setMessage(R.string.publish_rotate_remind)
                     .setNegativeButton(R.string.donnot_remind, new DialogInterface.OnClickListener() {
 
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            ActivityHelper.putBooleanShareData("RotatePicNoRemind", true);
+                            ActivityHelper.putBooleanShareData(GlobalContext.getInstance(), "RotatePicNoRemind", true);
                         }
                     })
                     .setPositiveButton(R.string.i_know, null)
@@ -373,7 +373,7 @@ public class WeiboClientActivity extends BaseActivity implements PhotoChoice.Pho
                 @Override
                 public String workInBackground(Void... params) throws TaskException {
                     try {
-                        Bitmap bitmap = BitmapDecoder.decodeSampledBitmapFromFile(path, SystemUtils.getScreenHeight(), SystemUtils.getScreenHeight());
+                        Bitmap bitmap = BitmapDecoder.decodeSampledBitmapFromFile(path, SystemUtils.getScreenHeight(WeiboClientActivity.this), SystemUtils.getScreenHeight(WeiboClientActivity.this));
                         bitmap = BitmapUtil.rotateBitmap(bitmap, 90);
 
                         ByteArrayOutputStream outArray = new ByteArrayOutputStream();
@@ -414,7 +414,7 @@ public class WeiboClientActivity extends BaseActivity implements PhotoChoice.Pho
                 Logger.v(TAG, "拍照图片地址, path = " + path);
 
                 // 扫描文件
-                SystemUtils.scanPhoto(new File(path));
+                SystemUtils.scanPhoto(WeiboClientActivity.this, new File(path));
             }
             File file = new File(path);
             if (file.exists())

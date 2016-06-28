@@ -111,8 +111,8 @@ public class PicturePickFragment extends AGridFragment<String, ArrayList<String>
         imageConfig.setLoadingRes(R.drawable.bg_timeline_loading);
         imageConfig.setLoadfaildRes(R.drawable.bg_timeline_loading);
         imageConfig.setDownloaderClass(SdcardDownloader.class);
-        imageConfig.setMaxWidth(SystemUtils.getScreenWidth() / 4);
-        imageConfig.setMaxHeight(SystemUtils.getScreenWidth() / 4);
+        imageConfig.setMaxWidth(SystemUtils.getScreenWidth(getActivity()) / 4);
+        imageConfig.setMaxHeight(SystemUtils.getScreenWidth(getActivity()) / 4);
 
         diresFragment = (PictureDireListFragment) getActivity().getFragmentManager().findFragmentByTag("diresFragment");
         if (diresFragment != null)
@@ -319,7 +319,7 @@ public class PicturePickFragment extends AGridFragment<String, ArrayList<String>
         View btnCheckbox;
 
         public PicturePickItenView(View itemView) {
-            super(itemView);
+            super(getActivity(), itemView);
         }
 
         @Override
@@ -343,7 +343,7 @@ public class PicturePickFragment extends AGridFragment<String, ArrayList<String>
                 btnCheckbox.setVisibility(View.GONE);
             }
 
-            int width = (SystemUtils.getScreenWidth() - gap * 2) / 3;
+            int width = (SystemUtils.getScreenWidth(getActivity()) - gap * 2) / 3;
             convertView.setLayoutParams(new AbsListView.LayoutParams(width, width));
         }
 

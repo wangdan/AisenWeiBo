@@ -292,7 +292,7 @@ public class MentionSuggestionFragment extends AListFragment<MentionSuggestionBe
 		View layDivider;
 
 		public SuggestionItemView(View itemView) {
-			super(itemView);
+			super(getActivity(), itemView);
 		}
 
 		@Override

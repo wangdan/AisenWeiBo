@@ -118,7 +118,7 @@ public class MDColorsDialogFragment extends DialogFragment
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        ViewUtils.showMessage(getResources().getStringArray(R.array.mdColorNames)[position]);
+        ViewUtils.showMessage(getActivity(), getResources().getStringArray(R.array.mdColorNames)[position]);
 
         return true;
     }

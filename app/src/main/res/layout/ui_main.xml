@@ -49,10 +49,10 @@
             android:id="@+id/content_frame" android:layout_width="match_parent" android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-        <org.aisen.android.component.sheetfab.DimOverlayFrameLayout
+        <org.aisen.weibo.sina.ui.widget.sheetfab.DimOverlayFrameLayout
             android:id="@+id/overlay" android:layout_width="match_parent" android:layout_height="match_parent"/>
 
-        <org.aisen.android.component.io.codetail.widget.RevealFrameLayout
+        <org.aisen.weibo.sina.ui.widget.io.codetail.RevealFrameLayout
             android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="end|bottom" android:orientation="vertical">
 
             <android.support.v7.widget.CardView
@@ -64,7 +64,7 @@
                     android:layout_height="wrap_content"/>
 
             </android.support.v7.widget.CardView>
-        </org.aisen.android.component.io.codetail.widget.RevealFrameLayout>
+        </org.aisen.weibo.sina.ui.widget.io.codetail.RevealFrameLayout>
 
         <org.aisen.weibo.sina.ui.widget.MainFloatingActionButton
             android:id="@+id/fab" style="@style/Widget.MaterialSheetFab.MainFab" android:layout_width="wrap_content" android:layout_height="wrap_content"

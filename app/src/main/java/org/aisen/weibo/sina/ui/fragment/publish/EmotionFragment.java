@@ -93,7 +93,7 @@ public class EmotionFragment extends AGridFragment<Emotion, Emotions>
 		ImageView imgEmotion;
 
 		public EmotionItemView(View itemView) {
-			super(itemView);
+			super(getActivity(), itemView);
 		}
 
 		@Override

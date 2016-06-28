@@ -29,7 +29,7 @@ public abstract class ATimelineHeaderView extends ARecycleViewItemView<StatusCon
     TextView txtTitle;
 
     public ATimelineHeaderView(ATimelineFragment fragment, View itemView) {
-        super(itemView);
+        super(fragment.getActivity(), itemView);
 
         this.fragment = fragment;
 

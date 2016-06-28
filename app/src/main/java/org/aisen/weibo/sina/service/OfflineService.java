@@ -411,7 +411,7 @@ public class OfflineService extends Service {
 
                         Request request = new Request.Builder().url(url).build();
 
-                        Response response = GlobalContext.getInstance().getOkHttpClient().newCall(request).execute();
+                        Response response = GlobalContext.getOkHttpClient().newCall(request).execute();
 
                         InputStream in = response.body().byteStream();
 
@@ -526,7 +526,7 @@ public class OfflineService extends Service {
             return true;
         }
 
-        if (SystemUtils.getNetworkType() != SystemUtils.NetWorkType.wifi) {
+        if (SystemUtils.getNetworkType(this) != SystemUtils.NetWorkType.wifi) {
             stopSelf();
 
             mStatus = OfflineStatus.cancel;
@@ -561,11 +561,11 @@ public class OfflineService extends Service {
     }
 
     public static void setOfflineFinished(WeiBoUser user, boolean finished) {
-        ActivityHelper.putBooleanShareData(user.getIdstr() + "Offline_finished", finished);
+        ActivityHelper.putBooleanShareData(GlobalContext.getInstance(), user.getIdstr() + "Offline_finished", finished);
     }
 
     public static boolean isOfflineFinished(WeiBoUser user) {
-        return ActivityHelper.getBooleanShareData(user.getIdstr() + "Offline_finished", false);
+        return ActivityHelper.getBooleanShareData(GlobalContext.getInstance(), user.getIdstr() + "Offline_finished", false);
     }
 
 }

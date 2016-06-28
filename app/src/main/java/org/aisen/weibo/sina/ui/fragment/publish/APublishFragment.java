@@ -250,8 +250,8 @@ public abstract class APublishFragment extends ABaseFragment
 			ImageConfig config = new ImageConfig();
 			config.setLoadfaildRes(R.drawable.bg_timeline_loading);
 			config.setLoadingRes(R.drawable.bg_timeline_loading);
-			config.setMaxWidth(SystemUtils.getScreenWidth());
-			config.setMaxHeight(SystemUtils.getScreenHeight() / 2);
+			config.setMaxWidth(SystemUtils.getScreenWidth(getActivity()));
+			config.setMaxHeight(SystemUtils.getScreenHeight(getActivity()) / 2);
 			config.setBitmapCompress(TimelineBitmapCompress.class);
 			config.setProgress(new PublishDownloadProcess());
 
@@ -279,7 +279,7 @@ public abstract class APublishFragment extends ABaseFragment
 					Logger.v(TAG, "拍照图片地址, path = " + path);
 
 					// 扫描文件
-					SystemUtils.scanPhoto(new File(path));
+					SystemUtils.scanPhoto(getActivity(), new File(path));
 					config.setDownloaderClass(SdcardDownloader.class);
 				}
 
@@ -412,7 +412,7 @@ public abstract class APublishFragment extends ABaseFragment
 			editAble.insert(start, "→_→");
 		else
 			editAble.insert(start, emotion.getKey());
-	};
+	}
 	
 	/**
 	 * 微博内容监听，刷新提示信息
@@ -591,7 +591,7 @@ public abstract class APublishFragment extends ABaseFragment
 	            layEmotion.setVisibility(View.GONE);
 	            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
-	            SystemUtils.showKeyBoard(editContent);
+	            SystemUtils.showKeyBoard(getActivity(), editContent);
 	            editContent.postDelayed(new Runnable() {
 
 	            	@Override
@@ -618,7 +618,7 @@ public abstract class APublishFragment extends ABaseFragment
         int statusBarHeight = SystemUtils.getStatusBarHeight(getActivity());
 		emotionHeight = SystemUtils.getKeyboardHeight(getActivity());
 
-        SystemUtils.hideSoftInput(editContent);
+        SystemUtils.hideSoftInput(getActivity(), editContent);
         layEmotion.getLayoutParams().height = emotionHeight;
         layEmotion.setVisibility(View.VISIBLE);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -708,14 +708,14 @@ public abstract class APublishFragment extends ABaseFragment
 		Logger.e(uri.toString());
 
 		// 当拍摄照片时，提示是否设置旋转90度
-		if (!AppSettings.isRotatePic() && !ActivityHelper.getBooleanShareData("RotatePicNoRemind", false)) {
+		if (!AppSettings.isRotatePic() && !ActivityHelper.getBooleanShareData(GlobalContext.getInstance(), "RotatePicNoRemind", false)) {
 			new AlertDialogWrapper.Builder(getActivity()).setTitle(R.string.remind)
 									.setMessage(R.string.publish_rotate_remind)
 									.setNegativeButton(R.string.donnot_remind, new OnClickListener() {
 										
 										@Override
 										public void onClick(DialogInterface dialog, int which) {
-											ActivityHelper.putBooleanShareData("RotatePicNoRemind", true);
+											ActivityHelper.putBooleanShareData(GlobalContext.getInstance(), "RotatePicNoRemind", true);
 										}
 									})
 									.setPositiveButton(R.string.i_know, null)
@@ -731,7 +731,7 @@ public abstract class APublishFragment extends ABaseFragment
 				@Override
 				public String workInBackground(Void... params) throws TaskException {
 					try {
-						Bitmap bitmap = BitmapDecoder.decodeSampledBitmapFromFile(path, SystemUtils.getScreenHeight(), SystemUtils.getScreenHeight());
+						Bitmap bitmap = BitmapDecoder.decodeSampledBitmapFromFile(path, SystemUtils.getScreenHeight(getActivity()), SystemUtils.getScreenHeight(getActivity()));
 						bitmap = BitmapUtil.rotateBitmap(bitmap, 90);
 						
 						ByteArrayOutputStream outArray = new ByteArrayOutputStream();
@@ -746,7 +746,7 @@ public abstract class APublishFragment extends ABaseFragment
 				
 				protected void onSuccess(String result) {
 					setPicUri(result);
-				};
+				}
 				
 			}.execute();
 		}
@@ -849,7 +849,7 @@ public abstract class APublishFragment extends ABaseFragment
 				else {
 					showMessage(R.string.publish_recent_pic_none);
 				}
-			};
+			}
 			
 		}.execute();
 	}

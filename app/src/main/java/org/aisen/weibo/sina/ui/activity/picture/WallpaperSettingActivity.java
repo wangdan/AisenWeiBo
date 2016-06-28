@@ -270,7 +270,7 @@ public class WallpaperSettingActivity extends BaseActivity implements WallpaperV
 
                     }.execute();
                 } else {
-                    if (SystemUtils.getNetworkType() != SystemUtils.NetWorkType.none) {
+                    if (SystemUtils.getNetworkType(WallpaperSettingActivity.this) != SystemUtils.NetWorkType.none) {
                         WallpaperDownloadTask.settingWallpaper(WallpaperSettingActivity.this, origURL, KeyGenerator.generateMD5(origURL), WallpaperSettingActivity.this);
                     }else {
                         showMessage(R.string.txt_network_offline);

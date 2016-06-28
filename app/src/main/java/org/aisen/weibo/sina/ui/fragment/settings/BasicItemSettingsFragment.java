@@ -29,6 +29,7 @@ import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
+import org.aisen.weibo.sina.base.MyApplication;
 import org.aisen.weibo.sina.support.sqlit.FriendMentionDB;
 import org.aisen.weibo.sina.ui.activity.base.AisenActivityHelper;
 
@@ -127,7 +128,7 @@ import java.io.File;
             clearFragment = new CacheClearFragment();
             getActivity().getFragmentManager().beginTransaction().add(clearFragment, "CacheClearFragment").commit();
         }
-        clearFragment.setPreference(pClearCache, GlobalContext.getInstance().getImagePath());
+        clearFragment.setPreference(pClearCache, MyApplication.getImagePath());
 	}
 	
 	@Override
@@ -158,7 +159,7 @@ import java.io.File;
 	public boolean onPreferenceChange(Preference preference, Object newValue) {
 		// 是否显示默认分组
 		if ("pShowDefGroup".equals(preference.getKey())) {
-			ActivityHelper.putBooleanShareData("ChanneSortHasChanged", true);
+			ActivityHelper.putBooleanShareData(GlobalContext.getInstance(), "ChanneSortHasChanged", true);
 		}
 		// 列表字体
 		else if ("pTextSize".equals(preference.getKey())) {
@@ -206,7 +207,7 @@ import java.io.File;
                     Resources res = GlobalContext.getInstance().getResources();
                     pClearRecentMention.setSummary(String.format(res.getString(R.string.settings_basic_history_remind), result));
                 }
-			};
+			}
 			
 		}.execute();
 	}
@@ -226,7 +227,7 @@ import java.io.File;
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
 									if (TextUtils.isEmpty(editRemark.getText().toString())) {
-										ViewUtils.showMessage(R.string.update_faild);
+										ViewUtils.showMessage(getActivity(), R.string.update_faild);
 										return;
 									}
 									
@@ -238,10 +239,10 @@ import java.io.File;
 //										pPicSavePath.setSummary(path);
 										pPicSavePath.setSummary("/sdcard" + File.separator + editRemark.getText().toString() + File.separator);
 										
-										ViewUtils.showMessage(R.string.update_success);
+										ViewUtils.showMessage(getActivity(), R.string.update_success);
 									}
 									else {
-										ViewUtils.showMessage(R.string.update_faild);
+										ViewUtils.showMessage(getActivity(), R.string.update_faild);
 									}
 								}
 										

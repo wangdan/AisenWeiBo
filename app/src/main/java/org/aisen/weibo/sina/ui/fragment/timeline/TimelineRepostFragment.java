@@ -151,10 +151,10 @@ public class TimelineRepostFragment extends AListFragment<StatusContent, StatusC
         int normalTop;
 
         public RepostItemView(View convertView) {
-            super(convertView);
+            super(getActivity(), convertView);
 
-            firstTop = Utils.dip2px(16);
-            normalTop = Utils.dip2px(8);
+            firstTop = Utils.dip2px(getContext(), 16);
+            normalTop = Utils.dip2px(getContext(), 8);
         }
 
 
@@ -230,7 +230,7 @@ public class TimelineRepostFragment extends AListFragment<StatusContent, StatusC
 
             @Override
             public IITemView<StatusContent> newItemView(View convertView, int viewType) {
-                return new BasicFooterView<StatusContent>(convertView, TimelineRepostFragment.this) {
+                return new BasicFooterView<StatusContent>(getActivity(), convertView, TimelineRepostFragment.this) {
 
                     @Override
                     protected String endpagingText() {

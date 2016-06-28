@@ -26,8 +26,8 @@ import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.md.MDHelper;
 import org.aisen.android.common.utils.ActivityHelper;
 import org.aisen.android.common.utils.Logger;
-import org.aisen.android.component.sheetfab.MaterialSheetFab;
-import org.aisen.android.component.sheetfab.MaterialSheetFabEventListener;
+import org.aisen.weibo.sina.ui.widget.sheetfab.MaterialSheetFab;
+import org.aisen.weibo.sina.ui.widget.sheetfab.MaterialSheetFabEventListener;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.support.action.IAction;
@@ -223,14 +223,14 @@ public class MainActivity extends BaseActivity
         }
         // 新提及微博
         else if (ACTION_NOTIFICATION_MS.equals(action)) {
-            ActivityHelper.putShareData("showMensitonType", "showMentionStatus");
+            ActivityHelper.putShareData(this, "showMensitonType", "showMentionStatus");
 
             newIntentNotificationIndex = 1;
             type = MenuFragment.MENU_NOTIFICATION;
         }
         // 新提及评论
         else if (ACTION_NOTIFICATION_MC.equals(action)) {
-            ActivityHelper.putShareData("showMensitonType", "showMentionCmt");
+            ActivityHelper.putShareData(this, "showMensitonType", "showMentionCmt");
 
             newIntentNotificationIndex = 2;
             type = MenuFragment.MENU_NOTIFICATION;
@@ -813,7 +813,7 @@ public class MainActivity extends BaseActivity
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        WebLoginFragment.launch(activity, WebLoginFragment.Client.aisen, account.getAccount(), account.getPassword(), REQUEST_CODE_AUTH);
+                     WebLoginFragment.launch(activity, WebLoginFragment.Client.aisen, account.getAccount(), account.getPassword(), REQUEST_CODE_AUTH);
                     }
                 })
                 .show();

@@ -169,7 +169,7 @@ public abstract class ATimelineFragment extends ARecycleViewSwipeRefreshFragment
 
             @Override
             public IITemView<StatusContent> newItemView(View convertView, int viewType) {
-                return new BasicFooterView<StatusContent>(convertView, ATimelineFragment.this) {
+                return new BasicFooterView<StatusContent>(getActivity(), convertView, ATimelineFragment.this) {
 
                     @Override
                     protected String endpagingText() {

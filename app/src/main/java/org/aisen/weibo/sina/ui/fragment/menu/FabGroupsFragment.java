@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.ActivityHelper;
 import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.common.utils.Utils;
@@ -36,12 +37,12 @@ public class FabGroupsFragment extends AListFragment<Group, Groups> {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        selectedPosition = savedInstanceState == null ? ActivityHelper.getIntShareData(getPositionKey(), 0)
+        selectedPosition = savedInstanceState == null ? ActivityHelper.getIntShareData(GlobalContext.getInstance(), getPositionKey(), 0)
                                                       : savedInstanceState.getInt(getPositionKey(), 0);
     }
 
     public void resetSelectedPosition() {
-        selectedPosition = ActivityHelper.getIntShareData(getPositionKey(), 0);
+        selectedPosition = ActivityHelper.getIntShareData(GlobalContext.getInstance(), getPositionKey(), 0);
     }
 
     @Override
@@ -80,7 +81,7 @@ public class FabGroupsFragment extends AListFragment<Group, Groups> {
         selectedPosition = position;
         getAdapter().notifyDataSetChanged();
 
-        ActivityHelper.putIntShareData(getPositionKey(), position);
+        ActivityHelper.putIntShareData(GlobalContext.getInstance(), getPositionKey(), position);
 
         if (getActivity() instanceof OnFabGroupSelectedCallback) {
             ((OnFabGroupSelectedCallback) getActivity()).onGroupSelected(position, getAdapterItems().get(position));
@@ -97,12 +98,12 @@ public class FabGroupsFragment extends AListFragment<Group, Groups> {
         super.setItems(items);
 
         // 设置列表的尺寸
-        int width = Utils.dip2px(175);
-        if (width > SystemUtils.getScreenWidth() / 2) {
-            width = SystemUtils.getScreenWidth() / 2;
+        int width = Utils.dip2px(getActivity(), 175);
+        if (width > SystemUtils.getScreenWidth(getActivity()) / 2) {
+            width = SystemUtils.getScreenWidth(getActivity()) / 2;
         }
         if (items.size() > 7) {
-            getContentView().setLayoutParams(new FrameLayout.LayoutParams(width, Utils.dip2px(340)));
+            getContentView().setLayoutParams(new FrameLayout.LayoutParams(width, Utils.dip2px(getActivity(), 340)));
         }
         else {
             getContentView().setLayoutParams(new FrameLayout.LayoutParams(width, FrameLayout.LayoutParams.WRAP_CONTENT));
@@ -115,7 +116,7 @@ public class FabGroupsFragment extends AListFragment<Group, Groups> {
             top = getRefreshView().getChildAt(0).getHeight() * 3;
         }
         else {
-            top = Utils.dip2px(175);
+            top = Utils.dip2px(getActivity(), 175);
         }
         getRefreshView().setSelectionFromTop(selectedPosition, top);
     }
@@ -134,7 +135,7 @@ public class FabGroupsFragment extends AListFragment<Group, Groups> {
         TextView txtTitle;
 
         public FabGroupsItemView(View convertView) {
-            super(convertView);
+            super(getActivity(), convertView);
         }
 
 

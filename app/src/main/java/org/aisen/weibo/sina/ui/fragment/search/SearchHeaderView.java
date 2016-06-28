@@ -48,7 +48,7 @@ public class SearchHeaderView extends ARecycleViewItemView<StatusContent> implem
     private BasicRecycleViewAdapter<SearchsResultUser> basicRecycleViewAdapter;
 
     public SearchHeaderView(APagingFragment fragment, View itemView) {
-        super(itemView);
+        super(fragment.getActivity(), itemView);
 
         this.fragment = fragment;
     }
@@ -126,7 +126,7 @@ public class SearchHeaderView extends ARecycleViewItemView<StatusContent> implem
 
         @Override
         public IITemView<SearchsResultUser> newItemView(View convertView, int viewType) {
-            return new ARecycleViewItemView<SearchsResultUser>(convertView) {
+            return new ARecycleViewItemView<SearchsResultUser>(fragment.getActivity(), convertView) {
 
                 @ViewInject(id = R.id.imgPhoto)
                 ImageView imgPhoto;
@@ -142,8 +142,8 @@ public class SearchHeaderView extends ARecycleViewItemView<StatusContent> implem
                     RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) convertView.getLayoutParams();
 //                    params.leftMargin = position == 0 || position == 1 ? 0 : Utils.dip2px(8);
 //                    params.topMargin = position % 2 == 0 ? 0 : Utils.dip2px(8);
-                    params.width = SystemUtils.getScreenWidth() * 5 / 6;
-                    params.height = Utils.dip2px(110);
+                    params.width = SystemUtils.getScreenWidth(getContext()) * 5 / 6;
+                    params.height = Utils.dip2px(getContext(), 110);
 
                     BitmapLoader.getInstance().display(fragment, data.getProfile_image_url(), imgPhoto, ImageConfigUtils.getLargePhotoConfig());
                     String name = data.getScreen_name();

@@ -78,7 +78,7 @@ public class GifHintImageView extends ImageView {
             if (AppSettings.midPicHint() && midExist) {
                 if (dotPaint == null) {
                     dotPaint = new Paint();
-                    gap = Utils.dip2px(8);
+                    gap = Utils.dip2px(getContext(), 8);
                 }
                 if (theme != AppSettings.getThemeColor()) {
                     dotPaint.setColor(GlobalContext.getInstance().getResources().getColor(ThemeUtils.themeColorArr[AppSettings.getThemeColor()][0]));
