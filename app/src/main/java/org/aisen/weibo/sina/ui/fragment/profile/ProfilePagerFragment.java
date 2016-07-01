@@ -2,6 +2,7 @@ package org.aisen.weibo.sina.ui.fragment.profile;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.component.bitmaploader.core.ImageConfig;
 import org.aisen.android.component.bitmaploader.display.DefaultDisplayer;
@@ -46,6 +48,7 @@ import org.aisen.weibo.sina.ui.fragment.friendship.FriendshipPagerFragment;
 import org.aisen.weibo.sina.ui.widget.ProfileCollapsingToolbarLayout;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -283,9 +286,9 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
         // 认证
         AisenUtils.setImageVerified(imgVerified, mUser);
         // 关注数
-        txtFriendsCounter.setText(String.format(getString(R.string.profile_friends), AisenUtils.getCounter(mUser.getFriends_count())));
+        txtFriendsCounter.setText(String.format(getString(R.string.profile_friends), getCounter(mUser.getFriends_count())));
         // 粉丝数
-        txtFollowersCounter.setText(String.format(getString(R.string.profile_followers), AisenUtils.getCounter(mUser.getFollowers_count())));
+        txtFollowersCounter.setText(String.format(getString(R.string.profile_followers), getCounter(mUser.getFollowers_count())));
         // 简介
         txtDesc.setText(mUser.getDescription());
         // 简介
@@ -293,6 +296,21 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
             txtDesc.setText(mUser.getDescription());
         else
             txtDesc.setText(getString(R.string.profile_des_none));
+    }
+
+    public static String getCounter(int count) {
+        String append = "";
+
+        Resources res = GlobalContext.getInstance().getResources();
+
+        if (count < 10000)
+            return String.valueOf(count) + append;
+        else if (count < 5 * 10000)
+            return new DecimalFormat("#.000").format(count * 1.0f / 10000) + append + res.getString(R.string.msg_ten_thousand);
+        else if (count < 100 * 10000)
+            return new DecimalFormat("#.0").format(count * 1.0f / 10000) + append + res.getString(R.string.msg_ten_thousand);
+        else
+            return new DecimalFormat("#").format(count * 1.0f / 10000) + append + res.getString(R.string.msg_ten_thousand);
     }
 
     @Override
