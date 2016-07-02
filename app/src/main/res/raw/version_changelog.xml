@@ -8,6 +8,10 @@
         chg:changeLogFileResourceId="@raw/custom_changelog"
         in your View component in layout file -->
 
+	<changelogversion versionName="6.0.3" changeDate="2016-06">
+		<changelogtext>修复授权登录失败的问题.</changelogtext>
+	</changelogversion>
+
 	<changelogversion versionName="6.0.2" changeDate="2016-04">
 		<changelogtext>适配了Android M.</changelogtext>
 		<changelogtext>更新了大部分界面.</changelogtext>

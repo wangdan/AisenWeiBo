@@ -15,6 +15,7 @@ import org.aisen.android.common.utils.Logger;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
+import org.aisen.downloader.DownloadManager;
 import org.aisen.weibo.sina.BuildConfig;
 import org.aisen.weibo.sina.receiver.TimingBroadcastReceiver;
 import org.aisen.weibo.sina.receiver.TimingIntent;
@@ -41,6 +42,8 @@ public class MyApplication extends GlobalContext {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        new DownloadManager.Builder(this).setDebug(true).build();
 
         // 添加一些配置项
         SettingUtility.addSettings(this, "actions");

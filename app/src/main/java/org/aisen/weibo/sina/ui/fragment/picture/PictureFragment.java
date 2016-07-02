@@ -7,8 +7,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.opengl.GLES10;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,6 +26,8 @@ import com.umeng.analytics.MobclickAgent;
 import org.aisen.android.common.utils.BitmapUtil;
 import org.aisen.android.common.utils.BitmapUtil.BitmapType;
 import org.aisen.android.common.utils.FileUtils;
+import org.aisen.android.common.utils.KeyGenerator;
+import org.aisen.android.common.utils.Logger;
 import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.common.utils.Utils;
 import org.aisen.android.common.utils.ViewUtils;
@@ -38,6 +42,10 @@ import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.fragment.ABaseFragment;
 import org.aisen.android.ui.fragment.ATabsFragment;
+import org.aisen.downloader.DownloadController;
+import org.aisen.downloader.DownloadManager;
+import org.aisen.downloader.DownloadProxy;
+import org.aisen.downloader.IDownloadObserver;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.sinasdk.bean.PicUrls;
@@ -67,7 +75,7 @@ import uk.co.senab.photoview.PhotoViewAttacher;
  *
  * @date 2014年9月18日
  */
-@SuppressLint("SdCardPath") public class PictureFragment extends ABaseFragment implements ATabsFragment.ITabInitData {
+@SuppressLint("SdCardPath") public class PictureFragment extends ABaseFragment implements ATabsFragment.ITabInitData, IDownloadObserver {
 
 	public static ABaseFragment newInstance(PicUrls url) {
 		PictureFragment fragment = new PictureFragment();
@@ -87,6 +95,8 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 	View viewFailure;
 	@ViewInject(id = R.id.viewProgress)
 	PictureProgressView progressView;
+	@ViewInject(id = R.id.layError)
+	View layError;
 
 	private PicUrls image;
 
@@ -94,7 +104,7 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 
     private PictureSize pictureSize;
 
-    public enum PictureStatus {
+	public enum PictureStatus {
         wait, downloading, success, faild
     }
 
@@ -113,7 +123,7 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 
 		image = savedInstanceSate == null ? (PicUrls) getArguments().getSerializable("url")
 										  : (PicUrls) savedInstanceSate.getSerializable("url");
-		
+
         origFile = BitmapLoader.getInstance().getCacheFile(getOrigImage());
 
 		photoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
@@ -125,6 +135,7 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 
 		});
 		mWebView.addJavascriptInterface(new PictureJavaScriptInterface(), "picturejs");
+		layError.setPadding(0, 0, 0, SystemUtils.getNavigationBarHeight(getActivity()));
 
 		loadPicture(viewFailure);
 		
@@ -476,23 +487,26 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 		
 		super.onCreateOptionsMenu(menu, inflater);
 	}
-	
+
+	private boolean isDownloadSuccess() {
+		return mDownloadStatus != null && mDownloadStatus.status == DownloadManager.STATUS_SUCCESSFUL;
+	}
+
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
 		if (getActivity() != null) {
-			File file = BitmapLoader.getInstance().getCacheFile(getImage());
+			File file = BitmapLoader.getInstance().getCacheFile(getOrigImage());
 			menu.findItem(R.id.savePicture).setVisible(file.exists());
 			menu.findItem(R.id.share).setVisible(file.exists());
 
 			MenuItem origItem = menu.findItem(R.id.origPicture);
-			if (file.exists())
-				origItem.setVisible(!origFile.exists());
-			else
-				origItem.setVisible(false);
+			origItem.setVisible(!file.exists());
 
 			if (origItem.isVisible()) {
-				if (downloadOrigPicture != null) {
-					String progressed = String.valueOf(Math.round(progress[0] * 100.0f / progress[1]));
+				if (mDownloadStatus != null && mDownloadStatus.status != -1) {
+					long total = mDownloadStatus.total == -1 ? 1 : mDownloadStatus.total;
+					long progress = mDownloadStatus.progress == -1 ? 0 : mDownloadStatus.progress;
+					String progressed = String.valueOf(Math.round(progress * 100.0f / total));
 					origItem.setTitle(String.format("%s(%s", getString(R.string.orig_pic), progressed) + "%)");
 				}
 				else {
@@ -545,8 +559,15 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 		}
         // 下载原图
         else if (item.getItemId() == R.id.origPicture) {
-            if (downloadOrigPicture == null)
-                new DownloadOrigPicture(origFile).execute();
+			if (mDownloadStatus == null || mDownloadStatus.status == -1) {
+				Uri uri = Uri.parse(getOrigImage());
+				DownloadManager.Request request = new DownloadManager.Request(uri);
+				request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
+				request.setTitle(KeyGenerator.generateMD5(getOrigImage()) + ".jpg");
+				File file = new File(BitmapLoader.getInstance().getCacheFile(getOrigImage()).getAbsolutePath() + ".tmp");
+				request.setDestinationUri(Uri.fromFile(file));
+				DownloadManager.getInstance().enqueue(request);
+			}
 
             getActivity().invalidateOptionsMenu();
         }
@@ -632,91 +653,6 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 		}.run();
 	}
 
-    DownloadOrigPicture downloadOrigPicture;
-    class DownloadOrigPicture extends WorkTask<Void, Void, Void> {
-
-        ImageConfig config = new ImageConfig();
-
-        DownloadOrigPicture(File file) {
-            downloadOrigPicture = this;
-            config.setProgress(new OrigPictureProgress(file));
-        }
-
-        @Override
-        public Void workInBackground(Void... params) throws TaskException {
-            try {
-                BitmapLoader.getInstance().doDownload(getOrigImage(), config);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onFinished() {
-            super.onFinished();
-
-            downloadOrigPicture = null;
-        }
-    }
-
-    private long[] progress = new long[2];
-    class OrigPictureProgress extends DownloadProcess {
-
-        private File file;
-
-        OrigPictureProgress(File file) {
-            this.file = file;
-        }
-
-        @Override
-        public void receiveProgress(long progressed) {
-            super.receiveProgress(progressed);
-
-            progress[0] = progressed;
-            if (getActivity() != null)
-                getActivity().invalidateOptionsMenu();
-        }
-
-        @Override
-        public void prepareDownload(String url) {
-            super.prepareDownload(url);
-
-            progress = new long[2];
-            if (getActivity() != null)
-                getActivity().invalidateOptionsMenu();
-        }
-
-        @Override
-        public void finishedDownload(byte[] bytes) {
-            super.finishedDownload(bytes);
-
-            if (getActivity() != null) {
-                getActivity().invalidateOptionsMenu();
-
-                onDownloadPicture(bytes, file);
-            }
-        }
-
-        @Override
-        public void downloadFailed(Exception e) {
-            super.downloadFailed(e);
-
-            if (getActivity() != null)
-                showMessage(R.string.msg_save_orig_faild);
-        }
-
-        @Override
-        public void receiveLength(long length) {
-            super.receiveLength(length);
-
-            progress[1] = length;
-            if (getActivity() != null)
-                getActivity().invalidateOptionsMenu();
-        }
-
-    }
 
     class LoadPictureSizeTask extends WorkTask<Void, Void, PictureSize> {
 
@@ -743,11 +679,107 @@ import uk.co.senab.photoview.PhotoViewAttacher;
         }
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
+	// 2016-07-01 使用DownloadManager来下载
+	private DownloadController.DownloadStatus mDownloadStatus;
+	private DownloadProxy mDownloadProxy = new DownloadProxy();
 
-        if (downloadOrigPicture != null)
-            downloadOrigPicture.cancel(true);
-    }
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		DownloadController.register(mDownloadProxy);
+		mDownloadProxy.attach(this);
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		DownloadController.unregister(mDownloadProxy);
+		mDownloadProxy.detach(this);
+	}
+
+	@Override
+	public String downloadURI() {
+		return getOrigImage();
+	}
+
+	@Override
+	public void onDownloadInit() {
+	}
+
+	@Override
+	public void onDownloadChanged(DownloadController.DownloadStatus downloadStatus) {
+		mDownloadStatus = downloadStatus;
+
+		// 失败
+		if (mDownloadStatus.status == DownloadManager.STATUS_FAILED) {
+			if (getActivity() != null) {
+				Snackbar.make(layError, "下载失败：" + mDownloadStatus.reason + "", Snackbar.LENGTH_LONG)
+						.setAction("RETRY", new View.OnClickListener() {
+
+														@Override
+														public void onClick(View v) {
+															DownloadManager.getInstance().resume(mDownloadStatus.id);
+														}
+
+													})
+						.show();
+			}
+		}
+		// 成功
+		else if (mDownloadStatus.status == DownloadManager.STATUS_SUCCESSFUL) {
+			if (getActivity() != null) {
+                getActivity().invalidateOptionsMenu();
+
+				final File file = BitmapLoader.getInstance().getCacheFile(getOrigImage());
+				if (file.exists()) {
+					return;
+				}
+				if (new File(mDownloadStatus.localUri).renameTo(file)) {
+					new WorkTask<Void, Void, byte[]>() {
+
+						@Override
+						public byte[] workInBackground(Void... params) throws TaskException {
+							Logger.d("Download-Picture", mDownloadStatus.localUri);
+
+							return FileUtils.readFileToBytes(file);
+						}
+
+						@Override
+						protected void onSuccess(byte[] bytes) {
+							super.onSuccess(bytes);
+
+							onDownloadPicture(bytes, file);
+						}
+
+					}.execute();
+				}
+				else {
+					if (getActivity() != null)
+						showMessage(R.string.msg_save_orig_faild);
+				}
+            }
+		}
+		// 暂停
+		else if (mDownloadStatus.status == DownloadManager.STATUS_PAUSED) {
+			if (getActivity() != null) {
+				getActivity().invalidateOptionsMenu();
+			}
+		}
+		// 等待
+		else if (mDownloadStatus.status == DownloadManager.STATUS_PENDING ||
+				mDownloadStatus.status == DownloadManager.STATUS_WAITING) {
+			if (getActivity() != null) {
+				getActivity().invalidateOptionsMenu();
+			}
+		}
+		// 下载中
+		else if (mDownloadStatus.status == DownloadManager.STATUS_RUNNING) {
+			if (getActivity() != null) {
+				getActivity().invalidateOptionsMenu();
+			}
+		}
+	}
+
 }
