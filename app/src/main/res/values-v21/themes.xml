@@ -8,6 +8,7 @@
         <item name="menuHeaderHeight">185dip</item>
         <item name="menuHeaderPaddingTop">40dip</item>
         <item name="MDbuttonSelector">?attr/selectableItemBackground</item>
+        <item name="fitSystemWindows">true</item>
     </style>
 
     <style name="AppTheme.Main">

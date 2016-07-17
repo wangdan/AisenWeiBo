@@ -11,8 +11,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.umeng.analytics.MobclickAgent;
-
 import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.common.utils.Utils;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
@@ -35,6 +33,7 @@ import org.aisen.weibo.sina.support.bean.JokeBeans;
 import org.aisen.weibo.sina.support.paging.JokePaging;
 import org.aisen.weibo.sina.support.sdk.SDK;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.activity.picture.PicsActivity;
 
 import java.util.List;
@@ -115,12 +114,12 @@ public class JokesFragment extends AWaterfallSwipeRefreshFragment<JokeBean, Joke
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     if (which == 0) {
-                        MobclickAgent.onEvent(getActivity(), "joke_text_copy");
+                        UMengUtil.onEvent(getActivity(), "joke_text_copy");
 
                         AisenUtils.copyToClipboard(bean.getExcerpt());
                     }
                     else if (which == 1) {
-                        MobclickAgent.onEvent(getActivity(), "joke_text_share");
+                        UMengUtil.onEvent(getActivity(), "joke_text_share");
 
                         startActivity(Utils.getShareIntent("", bean.getExcerpt(), ""));
                     }

@@ -110,7 +110,7 @@ public class SettingsPagerFragment extends ATabsTabLayoutFragment<TabItem> {
 		if (item.getItemId() == R.id.donate) {
 			showDonateDialog();
 
-			MobclickAgent.onEvent(getActivity(), "donate");
+			UMengUtil.onEvent(getActivity(), "donate");
 		}
 
 		return super.onOptionsItemSelected(item);
@@ -131,7 +131,7 @@ public class SettingsPagerFragment extends ATabsTabLayoutFragment<TabItem> {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						MobclickAgent.onEvent(getActivity(), "donate_cancel");
+						UMengUtil.onEvent(getActivity(), "donate_cancel");
 					}
 
 				})
@@ -139,7 +139,7 @@ public class SettingsPagerFragment extends ATabsTabLayoutFragment<TabItem> {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						MobclickAgent.onEvent(getActivity(), "donate_yes");
+						UMengUtil.onEvent(getActivity(), "donate_yes");
 
 						AisenUtils.copyToClipboard("binglanhappy@163.com");
 

@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.text.TextUtils;
 
+import com.tma.analytics.TmaAgent;
 import com.umeng.analytics.MobclickAgent;
 
 import org.aisen.android.common.utils.Logger;
@@ -66,6 +67,9 @@ public class UMengUtil {
         MobclickAgent.onPageStart(name);
         MobclickAgent.onResume(context);
 
+        TmaAgent.onPageStart(name);
+        TmaAgent.onResume(context);
+
         Logger.v("UMeng", "onPageStart(%s)", name);
     }
 
@@ -73,7 +77,16 @@ public class UMengUtil {
         MobclickAgent.onPageEnd(name);
         MobclickAgent.onPause(context);
 
+        TmaAgent.onPageEnd(name);
+        TmaAgent.onPause(context);
+
         Logger.v("UMeng", "onPageEnd(%s)", name);
+    }
+
+    public static void onEvent(Context context, String eventId) {
+        MobclickAgent.onEvent(context, eventId);
+
+        TmaAgent.onEvent(context, eventId);
     }
 
 }

@@ -3,8 +3,6 @@ package org.aisen.weibo.sina.support.action;
 import android.app.Activity;
 import android.view.View;
 
-import com.umeng.analytics.MobclickAgent;
-
 import org.aisen.android.common.utils.ViewUtils;
 import org.aisen.android.component.bitmaploader.core.LruMemoryCache;
 import org.aisen.android.component.orm.extra.Extra;
@@ -19,6 +17,7 @@ import org.aisen.weibo.sina.support.bean.LikeResultBean;
 import org.aisen.weibo.sina.support.sdk.SDK;
 import org.aisen.weibo.sina.support.sqlit.LikeDB;
 import org.aisen.weibo.sina.support.sqlit.SinaDB;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 
 import java.util.List;
@@ -72,7 +71,7 @@ public class DoLikeAction extends IAction {
         // 开始处理点赞
         new LikeTask().execute();
 
-        MobclickAgent.onEvent(bizFragment.getActivity(), "do_like");
+        UMengUtil.onEvent(bizFragment.getActivity(), "do_like");
     }
 
     public static void refreshLikeCache() {

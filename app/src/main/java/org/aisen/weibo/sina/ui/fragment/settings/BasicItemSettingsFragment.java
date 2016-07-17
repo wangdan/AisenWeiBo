@@ -17,7 +17,6 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
-import com.umeng.analytics.MobclickAgent;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.setting.SettingUtility;
@@ -31,6 +30,7 @@ import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.base.MyApplication;
 import org.aisen.weibo.sina.support.sqlit.FriendMentionDB;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.activity.base.AisenActivityHelper;
 
 import java.io.File;
@@ -146,7 +146,7 @@ import java.io.File;
 //			ThemeStyleSettingsFragment.launch(getActivity());
             MDColorsDialogFragment.launch(getActivity());
 
-			MobclickAgent.onEvent(getActivity(), "theme_setting");
+			UMengUtil.onEvent(getActivity(), "theme_setting");
         }
         // 自定义颜色
         else if ("pThemeCustom".equals(preference.getKey())) {

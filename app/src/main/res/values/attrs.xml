@@ -32,4 +32,9 @@
         <attr name="iabIconHeight" format="dimension"/>
     </declare-styleable>
 
+    <declare-styleable name="KitkatViewGroup">
+        <attr name="insetStatus" format="reference|color" />
+        <attr name="insetStatusForeground" format="reference|color" />
+    </declare-styleable>
+
 </resources>

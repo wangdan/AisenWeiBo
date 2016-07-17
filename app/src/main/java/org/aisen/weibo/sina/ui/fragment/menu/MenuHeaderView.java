@@ -20,8 +20,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.umeng.analytics.MobclickAgent;
-
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.common.utils.Utils;
@@ -38,6 +36,7 @@ import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.utils.AccountUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.activity.base.MainActivity;
 import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
@@ -206,7 +205,7 @@ public class MenuHeaderView implements View.OnClickListener {
 
                 @Override
                 public void onClick(View v) {
-                    MobclickAgent.onEvent(menuFragment.getActivity(), "menuheader_account_change");
+                    UMengUtil.onEvent(menuFragment.getActivity(), "menuheader_account_change");
 
                     AccountBean account = (AccountBean) v.getTag();
 
@@ -295,7 +294,7 @@ public class MenuHeaderView implements View.OnClickListener {
 //            switchAccountLayout();
             AccountFragment.launch(menuFragment.getActivity());
 
-            MobclickAgent.onEvent(menuFragment.getActivity(), "menuheader_show_accounts");
+            UMengUtil.onEvent(menuFragment.getActivity(), "menuheader_show_accounts");
         }
     }
 

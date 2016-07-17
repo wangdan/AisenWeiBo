@@ -26,7 +26,6 @@ import android.widget.TextView;
 import com.getbase.floatingactionbutton.AddFloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
-import com.umeng.analytics.MobclickAgent;
 
 import org.aisen.android.common.utils.Utils;
 import org.aisen.android.support.bean.TabItem;
@@ -344,7 +343,7 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
             else {
                 showOverlay();
 
-                MobclickAgent.onEvent(getActivity(), "toggle_cmt_fag");
+                UMengUtil.onEvent(getActivity(), "toggle_cmt_fag");
             }
 
             action_menu.toggle();

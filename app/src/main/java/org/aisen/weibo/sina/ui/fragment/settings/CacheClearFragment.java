@@ -7,7 +7,6 @@ import android.preference.Preference.OnPreferenceClickListener;
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.GravityEnum;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.umeng.analytics.MobclickAgent;
 
 import org.aisen.android.common.utils.DateUtils;
 import org.aisen.android.common.utils.Logger;
@@ -16,6 +15,7 @@ import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.ui.fragment.ABaseFragment;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.MyApplication;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 
 import java.io.File;
 import java.text.DecimalFormat;
@@ -76,7 +76,7 @@ public class CacheClearFragment extends ABaseFragment implements OnPreferenceCli
 	}
 	
 	private void clearCache(final boolean all) {
-		MobclickAgent.onEvent(getActivity(), all ? "clear_cache_all" : "clear_cache_outofdate");
+		UMengUtil.onEvent(getActivity(), all ? "clear_cache_all" : "clear_cache_outofdate");
 
 		final WorkTask<Void, String, Void> task = new WorkTask<Void, String, Void>() {
 

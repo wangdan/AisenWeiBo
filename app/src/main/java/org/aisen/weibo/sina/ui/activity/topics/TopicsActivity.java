@@ -29,7 +29,7 @@ public class TopicsActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.comm_ui_fragment_container);
+		setContentView(R.layout.ui_fragment_container);
 
 		if (savedInstanceState == null) {
 			if (getIntent() != null && "Previous".equals(getIntent().getAction())) {

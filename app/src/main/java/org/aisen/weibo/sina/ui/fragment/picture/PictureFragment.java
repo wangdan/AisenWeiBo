@@ -21,8 +21,6 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.ImageView;
 
-import com.umeng.analytics.MobclickAgent;
-
 import org.aisen.android.common.utils.BitmapUtil;
 import org.aisen.android.common.utils.BitmapUtil.BitmapType;
 import org.aisen.android.common.utils.FileUtils;
@@ -55,6 +53,7 @@ import org.aisen.weibo.sina.support.sdk.SDK;
 import org.aisen.weibo.sina.support.sqlit.SinaDB;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.activity.picture.PhotosActivity;
 import org.aisen.weibo.sina.ui.activity.picture.PicsActivity;
 import org.aisen.weibo.sina.ui.widget.PictureProgressView;
@@ -540,13 +539,13 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// 下载
 		if (item.getItemId() == R.id.savePicture) {
-			MobclickAgent.onEvent(getActivity(), "save_picture");
+			UMengUtil.onEvent(getActivity(), "save_picture");
 
 			downloadImage();
 		}
 		// 分享
 		else if (item.getItemId() == R.id.share) {
-			MobclickAgent.onEvent(getActivity(), "share_picture");
+			UMengUtil.onEvent(getActivity(), "share_picture");
 
 			Intent shareIntent = Utils.getShareIntent("", "", getImage());
 			startActivity(shareIntent);

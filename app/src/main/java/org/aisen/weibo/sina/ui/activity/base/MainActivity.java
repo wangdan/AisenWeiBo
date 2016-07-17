@@ -20,14 +20,11 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
-import com.umeng.analytics.MobclickAgent;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.md.MDHelper;
 import org.aisen.android.common.utils.ActivityHelper;
 import org.aisen.android.common.utils.Logger;
-import org.aisen.weibo.sina.ui.widget.sheetfab.MaterialSheetFab;
-import org.aisen.weibo.sina.ui.widget.sheetfab.MaterialSheetFabEventListener;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.support.action.IAction;
@@ -50,6 +47,7 @@ import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.utils.AccountUtils;
 import org.aisen.weibo.sina.support.utils.OfflineUtils;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.activity.profile.WeiboClientActivity;
 import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
 import org.aisen.weibo.sina.ui.fragment.account.WebLoginFragment;
@@ -71,6 +69,8 @@ import org.aisen.weibo.sina.ui.fragment.settings.SettingsPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineDefFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineGroupsFragment;
 import org.aisen.weibo.sina.ui.widget.MainFloatingActionButton;
+import org.aisen.weibo.sina.ui.widget.sheetfab.MaterialSheetFab;
+import org.aisen.weibo.sina.ui.widget.sheetfab.MaterialSheetFabEventListener;
 
 import java.util.ArrayList;
 
@@ -320,7 +320,7 @@ public class MainActivity extends BaseActivity
 
                 fabGroupsFragment.show();
 
-                MobclickAgent.onEvent(MainActivity.this, "fab_groups");
+                UMengUtil.onEvent(MainActivity.this, "fab_groups");
             }
 
         });
@@ -399,13 +399,13 @@ public class MainActivity extends BaseActivity
 
             }.run();
 
-            MobclickAgent.onEvent(MainActivity.this, "md");
+            UMengUtil.onEvent(MainActivity.this, "md");
             break;
         // 热门微博
         case MenuFragment.MENU_HOT_STATUS:
             WeiboClientActivity.launchHotStatuses(this);
 
-            MobclickAgent.onEvent(MainActivity.this, "hot_status");
+            UMengUtil.onEvent(MainActivity.this, "hot_status");
             break;
         // 草稿箱
         case MenuFragment.MENU_DRAT:
@@ -419,13 +419,13 @@ public class MainActivity extends BaseActivity
         case MenuFragment.MENU_JOKE:
             fragment = JokesPagerFragment.newInstance();
 
-            MobclickAgent.onEvent(this, "menu_joke");
+            UMengUtil.onEvent(this, "menu_joke");
             break;
         // 精美壁纸
         case MenuFragment.MENU_WALLPAPER:
             fragment = WallpaperFragment.newInstance();
 
-            MobclickAgent.onEvent(this, "menu_wallpaper");
+            UMengUtil.onEvent(this, "menu_wallpaper");
             break;
         }
 
@@ -619,7 +619,7 @@ public class MainActivity extends BaseActivity
         if (item.getItemId() == R.id.exitapp) {
             finish();
 
-            MobclickAgent.onEvent(this, "exitapp");
+            UMengUtil.onEvent(this, "exitapp");
         }
         // 新微博
         else if (item.getItemId() == R.id.publish)
@@ -628,13 +628,13 @@ public class MainActivity extends BaseActivity
         else if (item.getItemId() == R.id.toggle_offline) {
             OfflineUtils.toggleOffline(this);
 
-            MobclickAgent.onEvent(this, "toggle_offline");
+            UMengUtil.onEvent(this, "toggle_offline");
         }
         // 停止离线
         else if (item.getItemId() == R.id.stop_offline) {
             OfflineService.stopOffline();
 
-            MobclickAgent.onEvent(this, "stop_offline");
+            UMengUtil.onEvent(this, "stop_offline");
         }
         // 通知设置
         else if (item.getItemId() == R.id.notification_settings)
@@ -647,7 +647,7 @@ public class MainActivity extends BaseActivity
                 public void doAction() {
                     SearchFragment.launch(MainActivity.this, "");
 
-                    MobclickAgent.onEvent(MainActivity.this, "toggle_search");
+                    UMengUtil.onEvent(MainActivity.this, "toggle_search");
                 }
 
             }.run();

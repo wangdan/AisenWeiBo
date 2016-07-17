@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "org.aisen.weibo.sina"
-        minSdkVersion 21
+        minSdkVersion 19
         targetSdkVersion 23
         versionCode 603
         versionName "6.0.3"
@@ -15,6 +15,10 @@ android {
 //            //设置支持的SO库架构
 //            abiFilters 'armeabi' , 'x86'//, 'armeabi-v7a', 'x86_64', 'arm64-v8a'
 //        }
+        manifestPlaceholders = [
+                AISEN_PROVIDER: "org.aisen.downloader.sinaweibo.provider",
+                AISEN_STORAGE_PROVIDER: "org.aisen.downloader.sinaweibo.storage.provider"
+        ]
     }
     buildTypes {
         release {
@@ -40,8 +44,9 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':library')
     compile project(':datetimerpicker')
-    // 把Searchview2.1.1.aar放到了github中，版本号写错成2.2.1了。
-    compile 'org.aisen.android:searchview:2.2.1@aar'
+    compile project(':downloadmanager')
+    compile project(':dashboard')
+    compile 'org.aisen.android:searchview:2.1.1@aar'
     //    compile 'org.aisen.android:downloadmanager:1.0.0-SNAPSHOT@aar'
     compile 'com.android.support:cardview-v7:23.2.1'
     compile 'com.github.gabrielemariotti.changeloglib:changelog:2.0.0'
@@ -59,7 +64,6 @@ dependencies {
     // 友盟统计
     compile 'com.github.chrisbanes.photoview:library:1.2.3'
     compile 'com.google.guava:guava:19.0'
-    compile project(':downloadmanager')
 }
 
 configurations.all {

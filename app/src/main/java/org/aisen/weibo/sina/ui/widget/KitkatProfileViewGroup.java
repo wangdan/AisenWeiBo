@@ -35,9 +35,9 @@ public class KitkatProfileViewGroup extends FrameLayout {
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
             Logger.w("setPadding-KitkatViewGroup");
             setPadding(getPaddingLeft(),
-                    getPaddingTop(),
+                    SystemUtils.getStatusBarHeight(getContext()),
                     getPaddingRight(),
-                    getPaddingBottom() + SystemUtils.getNavigationBarHeight(getContext()));
+                    getPaddingBottom());
 
 //            setBackgroundColor(Utils.resolveColor(getContext(), R.attr.colorPrimary, Color.BLACK));
         }
