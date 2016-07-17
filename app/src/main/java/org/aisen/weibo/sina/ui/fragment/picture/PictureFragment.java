@@ -729,35 +729,38 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 		// 成功
 		else if (mDownloadStatus.status == DownloadManager.STATUS_SUCCESSFUL) {
 			if (getActivity() != null) {
-                getActivity().invalidateOptionsMenu();
-
 				final File file = BitmapLoader.getInstance().getCacheFile(getOrigImage());
 				if (file.exists()) {
 					return;
 				}
-				if (new File(mDownloadStatus.localUri).renameTo(file)) {
-					new WorkTask<Void, Void, byte[]>() {
+				File tempFile = new File(mDownloadStatus.localUri);
+				if (tempFile.exists()) {
+					if (tempFile.renameTo(file)) {
+						new WorkTask<Void, Void, byte[]>() {
 
-						@Override
-						public byte[] workInBackground(Void... params) throws TaskException {
-							Logger.d("Download-Picture", mDownloadStatus.localUri);
+							@Override
+							public byte[] workInBackground(Void... params) throws TaskException {
+								Logger.d("Download-Picture", mDownloadStatus.localUri);
 
-							return FileUtils.readFileToBytes(file);
-						}
+								return FileUtils.readFileToBytes(file);
+							}
 
-						@Override
-						protected void onSuccess(byte[] bytes) {
-							super.onSuccess(bytes);
+							@Override
+							protected void onSuccess(byte[] bytes) {
+								super.onSuccess(bytes);
 
-							onDownloadPicture(bytes, file);
-						}
+								onDownloadPicture(bytes, file);
+							}
 
-					}.execute();
+						}.execute();
+					}
+					else {
+						if (getActivity() != null)
+							showMessage(R.string.msg_save_orig_faild);
+					}
 				}
-				else {
-					if (getActivity() != null)
-						showMessage(R.string.msg_save_orig_faild);
-				}
+
+				getActivity().invalidateOptionsMenu();
             }
 		}
 		// 暂停
