@@ -423,14 +423,19 @@ public class MainActivity extends BaseActivity
             UMengUtil.onEvent(this, "menu_joke");
             break;
         case MenuFragment.MENU_FAV:
-            new IAction(MainActivity.this, new WebLoginAction(MainActivity.this, BizFragment.createBizFragment(this))) {
+            BizFragment.createBizFragment(this).checkProfile(new BizFragment.CheckProfileCallback() {
 
                 @Override
-                public void doAction() {
+                public void onCheckProfileSuccess() {
                     TimelineFavoritesFragment.launch(MainActivity.this);
                 }
 
-            }.run();
+                @Override
+                public void onCheckProfileFaild() {
+
+                }
+
+            });
             break;
         // 精美壁纸
         case MenuFragment.MENU_WALLPAPER:
