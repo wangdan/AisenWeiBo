@@ -53,6 +53,7 @@ public class MenuFragment extends ABaseFragment {
     public static final int MENU_NOTIFICATION = 12;
     public static final int MENU_JOKE = 13;
     public static final int MENU_WALLPAPER = 14;
+    public static final int MENU_FAV = 15;
 
     public static MenuFragment newInstance(int menuId) {
         MenuFragment fragment = new MenuFragment();
@@ -285,8 +286,9 @@ public class MenuFragment extends ABaseFragment {
         items.add(new NavMenuItem(MENU_NOTIFICATION, R.drawable.ic_notification_gray_24, R.string.draw_private_notification));
         items.add(new NavMenuItem(MENU_MD, R.drawable.ic_email_grey600_24dp, R.string.draw_private_msg));
         items.add(new NavMenuSeparator());
-        items.add(new NavMenuItem(MENU_JOKE, -1, R.string.draw_joke));
-        items.add(new NavMenuItem(MENU_WALLPAPER, -1, R.string.draw_wallpaper));
+//        items.add(new NavMenuItem(MENU_JOKE, -1, R.string.draw_joke));
+//        items.add(new NavMenuItem(MENU_WALLPAPER, -1, R.string.draw_wallpaper));
+        items.add(new NavMenuItem(MENU_FAV, -1, R.string.profile_tab4));
         items.add(new NavMenuSeparator());
         items.add(new NavMenuItem(MENU_HOT_STATUS, -1, R.string.draw_hot_statuses));
         items.add(new NavMenuItem(MENU_DRAT, -1, R.string.draw_draft));
@@ -314,6 +316,9 @@ public class MenuFragment extends ABaseFragment {
     }
 
     private void setUnreadNotification() {
+        if (AppContext.getAccount() == null)
+            return;
+
         // 通知
         UnreadCount unreadCount = AppContext.getAccount().getUnreadCount();
         int count = 0;
@@ -371,6 +376,9 @@ public class MenuFragment extends ABaseFragment {
 
         @Override
         public Integer workInBackground(Void... params) throws TaskException {
+            if (AppContext.getAccount() == null)
+                return 0;
+
             return PublishDB.getPublishList(AppContext.getAccount().getUser()).size();
         }
 

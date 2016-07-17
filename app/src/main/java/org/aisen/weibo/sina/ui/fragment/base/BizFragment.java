@@ -107,7 +107,7 @@ public class BizFragment extends ABaseFragment {
     }
     
     private String getRealString(int resId) {
-        if (getResources() != null) {
+        if (getActivity() != null && getResources() != null) {
             return getString(resId);
         }
         
@@ -120,16 +120,20 @@ public class BizFragment extends ABaseFragment {
     }
 
     public static BizFragment createBizFragment(ABaseFragment fragment) {
-        if (fragment != null && fragment.getActivity() != null) {
-            BizFragment bizFragment = (BizFragment) fragment.getActivity().getFragmentManager().findFragmentByTag("org.aisen.android.ui.BizFragment");
+        try {
+            if (fragment != null && fragment.getActivity() != null) {
+                BizFragment bizFragment = (BizFragment) fragment.getActivity().getFragmentManager().findFragmentByTag("org.aisen.android.ui.BizFragment");
 
-            if (bizFragment == null) {
-                bizFragment = new BizFragment();
-                bizFragment.mActivity = fragment.getActivity();
-                fragment.getActivity().getFragmentManager().beginTransaction().add(bizFragment, "org.aisen.android.ui.BizFragment").commit();
+                if (bizFragment == null) {
+                    bizFragment = new BizFragment();
+                    bizFragment.mActivity = fragment.getActivity();
+                    fragment.getActivity().getFragmentManager().beginTransaction().add(bizFragment, "org.aisen.android.ui.BizFragment").commit();
+                }
+
+                return bizFragment;
             }
+        } catch (IllegalStateException e) {
 
-            return bizFragment;
         }
 
         return null;

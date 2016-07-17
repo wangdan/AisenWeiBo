@@ -14,7 +14,7 @@
             android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent" android:layout_height="match_parent"
             android:layout_marginTop="?attr/actionBarSize" android:background="?attr/theme_background"
-            android:visibility="invisible" app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:visibility="invisible">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@id/recycleview"

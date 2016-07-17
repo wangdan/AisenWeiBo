@@ -115,7 +115,7 @@ public class TimelineFavoritesFragment extends ATimelineFragment
         boolean load = true;
 
         // 如果还没有加载过数据，切且显示的是当前的页面
-        if (getTaskCount(PAGING_TASK_ID) == 0) {
+        if (getTaskCount(PAGING_TASK_ID) == 0 && !launch) {
             load = AisenUtils.checkTabsFragmentCanRequestData(this);
         }
 

@@ -186,9 +186,11 @@ public class SearchFragment extends ATimelineFragment {
                     getSwipeRefreshLayout().setVisibility(View.GONE);
                 }
 
-                getActivity().finish();
+                if (getActivity() != null) {
+                    getActivity().finish();
 
-                getActivity().overridePendingTransition(0, 0);
+                    getActivity().overridePendingTransition(0, 0);
+                }
             }
 
         });
@@ -295,7 +297,9 @@ public class SearchFragment extends ATimelineFragment {
     }
 
     private void refreshUsersUI(ArrayList<SearchsResultUser> users) {
-        searchHeaderView.setUsers(users);
+        if (searchHeaderView != null) {
+            searchHeaderView.setUsers(users);
+        }
     }
 
     @Override

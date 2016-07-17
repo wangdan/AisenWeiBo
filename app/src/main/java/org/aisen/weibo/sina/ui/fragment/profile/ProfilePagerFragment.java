@@ -192,9 +192,9 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
         tabItems.add(new TabItem("1", getString(R.string.profile_tab1)));
         tabItems.add(new TabItem("2", String.format("%s(%s)", getString(R.string.profile_tab2), AisenUtils.getCounter(mUser.getStatuses_count()))));
         tabItems.add(new TabItem("3", getString(R.string.profile_tab3)));
-        if (mUser.getIdstr().equalsIgnoreCase(AppContext.getAccount().getUser().getIdstr())) {
-            tabItems.add(new TabItem("4", getString(R.string.profile_tab4)));
-        }
+//        if (mUser.getIdstr().equalsIgnoreCase(AppContext.getAccount().getUser().getIdstr())) {
+//            tabItems.add(new TabItem("4", getString(R.string.profile_tab4)));
+//        }
 
         return tabItems;
     }

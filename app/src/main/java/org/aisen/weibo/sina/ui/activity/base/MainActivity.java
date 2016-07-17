@@ -59,6 +59,7 @@ import org.aisen.weibo.sina.ui.fragment.friendship.FriendshipPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.mention.MentionPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.menu.FabGroupsFragment;
 import org.aisen.weibo.sina.ui.fragment.menu.MenuFragment;
+import org.aisen.weibo.sina.ui.fragment.profile.TimelineFavoritesFragment;
 import org.aisen.weibo.sina.ui.fragment.search.SearchFragment;
 import org.aisen.weibo.sina.ui.fragment.secondgroups.JokesPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.secondgroups.WallpaperFragment;
@@ -421,6 +422,9 @@ public class MainActivity extends BaseActivity
 
             UMengUtil.onEvent(this, "menu_joke");
             break;
+        case MenuFragment.MENU_FAV:
+            TimelineFavoritesFragment.launch(this);
+            break;
         // 精美壁纸
         case MenuFragment.MENU_WALLPAPER:
             fragment = WallpaperFragment.newInstance();
@@ -492,7 +496,9 @@ public class MainActivity extends BaseActivity
                 ATabsTabLayoutFragment tabsTabLayoutFragment = (ATabsTabLayoutFragment) fragment;
 
                 tabsTabLayoutFragment.getViewPager().setCurrentItem(newIntentNotificationIndex);
-                ((APagingFragment) tabsTabLayoutFragment.getCurrentFragment()).requestDataDelaySetRefreshing(AppSettings.REQUEST_DATA_DELAY);
+                if (tabsTabLayoutFragment.getCurrentFragment() != null) {
+                    ((APagingFragment) tabsTabLayoutFragment.getCurrentFragment()).requestDataDelaySetRefreshing(AppSettings.REQUEST_DATA_DELAY);
+                }
 
                 newIntentNotificationIndex = -1;
             }
