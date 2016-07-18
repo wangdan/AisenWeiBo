@@ -8,6 +8,10 @@
         chg:changeLogFileResourceId="@raw/custom_changelog"
         in your View component in layout file -->
 
+	<changelogversion versionName="6.0.5" changeDate="2016-07">
+		<changelogtext>今天抽空适配了4.4，但是还有些问题.</changelogtext>
+	</changelogversion>
+
 	<changelogversion versionName="6.0.3" changeDate="2016-06">
 		<changelogtext>修复授权登录失败的问题.</changelogtext>
 	</changelogversion>
