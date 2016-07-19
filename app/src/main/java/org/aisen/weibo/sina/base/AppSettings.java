@@ -391,7 +391,7 @@ public class AppSettings {
     }
 
     public static String getImageSavePath() {
-        return ActivityHelper.getShareData(GlobalContext.getInstance(), "org.aisen.weibo.sina.Images", "Aisen" + File.separator + "DCIM");
+        return ActivityHelper.getShareData(GlobalContext.getInstance(), "org.aisen.weibo.sina.Images", "Aisen" + File.separator + "Images");
     }
 
     public static void setImageSavePath(String path) {

@@ -123,7 +123,13 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 		image = savedInstanceSate == null ? (PicUrls) getArguments().getSerializable("url")
 										  : (PicUrls) savedInstanceSate.getSerializable("url");
 
-        origFile = BitmapLoader.getInstance().getCacheFile(getOrigImage());
+		Uri uri = Uri.parse(image.getThumbnail_pic());
+		if ("file".equals(uri.getScheme().toLowerCase())) {
+			origFile = new File(uri.getPath());
+		}
+		else {
+			origFile = BitmapLoader.getInstance().getCacheFile(getOrigImage());
+		}
 
 		photoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
 

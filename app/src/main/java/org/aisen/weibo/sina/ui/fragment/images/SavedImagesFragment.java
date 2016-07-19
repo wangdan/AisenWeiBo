@@ -2,6 +2,7 @@ package org.aisen.weibo.sina.ui.fragment.images;
 
 import android.content.Context;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.OrientationHelper;
@@ -25,9 +26,13 @@ import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
 import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
 import org.aisen.weibo.sina.R;
+import org.aisen.weibo.sina.sinasdk.bean.PicUrls;
+import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.support.bean.SavedImageBean;
 import org.aisen.weibo.sina.support.sdk.SDK;
+import org.aisen.weibo.sina.ui.activity.picture.PicsActivity;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,7 +87,11 @@ public class SavedImagesFragment extends ARecycleViewFragment<SavedImageBean, Ar
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         super.onItemClick(parent, view, position, id);
 
-
+        StatusContent bean = new StatusContent();
+        bean.setPic_urls(new PicUrls[1]);
+        bean.getPic_urls()[0] = new PicUrls();
+        bean.getPic_urls()[0].setThumbnail_pic(Uri.fromFile(new File(getAdapterItems().get(position).getPath())).toString());
+        PicsActivity.launch(getActivity(), bean, 0);
     }
 
     @Override
