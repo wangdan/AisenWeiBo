@@ -148,11 +148,6 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 		setHasOptionsMenu(true);
 	}
 
-	private boolean fromFile() {
-		Uri uri = Uri.parse(image.getThumbnail_pic());
-		return "file".equals(uri.getScheme().toLowerCase());
-	}
-
 	final class PictureJavaScriptInterface {
 
 		public PictureJavaScriptInterface() {
@@ -186,6 +181,8 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 	
 	void loadPicture(View v) {
         String url = null;// 下载路径
+
+		Uri uri = Uri.parse(image.getThumbnail_pic());
 
         ImageConfig config = new ImageConfig();
 
@@ -225,7 +222,9 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 		viewFailure.setVisibility(View.GONE);
 
 		ImageView imgView = new ImageView(getActivity());
-		if (fromFile()) {
+		if ("file".equals(uri.getScheme().toLowerCase())) {
+			url = uri.getPath();
+
 			config.setDownloaderClass(SdcardDownloader.class);
 		}
         config.setProgress(new PictureDownloadProgress(file));
