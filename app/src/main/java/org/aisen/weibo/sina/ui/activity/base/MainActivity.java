@@ -44,6 +44,7 @@ import org.aisen.weibo.sina.sinasdk.bean.Group;
 import org.aisen.weibo.sina.sinasdk.bean.TokenInfo;
 import org.aisen.weibo.sina.support.action.WebLoginAction;
 import org.aisen.weibo.sina.support.bean.AccountBean;
+import org.aisen.weibo.sina.support.permissions.SdcardPermissionAction;
 import org.aisen.weibo.sina.support.utils.AccountUtils;
 import org.aisen.weibo.sina.support.utils.OfflineUtils;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
@@ -56,6 +57,7 @@ import org.aisen.weibo.sina.ui.fragment.comment.CommentPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.comment.NotificationPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.draft.DraftFragment;
 import org.aisen.weibo.sina.ui.fragment.friendship.FriendshipPagerFragment;
+import org.aisen.weibo.sina.ui.fragment.images.ImagesPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.mention.MentionPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.menu.FabGroupsFragment;
 import org.aisen.weibo.sina.ui.fragment.menu.MenuFragment;
@@ -411,6 +413,17 @@ public class MainActivity extends BaseActivity
         // 草稿箱
         case MenuFragment.MENU_DRAT:
             fragment = DraftFragment.newInstance();
+            break;
+        // 相册
+        case MenuFragment.MENU_IMAGES:
+            new IAction(this, new SdcardPermissionAction(this, null)) {
+
+                @Override
+                public void doAction() {
+                    ImagesPagerFragment.launch(MainActivity.this);
+                }
+
+            }.run();
             break;
         // 设置
         case MenuFragment.MENU_SETTINGS:

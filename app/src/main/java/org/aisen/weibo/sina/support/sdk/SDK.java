@@ -6,20 +6,25 @@ import com.alibaba.fastjson.JSON;
 
 import org.aisen.android.common.setting.Setting;
 import org.aisen.android.common.utils.Logger;
+import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.network.biz.ABizLogic;
 import org.aisen.android.network.http.HttpConfig;
 import org.aisen.android.network.http.IHttpUtility;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
+import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.support.bean.JokeBeans;
 import org.aisen.weibo.sina.support.bean.LikeResultBean;
 import org.aisen.weibo.sina.support.bean.PictureSize;
+import org.aisen.weibo.sina.support.bean.SavedImageBean;
 import org.aisen.weibo.sina.support.bean.WallpaperBeans;
 import org.aisen.weibo.sina.support.cache.JokesCacheUtility;
 import org.aisen.weibo.sina.support.cache.WallpaperCacheUtility;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -188,6 +193,21 @@ public class SDK extends ABizLogic {
             throw new TaskException(TaskException.TaskError.resultIllegal.toString());
         }
         return beans;
+    }
+
+    public ArrayList<SavedImageBean> getSavedImages() throws TaskException {
+        ArrayList<SavedImageBean> result = new ArrayList<>();
+
+        File file = new File(SystemUtils.getSdcardPath() + File.separator + AppSettings.getImageSavePath() + File.separator);
+        if (file.exists()) {
+            for (File imageFile : file.listFiles()) {
+                SavedImageBean bean = new SavedImageBean();
+                bean.setPath(imageFile.getAbsolutePath());
+                result.add(bean);
+            }
+        }
+
+        return result;
     }
 
 }

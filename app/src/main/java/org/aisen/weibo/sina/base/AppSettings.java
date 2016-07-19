@@ -8,6 +8,8 @@ import org.aisen.android.common.utils.ActivityHelper;
 import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.weibo.sina.R;
 
+import java.io.File;
+
 /**
  * Created by wangdan on 15/4/12.
  */
@@ -389,7 +391,7 @@ public class AppSettings {
     }
 
     public static String getImageSavePath() {
-        return ActivityHelper.getShareData(GlobalContext.getInstance(), "org.aisen.weibo.sina.Images", "Images");
+        return ActivityHelper.getShareData(GlobalContext.getInstance(), "org.aisen.weibo.sina.Images", "Aisen" + File.separator + "DCIM");
     }
 
     public static void setImageSavePath(String path) {

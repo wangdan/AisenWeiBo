@@ -80,7 +80,7 @@ import java.io.File;
 		pPicSavePath.setOnPreferenceClickListener(this);
 //		pPicSavePath.setSummary(SystemUtility.getSdcardPath() + File.separator + AppSettings.getImageSavePath() + File.separator);
 		pPicSavePath.setSummary("/sdcard" + File.separator + AppSettings.getImageSavePath() + File.separator);
-		
+
 		pClearRecentMention = (Preference) findPreference("pClearRecentMention");
 		pClearRecentMention.setOnPreferenceClickListener(this);
 		setMentionHint();
@@ -135,7 +135,7 @@ import java.io.File;
 	public boolean onPreferenceClick(Preference preference) {
 		// 设置图片保存路径
 		if ("pPicSavePath".equals(preference.getKey())) {
-			modifyImageSavePath();
+//			modifyImageSavePath();
 		}
 		// 清理好友提及历史记录
 		else if ("pClearRecentMention".equals(preference.getKey())) {

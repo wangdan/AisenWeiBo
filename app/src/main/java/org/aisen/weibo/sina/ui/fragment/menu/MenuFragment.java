@@ -54,6 +54,7 @@ public class MenuFragment extends ABaseFragment {
     public static final int MENU_JOKE = 13;
     public static final int MENU_WALLPAPER = 14;
     public static final int MENU_FAV = 15;
+    public static final int MENU_IMAGES = 16;
 
     public static MenuFragment newInstance(int menuId) {
         MenuFragment fragment = new MenuFragment();
@@ -288,7 +289,8 @@ public class MenuFragment extends ABaseFragment {
         items.add(new NavMenuSeparator());
 //        items.add(new NavMenuItem(MENU_JOKE, -1, R.string.draw_joke));
 //        items.add(new NavMenuItem(MENU_WALLPAPER, -1, R.string.draw_wallpaper));
-        items.add(new NavMenuItem(MENU_FAV, -1, R.string.profile_tab4));
+        items.add(new NavMenuItem(MENU_FAV, -1, R.string.draw_fav));
+        items.add(new NavMenuItem(MENU_IMAGES, -1, R.string.draw_images));
         items.add(new NavMenuSeparator());
         items.add(new NavMenuItem(MENU_HOT_STATUS, -1, R.string.draw_hot_statuses));
         items.add(new NavMenuItem(MENU_DRAT, -1, R.string.draw_draft));

@@ -17,5 +17,16 @@
         <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
             android:id="@+id/progress" style="@style/GNowProgressBar"
             android:layout_width="match_parent" android:layout_height="10dip" android:indeterminate="true"/>
+
+        <RelativeLayout
+            android:id="@+id/layVideo" android:layout_width="match_parent"
+            android:layout_height="match_parent" android:background="@color/comm_black">
+
+            <VideoView
+                android:id="@+id/video"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
+
     </RelativeLayout>
 </org.aisen.weibo.sina.ui.widget.KitkatViewGroup>

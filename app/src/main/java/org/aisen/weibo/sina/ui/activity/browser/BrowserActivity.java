@@ -9,19 +9,31 @@ import android.support.v7.widget.ShareActionProvider;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.VideoView;
 
+import org.aisen.android.common.utils.KeyGenerator;
+import org.aisen.android.common.utils.Logger;
 import org.aisen.android.common.utils.Utils;
+import org.aisen.android.component.orm.extra.Extra;
+import org.aisen.android.network.task.TaskException;
+import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
+import org.aisen.weibo.sina.support.bean.WeipaiVideoBean;
+import org.aisen.weibo.sina.support.sqlit.SinaDB;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
 import org.aisen.weibo.sina.support.utils.UMengUtil;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
@@ -34,12 +46,19 @@ import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
  */
 public class BrowserActivity extends BaseActivity {
 
-	private final static String TAG = "Browser";
+	private final static String TAG = "AisenBrowser";
 
 	@ViewInject(id = R.id.webview)
 	WebView mWebView;
 	@ViewInject(id = R.id.progress)
 	SmoothProgressBar progressbar;
+	@ViewInject(id = R.id.layVideo)
+	View layVideo;
+	@ViewInject(id = R.id.video)
+	VideoView videoView;
+
+	private boolean loadVideo;
+	private String url;
 
 	@SuppressLint("SetJavaScriptEnabled") @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +73,16 @@ public class BrowserActivity extends BaseActivity {
 
 		WebSettings setting = mWebView.getSettings();
 		setting.setJavaScriptEnabled(true);
+		// 注入JS回调HTML源码
+		mWebView.addJavascriptInterface(new LoadHtmlJavaScriptInterface(), "loadhtmljs");
+		String js = "javascript:(function() { \n";
+		js += "        window.onload = function() {\n";
+		js += "            loadhtmljs.setHtml(document.getElementsByTagName('html')[0].innerHTML);\n";
+		js += "        };\n";
+		js += "    })()\n";
+
+		mWebView.loadUrl(js);
+
 		mWebView.setWebViewClient(new WebViewClient() {
 
 			@Override
@@ -63,7 +92,11 @@ public class BrowserActivity extends BaseActivity {
 				else
 					view.loadUrl(url);
 
-//				if (url.startsWith("http://weibo.com/"))
+				Logger.d(TAG, url);
+
+				if (url.startsWith("http://www.miaopai.com") || url.startsWith(" http://m.miaopai.com")) {
+					loadVideo = true;
+				}
 
 				return true;
 			}
@@ -88,7 +121,6 @@ public class BrowserActivity extends BaseActivity {
 		setting.setJavaScriptCanOpenWindowsAutomatically(true);
 
 		if (savedInstanceState == null) {
-			String url = null;
 			String action = getIntent().getAction();
 	        if (Intent.ACTION_VIEW.equalsIgnoreCase(action) && getIntent().getData() != null) {
 	            url = getIntent().getData().toString();
@@ -97,7 +129,14 @@ public class BrowserActivity extends BaseActivity {
 	        }
 	        if (url.startsWith("aisen://"))
 	        	url = url.replace("aisen://", "");
-	        mWebView.loadUrl(url);
+
+			WeipaiVideoBean bean = SinaDB.getDB().selectById(new Extra(null, "History"), WeipaiVideoBean.class, KeyGenerator.generateMD5(url));
+			if (bean != null) {
+				playVideo(bean);
+			}
+			else {
+				mWebView.loadUrl(url);
+			}
         }
 	}
 
@@ -182,5 +221,60 @@ public class BrowserActivity extends BaseActivity {
     protected int configTheme() {
         return ThemeUtils.themeArr[AppSettings.getThemeColor()][0];
     }
+
+	final class LoadHtmlJavaScriptInterface {
+
+		public LoadHtmlJavaScriptInterface() {
+		}
+
+		@JavascriptInterface
+		public void setHtml(String html) {
+			if (loadVideo) {
+				new ParseHtmlTask().execute(html);
+			}
+		}
+
+	}
+
+	class ParseHtmlTask extends WorkTask<String, Void, WeipaiVideoBean> {
+
+		@Override
+		public WeipaiVideoBean workInBackground(String... params) throws TaskException {
+			Document dom = Jsoup.parse(params[0]);
+
+			WeipaiVideoBean bean = new WeipaiVideoBean();
+
+			bean.setIdStr(KeyGenerator.generateMD5(url));
+			bean.setUrl(url);
+
+			Elements divs = dom.select("div[class=video_img WscaleH]");
+			if (divs != null && divs.size() > 0) {
+				bean.setImage(divs.get(0).attr("data-url"));
+			}
+			divs = dom.select("video#video");
+			if (divs != null && divs.size() > 0) {
+				bean.setVideoUrl(divs.get(0).attr("src"));
+			}
+
+			Logger.d(TAG, bean);
+
+			SinaDB.getDB().insertOrReplace(new Extra(null, "History"), bean);
+
+			return bean;
+		}
+
+		@Override
+		protected void onSuccess(final WeipaiVideoBean weipaiVideoBean) {
+			super.onSuccess(weipaiVideoBean);
+
+			playVideo(weipaiVideoBean);
+		}
+	}
+
+	private void playVideo(final WeipaiVideoBean weipaiVideoBean) {
+		layVideo.setVisibility(View.VISIBLE);
+		videoView.setVideoURI(Uri.parse(weipaiVideoBean.getVideoUrl()));
+		videoView.start();
+	}
 
 }
