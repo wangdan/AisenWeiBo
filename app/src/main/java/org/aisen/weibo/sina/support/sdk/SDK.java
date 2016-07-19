@@ -201,6 +201,9 @@ public class SDK extends ABizLogic {
         File file = new File(SystemUtils.getSdcardPath() + File.separator + AppSettings.getImageSavePath() + File.separator);
         if (file.exists()) {
             for (File imageFile : file.listFiles()) {
+                if (imageFile.isDirectory())
+                    continue;
+
                 SavedImageBean bean = new SavedImageBean();
                 bean.setPath(imageFile.getAbsolutePath());
                 result.add(bean);

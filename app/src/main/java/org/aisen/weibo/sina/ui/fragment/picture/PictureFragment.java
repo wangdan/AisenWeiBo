@@ -33,6 +33,7 @@ import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.component.bitmaploader.core.BitmapDecoder;
 import org.aisen.android.component.bitmaploader.core.ImageConfig;
 import org.aisen.android.component.bitmaploader.download.DownloadProcess;
+import org.aisen.android.component.bitmaploader.download.SdcardDownloader;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.support.action.IAction;
@@ -147,6 +148,11 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 		setHasOptionsMenu(true);
 	}
 
+	private boolean fromFile() {
+		Uri uri = Uri.parse(image.getThumbnail_pic());
+		return "file".equals(uri.getScheme().toLowerCase());
+	}
+
 	final class PictureJavaScriptInterface {
 
 		public PictureJavaScriptInterface() {
@@ -219,6 +225,9 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 		viewFailure.setVisibility(View.GONE);
 
 		ImageView imgView = new ImageView(getActivity());
+		if (fromFile()) {
+			config.setDownloaderClass(SdcardDownloader.class);
+		}
         config.setProgress(new PictureDownloadProgress(file));
 		BitmapLoader.getInstance().display(null, url, imgView, config);
 	}
