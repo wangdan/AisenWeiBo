@@ -117,6 +117,10 @@ public class StatusContent implements Serializable {
      */
     private int attitudes_count;
 
+    private boolean video;
+
+    private UrlBean videoUrl;
+
     public String getCreated_at() {
         return created_at;
     }
@@ -285,4 +289,19 @@ public class StatusContent implements Serializable {
         this.visible = visible;
     }
 
+    public boolean isVideo() {
+        return video;
+    }
+
+    public void setVideo(boolean video) {
+        this.video = video;
+    }
+
+    public UrlBean getVideoUrl() {
+        return videoUrl;
+    }
+
+    public void setVideoUrl(UrlBean videoUrl) {
+        this.videoUrl = videoUrl;
+    }
 }

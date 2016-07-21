@@ -23,6 +23,7 @@ import org.aisen.android.network.biz.ABizLogic;
 import org.aisen.android.network.http.HttpConfig;
 import org.aisen.android.network.http.IHttpUtility;
 import org.aisen.android.network.http.Params;
+import org.aisen.android.network.http.ParamsUtil;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.weibo.sina.sinasdk.bean.AccessToken;
 import org.aisen.weibo.sina.sinasdk.bean.DirectMessages;
@@ -52,11 +53,13 @@ import org.aisen.weibo.sina.sinasdk.bean.TokenInfo;
 import org.aisen.weibo.sina.sinasdk.bean.TrendsBean;
 import org.aisen.weibo.sina.sinasdk.bean.UnreadCount;
 import org.aisen.weibo.sina.sinasdk.bean.UploadPictureResultBean;
+import org.aisen.weibo.sina.sinasdk.bean.UrlsBean;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.sinasdk.http.HttpsUtility;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 
 import java.io.File;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -1391,6 +1394,27 @@ public class SinaSDK extends ABizLogic {
 		params.addParameter("count", "101");
 		
 		return doGet(getSetting("getGroupsTimelineIds"), params, StatusesIds.class);
+	}
+
+	/**
+	 * 将一个或多个短链接还原成原始的长链接
+	 *
+	 * @param shortUrlArr
+	 * @return
+	 * @throws TaskException
+     */
+	public UrlsBean shortUrlExpand(String... shortUrlArr) throws TaskException {
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < shortUrlArr.length; i++) {
+			if (i > 0) {
+				sb.append("&");
+			}
+			sb.append("url_short").append("=").append(shortUrlArr[i]);
+		}
+		HttpConfig config = configHttpConfig();
+		config.baseUrl = config.baseUrl + "short_url/expand.json?access_token=" + token.getToken() + "&" + sb.toString();
+
+		return doGet(config, getSetting("shortUrlExpand"), null, UrlsBean.class);
 	}
 
 	// {"bmiddle_pic":"http://ww1.sinaimg.cn/bmiddle/94389574jw1etl94fy67qj21kw0w0qjd.jpg","original_pic":"http://ww1.sinaimg.cn/large/94389574jw1etl94fy67qj21kw0w0qjd.jpg","pic_id":"94389574jw1etl94fy67qj21kw0w0qjd","thumbnail_pic":"http://ww1.sinaimg.cn/thumbnail/94389574jw1etl94fy67qj21kw0w0qjd.jpg"}

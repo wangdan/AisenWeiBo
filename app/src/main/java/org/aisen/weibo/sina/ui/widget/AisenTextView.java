@@ -1,8 +1,10 @@
 package org.aisen.weibo.sina.ui.widget;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -25,10 +27,12 @@ import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.support.textspan.ClickableTextViewMentionLinkOnTouchListener;
 import org.aisen.android.support.textspan.MyURLSpan;
-import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
+import org.aisen.weibo.sina.service.VideoService;
+import org.aisen.weibo.sina.support.bean.VideoBean;
 import org.aisen.weibo.sina.support.sqlit.EmotionsDB;
+import org.aisen.weibo.sina.support.sqlit.SinaDB;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.BlockingQueue;
@@ -84,6 +88,9 @@ public class AisenTextView extends TextView {
 	private String content;
 	
 	private boolean innerWeb = AppSettings.isInnerBrower();
+
+	private static Bitmap normalURLBitmap;
+	private static Bitmap videoURLBitmap;
 	
 	public AisenTextView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -151,6 +158,17 @@ public class AisenTextView extends TextView {
 
 		@Override
 		public Boolean workInBackground(Void... params) throws TaskException {
+			Resources res = GlobalContext.getInstance().getResources();
+			int bitmapSize = res.getDimensionPixelSize(R.dimen.emotion_size);
+			if (normalURLBitmap == null) {
+				normalURLBitmap = BitmapFactory.decodeResource(res, R.drawable.timeline_card_small_web);
+				normalURLBitmap = BitmapUtil.zoomBitmap(normalURLBitmap, bitmapSize);
+			}
+			if (videoURLBitmap == null) {
+				videoURLBitmap = BitmapFactory.decodeResource(res, R.drawable.timeline_card_small_video);
+				videoURLBitmap = BitmapUtil.zoomBitmap(videoURLBitmap, bitmapSize);
+			}
+
             TextView textView = textViewRef.get();
             if (textView == null)
                 return false;
@@ -183,8 +201,7 @@ public class AisenTextView extends TextView {
 				}
 				else {
 					b = BitmapFactory.decodeByteArray(data, 0, data.length);
-					int size = BaseActivity.getRunningActivity().getResources().getDimensionPixelSize(R.dimen.emotion_size);
-					b = BitmapUtil.zoomBitmap(b, size);
+					b = BitmapUtil.zoomBitmap(b, bitmapSize);
 
 					// 添加到内存中
 					BitmapLoader.getInstance().getImageCache().addBitmapToMemCache(key, null, new MyBitmap(b, key));
@@ -214,19 +231,37 @@ public class AisenTextView extends TextView {
 			Linkify.addLinks(spannableString, dd, scheme);
 
 			URLSpan[] urlSpans = spannableString.getSpans(0, spannableString.length(), URLSpan.class);
-			MyURLSpan weiboSpan = null;
+			Object weiboSpan = null;
 			for (URLSpan urlSpan : urlSpans) {
-				weiboSpan = new MyURLSpan(urlSpan.getURL());
-//				if (AppSettings.isHightlight())
-//					weiboSpan.setColor(Color.parseColor(color));
-//				else
-//					weiboSpan.setColor(0);
 				int start = spannableString.getSpanStart(urlSpan);
 				int end = spannableString.getSpanEnd(urlSpan);
 				try {
 					spannableString.removeSpan(urlSpan);
 				} catch (Exception e) {
 				}
+
+				Uri uri = Uri.parse(urlSpan.getURL());
+				String id = KeyGenerator.generateMD5(uri.toString().replace("aisen://", ""));
+				VideoBean videoBean = SinaDB.getDB().selectById(null, VideoBean.class, id);
+				if (videoBean != null) {
+					if (videoBean.getType() == VideoService.TYPE_VIDEO_SINA ||
+							videoBean.getType() == VideoService.TYPE_VIDEO_WEIPAI) {
+						weiboSpan = new ImageSpan(GlobalContext.getInstance(), videoURLBitmap, ImageSpan.ALIGN_BASELINE);
+
+						Logger.d(TAG, "id[%s], url[%s], video", id, urlSpan.getURL());
+					}
+					else {
+						weiboSpan = new ImageSpan(GlobalContext.getInstance(), normalURLBitmap, ImageSpan.ALIGN_BASELINE);
+
+						Logger.d(TAG, "id[%s], url[%s], normal", id, urlSpan.getURL());
+					}
+				}
+				else {
+					Logger.d(TAG, "id[%s], url[%s], none", id, urlSpan.getURL());
+
+					weiboSpan = new MyURLSpan(urlSpan.getURL());
+				}
+
 				spannableString.setSpan(weiboSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}
 			
@@ -255,7 +290,7 @@ public class AisenTextView extends TextView {
 		}
 		
 	}
-	
+
 	private OnTouchListener onTouchListener = new OnTouchListener() {
 
 		ClickableTextViewMentionLinkOnTouchListener listener = new ClickableTextViewMentionLinkOnTouchListener();

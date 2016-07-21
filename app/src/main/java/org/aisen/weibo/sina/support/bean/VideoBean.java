@@ -7,11 +7,17 @@ import java.io.Serializable;
 /**
  * Created by wangdan on 16/7/19.
  */
-public class WeipaiVideoBean implements Serializable {
+public class VideoBean implements Serializable {
 
     private static final long serialVersionUID = -4102724688858341090L;
 
     private String url;
+
+    private String shortUrl;
+
+    private String longUrl;
+
+    private int type;
 
     private String image;
 
@@ -51,4 +57,29 @@ public class WeipaiVideoBean implements Serializable {
     public void setUrl(String url) {
         this.url = url;
     }
+
+    public String getShortUrl() {
+        return shortUrl;
+    }
+
+    public void setShortUrl(String shortUrl) {
+        this.shortUrl = shortUrl;
+    }
+
+    public String getLongUrl() {
+        return longUrl;
+    }
+
+    public void setLongUrl(String longUrl) {
+        this.longUrl = longUrl;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
 }

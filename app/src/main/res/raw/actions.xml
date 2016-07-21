@@ -449,6 +449,12 @@
 		<des>调整当前登录用户的好友分组顺序</des>
 		<value>friendships/groups/order.json</value>
 	</setting>
+
+	<setting type="shortUrlExpand">
+		<des>将一个或多个短链接还原成原始的长链接</des>
+		<value></value>
+		<!--short_url/expand.json-->
+	</setting>
 	
 	<setting type="locationMobileGetLocation">
 		<des>根据移动基站WIFI等数据获取当前位置信息</des>

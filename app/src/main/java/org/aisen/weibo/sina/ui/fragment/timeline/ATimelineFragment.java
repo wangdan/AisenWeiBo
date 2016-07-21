@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
+import org.aisen.android.common.utils.Logger;
 import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
@@ -21,6 +22,7 @@ import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
+import org.aisen.weibo.sina.service.VideoService;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContents;
 import org.aisen.weibo.sina.support.paging.TimelinePaging;
@@ -240,7 +242,14 @@ public abstract class ATimelineFragment extends ARecycleViewSwipeRefreshFragment
 
             params.addParameter("count", String.valueOf(AppSettings.getTimelineCount()));
 
-            return getStatusContents(params);
+            StatusContents statusContents = getStatusContents(params);
+
+            // 解析普通网络链接、视频链接
+            long time = System.currentTimeMillis();
+            VideoService.parseStatusURL(statusContents);
+            Logger.e("ATimeline", "耗时 ： " + (System.currentTimeMillis() - time));
+
+            return statusContents;
         }
 
         @Override

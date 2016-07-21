@@ -33,7 +33,6 @@ import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.component.bitmaploader.core.BitmapDecoder;
 import org.aisen.android.component.bitmaploader.core.ImageConfig;
 import org.aisen.android.component.bitmaploader.download.DownloadProcess;
-import org.aisen.android.component.bitmaploader.download.SdcardDownloader;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.support.action.IAction;
@@ -130,6 +129,8 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 		}
 		else {
 			origFile = BitmapLoader.getInstance().getCacheFile(getOrigImage());
+
+			setHasOptionsMenu(true);
 		}
 
 		photoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
@@ -144,8 +145,6 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 		layError.setPadding(0, 0, 0, SystemUtils.getNavigationBarHeight(getActivity()));
 
 		loadPicture(viewFailure);
-		
-		setHasOptionsMenu(true);
 	}
 
 	final class PictureJavaScriptInterface {
@@ -221,14 +220,34 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 		
 		viewFailure.setVisibility(View.GONE);
 
-		ImageView imgView = new ImageView(getActivity());
 		if ("file".equals(uri.getScheme().toLowerCase())) {
 			url = uri.getPath();
+			final File origF = new File(url);
 
-			config.setDownloaderClass(SdcardDownloader.class);
+			new WorkTask<Void, Void, byte[]>() {
+
+				@Override
+				public byte[] workInBackground(Void... params) throws TaskException {
+					return FileUtils.readFileToBytes(origF);
+				}
+
+				@Override
+				protected void onSuccess(byte[] bytes) {
+					super.onSuccess(bytes);
+
+					onDownloadPicture(bytes, origF);
+
+					mStatus = PictureStatus.success;
+
+				}
+
+			}.execute();
 		}
-        config.setProgress(new PictureDownloadProgress(file));
-		BitmapLoader.getInstance().display(null, url, imgView, config);
+		else {
+			ImageView imgView = new ImageView(getActivity());
+			config.setProgress(new PictureDownloadProgress(file));
+			BitmapLoader.getInstance().display(null, url, imgView, config);
+		}
 	}
 
 	class PictureDownloadProgress extends DownloadProcess {
