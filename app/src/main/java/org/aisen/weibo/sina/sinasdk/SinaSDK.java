@@ -23,7 +23,6 @@ import org.aisen.android.network.biz.ABizLogic;
 import org.aisen.android.network.http.HttpConfig;
 import org.aisen.android.network.http.IHttpUtility;
 import org.aisen.android.network.http.Params;
-import org.aisen.android.network.http.ParamsUtil;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.weibo.sina.sinasdk.bean.AccessToken;
 import org.aisen.weibo.sina.sinasdk.bean.DirectMessages;
@@ -60,7 +59,6 @@ import org.aisen.weibo.sina.sinasdk.http.TimelineHttpUtility;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 
 import java.io.File;
-import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -1439,6 +1437,9 @@ public class SinaSDK extends ABizLogic {
 	public UrlsBean shortUrlExpand(String... shortUrlArr) throws TaskException {
 		StringBuffer sb = new StringBuffer();
 		for (int i = 0; i < shortUrlArr.length; i++) {
+			if (shortUrlArr[i] == null)
+				continue;
+
 			if (i > 0) {
 				sb.append("&");
 			}

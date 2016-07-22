@@ -7,11 +7,11 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
@@ -22,6 +22,7 @@ import org.aisen.android.component.bitmaploader.view.MyDrawable;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.sinasdk.bean.UrlBean;
 import org.aisen.weibo.sina.support.bean.VideoBean;
+import org.aisen.weibo.sina.ui.activity.browser.VideoPlayerActivity;
 
 /**
  * Created by wangdan on 16/7/21.
@@ -52,8 +53,6 @@ public class VideoHintImageView extends ImageView implements View.OnClickListene
     }
 
     private void setup(AttributeSet attributeSet) {
-        setOnClickListener(this);
-
         minHeight = getContext().getResources().getDimensionPixelSize(R.dimen.video_min_height);
 
         paint = new Paint();
@@ -87,6 +86,8 @@ public class VideoHintImageView extends ImageView implements View.OnClickListene
         if (myDrawable != null) {
             MyBitmap myBitmap = myDrawable.getMyBitmap();
             if (myBitmap instanceof VideoBitmap) {
+                setOnClickListener(this);
+
                 videoBean = ((VideoBitmap) myBitmap).getVideoBean();
 
                 if (getWidth() > 0) {
@@ -116,11 +117,11 @@ public class VideoHintImageView extends ImageView implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        if (videoBean == null) {
-
+        if (true || videoBean == null || TextUtils.isEmpty(videoBean.getVideoUrl())) {
+            VideoPlayerActivity.launchByShort(getContext(), urlBean.getUrl_short());
         }
         else {
-            Toast.makeText(getContext(), videoBean.getVideoUrl(), Toast.LENGTH_SHORT).show();
+            VideoPlayerActivity.launchByVideo(getContext(), videoBean.getVideoUrl(), videoBean);
         }
     }
 
@@ -129,14 +130,14 @@ public class VideoHintImageView extends ImageView implements View.OnClickListene
     }
 
     public void display(BitmapOwner owner, UrlBean urlBean) {
-        this.urlBean = urlBean;
-        videoBean = null;
+        setOnClickListener(null);
 
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) getLayoutParams();
-        if (params != null && params.height != minHeight) {
-            params.height = minHeight;
+        this.urlBean = urlBean;
+        if (videoBean != null && !TextUtils.isEmpty(videoBean.getShortUrl()) && videoBean.getShortUrl().equals(urlBean.getUrl_short())) {
         }
-        setLayoutParams(params);
+        else {
+            videoBean = null;
+        }
 
         ImageConfig config = new ImageConfig();
         config.setCompressCacheEnable(false);
@@ -144,7 +145,20 @@ public class VideoHintImageView extends ImageView implements View.OnClickListene
         config.setBitmapCompress(VideoCompress.class);
         config.setLoadingRes(R.drawable.bg_timeline_loading);
 
-        BitmapLoader.getInstance().display(owner, urlBean.getUrl_short(), this, config);
+        MyBitmap myBitmap = BitmapLoader.getInstance().getMyBitmapFromMemory(urlBean.getUrl_short(), config);
+        // 内存缓存存在图片，且未释放
+        if (myBitmap != null) {
+            setImageDrawable(new MyDrawable(getResources(), myBitmap, config, null));
+        }
+        else {
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) getLayoutParams();
+            if (params != null && params.height != minHeight) {
+                params.height = minHeight;
+            }
+            setLayoutParams(params);
+
+            BitmapLoader.getInstance().display(owner, urlBean.getUrl_short(), this, config);
+        }
     }
 
 }

@@ -56,6 +56,8 @@
 
     <color name="statusForeground">#40000000</color>
 
+    <color name="black_overlay">#66000000</color>
+
     <integer-array name="gplus_colors">
         <item>@color/gplus_color_1</item>
         <item>@color/gplus_color_2</item>

@@ -24,6 +24,8 @@
         <item name="text_body">@color/text_80</item>
 
         <item name="android:windowIsTranslucent">true</item>
+
+        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
     </style>
 
     <!--Values-vxx之间的差异属性-->

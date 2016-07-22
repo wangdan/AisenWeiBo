@@ -38,6 +38,7 @@
     <string name="notification_settings">设置通知</string>
     <string name="toggle_offline">开始离线</string>
     <string name="stop_offline">停止离线</string>
+    <string name="download">下载</string>
 
     <string name="timeline_detail">微博详情</string>
     <string name="timeline_cmt">评论</string>
@@ -603,6 +604,11 @@
     <string name="photos_title">微博相册</string>
     <string name="photos_pic">图片</string>
     <string name="photos_video">视频</string>
+
+    <string name="video_again">再试一次</string>
+    <string name="video2browser">浏览器打开</string>
+    <string name="video_short_faild">短链接解析失败，多次尝试如果还是失败，建议浏览器打开</string>
+    <string name="toast_video_play_error">播放失败！Error=%d</string>
 
     <string-array name="jokes_menu">
         <item>复制</item>

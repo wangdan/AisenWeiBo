@@ -108,6 +108,19 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
+        <!-- 浏览器 -->
+        <activity android:name=".ui.activity.browser.VideoPlayerActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <data android:scheme="videopath"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <data android:scheme="videoshort"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
         <!-- 话题 -->
         <activity android:name="org.aisen.weibo.sina.ui.activity.topics.TopicsActivity"
                   android:screenOrientation="portrait">

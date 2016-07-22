@@ -398,6 +398,10 @@ public class AppSettings {
         ActivityHelper.putShareData(GlobalContext.getInstance(), "org.aisen.weibo.sina.Images", path);
     }
 
+    public static String getVideoSavePath() {
+        return ActivityHelper.getShareData(GlobalContext.getInstance(), "org.aisen.weibo.sina.Images", "Aisen" + File.separator + "Video");
+    }
+
     /**
      * 手势返回方向设置
      *
