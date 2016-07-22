@@ -109,6 +109,12 @@
                 android:layout_width="wrap_content" android:layout_height="wrap_content"/>
         </org.aisen.weibo.sina.ui.widget.TimelinePicsView>
 
+        <org.aisen.weibo.sina.ui.widget.videoimage.VideoHintImageView
+            android:id="@+id/imgVideo" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:minHeight="@dimen/video_min_height"
+            android:scaleType="fitXY"
+            android:visibility="gone"/>
+
         <TextView
             android:id="@+id/txtPics" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="?attr/text_body" android:textSize="24sp"/>
 

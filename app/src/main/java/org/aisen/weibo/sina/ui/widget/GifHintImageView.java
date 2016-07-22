@@ -11,6 +11,7 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 
 import org.aisen.android.common.context.GlobalContext;
+import org.aisen.android.common.utils.BitmapUtil;
 import org.aisen.android.common.utils.Utils;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.weibo.sina.R;
@@ -57,10 +58,13 @@ public class GifHintImageView extends ImageView {
 		super.onDraw(canvas);
 		
 		if (getWidth() > 0 && getHeight() > 0) {
+            if (paint == null) {
+                paint = new Paint();
+            }
+
             if (showGif) {
                 if (gif == null) {
                     gif = BitmapFactory.decodeResource(getResources(), R.drawable.ic_gif);
-                    paint = new Paint();
                 }
 
                 canvas.drawBitmap(gif, getWidth() - gif.getWidth(), getHeight() - gif.getHeight(), paint);
@@ -68,7 +72,7 @@ public class GifHintImageView extends ImageView {
             else if (cut){
                 if (cutBitmap == null) {
                     cutBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_cut);
-                    paint = new Paint();
+                    cutBitmap = BitmapUtil.zoomBitmap(cutBitmap, Utils.dip2px(getContext(), 30));
                 }
 
                 canvas.drawBitmap(cutBitmap, getWidth() - cutBitmap.getWidth(), getHeight() - cutBitmap.getHeight(), paint);
@@ -95,8 +99,18 @@ public class GifHintImageView extends ImageView {
     public void setImageDrawable(Drawable drawable) {
         super.setImageDrawable(drawable);
 
-        if (getParent() instanceof TimelinePicsView)
-            ((TimelinePicsView) getParent()).checkPicSize();
+        if (getParent() instanceof TimelinePicsView) {
+//            MyDrawable myDrawable = null;
+//            if (drawable instanceof MyDrawable) {
+//                myDrawable = (MyDrawable) drawable;
+//            }
+//            else if (drawable instanceof TransitionDrawable) {
+//                myDrawable = (MyDrawable) ((TransitionDrawable) drawable).getDrawable(1);
+//            }
+//
+//            if (myDrawable != null && TextUtils.isEmpty(myDrawable.getMyBitmap().getId()))
+                ((TimelinePicsView) getParent()).checkPicSize();
+        }
     }
 
     public void setMidHint(String url, boolean large) {

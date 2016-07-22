@@ -342,7 +342,6 @@ public class BrowserActivity extends BaseActivity implements IDownloadObserver {
 			VideoBean bean = new VideoBean();
 
 			bean.setIdStr(KeyGenerator.generateMD5(url));
-			bean.setUrl(url);
 
 			Elements divs = dom.select("div[class=video_img WscaleH]");
 			if (divs != null && divs.size() > 0) {
@@ -362,7 +361,6 @@ public class BrowserActivity extends BaseActivity implements IDownloadObserver {
 			VideoBean bean = new VideoBean();
 
 			bean.setIdStr(KeyGenerator.generateMD5(url));
-			bean.setUrl(url);
 
 			Elements divs = dom.select("video.video");
 			if (divs != null && divs.size() > 0) {

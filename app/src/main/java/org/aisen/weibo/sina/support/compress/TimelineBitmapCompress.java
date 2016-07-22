@@ -11,6 +11,7 @@ import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.component.bitmaploader.core.BitmapDecoder;
 import org.aisen.android.component.bitmaploader.core.IBitmapCompress;
 import org.aisen.android.component.bitmaploader.core.ImageConfig;
+import org.aisen.android.component.bitmaploader.core.MyBitmap;
 
 import java.io.File;
 
@@ -19,7 +20,7 @@ public class TimelineBitmapCompress implements IBitmapCompress {
 	public static final String TAG = "TimelineCompress";
 	
 	@Override
-	public Bitmap compress(byte[] bitmapBytes, File file, String url, ImageConfig config, int origW, int origH) throws Exception {
+	public MyBitmap compress(byte[] bitmapBytes, File file, String url, ImageConfig config, int origW, int origH) throws Exception {
 		Logger.v("ATimeline", "压缩小图片");
 		
 		Bitmap bitmap = null;
@@ -41,7 +42,7 @@ public class TimelineBitmapCompress implements IBitmapCompress {
 		}
 		
 		Logger.d(TAG, String.format("bitmap width = %d, height = %d", bitmap.getWidth(), bitmap.getHeight()));
-		return bitmap;
+		return new MyBitmap(bitmap, url);
 	}
 
 }

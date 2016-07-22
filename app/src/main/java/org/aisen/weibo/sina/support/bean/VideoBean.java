@@ -11,8 +11,6 @@ public class VideoBean implements Serializable {
 
     private static final long serialVersionUID = -4102724688858341090L;
 
-    private String url;
-
     private String shortUrl;
 
     private String longUrl;
@@ -48,14 +46,6 @@ public class VideoBean implements Serializable {
 
     public void setIdStr(String idStr) {
         this.idStr = idStr;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     public String getShortUrl() {

@@ -16,11 +16,13 @@ import org.aisen.android.network.task.TaskException;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
-import org.aisen.weibo.sina.sinasdk.bean.StatusContents;
 import org.aisen.weibo.sina.sinasdk.bean.UrlBean;
 import org.aisen.weibo.sina.sinasdk.bean.UrlsBean;
 import org.aisen.weibo.sina.support.bean.VideoBean;
 import org.aisen.weibo.sina.support.sqlit.SinaDB;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,20 +61,14 @@ public class VideoService extends Service {
 
     static final String TAG = VideoService.class.getSimpleName();
 
-    public static void parseStatusURL(StatusContents statusContents) throws TaskException {
-        // 不解析缓存
-        if (statusContents.fromCache()) {
-            return;
-        }
-//        SinaDB.getDB().deleteAll(null, VideoBean.class);
-
+    public static void parseStatusURL(List<StatusContent> statusContents) throws TaskException {
         List<VideoBean> videoList = new ArrayList<>();
         Map<String, VideoBean> videoMap = new HashMap<>();
         Map<String, StatusContent> statusMap = new HashMap<>();
         LinkedBlockingQueue<VideoBean> videoQueue = new LinkedBlockingQueue<>();
 
         // 把未解析的短连接拎出来
-        for (StatusContent statusContent : statusContents.getStatuses()) {
+        for (StatusContent statusContent : statusContents) {
             if (statusContent.getRetweeted_status() != null) {
                 statusContent = statusContent.getRetweeted_status();
             }
@@ -88,8 +84,20 @@ public class VideoService extends Service {
 
                     String id = KeyGenerator.generateMD5(urlSpan.getURL());
 
+                    boolean parse = true;
                     VideoBean videoBean = SinaDB.getDB().selectById(null, VideoBean.class, id);
-                    if ((videoBean == null || TextUtils.isEmpty(videoBean.getLongUrl())) && !videoMap.containsKey(urlSpan.getURL())) {
+                    if (isVideoValid(videoBean)) {
+                        UrlBean urlBean = new UrlBean();
+                        urlBean.setType(videoBean.getType());
+                        urlBean.setUrl_long(videoBean.getLongUrl());
+                        urlBean.setUrl_short(videoBean.getShortUrl());
+                        statusContent.setVideoUrl(urlBean);
+                        statusContent.setVideo(urlBean.getType() == VideoService.TYPE_VIDEO_SINA  || urlBean.getType() == VideoService.TYPE_VIDEO_WEIPAI);
+
+                        parse = false;
+                    }
+
+                    if (parse && !videoMap.containsKey(urlSpan.getURL())) {
                         videoBean = new VideoBean();
                         videoBean.setIdStr(id);
                         videoBean.setShortUrl(urlSpan.getURL());
@@ -155,6 +163,50 @@ public class VideoService extends Service {
             SinaDB.getDB().insert(null, videoList);
         }
 
+    }
+
+    private static boolean isVideoValid(VideoBean bean) {
+        if (bean != null && !TextUtils.isEmpty(bean.getLongUrl()))
+            return true;
+
+        return false;
+    }
+
+    public static VideoBean getVideoFromWeipai(VideoBean video) throws Exception {
+        Document dom = Jsoup.connect(video.getLongUrl()).get();
+
+        video.setIdStr(KeyGenerator.generateMD5(video.getShortUrl()));
+
+        Elements divs = dom.select("div[class=video_img WscaleH]");
+        if (divs != null && divs.size() > 0) {
+            video.setImage(divs.get(0).attr("data-url"));
+        }
+        divs = dom.select("video#video");
+        if (divs != null && divs.size() > 0) {
+            video.setVideoUrl(divs.get(0).attr("src"));
+        }
+
+        return video;
+    }
+
+    public static VideoBean getVideoFromSinaVideo(VideoBean video) throws Exception {
+        Document dom = Jsoup.connect(video.getLongUrl()).get();
+
+        video.setIdStr(KeyGenerator.generateMD5(video.getShortUrl()));
+
+        Elements divs = dom.select("video.video");
+        if (divs != null && divs.size() > 0) {
+            String src = divs.get(0).attr("src");
+            src = src.replace("amp;", "");
+
+            video.setVideoUrl(src);
+        }
+        divs = dom.select("img.poster");
+        if (divs != null && divs.size() > 0) {
+            video.setImage(divs.get(0).attr("src"));
+        }
+
+        return video;
     }
 
     public static boolean isWeipai(String url) {

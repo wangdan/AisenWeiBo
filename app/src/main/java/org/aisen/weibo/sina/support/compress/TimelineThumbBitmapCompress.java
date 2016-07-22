@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import org.aisen.android.common.utils.BitmapUtil;
 import org.aisen.android.component.bitmaploader.core.BitmapCompress;
 import org.aisen.android.component.bitmaploader.core.ImageConfig;
+import org.aisen.android.component.bitmaploader.core.MyBitmap;
 import org.aisen.weibo.sina.ui.widget.TimelinePicsView;
 
 import java.io.File;
@@ -16,7 +17,7 @@ public class TimelineThumbBitmapCompress extends BitmapCompress {
     public static final int cutHeight = 900;
 
 	@Override
-	public Bitmap compress(byte[] bitmapBytes, File file, String url, ImageConfig config, int origW, int origH) throws Exception {
+	public MyBitmap compress(byte[] bitmapBytes, File file, String url, ImageConfig config, int origW, int origH) throws Exception {
         boolean isGif = url.toLowerCase().endsWith("gif");
 
         if (config instanceof TimelinePicsView.TimelineImageConfig) {
@@ -38,7 +39,7 @@ public class TimelineThumbBitmapCompress extends BitmapCompress {
                         Bitmap bitmap = BitmapUtil.decodeRegion(bitmapBytes, width, height);
 //                        if (bitmap != null)
 //                            Logger.v(String.format("截取后的尺寸, width = %d, height = %d", bitmap.getWidth(), bitmap.getHeight()));
-                        return bitmap;
+                        return new MyBitmap(bitmap, url);
                     }
                 }
             }
@@ -48,13 +49,10 @@ public class TimelineThumbBitmapCompress extends BitmapCompress {
         // 高度比较高时，截图部分显示
         if (!isGif && origW <= 440 && origH > maxHeight) {
             float outHeight = origW * 1.0f * (cutHeight * 1.0f / cutWidth);
-            return BitmapUtil.decodeRegion(bitmapBytes, origW, Math.round(outHeight));
+            return new MyBitmap(BitmapUtil.decodeRegion(bitmapBytes, origW, Math.round(outHeight)), url);
         }
 
-        Bitmap bitmap = super.compress(bitmapBytes, file, url, config, origW, origH);;
-//        if (bitmap != null)
-//            Logger.w(String.format("原始尺寸, width = %d, height = %d, 解析后, width = %d, height = %d", origW, origH, bitmap.getWidth(), bitmap.getHeight()));
-        return bitmap;
+        return super.compress(bitmapBytes, file, url, config, origW, origH);
     }
 
 }

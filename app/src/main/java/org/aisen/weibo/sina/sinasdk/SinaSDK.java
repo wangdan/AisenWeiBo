@@ -56,6 +56,7 @@ import org.aisen.weibo.sina.sinasdk.bean.UploadPictureResultBean;
 import org.aisen.weibo.sina.sinasdk.bean.UrlsBean;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.sinasdk.http.HttpsUtility;
+import org.aisen.weibo.sina.sinasdk.http.TimelineHttpUtility;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 
 import java.io.File;
@@ -262,7 +263,11 @@ public class SinaSDK extends ABizLogic {
         if (!params.containsKey("count"))
             params.addParameter("count", getPageCount(getSetting("friendshipGroupsTimeline")));
 
-        return doGet(getSetting("friendshipGroupsTimeline"), configParams(params), StatusContents.class);
+		Setting action = getSetting("friendshipGroupsTimeline");
+
+		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TimelineHttpUtility.class.getName(), ""));
+
+        return doGet(action, configParams(params), StatusContents.class);
 	}
 
     public StatusContents offlineFriendshipGroupsTimeline(Params params) throws TaskException {
@@ -316,7 +321,11 @@ public class SinaSDK extends ABizLogic {
 		if (!params.containsKey("count"))
 			params.addParameter("count", getPageCount(getSetting("statusesFriendsTimeLine")));
 
-		return doGet(getSetting("statusesFriendsTimeLine"), configParams(params), StatusContents.class);
+		Setting action = getSetting("statusesFriendsTimeLine");
+
+		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TimelineHttpUtility.class.getName(), ""));
+
+		return doGet(action, configParams(params), StatusContents.class);
 	}
 
 	public StatusContents statusesHomeTimeLine(Params params) throws TaskException {
@@ -355,7 +364,11 @@ public class SinaSDK extends ABizLogic {
 			params.addParameter("count", getPageCount(getSetting("statusesUserTimeLine")));
 		params.setEncodeAble(false);
 
-		return doGet(getSetting("statusesUserTimeLine"), configParams(params), StatusContents.class);
+		Setting action = getSetting("statusesUserTimeLine");
+
+		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TimelineHttpUtility.class.getName(), ""));
+
+		return doGet(action, configParams(params), StatusContents.class);
 	}
 
 	/**
@@ -381,7 +394,11 @@ public class SinaSDK extends ABizLogic {
 		if (!params.containsKey("count"))
 			params.addParameter("count", getPageCount(getSetting("statusesBilateralTimeLine")));
 
-		return doGet(getSetting("statusesBilateralTimeLine"), configParams(params), StatusContents.class);
+		Setting action = getSetting("statusesBilateralTimeLine");
+
+		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TimelineHttpUtility.class.getName(), ""));
+
+		return doGet(action, configParams(params), StatusContents.class);
 	}
 
 	/**
@@ -435,7 +452,11 @@ public class SinaSDK extends ABizLogic {
 	 * @return
 	 */
 	public StatusContents statusesMentions(Params params) throws TaskException {
-		return doGet(getSetting("statusesMentions"), configParams(params), StatusContents.class);
+		Setting action = getSetting("statusesMentions");
+
+		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TimelineHttpUtility.class.getName(), ""));
+
+		return doGet(action, configParams(params), StatusContents.class);
 	}
 
 	/**
@@ -449,7 +470,11 @@ public class SinaSDK extends ABizLogic {
 		if (!params.containsKey("count"))
 			params.addParameter("count", getPageCount(getSetting("statusesToMe")));
 
-		return doGet(getSetting("statusesToMe"), configParams(params), StatusContents.class);
+		Setting action = getSetting("statusesToMe");
+
+		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TimelineHttpUtility.class.getName(), ""));
+
+		return doGet(action, configParams(params), StatusContents.class);
 	}
 	
 	/**
@@ -815,7 +840,11 @@ public class SinaSDK extends ABizLogic {
 		else
 			params.addParameter("count", getPageCount(getSetting("favorites")));
 
-		return doGet(getSetting("favorites"), configParams(params), Favorities.class);
+		Setting action = getSetting("favorites");
+
+		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TimelineHttpUtility.class.getName(), ""));
+
+		return doGet(action, configParams(params), Favorities.class);
 	}
 
 	/**
@@ -874,7 +903,11 @@ public class SinaSDK extends ABizLogic {
 		params.addParameter("q", topics);
 		params.setEncodeAble(false);
 
-		return doGet(getSetting("searchTopics"), configParams(params), StatusContents.class);
+		Setting action = getSetting("searchTopics");
+
+		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TimelineHttpUtility.class.getName(), ""));
+
+		return doGet(action, configParams(params), StatusContents.class);
 	}
 
 	/**
