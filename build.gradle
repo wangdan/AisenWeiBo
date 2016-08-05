@@ -5,12 +5,14 @@ buildscript {
         jcenter()
         mavenCentral()
         maven {
-//            url "https://raw.githubusercontent.com/wangdan/mvn-repo-aiwen/master/repository/"
             url "/Users/wangdan/Documents/github/mvn-repo-aiwen/repository/"
         }
+//        maven {
+//            url "https://raw.githubusercontent.com/wangdan/mvn-repo-aiwen/master/repository/"
+//        }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.0.0'
+        classpath 'com.android.tools.build:gradle:2.1.0'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -25,9 +27,11 @@ allprojects {
             url "http://dl.bintray.com/fir/maven"
         }
         maven {
-//            url "https://raw.githubusercontent.com/wangdan/mvn-repo-aiwen/master/repository/"
             url "/Users/wangdan/Documents/github/mvn-repo-aiwen/repository/"
         }
+//        maven {
+//            url "https://raw.githubusercontent.com/wangdan/mvn-repo-aiwen/master/repository/"
+//        }
         maven { url "https://jitpack.io" }
     }
 }

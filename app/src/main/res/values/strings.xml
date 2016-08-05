@@ -609,6 +609,7 @@
     <string name="video2browser">浏览器打开</string>
     <string name="video_short_faild">短链接解析失败，多次尝试如果还是失败，建议浏览器打开</string>
     <string name="toast_video_play_error">播放失败！Error=%d</string>
+    <string name="msg_save_video_success">视频已保存至%s文件夹</string>
 
     <string-array name="jokes_menu">
         <item>复制</item>

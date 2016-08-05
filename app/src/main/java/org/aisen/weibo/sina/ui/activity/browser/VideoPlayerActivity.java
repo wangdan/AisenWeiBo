@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -29,10 +30,11 @@ import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.activity.basic.BaseActivity;
-import org.aisen.downloader.DownloadController;
-import org.aisen.downloader.DownloadManager;
-import org.aisen.downloader.DownloadProxy;
-import org.aisen.downloader.IDownloadObserver;
+import org.aisen.download.DownloadManager;
+import org.aisen.download.DownloadMsg;
+import org.aisen.download.DownloadProxy;
+import org.aisen.download.IDownloadObserver;
+import org.aisen.download.Request;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
@@ -100,19 +102,19 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
             // Note that some of these constants are new as of API 16 (Jelly Bean)
             // and API 19 (KitKat). It is safe to use them, as they are inlined
             // at compile-time and do nothing on earlier devices.
-//            mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-//                    | View.SYSTEM_UI_FLAG_FULLSCREEN
-//                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-//                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-//                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-//                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-//
-//            mControlsView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-//                    | View.SYSTEM_UI_FLAG_FULLSCREEN
-//                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-//                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-//                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-//                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+            mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+
+            mControlsView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         }
     };
     private View mControlsView;
@@ -149,7 +151,7 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
     private Uri videoUri;
     private VideoBean videoBean;
     private DownloadProxy mDownloadProxy = new DownloadProxy();
-    private DownloadController.DownloadStatus downloadStatus;
+    private DownloadMsg mDownloadMsg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,8 +162,8 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
 //        if (this.getResources().getConfiguration().orientation ==
 //                Configuration.ORIENTATION_LANDSCAPE) {
 
-//            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 
 //        }
@@ -221,16 +223,6 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
             finish();
         }
     }
-
-    /*private void updateButtons() {
-        if (mContentView.isPlaying()) {
-            playBtn.setEnabled(false);
-            stopBtn.setEnabled(true);
-        } else {
-            playBtn.setEnabled(true);
-            stopBtn.setEnabled(false);
-        }
-    }*/
 
     private void stop() {
         if (mContentView.isPlaying())
@@ -321,13 +313,13 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
     @SuppressLint("InlinedApi")
     private void show() {
         // Show the system bar
-//        mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-//                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-//                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-//
-//        mControlsView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-//                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-//                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+
+        mControlsView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
         mVisible = true;
 
@@ -398,7 +390,9 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
 
         UMengUtil.onPageEnd(this, "视频播放页");
 
-        DownloadController.unregister(mDownloadProxy);
+        if (DownloadManager.getInstance() != null) {
+            DownloadManager.getInstance().getController().unregister(mDownloadProxy);
+        }
         mDownloadProxy.detach(this);
     }
 
@@ -413,7 +407,9 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
 
         UMengUtil.onPageStart(this, "视频播放页");
 
-        DownloadController.register(mDownloadProxy);
+        if (DownloadManager.getInstance() != null) {
+            DownloadManager.getInstance().getController().register(mDownloadProxy);
+        }
         mDownloadProxy.attach(this);
     }
 
@@ -583,21 +579,58 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
     public boolean onPrepareOptionsMenu(Menu menu) {
 
         File file = getVideoFile(videoUri);
-        menu.findItem(R.id.download).setVisible(file == null || !file.exists());
+        if (mDownloadMsg != null) {
+            int status = mDownloadMsg.getStatus();
+            // 失败
+            if (status == DownloadManager.STATUS_FAILED) {
+                menu.findItem(R.id.download).setVisible(true);
+            }
+            // 成功
+            else if (status == DownloadManager.STATUS_SUCCESSFUL) {
+                menu.findItem(R.id.download).setVisible(false);
+            }
+            // 暂停
+            else if (status == DownloadManager.STATUS_PAUSED) {
+                menu.findItem(R.id.download).setVisible(true);
+            }
+            // 等待
+            else if (status == DownloadManager.STATUS_PENDING ||
+                    status == DownloadManager.STATUS_WAITING) {
+                menu.findItem(R.id.download).setVisible(false);
+            }
+            // 下载中
+            else if (status == DownloadManager.STATUS_RUNNING) {
+                menu.findItem(R.id.download).setVisible(false);
+            }
+        }
+        else {
+            menu.findItem(R.id.download).setVisible(file == null || !file.exists());
+        }
 
         return super.onPrepareOptionsMenu(menu);
+    }
+
+    private void download() {
+        File file = getVideoFile(videoUri);
+        Uri uri = Uri.parse(videoUri.toString());
+        Request request = new Request(uri, Uri.fromFile(file));
+        request.setNotificationVisibility(Request.VISIBILITY_VISIBLE);
+        request.setTitle(KeyGenerator.generateMD5(videoUri.toString()) + ".mp4");
+        DownloadManager.getInstance().enqueue(request);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.download) {
-            Uri uri = Uri.parse(videoUri.toString());
-            DownloadManager.Request request = new DownloadManager.Request(uri);
-            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
-            request.setTitle(KeyGenerator.generateMD5(videoUri.toString()) + ".mp4");
-            File file = getVideoFile(videoUri);
-            request.setDestinationUri(Uri.fromFile(file));
-            DownloadManager.getInstance().enqueue(request);
+            if (mDownloadMsg != null) {
+                // 失败
+                if (mDownloadMsg.getStatus() == DownloadManager.STATUS_FAILED) {
+                    DownloadManager.getInstance().resume(mDownloadMsg.getKey());
+                }
+            }
+            else {
+                download();
+            }
 
             invalidateOptionsMenu();
         }
@@ -614,18 +647,39 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Override
-    public String downloadURI() {
-        return videoBean != null ? videoBean.getVideoUrl() : null;
+    public Uri downloadURI() {
+        return videoBean != null ? Uri.parse(videoBean.getVideoUrl()) : null;
     }
 
     @Override
-    public void onDownloadInit() {
-
+    public Uri downloadFileURI() {
+        return Uri.fromFile(getVideoFile(videoUri));
     }
 
     @Override
-    public void onDownloadChanged(DownloadController.DownloadStatus status) {
-        downloadStatus = status;
+    public void onPublish(DownloadMsg downloadMsg) {
+        this.mDownloadMsg = downloadMsg;
+
+        int status = downloadMsg.getStatus();
+
+        // 失败
+        if (status == DownloadManager.STATUS_FAILED) {
+            showMessage("下载视频失败");
+        }
+        // 成功
+        else if (status == DownloadManager.STATUS_SUCCESSFUL) {
+            showMessage(String.format(getString(R.string.msg_save_video_success), getVideoFile(videoUri).getParentFile().getAbsolutePath()));
+        }
+        // 暂停
+        else if (status == DownloadManager.STATUS_PAUSED) {
+        }
+        // 等待
+        else if (status == DownloadManager.STATUS_PENDING ||
+                status == DownloadManager.STATUS_WAITING) {
+        }
+        // 下载中
+        else if (status == DownloadManager.STATUS_RUNNING) {
+        }
     }
 
 }

@@ -44,9 +44,9 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':library')
     compile project(':datetimerpicker')
-    compile project(':downloadmanager')
     compile project(':dashboard')
     compile 'org.aisen.android:searchview:2.1.1@aar'
+    compile 'org.aisen.android:downloadmanager:2.0.0-SNAPSHOT@aar'
     //    compile 'org.aisen.android:downloadmanager:1.0.0-SNAPSHOT@aar'
     compile 'com.android.support:cardview-v7:23.2.1'
     compile 'com.github.gabrielemariotti.changeloglib:changelog:2.0.0'

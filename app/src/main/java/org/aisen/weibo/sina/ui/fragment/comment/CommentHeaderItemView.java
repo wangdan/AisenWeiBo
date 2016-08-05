@@ -28,6 +28,7 @@ import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.widget.AisenTextView;
 import org.aisen.weibo.sina.ui.widget.TimelinePicsView;
+import org.aisen.weibo.sina.ui.widget.videoimage.VideoHintImageView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -61,6 +62,9 @@ public class CommentHeaderItemView extends ARecycleViewItemView<StatusComment> i
 
     @ViewInject(id = R.id.layPicturs)
     public TimelinePicsView layPicturs;
+
+    @ViewInject(id = R.id.imgVideo)
+    VideoHintImageView imgVideo;
 
     @ViewInject(id = R.id.txtPics)
     TextView txtPics;
@@ -141,20 +145,40 @@ public class CommentHeaderItemView extends ARecycleViewItemView<StatusComment> i
 
         // pictures
         StatusContent s = statusContent.getRetweeted_status() != null ? statusContent.getRetweeted_status() : statusContent;
-        if (AppSettings.isPicNone() && !(fragment instanceof TimelineDetailPagerFragment)) {
+        if (s.isVideo()) {
             layPicturs.setVisibility(View.GONE);
-            if (s.getPic_urls() != null && s.getPic_urls().length > 0) {
-                txtPics.setText(String.format("%dPics", s.getPic_urls().length));
-                txtPics.setVisibility(View.VISIBLE);
-                txtPics.setTag(s);
-                txtPics.setOnClickListener(this);
+            layPicturs.release();
+            txtPics.setVisibility(View.GONE);
+
+            if (AppSettings.isPicNone() || s.getVideoUrl() == null) {
+                imgVideo.setVisibility(View.GONE);
             }
-            else
-                txtPics.setVisibility(View.GONE);
+            else {
+                imgVideo.setVisibility(View.VISIBLE);
+
+                imgVideo.display(fragment, s.getVideoUrl());
+            }
         }
         else {
-            txtPics.setVisibility(View.GONE);
-            layPicturs.setPics(s, fragment);
+            imgVideo.setVisibility(View.GONE);
+            imgVideo.release();
+
+            // pictures
+            if (AppSettings.isPicNone() && !(fragment instanceof TimelineDetailPagerFragment)) {
+                layPicturs.setVisibility(View.GONE);
+                if (s.getPic_urls() != null && s.getPic_urls().length > 0) {
+                    txtPics.setText(String.format("%dPics", s.getPic_urls().length));
+                    txtPics.setVisibility(View.VISIBLE);
+                    txtPics.setTag(s);
+                    txtPics.setOnClickListener(this);
+                }
+                else
+                    txtPics.setVisibility(View.GONE);
+            }
+            else {
+                txtPics.setVisibility(View.GONE);
+                layPicturs.setPics(s, fragment);
+            }
         }
 
         // group visiable
