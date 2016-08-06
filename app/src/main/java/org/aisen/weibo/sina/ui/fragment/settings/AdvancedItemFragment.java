@@ -90,7 +90,7 @@ public class AdvancedItemFragment extends BasePreferenceFragment
 		}
 		else if ("pInnerBrowser".equals(preference.getKey())) {
 			try {
-				AisenTextView.stringMemoryCache.evictAll();
+				AisenTextView.textSpannableCache.evictAll();
 			} catch (Exception e) {
 			}
 		}

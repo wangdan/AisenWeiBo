@@ -28,6 +28,7 @@ import org.aisen.weibo.sina.ui.activity.base.MainActivity;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.fragment.comment.TimelineDetailPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.mention.MentionTimelineFragment;
+import org.aisen.weibo.sina.ui.widget.AisenTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -240,7 +241,20 @@ public abstract class ATimelineFragment extends ARecycleViewSwipeRefreshFragment
 
             params.addParameter("count", String.valueOf(AppSettings.getTimelineCount()));
 
-            return getStatusContents(params);
+            StatusContents result = getStatusContents(params);
+
+            for (StatusContent content : result.getStatuses()) {
+                AisenTextView.addText(content.getText());
+
+                if (content.getRetweeted_status() != null) {
+                    String reUserName = "";
+                    if (content.getRetweeted_status().getUser() != null && !TextUtils.isEmpty(content.getRetweeted_status().getUser().getScreen_name()))
+                        reUserName = String.format("@%s :", content.getRetweeted_status().getUser().getScreen_name());
+                    AisenTextView.addText(reUserName + content.getRetweeted_status().getText());
+                }
+            }
+
+            return result;
         }
 
         @Override

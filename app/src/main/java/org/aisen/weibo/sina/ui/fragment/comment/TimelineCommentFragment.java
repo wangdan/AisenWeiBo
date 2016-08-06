@@ -31,6 +31,7 @@ import org.aisen.weibo.sina.support.paging.CommentPaging;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
+import org.aisen.weibo.sina.ui.widget.AisenTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -225,6 +226,10 @@ public class TimelineCommentFragment extends AListFragment<StatusComment, Status
 
             StatusComments statusComments = SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).commentsShow(params);
             statusComments.setEndPaging(statusComments.getComments().size() <= 10);
+
+            for (StatusComment content : statusComments.getComments()) {
+                AisenTextView.addText(content.getText());
+            }
 
             return statusComments;
         }
