@@ -20,9 +20,7 @@ import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.BitmapUtil;
 import org.aisen.android.common.utils.KeyGenerator;
 import org.aisen.android.common.utils.Logger;
-import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.component.bitmaploader.core.LruMemoryCache;
-import org.aisen.android.component.bitmaploader.core.MyBitmap;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.support.textspan.ClickableTextViewMentionLinkOnTouchListener;
@@ -33,6 +31,7 @@ import org.aisen.weibo.sina.service.VideoService;
 import org.aisen.weibo.sina.support.bean.VideoBean;
 import org.aisen.weibo.sina.support.sqlit.EmotionsDB;
 import org.aisen.weibo.sina.support.sqlit.SinaDB;
+import org.aisen.weibo.sina.ui.widget.span.EmotionSpan;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.BlockingQueue;
@@ -81,7 +80,11 @@ public class AisenTextView extends TextView {
 	private static final Executor THREAD_POOL_EXECUTOR = new ThreadPoolExecutor(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE, TimeUnit.SECONDS,
 			sPoolWorkQueue, sThreadFactory);
 	
-	public static LruMemoryCache<String, SpannableString> stringMemoryCache;
+	public static final LruMemoryCache<String, SpannableString> stringMemoryCache = new LruMemoryCache<>(200);
+
+	public static final LruMemoryCache<String, Bitmap> emotionCache = new LruMemoryCache<>(30);
+
+	private static int lineHeight = 0;
 	
 	private EmotionTask emotionTask;
 	
@@ -105,11 +108,6 @@ public class AisenTextView extends TextView {
 	}
 	
 	public void setContent(String text) {
-		if (stringMemoryCache == null) {
-			stringMemoryCache = new LruMemoryCache<String, SpannableString>(200) {
-			};
-		}
-		
 		boolean replace = false;
 
 		if (!replace)
@@ -176,6 +174,15 @@ public class AisenTextView extends TextView {
 			if (TextUtils.isEmpty(textView.getText()))
 				return false;
 
+			int lineH = 0;
+			while (lineH == 0) {
+				lineH = textView.getLineHeight();
+			}
+			if (lineHeight != lineH) {
+				emotionCache.evictAll();
+				lineHeight = lineH;
+			}
+
 			// android.view.ViewRootImpl$CalledFromWrongThreadException Only the original thread that created a view hierarchy can touch its views.
 			// 把getText + 一个空字符试试，可能是直接取值会刷UI
 			String text = textView.getText() + "";
@@ -193,22 +200,20 @@ public class AisenTextView extends TextView {
 				byte[] data = EmotionsDB.getEmotion(key);
 				if (data == null)
 					continue;
-				
-				MyBitmap mb = BitmapLoader.getInstance().getImageCache().getBitmapFromMemCache(key, null);
-				Bitmap b = null;
-				if (mb != null) {
-					b = mb.getBitmap();
-				}
-				else {
-					b = BitmapFactory.decodeByteArray(data, 0, data.length);
-					b = BitmapUtil.zoomBitmap(b, bitmapSize);
 
-					// 添加到内存中
-					BitmapLoader.getInstance().getImageCache().addBitmapToMemCache(key, null, new MyBitmap(b, key));
+				synchronized (emotionCache) {
+					Bitmap bitmap = emotionCache.get(key);
+					if (bitmap == null) {
+						bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+						bitmap = BitmapUtil.zoomBitmap(bitmap, lineHeight);
+
+						// 添加到内存中
+						emotionCache.put(key, bitmap);
+					}
+
+					EmotionSpan l = new EmotionSpan(GlobalContext.getInstance(), bitmap, ImageSpan.ALIGN_BASELINE);
+					spannableString.setSpan(l, k, m, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 				}
-				
-				ImageSpan l = new ImageSpan(GlobalContext.getInstance(), b, ImageSpan.ALIGN_BASELINE);
-				spannableString.setSpan(l, k, m, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 			}
 			
 			// 用户名称
