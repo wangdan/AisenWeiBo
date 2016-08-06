@@ -115,7 +115,7 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
         // 添加HeaderView
         View itemConvertView = inflater.inflate(CommentHeaderItemView.COMMENT_HEADER_01_RES, layHeader, false);
         CommentHeaderItemView headerItemView = new CommentHeaderItemView(this, itemConvertView, mStatusContent);
-        headerItemView.onBindData(layHeader, null, 0);
+//        headerItemView.onBindData(layHeader, null, 0);
         layHeader.addView(itemConvertView, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 
         BizFragment.createBizFragment(getActivity()).createFabAnimator(action_menu);

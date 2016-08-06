@@ -3,66 +3,53 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@android:color/black">
+                android:background="@color/comm_black" android:fitsSystemWindows="true">
 
     <RelativeLayout
         android:id="@+id/layoutContent"
         android:layout_width="match_parent" android:layout_height="match_parent">
 
         <VideoView
-            android:id="@+id/videoView"
+            android:id="@+id/videoView" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_centerInParent="true"/>
+
+        <LinearLayout
+            android:id="@+id/fullscreen_content_controls"
+            style="?metaButtonBarStyle"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            />
-
-        <!-- This FrameLayout insets its children based on system windows using
-             android:fitsSystemWindows. -->
-        <RelativeLayout
-            android:id="@+id/layControlls"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <LinearLayout
-                android:id="@+id/fullscreen_content_controls"
-                style="?metaButtonBarStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/black_overlay"
-                android:orientation="horizontal"
-                android:paddingBottom="10dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingTop="10dp"
-                tools:ignore="UselessParent">
-
-                <TextView
-                    android:id="@+id/video_title_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:gravity="center_vertical"
-                    android:maxLines="2"
-                    android:paddingLeft="10dp"
-                    android:paddingStart="10dp"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp"
-                    tools:text="The Healing Power of Nature"
-                    />
-
-            </LinearLayout>
-
-        </RelativeLayout>
-
-        <org.aisen.android.ui.widget.AsToolbar
-            android:id="@+id/toolbar" android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:alpha="0.7"
             android:background="@color/black_overlay"
-            android:minHeight="?attr/actionBarSize"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            />
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="10dp"
+            tools:ignore="UselessParent">
+
+            <TextView
+                android:id="@+id/video_title_text"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:maxLines="2"
+                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                tools:text="The Healing Power of Nature"
+                />
+
+        </LinearLayout>
+
     </RelativeLayout>
+
+    <org.aisen.android.ui.widget.AsToolbar
+        android:id="@+id/toolbar" android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black_overlay"
+        android:minHeight="?attr/actionBarSize"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        />
 
     <ProgressBar
         android:id="@+id/progressbar"

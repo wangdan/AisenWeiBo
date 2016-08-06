@@ -6,6 +6,7 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -144,7 +145,7 @@ public class CommentHeaderItemView extends ARecycleViewItemView<StatusComment> i
         }
 
         // pictures
-        StatusContent s = statusContent.getRetweeted_status() != null ? statusContent.getRetweeted_status() : statusContent;
+        final StatusContent s = statusContent.getRetweeted_status() != null ? statusContent.getRetweeted_status() : statusContent;
         if (s.isVideo()) {
             layPicturs.setVisibility(View.GONE);
             layPicturs.release();
@@ -156,7 +157,23 @@ public class CommentHeaderItemView extends ARecycleViewItemView<StatusComment> i
             else {
                 imgVideo.setVisibility(View.VISIBLE);
 
-                imgVideo.display(fragment, s.getVideoUrl());
+                if (imgVideo.getWidth() > 0) {
+                    imgVideo.display(fragment, s.getVideoUrl());
+                }
+                else {
+                    imgVideo.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+
+                        @Override
+                        public boolean onPreDraw() {
+                            imgVideo.getViewTreeObserver().removeOnPreDrawListener(this);
+
+                            imgVideo.display(fragment, s.getVideoUrl());
+
+                            return true;
+                        }
+
+                    });
+                }
             }
         }
         else {
@@ -214,7 +231,9 @@ public class CommentHeaderItemView extends ARecycleViewItemView<StatusComment> i
         if (statusContent.getRetweeted_status() == null &&
                 (statusContent.getPic_urls() == null || statusContent.getPic_urls().length == 0)) {
             txtContent.setPadding(txtContent.getPaddingLeft(), txtContent.getPaddingTop(), txtContent.getPaddingRight(), 0);
-            layReStatusContainer.setVisibility(View.GONE);
+            if (!s.isVideo()) {
+                layReStatusContainer.setVisibility(View.GONE);
+            }
         }
         // 如果没有图片，有原微博，底部加点空隙
         if (statusContent.getRetweeted_status() != null &&

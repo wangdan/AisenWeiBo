@@ -119,7 +119,9 @@ public class ClickableTextViewMentionLinkOnTouchListener implements View.OnTouch
 
                     if (webURLEmotionSpan.isClickDown()) {
 
-                        webURLEmotionSpan.onClick(tv);
+                        if (MotionEvent.ACTION_UP == event.getActionMasked()) {
+                            webURLEmotionSpan.onClick(tv);
+                        }
 
                         value.removeSpan(webURLEmotionSpan);
                         webURLEmotionSpan.setClickDown(false);

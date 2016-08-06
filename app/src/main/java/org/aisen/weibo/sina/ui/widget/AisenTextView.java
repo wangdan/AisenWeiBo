@@ -71,6 +71,8 @@ public class AisenTextView extends TextView {
 
 	private static Bitmap videoURLBitmap;
 
+	private static Bitmap photoURLBitmap;
+
 	private String content;
 
 	private boolean innerWeb = AppSettings.isInnerBrower();
@@ -258,6 +260,10 @@ public class AisenTextView extends TextView {
 							videoURLBitmap = BitmapFactory.decodeResource(res, R.drawable.timeline_card_small_video);
 							videoURLBitmap = BitmapUtil.zoomBitmap(videoURLBitmap, Math.round(lineHeight * 4.0f / 5));
 						}
+						if (photoURLBitmap == null) {
+							photoURLBitmap = BitmapFactory.decodeResource(res, R.drawable.timeline_icon_photo);
+							photoURLBitmap = BitmapUtil.zoomBitmap(photoURLBitmap, Math.round(lineHeight * 4.0f / 5));
+						}
 
 						boolean find = false;
 
@@ -330,6 +336,11 @@ public class AisenTextView extends TextView {
 								if (videoBean.getType() == VideoService.TYPE_VIDEO_SINA ||
 										videoBean.getType() == VideoService.TYPE_VIDEO_WEIPAI) {
 									webURLEmotionSpan = new WebURLEmotionSpan(GlobalContext.getInstance(), videoURLBitmap, urlSpan.getURL(), videoBean.getType(), ImageSpan.ALIGN_BASELINE);
+
+									Logger.d(TAG, "id[%s], url[%s], video", id, urlSpan.getURL());
+								}
+								else if (videoBean.getType() == VideoService.TYPE_PHOTO) {
+									webURLEmotionSpan = new WebURLEmotionSpan(GlobalContext.getInstance(), photoURLBitmap, urlSpan.getURL(), videoBean.getType(), ImageSpan.ALIGN_BASELINE);
 
 									Logger.d(TAG, "id[%s], url[%s], video", id, urlSpan.getURL());
 								}

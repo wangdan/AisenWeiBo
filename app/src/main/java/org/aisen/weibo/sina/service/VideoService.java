@@ -1,10 +1,7 @@
 package org.aisen.weibo.sina.service;
 
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.os.IBinder;
-import android.support.annotation.Nullable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.URLSpan;
@@ -35,7 +32,7 @@ import java.util.regex.Pattern;
  *
  * Created by wangdan on 16/7/20.
  */
-public class VideoService extends Service {
+public class VideoService {
 
     public static void start(Context context) {
         context.startService(new Intent(context, VideoService.class));
@@ -47,16 +44,7 @@ public class VideoService extends Service {
 
     public static final int TYPE_VIDEO_NONE = 2;
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        return super.onStartCommand(intent, flags, startId);
-    }
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
+    public static final int TYPE_PHOTO = 3;
 
     static final String TAG = VideoService.class.getSimpleName();
 
@@ -65,12 +53,9 @@ public class VideoService extends Service {
 
         Map<String, List<StatusContent>> url2status = new HashMap<>();
 
+        List<String> contentList = new ArrayList<>();
         // 把未解析的短连接拎出来
         for (StatusContent statusContent : statusContents) {
-            if (statusContent.getRetweeted_status() != null) {
-                statusContent = statusContent.getRetweeted_status();
-            }
-
             String content = statusContent.getText();
             if (!TextUtils.isEmpty(content)) {
                 SpannableString spannableString = SpannableString.valueOf(content);
@@ -92,6 +77,33 @@ public class VideoService extends Service {
                         l.add(statusContent);
                 }
             }
+
+            if (statusContent.getRetweeted_status() != null) {
+                statusContent = statusContent.getRetweeted_status();
+
+                content = statusContent.getText();
+                if (!TextUtils.isEmpty(content)) {
+                    SpannableString spannableString = SpannableString.valueOf(content);
+                    Linkify.addLinks(spannableString, Pattern.compile("http://[a-zA-Z0-9+&@#/%?=~_\\-|!:,\\.;]*[a-zA-Z0-9+&@#/%=~_|]"), "http://");
+                    URLSpan[] urlSpans = spannableString.getSpans(0, spannableString.length(), URLSpan.class);
+                    for (URLSpan urlSpan : urlSpans) {
+                        if (!urlSpan.getURL().startsWith("http://t.cn/"))
+                            continue;
+
+                        shortUrlList.add(urlSpan.getURL());
+
+                        List<StatusContent> l = url2status.get(urlSpan.getURL());
+                        if (l == null) {
+                            l = new ArrayList<>();
+
+                            url2status.put(urlSpan.getURL(), l);
+                        }
+                        if (!l.contains(statusContent))
+                            l.add(statusContent);
+                    }
+                }
+            }
+
         }
 
         do {
@@ -126,6 +138,11 @@ public class VideoService extends Service {
                     }
                     else if (isWeipai(urlBean.getUrl_long())) {
                         videoBean.setType(VideoService.TYPE_VIDEO_WEIPAI);
+
+                        s.setVideo(true);
+                    }
+                    else if (isPhoto(urlBean.getUrl_long())) {
+                        videoBean.setType(VideoService.TYPE_PHOTO);
 
                         s.setVideo(true);
                     }
@@ -183,6 +200,14 @@ public class VideoService extends Service {
         }
 
         return video;
+    }
+
+    public static boolean isPhoto(String url) {
+        if (url.startsWith("http://photo.weibo.com")) {
+            return true;
+        }
+
+        return false;
     }
 
     public static boolean isWeipai(String url) {

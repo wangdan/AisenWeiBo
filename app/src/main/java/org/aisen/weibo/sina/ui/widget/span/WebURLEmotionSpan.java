@@ -25,7 +25,6 @@ import org.aisen.android.common.utils.Logger;
 import org.aisen.android.support.textspan.MyURLSpan;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.widget.MToast;
-import org.aisen.download.utils.DLogger;
 import org.aisen.weibo.sina.service.VideoService;
 
 /**
@@ -62,6 +61,9 @@ public class WebURLEmotionSpan extends ImageSpan {
                 mType == VideoService.TYPE_VIDEO_WEIPAI) {
             mReplaceText = "秒拍视频";
         }
+        else if (mType == VideoService.TYPE_PHOTO) {
+            mReplaceText = "查看图片";
+        }
         else {
             mReplaceText = "网页链接";
         }
@@ -82,7 +84,18 @@ public class WebURLEmotionSpan extends ImageSpan {
     public void onClick(View widget) {
         Logger.v(MyURLSpan.class.getSimpleName(), String.format("the link(%s) was clicked ", getURL()));
 
-        Uri uri = Uri.parse(getURL());
+        String url = getURL();
+        if (mType == VideoService.TYPE_VIDEO_SINA ||
+                mType == VideoService.TYPE_VIDEO_WEIPAI) {
+            if (url.startsWith("http")) {
+                url = "aisen_video://" + url;
+            }
+            else {
+                url = url.replaceAll("aisen://", "videoshort://");
+            }
+        }
+
+        Uri uri = Uri.parse(url);
         Context context = widget.getContext();
         if (uri.getScheme().startsWith("http")) {
             Intent intent = new Intent();
@@ -134,8 +147,6 @@ public class WebURLEmotionSpan extends ImageSpan {
         Drawable drawable = getDrawable();
         canvas.save();
 
-        DLogger.e("AisenTextView", "clickdown = " + clickDown);
-
         if (clickDown) {
             RectF rect = new RectF(x, top, x + size, bottom);
             canvas.drawRect(rect, mBackgroundPaint);
@@ -147,9 +158,16 @@ public class WebURLEmotionSpan extends ImageSpan {
         paint.getTextBounds(mReplaceText, 0, mReplaceText.length(), bounds);
         canvas.drawText(mReplaceText, 0, mReplaceText.length(), x + drawable.getBounds().right, y, paint);
 
-        int transY = bottom - drawable.getBounds().bottom;
-        if (mVerticalAlignment == ALIGN_BASELINE) {
-            transY -= paint.getFontMetricsInt().descent / 2;
+        int bh = drawable.getBounds().bottom - drawable.getBounds().top;
+        int transY = 0;
+        if (mType == VideoService.TYPE_VIDEO_NONE) {
+            transY = top + ((bottom - top) - bh) / 2;
+        }
+        else {
+            transY = bottom - drawable.getBounds().bottom;
+            if (mVerticalAlignment == ALIGN_BASELINE) {
+                transY -= paint.getFontMetricsInt().descent;
+            }
         }
 
         canvas.translate(x, transY);

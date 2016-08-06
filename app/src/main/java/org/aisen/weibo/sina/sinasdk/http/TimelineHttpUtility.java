@@ -1,6 +1,5 @@
 package org.aisen.weibo.sina.sinasdk.http;
 
-import org.aisen.android.common.utils.Logger;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.weibo.sina.service.VideoService;
 import org.aisen.weibo.sina.sinasdk.bean.Favorities;
@@ -25,9 +24,7 @@ public class TimelineHttpUtility extends HttpsUtility {
                 StatusContents statusContents = (StatusContents) result;
 
                 // 解析普通网络链接、视频链接
-                long time = System.currentTimeMillis();
                 VideoService.parseStatusURL(statusContents.getStatuses());
-                Logger.e("ATimeline", "耗时 ： " + (System.currentTimeMillis() - time));
             }
             else if (result instanceof Favorities) {
                 Favorities favorities = (Favorities) result;
@@ -38,9 +35,7 @@ public class TimelineHttpUtility extends HttpsUtility {
                 }
 
                 // 解析普通网络链接、视频链接
-                long time = System.currentTimeMillis();
                 VideoService.parseStatusURL(statusContents);
-                Logger.e("ATimeline", "耗时 ： " + (System.currentTimeMillis() - time));
             }
         }
 
