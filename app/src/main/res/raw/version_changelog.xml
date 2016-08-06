@@ -8,6 +8,12 @@
         chg:changeLogFileResourceId="@raw/custom_changelog"
         in your View component in layout file -->
 
+	<changelogversion versionName="6.1.0" changeDate="2016-08">
+		<changelogtext>支持视频原生播放.</changelogtext>
+		<changelogtext>短链接同步官方显示风格.</changelogtext>
+		<changelogtext>优化列表流畅度.</changelogtext>
+	</changelogversion>
+
 	<changelogversion versionName="6.0.5" changeDate="2016-07">
 		<changelogtext>今天抽空适配了4.4，但是还有些问题.</changelogtext>
 	</changelogversion>
