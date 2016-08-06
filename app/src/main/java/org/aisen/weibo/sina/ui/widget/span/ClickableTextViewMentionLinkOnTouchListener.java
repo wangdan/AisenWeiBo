@@ -67,6 +67,32 @@ public class ClickableTextViewMentionLinkOnTouchListener implements View.OnTouch
 
                 find &= (lineWidth >= x);
 
+                if (!find) {
+                    WebURLEmotionSpan[] webURLEmotionSpans = value.getSpans(0, value.length(), WebURLEmotionSpan.class);
+                    findStart = 0;
+                    findEnd = 0;
+                    for (WebURLEmotionSpan webURLEmotionSpan : webURLEmotionSpans) {
+                        int start = value.getSpanStart(webURLEmotionSpan);
+                        int end = value.getSpanEnd(webURLEmotionSpan);
+                        if (start <= offset && offset <= end) {
+                            find = true;
+                            findStart = start;
+                            findEnd = end;
+
+                            value.removeSpan(webURLEmotionSpan);
+                            webURLEmotionSpan.setClickDown(true);
+                            value.setSpan(webURLEmotionSpan, start, end, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                            tv.setText(value);
+
+                            break;
+                        }
+                    }
+
+                    lineWidth = layout.getLineWidth(line);
+
+                    find &= (lineWidth >= x);
+                }
+
                 if (find) {
                     LongClickableLinkMovementMethod.getInstance().onTouchEvent(tv, value, event);
                     BackgroundColorSpan backgroundColorSpan = new BackgroundColorSpan(color);
@@ -86,6 +112,23 @@ public class ClickableTextViewMentionLinkOnTouchListener implements View.OnTouch
                 break;
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
+                WebURLEmotionSpan[] webURLEmotionSpans = value.getSpans(0, value.length(), WebURLEmotionSpan.class);
+                for (WebURLEmotionSpan webURLEmotionSpan : webURLEmotionSpans) {
+                    int start = value.getSpanStart(webURLEmotionSpan);
+                    int end = value.getSpanEnd(webURLEmotionSpan);
+
+                    if (webURLEmotionSpan.isClickDown()) {
+
+                        webURLEmotionSpan.onClick(tv);
+
+                        value.removeSpan(webURLEmotionSpan);
+                        webURLEmotionSpan.setClickDown(false);
+                        value.setSpan(webURLEmotionSpan, start, end, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                        tv.setText(value);
+
+                        break;
+                    }
+                }
                 if (find) {
                     LongClickableLinkMovementMethod.getInstance().onTouchEvent(tv, value, event);
                     LongClickableLinkMovementMethod.getInstance().removeLongClickCallback();
