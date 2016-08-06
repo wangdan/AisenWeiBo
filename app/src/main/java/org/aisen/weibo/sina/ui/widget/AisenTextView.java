@@ -24,16 +24,16 @@ import org.aisen.android.common.utils.BitmapUtil;
 import org.aisen.android.common.utils.KeyGenerator;
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.component.bitmaploader.core.LruMemoryCache;
-import org.aisen.android.support.textspan.ClickableTextViewMentionLinkOnTouchListener;
 import org.aisen.android.support.textspan.MyURLSpan;
-import org.aisen.download.utils.DLogger;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.service.VideoService;
 import org.aisen.weibo.sina.support.bean.VideoBean;
 import org.aisen.weibo.sina.support.sqlit.EmotionsDB;
 import org.aisen.weibo.sina.support.sqlit.SinaDB;
+import org.aisen.weibo.sina.ui.widget.span.ClickableTextViewMentionLinkOnTouchListener;
 import org.aisen.weibo.sina.ui.widget.span.EmotionSpan;
+import org.aisen.weibo.sina.ui.widget.span.WebURLEmotionSpan;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -235,17 +235,6 @@ public class AisenTextView extends TextView {
 							continue;
 						}
 
-						Resources res = GlobalContext.getInstance().getResources();
-						int bitmapSize = res.getDimensionPixelSize(R.dimen.emotion_size);
-						if (normalURLBitmap == null) {
-							normalURLBitmap = BitmapFactory.decodeResource(res, R.drawable.timeline_card_small_web);
-							normalURLBitmap = BitmapUtil.zoomBitmap(normalURLBitmap, bitmapSize);
-						}
-						if (videoURLBitmap == null) {
-							videoURLBitmap = BitmapFactory.decodeResource(res, R.drawable.timeline_card_small_video);
-							videoURLBitmap = BitmapUtil.zoomBitmap(videoURLBitmap, bitmapSize);
-						}
-
 						// 获得行高
 						int lineH = 0;
 						while (lineH == 0) {
@@ -260,11 +249,20 @@ public class AisenTextView extends TextView {
 							lineHeight = lineH;
 						}
 
+						Resources res = GlobalContext.getInstance().getResources();
+						if (normalURLBitmap == null) {
+							normalURLBitmap = BitmapFactory.decodeResource(res, R.drawable.timeline_card_small_web);
+							normalURLBitmap = BitmapUtil.zoomBitmap(normalURLBitmap, Math.round(lineHeight * 4.0f / 5));
+						}
+						if (videoURLBitmap == null) {
+							videoURLBitmap = BitmapFactory.decodeResource(res, R.drawable.timeline_card_small_video);
+							videoURLBitmap = BitmapUtil.zoomBitmap(videoURLBitmap, Math.round(lineHeight * 4.0f / 5));
+						}
+
 						boolean find = false;
 
-						// android.view.ViewRootImpl$CalledFromWrongThreadException Only the original thread that created a view hierarchy can touch its views.
-						// 把getText + 一个空字符试试，可能是直接取值会刷UI
 						SpannableString spannableString = SpannableString.valueOf(text);
+
 						Matcher localMatcher = Pattern.compile("\\[(\\S+?)\\]").matcher(spannableString);
 						while (localMatcher.find()) {
 							String key = localMatcher.group(0);
@@ -328,25 +326,27 @@ public class AisenTextView extends TextView {
 							String id = KeyGenerator.generateMD5(uri.toString().replace("aisen://", ""));
 							VideoBean videoBean = SinaDB.getDB().selectById(null, VideoBean.class, id);
 							if (videoBean != null) {
+								WebURLEmotionSpan webURLEmotionSpan;
 								if (videoBean.getType() == VideoService.TYPE_VIDEO_SINA ||
 										videoBean.getType() == VideoService.TYPE_VIDEO_WEIPAI) {
-									weiboSpan = new ImageSpan(GlobalContext.getInstance(), videoURLBitmap, ImageSpan.ALIGN_BASELINE);
+									webURLEmotionSpan = new WebURLEmotionSpan(GlobalContext.getInstance(), videoURLBitmap, urlSpan.getURL(), videoBean.getType(), ImageSpan.ALIGN_BASELINE);
 
 									Logger.d(TAG, "id[%s], url[%s], video", id, urlSpan.getURL());
 								}
 								else {
-									weiboSpan = new ImageSpan(GlobalContext.getInstance(), normalURLBitmap, ImageSpan.ALIGN_BASELINE);
+									webURLEmotionSpan = new WebURLEmotionSpan(GlobalContext.getInstance(), normalURLBitmap, urlSpan.getURL(), videoBean.getType(), ImageSpan.ALIGN_BASELINE);
 
 									Logger.d(TAG, "id[%s], url[%s], normal", id, urlSpan.getURL());
 								}
+
+								spannableString.setSpan(webURLEmotionSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 							}
 							else {
 								Logger.d(TAG, "id[%s], url[%s], none", id, urlSpan.getURL());
 
 								weiboSpan = new MyURLSpan(urlSpan.getURL());
+								spannableString.setSpan(weiboSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 							}
-
-							spannableString.setSpan(weiboSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 						}
 
 						if (find) {
@@ -355,13 +355,9 @@ public class AisenTextView extends TextView {
 							Message msg = mHandler.obtainMessage();
 							msg.getData().putString("key", textKey);
 							msg.sendToTarget();
-
-							DLogger.e(TAG, "CacheSize = " + textSpannableCache.size() + " , 处理AisenText --- " + text);
 						}
 						else {
 							textNoneSpannableCache.put(textKey, text);
-
-							DLogger.e(TAG, "不需要处理 --- " + text);
 						}
 					}
 				} catch (InterruptedException e) {
