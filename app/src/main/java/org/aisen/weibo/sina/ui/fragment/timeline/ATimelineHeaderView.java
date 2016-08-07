@@ -21,9 +21,9 @@ public abstract class ATimelineHeaderView extends ARecycleViewItemView<StatusCon
 
     private ATimelineFragment fragment;
 
-    public static final String[] timelineFeatureArr = { "0", "1", "2", "5" };
+    public static final String[] timelineFeatureArr = { "0", "1", "2", "3", "5" };
 
-    public static final String[] profileFeatureArr = { "0", "1", "2" };
+    public static final String[] profileFeatureArr = { "0", "1", "2", "3" };
 
     @ViewInject(id = R.id.txtName)
     TextView txtTitle;

@@ -620,6 +620,7 @@
         <item>全部</item>
         <item>原创</item>
         <item>图片</item>
+        <item>视频</item>
         <item>照片墙</item>
     </string-array>
 
@@ -627,6 +628,7 @@
         <item>全部</item>
         <item>原创</item>
         <item>图片</item>
+        <item>视频</item>
     </string-array>
 
     <string-array name="pCacheValidity">
