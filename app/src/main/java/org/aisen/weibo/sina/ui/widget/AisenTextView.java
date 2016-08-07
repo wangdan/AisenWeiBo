@@ -240,11 +240,14 @@ public class AisenTextView extends TextView {
 						// 获得行高
 						int lineH = 0;
 						while (lineH == 0) {
-							if (textViewList.size() == 0)
-								continue;
+							synchronized (textViewList) {
+								if (textViewList.size() == 0)
+									continue;
 
-							TextView textView = textViewList.get(0);
-							lineH = textView.getLineHeight();
+								TextView textView = textViewList.get(0);
+								if (textView != null)
+									lineH = textView.getLineHeight();
+							}
 						}
 						if (lineHeight != lineH) {
 							emotionCache.evictAll();

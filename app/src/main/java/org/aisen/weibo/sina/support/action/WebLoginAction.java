@@ -42,9 +42,9 @@ public class WebLoginAction extends IAction {
 
     @Override
     public void doInterrupt() {
-        new AlertDialogWrapper.Builder(mBizFragment.getActivity()).setMessage(R.string.acount_timeout)
-                .setNegativeButton(R.string.no, null)
-                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+        new AlertDialogWrapper.Builder(getContext()).setMessage(getContext().getString(R.string.acount_timeout))
+                .setNegativeButton(getContext().getString(R.string.no), null)
+                .setPositiveButton(getContext().getString(R.string.yes), new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

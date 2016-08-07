@@ -1,29 +1,20 @@
 package org.aisen.weibo.sina.ui.widget;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.provider.Browser;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 
-import org.aisen.android.common.utils.KeyGenerator;
-import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.component.bitmaploader.core.ImageConfig;
 import org.aisen.android.component.bitmaploader.core.MyBitmap;
 import org.aisen.android.component.bitmaploader.display.DefaultDisplayer;
-import org.aisen.android.support.action.IAction;
-import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.weibo.sina.R;
-import org.aisen.weibo.sina.sinasdk.bean.PicUrls;
-import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
-import org.aisen.weibo.sina.support.action.WebLoginAction;
-import org.aisen.weibo.sina.support.bean.VideoBean;
-import org.aisen.weibo.sina.support.sqlit.SinaDB;
-import org.aisen.weibo.sina.ui.activity.picture.PicsActivity;
-import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.widget.videoimage.PictureDownloader;
 
 /**
@@ -73,50 +64,10 @@ public class CommentPictureView extends ImageView implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        launch(getContext(), v.getTag().toString());
-    }
-
-    public static boolean launch(final Context context, String shortUrl) {
-        String id = KeyGenerator.generateMD5(shortUrl);
-
-        final VideoBean videoBean = SinaDB.getDB().selectById(null, VideoBean.class, id);
-
-        if (videoBean == null) {
-            return false;
-        }
-
-        if (videoBean.getImage() == null) {
-            return false;
-        }
-
-        Activity from = BaseActivity.getRunningActivity();
-        if (from == null && context instanceof Activity) {
-            from = (Activity) context;
-        }
-        if (from != null) {
-            final Activity from_ = from;
-            new IAction(from, new WebLoginAction(from, BizFragment.createBizFragment(from))) {
-
-                @Override
-                public void doAction() {
-                    StatusContent bean = new StatusContent();
-                    bean.setPic_urls(new PicUrls[1]);
-                    bean.getPic_urls()[0] = new PicUrls();
-                    if (SystemUtils.getNetworkType(context) == SystemUtils.NetWorkType.wifi) {
-                        bean.getPic_urls()[0].setThumbnail_pic(videoBean.getImage().replace("small", "bmiddle"));
-                    }
-                    else {
-                        bean.getPic_urls()[0].setThumbnail_pic(videoBean.getImage().replace("small", "large"));
-                    }
-                    PicsActivity.launch(from_, bean, 0);
-                }
-
-            }.run();
-
-            return true;
-        }
-
-        return false;
+        Uri uri = Uri.parse("timeline_pic://" + v.getTag());
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        intent.putExtra(Browser.EXTRA_APPLICATION_ID, getContext().getPackageName());
+        getContext().startActivity(intent);
     }
 
 }

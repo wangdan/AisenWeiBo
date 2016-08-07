@@ -103,6 +103,13 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
+        <activity android:name=".ui.activity.picture.TimelinePicActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <data android:scheme="timeline_pic"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
         <!-- 话题 -->
         <activity android:name="org.aisen.weibo.sina.ui.activity.topics.TopicsActivity"
                   android:screenOrientation="portrait">

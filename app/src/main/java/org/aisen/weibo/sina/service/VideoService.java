@@ -279,7 +279,7 @@ public class VideoService {
 
     public static void getPicture(VideoBean video) throws Exception {
         if (TextUtils.isEmpty(AppContext.getAccount().getCookie())) {
-            return;
+            throw new TaskException("123", "解析链接失败");
         }
 
         HttpConfig config = new HttpConfig();

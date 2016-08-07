@@ -27,7 +27,6 @@ import org.aisen.android.support.textspan.MyURLSpan;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.widget.MToast;
 import org.aisen.weibo.sina.service.VideoService;
-import org.aisen.weibo.sina.ui.widget.CommentPictureView;
 
 /**
  * Created by wangdan on 16/8/6.
@@ -97,8 +96,12 @@ public class WebURLEmotionSpan extends ImageSpan {
             }
         }
         else if (mType == VideoService.TYPE_PHOTO && GlobalContext.getInstance() != null) {
-            if (CommentPictureView.launch(GlobalContext.getInstance(), url.replaceAll("aisen://", "")))
-                return;
+            if (url.startsWith("http")) {
+                url = "timeline_pic://" + url;
+            }
+            else {
+                url = url.replaceAll("aisen://", "timeline_pic://");
+            }
         }
 
         Uri uri = Uri.parse(url);

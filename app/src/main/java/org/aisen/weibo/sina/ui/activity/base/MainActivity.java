@@ -192,14 +192,7 @@ public class MainActivity extends BaseActivity
 
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            new IAction(MainActivity.this, new WebLoginAction(MainActivity.this, BizFragment.createBizFragment(MainActivity.this))) {
-
-                                @Override
-                                public void doAction() {
-                                    WeiboClientActivity.launchDM(MainActivity.this);
-                                }
-
-                            }.run();
+                            BizFragment.createBizFragment(MainActivity.this).requestWebLogin(null);
                         }
                     })
                     .show();
