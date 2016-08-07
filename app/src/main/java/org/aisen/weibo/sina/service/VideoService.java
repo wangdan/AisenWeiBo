@@ -49,6 +49,9 @@ public class VideoService {
     static final String TAG = VideoService.class.getSimpleName();
 
     public static void parseStatusURL(List<StatusContent> statusContents) throws TaskException {
+        if (statusContents.size() == 0)
+            return;
+
         List<String> shortUrlList = new ArrayList<>();
 
         Map<String, List<StatusContent>> url2status = new HashMap<>();
@@ -106,56 +109,58 @@ public class VideoService {
 
         }
 
-        do {
-            String[] parseArr = new String[20];
-            for (int i = 0; i < parseArr.length; i++) {
-                if (shortUrlList.size() > 0) {
-                    parseArr[i] = shortUrlList.remove(0);
+        if (shortUrlList.size() > 0) {
+            do {
+                String[] parseArr = new String[20];
+                for (int i = 0; i < parseArr.length; i++) {
+                    if (shortUrlList.size() > 0) {
+                        parseArr[i] = shortUrlList.remove(0);
+                    }
                 }
-            }
 
-            Logger.w(TAG, parseArr);
-            UrlsBean urlsBean = SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).shortUrlExpand(parseArr);
-            for (UrlBean urlBean : urlsBean.getUrls()) {
-                String id = KeyGenerator.generateMD5(urlBean.getUrl_short());
+                Logger.w(TAG, parseArr);
+                UrlsBean urlsBean = SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).shortUrlExpand(parseArr);
+                for (UrlBean urlBean : urlsBean.getUrls()) {
+                    String id = KeyGenerator.generateMD5(urlBean.getUrl_short());
 
-                List<StatusContent> statusList = url2status.get(urlBean.getUrl_short());
-                for (StatusContent s : statusList) {
-                    s.setVideoUrl(urlBean);
+                    List<StatusContent> statusList = url2status.get(urlBean.getUrl_short());
+                    for (StatusContent s : statusList) {
+                        s.setVideoUrl(urlBean);
 
-                    VideoBean videoBean = SinaDB.getDB().selectById(null, VideoBean.class, id);
-                    if (videoBean == null) {
-                        videoBean = new VideoBean();
+                        VideoBean videoBean = SinaDB.getDB().selectById(null, VideoBean.class, id);
+                        if (videoBean == null) {
+                            videoBean = new VideoBean();
+                        }
+                        videoBean.setIdStr(id);
+                        videoBean.setShortUrl(urlBean.getUrl_short());
+                        videoBean.setLongUrl(urlBean.getUrl_long());
+
+                        if (isSinaVideo(urlBean.getUrl_long())) {
+                            videoBean.setType(VideoService.TYPE_VIDEO_SINA);
+
+                            s.setVideo(true);
+                        }
+                        else if (isWeipai(urlBean.getUrl_long())) {
+                            videoBean.setType(VideoService.TYPE_VIDEO_WEIPAI);
+
+                            s.setVideo(true);
+                        }
+                        else if (isPhoto(urlBean.getUrl_long())) {
+                            videoBean.setType(VideoService.TYPE_PHOTO);
+
+                            s.setVideo(true);
+                        }
+                        else {
+                            videoBean.setType(VideoService.TYPE_VIDEO_NONE);
+                        }
+
+                        SinaDB.getDB().update(null, videoBean);
+
+                        Logger.v(TAG, "Id[%s], Type[%d], 短链[%s], 长链[%s]", videoBean.getIdStr(), videoBean.getType(), urlBean.getUrl_short(), urlBean.getUrl_long());
                     }
-                    videoBean.setIdStr(id);
-                    videoBean.setShortUrl(urlBean.getUrl_short());
-                    videoBean.setLongUrl(urlBean.getUrl_long());
-
-                    if (isSinaVideo(urlBean.getUrl_long())) {
-                        videoBean.setType(VideoService.TYPE_VIDEO_SINA);
-
-                        s.setVideo(true);
-                    }
-                    else if (isWeipai(urlBean.getUrl_long())) {
-                        videoBean.setType(VideoService.TYPE_VIDEO_WEIPAI);
-
-                        s.setVideo(true);
-                    }
-                    else if (isPhoto(urlBean.getUrl_long())) {
-                        videoBean.setType(VideoService.TYPE_PHOTO);
-
-                        s.setVideo(true);
-                    }
-                    else {
-                        videoBean.setType(VideoService.TYPE_VIDEO_NONE);
-                    }
-
-                    SinaDB.getDB().update(null, videoBean);
-
-                    Logger.v(TAG, "Id[%s], Type[%d], 短链[%s], 长链[%s]", videoBean.getIdStr(), videoBean.getType(), urlBean.getUrl_short(), urlBean.getUrl_long());
                 }
-            }
-        } while (shortUrlList.size() > 0);
+            } while (shortUrlList.size() > 0);
+        }
     }
 
     private static boolean isVideoValid(VideoBean bean) {

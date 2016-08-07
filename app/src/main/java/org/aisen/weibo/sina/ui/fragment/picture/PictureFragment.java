@@ -563,6 +563,8 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 //			shareProvider.setShareIntent(shareIntent);
 		}
 
+		menu.findItem(R.id.downloadAgain).setVisible(false);
+
 		super.onPrepareOptionsMenu(menu);
 	}
 	

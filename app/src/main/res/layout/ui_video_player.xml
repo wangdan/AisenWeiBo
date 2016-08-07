@@ -45,7 +45,6 @@
     <org.aisen.android.ui.widget.AsToolbar
         android:id="@+id/toolbar" android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/black_overlay"
         android:minHeight="?attr/actionBarSize"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"

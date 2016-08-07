@@ -437,6 +437,16 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
 
             invalidateOptionsMenu();
         }
+        else if (item.getItemId() == R.id.browser) {
+            try {
+                Intent intent = new Intent();
+                intent.setAction("android.intent.action.VIEW");
+                Uri content_url = videoUri;
+                intent.setData(content_url);
+                startActivity(intent);
+            } catch (Exception e) {
+            }
+        }
 
         return super.onOptionsItemSelected(item);
     }
