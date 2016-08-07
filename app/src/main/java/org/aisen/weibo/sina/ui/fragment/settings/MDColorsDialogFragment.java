@@ -21,6 +21,7 @@ import org.aisen.android.ui.widget.CircleImageView;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
+import org.aisen.weibo.sina.ui.widget.AisenTextView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -107,6 +108,9 @@ public class MDColorsDialogFragment extends DialogFragment
 
             return;
         }
+
+		AisenTextView.textSpannableCache.evictAll();
+		AisenTextView.textNoneSpannableCache.evictAll();
 
         AppSettings.setThemeColor(position);
 
