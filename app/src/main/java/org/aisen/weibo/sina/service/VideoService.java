@@ -23,6 +23,7 @@ import org.aisen.weibo.sina.support.bean.VideoBean;
 import org.aisen.weibo.sina.support.sqlit.SinaDB;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
@@ -49,6 +50,8 @@ public class VideoService {
     public static final int TYPE_VIDEO_NONE = 2;
 
     public static final int TYPE_PHOTO = 3;
+
+    public static final int TYPE_VIDEO_MEIPAI = 4;
 
     static final String TAG = VideoService.class.getSimpleName();
 
@@ -235,10 +238,13 @@ public class VideoService {
 
                             s.setVideo(true);
                         }
-                        else if (isPhoto(urlBean.getUrl_long())) {
-                            videoBean.setType(VideoService.TYPE_PHOTO);
+                        else if (isMeipai(urlBean.getUrl_long())) {
+                            videoBean.setType(VideoService.TYPE_VIDEO_MEIPAI);
 
                             s.setVideo(true);
+                        }
+                        else if (isPhoto(urlBean.getUrl_long())) {
+                            videoBean.setType(VideoService.TYPE_PHOTO);
                         }
                         else {
                             videoBean.setType(VideoService.TYPE_VIDEO_NONE);
@@ -305,6 +311,22 @@ public class VideoService {
         }
     }
 
+    public static VideoBean getVideoFromMeipai(VideoBean video) throws Exception {
+        Document dom = Jsoup.connect(video.getLongUrl()).get();
+
+        Elements divs = dom.select("div#mediaPlayer");
+        if (divs != null && divs.size() > 0) {
+            Element div = divs.get(0);
+
+            video.setVideoUrl(div.attr("data-video"));
+            video.setImage(div.attr("data-poster"));
+        }
+
+        video.setIdStr(KeyGenerator.generateMD5(video.getShortUrl()));
+
+        return video;
+    }
+
     public static VideoBean getVideoFromSinaVideo(VideoBean video) throws Exception {
         Document dom = Jsoup.connect(video.getLongUrl()).get();
 
@@ -343,6 +365,14 @@ public class VideoService {
         return false;
     }
 
+    public static boolean isMeipai(String url) {
+        if (url.indexOf("http://www.meipai.com") != -1) {
+            return true;
+        }
+
+        return false;
+    }
+
     public static boolean isSinaVideo(String url) {
         if (url.startsWith("http://video.weibo.com")) {
             return true;
@@ -351,5 +381,15 @@ public class VideoService {
         return false;
     }
 
+    public static boolean isVideo(int type) {
+        switch (type) {
+            case TYPE_VIDEO_MEIPAI:
+            case TYPE_VIDEO_SINA:
+            case TYPE_VIDEO_WEIPAI:
+                return true;
+            default:
+                return false;
+        }
+    }
 
 }

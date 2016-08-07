@@ -9,7 +9,8 @@
         in your View component in layout file -->
 
 	<changelogversion versionName="6.1.0" changeDate="2016-08">
-		<changelogtext>支持视频原生播放.</changelogtext>
+		<changelogtext>支持美拍、新浪、微拍视频原生播放.</changelogtext>
+		<changelogtext>支持图片链接解析.</changelogtext>
 		<changelogtext>支持显示图片评论.</changelogtext>
 		<changelogtext>短链接同步官方显示风格.</changelogtext>
 		<changelogtext>优化列表流畅度.</changelogtext>

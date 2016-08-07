@@ -62,6 +62,9 @@ public class WebURLEmotionSpan extends ImageSpan {
                 mType == VideoService.TYPE_VIDEO_WEIPAI) {
             mReplaceText = "秒拍视频";
         }
+        else if (mType == VideoService.TYPE_VIDEO_MEIPAI) {
+            mReplaceText = "美拍视频";
+        }
         else if (mType == VideoService.TYPE_PHOTO) {
             mReplaceText = "查看图片";
         }
@@ -86,8 +89,7 @@ public class WebURLEmotionSpan extends ImageSpan {
         Logger.v(MyURLSpan.class.getSimpleName(), String.format("the link(%s) was clicked ", getURL()));
 
         String url = getURL();
-        if (mType == VideoService.TYPE_VIDEO_SINA ||
-                mType == VideoService.TYPE_VIDEO_WEIPAI) {
+        if (VideoService.isVideo(mType)) {
             if (url.startsWith("http")) {
                 url = "aisen_video://" + url;
             }

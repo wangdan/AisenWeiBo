@@ -35,6 +35,9 @@ public class VideoDownloader implements Downloader {
                         else if (videoBean.getType() == VideoService.TYPE_VIDEO_SINA) {
                             videoBean = VideoService.getVideoFromSinaVideo(videoBean);
                         }
+                        else if (videoBean.getType() == VideoService.TYPE_VIDEO_MEIPAI) {
+                            videoBean = VideoService.getVideoFromMeipai(videoBean);
+                        }
 
                         Logger.d("VidewDownloader", "video = " + videoBean.getVideoUrl() + ", long = " + videoBean.getLongUrl() + ", short = " + videoBean.getShortUrl() + ", image = " + videoBean.getImage());
 

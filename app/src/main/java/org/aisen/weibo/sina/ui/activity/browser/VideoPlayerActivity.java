@@ -283,6 +283,11 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
 
                                 videoBean = VideoService.getVideoFromWeipai(videoBean);
                             }
+                            else if (VideoService.isMeipai(urlBean.getUrl_long())) {
+                                videoBean.setType(VideoService.TYPE_VIDEO_MEIPAI);
+
+                                videoBean = VideoService.getVideoFromMeipai(videoBean);
+                            }
 
                             repeat = 0;
 

@@ -336,8 +336,7 @@ public class AisenTextView extends TextView {
 							VideoBean videoBean = SinaDB.getDB().selectById(null, VideoBean.class, id);
 							if (videoBean != null) {
 								WebURLEmotionSpan webURLEmotionSpan;
-								if (videoBean.getType() == VideoService.TYPE_VIDEO_SINA ||
-										videoBean.getType() == VideoService.TYPE_VIDEO_WEIPAI) {
+								if (VideoService.isVideo(videoBean.getType())) {
 									webURLEmotionSpan = new WebURLEmotionSpan(GlobalContext.getInstance(), videoURLBitmap, urlSpan.getURL(), videoBean.getType(), ImageSpan.ALIGN_BASELINE);
 
 									Logger.d(TAG, "id[%s], url[%s], video", id, urlSpan.getURL());
