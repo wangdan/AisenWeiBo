@@ -21,11 +21,13 @@ import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.view.View;
 
+import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.support.textspan.MyURLSpan;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.widget.MToast;
 import org.aisen.weibo.sina.service.VideoService;
+import org.aisen.weibo.sina.ui.widget.CommentPictureView;
 
 /**
  * Created by wangdan on 16/8/6.
@@ -93,6 +95,10 @@ public class WebURLEmotionSpan extends ImageSpan {
             else {
                 url = url.replaceAll("aisen://", "videoshort://");
             }
+        }
+        else if (mType == VideoService.TYPE_PHOTO && GlobalContext.getInstance() != null) {
+            if (CommentPictureView.launch(GlobalContext.getInstance(), url.replaceAll("aisen://", "")))
+                return;
         }
 
         Uri uri = Uri.parse(url);

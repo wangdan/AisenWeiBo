@@ -7,11 +7,15 @@ import android.text.TextUtils;
 import android.text.style.URLSpan;
 import android.text.util.Linkify;
 
+import org.aisen.android.common.setting.Setting;
 import org.aisen.android.common.utils.KeyGenerator;
 import org.aisen.android.common.utils.Logger;
+import org.aisen.android.network.http.DefHttpUtility;
+import org.aisen.android.network.http.HttpConfig;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
+import org.aisen.weibo.sina.sinasdk.bean.StatusComment;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.sinasdk.bean.UrlBean;
 import org.aisen.weibo.sina.sinasdk.bean.UrlsBean;
@@ -48,6 +52,93 @@ public class VideoService {
 
     static final String TAG = VideoService.class.getSimpleName();
 
+    public static void parseCommentURL(List<StatusComment> comments) throws TaskException {
+        if (comments.size() == 0)
+            return;
+
+        List<String> shortUrlList = new ArrayList<>();
+
+        Map<String, List<StatusComment>> url2status = new HashMap<>();
+
+        // 把未解析的短连接拎出来
+        for (StatusComment comment : comments) {
+            String content = comment.getText();
+            if (!TextUtils.isEmpty(content)) {
+                SpannableString spannableString = SpannableString.valueOf(content);
+                Linkify.addLinks(spannableString, Pattern.compile("http://[a-zA-Z0-9+&@#/%?=~_\\-|!:,\\.;]*[a-zA-Z0-9+&@#/%=~_|]"), "http://");
+                URLSpan[] urlSpans = spannableString.getSpans(0, spannableString.length(), URLSpan.class);
+                for (URLSpan urlSpan : urlSpans) {
+                    if (!urlSpan.getURL().startsWith("http://t.cn/"))
+                        continue;
+
+                    shortUrlList.add(urlSpan.getURL());
+
+                    List<StatusComment> l = url2status.get(urlSpan.getURL());
+                    if (l == null) {
+                        l = new ArrayList<>();
+
+                        url2status.put(urlSpan.getURL(), l);
+                    }
+                    if (!l.contains(comment))
+                        l.add(comment);
+                }
+            }
+        }
+
+        if (shortUrlList.size() > 0) {
+            do {
+                String[] parseArr = new String[20];
+                for (int i = 0; i < parseArr.length; i++) {
+                    if (shortUrlList.size() > 0) {
+                        parseArr[i] = shortUrlList.remove(0);
+                    }
+                }
+
+                Logger.w(TAG, parseArr);
+                UrlsBean urlsBean = SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).shortUrlExpand(parseArr);
+                for (UrlBean urlBean : urlsBean.getUrls()) {
+                    String id = KeyGenerator.generateMD5(urlBean.getUrl_short());
+
+                    List<StatusComment> statusList = url2status.get(urlBean.getUrl_short());
+                    for (StatusComment s : statusList) {
+                        s.setVideoUrl(urlBean);
+
+                        VideoBean videoBean = SinaDB.getDB().selectById(null, VideoBean.class, id);
+                        if (videoBean == null) {
+                            videoBean = new VideoBean();
+                        }
+                        videoBean.setIdStr(id);
+                        videoBean.setShortUrl(urlBean.getUrl_short());
+                        videoBean.setLongUrl(urlBean.getUrl_long());
+
+                        if (isSinaVideo(urlBean.getUrl_long())) {
+                            videoBean.setType(VideoService.TYPE_VIDEO_SINA);
+
+                            s.setPicture(true);
+                        }
+                        else if (isWeipai(urlBean.getUrl_long())) {
+                            videoBean.setType(VideoService.TYPE_VIDEO_WEIPAI);
+
+                            s.setPicture(true);
+                        }
+                        else if (isPhoto(urlBean.getUrl_long())) {
+                            videoBean.setType(VideoService.TYPE_PHOTO);
+
+                            s.setPicture(true);
+                        }
+                        else {
+                            videoBean.setType(VideoService.TYPE_VIDEO_NONE);
+                        }
+
+                        SinaDB.getDB().update(null, videoBean);
+
+                        Logger.v(TAG, "Id[%s], Type[%d], 短链[%s], 长链[%s]", videoBean.getIdStr(), videoBean.getType(), urlBean.getUrl_short(), urlBean.getUrl_long());
+                    }
+                }
+            } while (shortUrlList.size() > 0);
+        }
+    }
+
     public static void parseStatusURL(List<StatusContent> statusContents) throws TaskException {
         if (statusContents.size() == 0)
             return;
@@ -56,7 +147,6 @@ public class VideoService {
 
         Map<String, List<StatusContent>> url2status = new HashMap<>();
 
-        List<String> contentList = new ArrayList<>();
         // 把未解析的短连接拎出来
         for (StatusContent statusContent : statusContents) {
             String content = statusContent.getText();
@@ -185,6 +275,34 @@ public class VideoService {
         }
 
         return video;
+    }
+
+    public static void getPicture(VideoBean video) throws Exception {
+        if (TextUtils.isEmpty(AppContext.getAccount().getCookie())) {
+            return;
+        }
+
+        HttpConfig config = new HttpConfig();
+        config.baseUrl = video.getShortUrl();
+        config.cookie = AppContext.getAccount().getCookie();
+        config.addHeader("Content-Type", "text/html;charset=utf-8");
+
+        Setting action = new Setting();
+        action.setType("");
+        action.setValue("");
+        action.setDescription("");
+
+        String response = new DefHttpUtility().doGet(config, action, null, String.class);
+
+        Document dom = Jsoup.parse(response);
+
+        video.setIdStr(KeyGenerator.generateMD5(video.getShortUrl()));
+
+        Elements divs = dom.select("img");
+        if (divs != null && divs.size() > 0) {
+            video.setImage(divs.get(0).attr("src"));
+            video.setImage(video.getImage().replace("bmiddle", "small"));
+        }
     }
 
     public static VideoBean getVideoFromSinaVideo(VideoBean video) throws Exception {

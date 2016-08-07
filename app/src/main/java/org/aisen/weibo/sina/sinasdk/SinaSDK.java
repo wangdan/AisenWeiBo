@@ -55,6 +55,7 @@ import org.aisen.weibo.sina.sinasdk.bean.UploadPictureResultBean;
 import org.aisen.weibo.sina.sinasdk.bean.UrlsBean;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.sinasdk.http.HttpsUtility;
+import org.aisen.weibo.sina.sinasdk.http.TimelineCommentHttpUtility;
 import org.aisen.weibo.sina.sinasdk.http.TimelineHttpUtility;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 
@@ -545,7 +546,11 @@ public class SinaSDK extends ABizLogic {
 		if (!params.containsKey("count"))
 			params.addParameter("count", getPageCount(getSetting("commentsShow")));
 
-		return doGet(getSetting("commentsShow"), configParams(params), StatusComments.class);
+		Setting action = getSetting("commentsShow");
+
+		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TimelineCommentHttpUtility.class.getName(), ""));
+
+		return doGet(action, configParams(params), StatusComments.class);
 	}
 
 	/**

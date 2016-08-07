@@ -48,6 +48,10 @@ public class StatusComment implements Serializable {
 	 */
 	private StatusComment reply_comment;
 
+	private boolean picture;
+
+	private UrlBean videoUrl;
+
 	public String getCreated_at() {
 		return created_at;
 	}
@@ -112,4 +116,19 @@ public class StatusComment implements Serializable {
 		this.reply_comment = reply_comment;
 	}
 
+	public boolean isPicture() {
+		return picture;
+	}
+
+	public void setPicture(boolean picture) {
+		this.picture = picture;
+	}
+
+	public UrlBean getVideoUrl() {
+		return videoUrl;
+	}
+
+	public void setVideoUrl(UrlBean videoUrl) {
+		this.videoUrl = videoUrl;
+	}
 }

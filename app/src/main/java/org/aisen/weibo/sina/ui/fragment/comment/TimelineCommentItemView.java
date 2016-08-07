@@ -16,6 +16,7 @@ import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.widget.AisenTextView;
+import org.aisen.weibo.sina.ui.widget.CommentPictureView;
 
 /**
  * Created by wangdan on 16/1/8.
@@ -32,6 +33,8 @@ public class TimelineCommentItemView extends ARecycleViewItemView<StatusComment>
     TextView txtDesc;
     @ViewInject(id = R.id.txtContent)
     AisenTextView txtContent;
+    @ViewInject(id = R.id.pic)
+    CommentPictureView imgPic;
 
     private TimelineCommentFragment mFragment;
     private BizFragment bizFragment;
@@ -74,6 +77,15 @@ public class TimelineCommentItemView extends ARecycleViewItemView<StatusComment>
 
         int top = position == 0 ? firstTop : normalTop;
         convertView.setPadding(convertView.getPaddingLeft(), top, convertView.getPaddingRight(), convertView.getPaddingBottom());
+
+        if (data.isPicture()) {
+            imgPic.setVisibility(View.VISIBLE);
+
+            imgPic.display(data.getVideoUrl().getUrl_short());
+        }
+        else {
+            imgPic.setVisibility(View.GONE);
+        }
     }
 
 }

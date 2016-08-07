@@ -20,18 +20,11 @@
         android:paddingRight="16dip"
         android:text="我是评论正文"/>
 
-    <org.aisen.weibo.sina.ui.widget.CommentPictureView
-        android:id="@+id/pic" android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_below="@id/txtContent" android:layout_marginBottom="8dip"
-        android:layout_toRightOf="@id/imgPhoto"
-        android:minHeight="50dip"
-        android:minWidth="50dip" android:visibility="gone"/>
-
     <TextView
         android:id="@+id/txtDesc"
         style="@style/TextSubhead"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_below="@id/pic" android:layout_toRightOf="@id/imgPhoto" android:ellipsize="end" android:singleLine="true"
+        android:layout_below="@id/txtContent" android:layout_toRightOf="@id/imgPhoto" android:ellipsize="end" android:singleLine="true"
         android:text="昨天 来自Aisen微博" android:textSize="12sp"/>
 
 </RelativeLayout>
