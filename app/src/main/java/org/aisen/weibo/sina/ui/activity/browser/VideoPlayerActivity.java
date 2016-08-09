@@ -318,6 +318,9 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
             protected void onFailure(TaskException exception) {
                 super.onFailure(exception);
 
+                if (isDestory())
+                    return;
+
                 new MaterialDialog.Builder(VideoPlayerActivity.this)
                         .forceStacking(true)
                         .content(R.string.video_short_faild)

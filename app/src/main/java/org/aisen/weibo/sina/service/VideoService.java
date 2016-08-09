@@ -348,7 +348,7 @@ public class VideoService {
     }
 
     public static boolean isPhoto(String url) {
-        if (url.startsWith("http://photo.weibo.com")) {
+        if (url.startsWith("http://photo.weibo.com/h5")) {
             return true;
         }
 

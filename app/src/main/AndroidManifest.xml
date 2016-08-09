@@ -30,9 +30,9 @@
                  android:theme="@style/AppBaseTheme">
         <!--友盟配置-->
         <!--release-->
-        <!--<meta-data android:value="56dee57be0f55a98a00032d8" android:name="UMENG_APPKEY"/>-->
+        <meta-data android:value="56dee57be0f55a98a00032d8" android:name="UMENG_APPKEY"/>
         <!--debug-->
-        <meta-data android:name="UMENG_APPKEY" android:value="56dee56ae0f55af007001d9d"/>
+        <!--<meta-data android:name="UMENG_APPKEY" android:value="56dee56ae0f55af007001d9d"/>-->
         <!-- 启动界面 -->
         <activity android:name=".ui.activity.base.SplashActivity"
                   android:screenOrientation="portrait"

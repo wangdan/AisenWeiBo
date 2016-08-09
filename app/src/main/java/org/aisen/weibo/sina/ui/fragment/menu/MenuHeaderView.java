@@ -175,7 +175,8 @@ public class MenuHeaderView implements View.OnClickListener {
                 List<AccountBean> accounts = AccountUtils.queryAccount();
                 List<AccountBean> newAccounts = new ArrayList<>();
                 for (AccountBean account : accounts) {
-                    if (!AppContext.getAccount().getUid().equals(account.getUid())) {
+                    if (AppContext.getAccount() != null &&
+                            !AppContext.getAccount().getUid().equals(account.getUid())) {
                         newAccounts.add(account);
                     }
                 }

@@ -541,7 +541,8 @@ public class MainActivity extends BaseActivity
                 ATabsTabLayoutFragment tabsTabLayoutFragment = (ATabsTabLayoutFragment) fragment;
 
                 tabsTabLayoutFragment.getViewPager().setCurrentItem(newIntentNotificationIndex);
-                if (tabsTabLayoutFragment.getCurrentFragment() != null) {
+                if (tabsTabLayoutFragment.getCurrentFragment() != null &&
+                        tabsTabLayoutFragment.getCurrentFragment() instanceof APagingFragment) {
                     ((APagingFragment) tabsTabLayoutFragment.getCurrentFragment()).requestDataDelaySetRefreshing(AppSettings.REQUEST_DATA_DELAY);
                 }
 

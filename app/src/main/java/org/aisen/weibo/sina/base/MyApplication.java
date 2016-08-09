@@ -5,8 +5,6 @@ import android.app.PendingIntent;
 import android.os.Environment;
 
 import com.tencent.bugly.crashreport.CrashReport;
-import com.tma.analytics.TmaAgent;
-import com.tma.analytics.TmaAnalyticsConfig;
 import com.umeng.analytics.MobclickAgent;
 
 import org.aisen.android.common.context.GlobalContext;
@@ -92,14 +90,14 @@ public class MyApplication extends GlobalContext {
             CrashHandler.setupCrashHandler(this);
         }
 
-        TmaAgent.setSessionContinueMillis(5000);
-        TmaAgent.openActivityDurationTrack(false);
-        TmaAgent.setDebugMode(Logger.DEBUG);
-        TmaAgent.startWithConfigure(this, new TmaAnalyticsConfig(this));
+//        TmaAgent.setSessionContinueMillis(5000);
+//        TmaAgent.openActivityDurationTrack(false);
+//        TmaAgent.setDebugMode(Logger.DEBUG);
+//        TmaAgent.startWithConfigure(this, new TmaAnalyticsConfig(this));
 
         // UMENG统计设置
         MobclickAgent.setDebugMode(Logger.DEBUG);
-//        AnalyticsConfig.setAppkey(this, BuildConfig.UMENG_APP_ID);
+//        AnalyticsConfig.setAppkey(BuildConfig.UMENG_APP_ID);
         MobclickAgent.setCatchUncaughtExceptions(false);
         MobclickAgent.openActivityDurationTrack(false);
         if (BuildConfig.LOG_DEBUG) {

@@ -94,7 +94,10 @@ public class ClickableTextViewMentionLinkOnTouchListener implements View.OnTouch
                 }
 
                 if (find) {
-                    LongClickableLinkMovementMethod.getInstance().onTouchEvent(tv, value, event);
+                    try {
+                        LongClickableLinkMovementMethod.getInstance().onTouchEvent(tv, value, event);
+                    } catch (NullPointerException e) {
+                    }
                     BackgroundColorSpan backgroundColorSpan = new BackgroundColorSpan(color);
                     int lineHeight = tv.getLineHeight();
                     value.setSpan(backgroundColorSpan, findStart, findEnd, Spanned.SPAN_INCLUSIVE_INCLUSIVE);

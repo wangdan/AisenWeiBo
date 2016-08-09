@@ -139,6 +139,10 @@ public class TimelinePicActivity extends BaseActivity {
                             }
                         }
 
+                        if (TextUtils.isEmpty(videoBean.getImage())) {
+                            throw new TaskException("");
+                        }
+
                         SinaDB.getDB().update(null, videoBean);
 
                         return videoBean.getImage();
@@ -147,6 +151,9 @@ public class TimelinePicActivity extends BaseActivity {
                     @Override
                     protected void onFailure(TaskException exception) {
                         super.onFailure(exception);
+
+                        if (isDestory())
+                            return;
 
                         new MaterialDialog.Builder(TimelinePicActivity.this)
                                 .forceStacking(true)
@@ -175,6 +182,8 @@ public class TimelinePicActivity extends BaseActivity {
                     @Override
                     protected void onSuccess(String s) {
                         super.onSuccess(s);
+                        if (isDestory())
+                            return;
 
                         loadPicture(s);
                     }

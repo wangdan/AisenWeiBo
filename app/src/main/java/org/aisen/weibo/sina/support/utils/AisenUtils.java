@@ -581,6 +581,9 @@ public class AisenUtils {
     }
 
     public static int getStrLength(String content) {
+        if (TextUtils.isEmpty(content))
+            return 0;
+
         int length = 0;
         int tempLength = 0;
         for (int i = 0; i < content.length(); i++) {
