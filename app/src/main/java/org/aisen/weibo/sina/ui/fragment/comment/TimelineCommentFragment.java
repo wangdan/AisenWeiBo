@@ -225,7 +225,7 @@ public class TimelineCommentFragment extends AListFragment<StatusComment, Status
             params.addParameter("count", String.valueOf(AppSettings.getCommentCount()));
 
             StatusComments statusComments = SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).commentsShow(params);
-            statusComments.setEndPaging(statusComments.getComments().size() <= 10);
+            statusComments.setEndPaging(statusComments.getComments().size() <= 5);
 
             for (StatusComment content : statusComments.getComments()) {
                 AisenTextView.addText(content.getText());

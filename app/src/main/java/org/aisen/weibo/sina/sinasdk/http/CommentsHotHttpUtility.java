@@ -25,24 +25,14 @@ public class CommentsHotHttpUtility extends HttpsUtility {
             StatusComments comments = new StatusComments();
             comments.setComments(new ArrayList<StatusComment>());
 
-            if (jsonArray.size() >= 2) {
-                JSONObject jsonObject = jsonArray.getJSONObject(1);
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                if (jsonObject.containsKey("mod_type") && "mod/empty".equals(jsonObject.getString("mod_type"))) {
-                    comments.setEndPaging(true);
-                }
-                else if (!jsonObject.containsKey("card_group")) {
-                    comments.setEndPaging(true);
-                }
-                else {
-                    // 是否接受翻页
-                    int page = jsonObject.getInteger("page");
-                    int maxPage = jsonObject.getInteger("maxPage");
-                    comments.setEndPaging(page == maxPage);
-
+                if (jsonObject.containsKey("card_group")) {
                     JSONArray card_group = jsonObject.getJSONArray("card_group");
-                    for (int i = 0; i < card_group.size(); i++) {
-                        JSONObject card = card_group.getJSONObject(i);
+
+                    for (int j = 0; j < card_group.size(); j++) {
+                        JSONObject card = card_group.getJSONObject(j);
 
                         StatusComment comment = new StatusComment();
                         comment.setId(card.getString("id"));
@@ -52,7 +42,7 @@ public class CommentsHotHttpUtility extends HttpsUtility {
 
                         JSONObject user = card.getJSONObject("user");
                         comment.setUser(new WeiBoUser());
-                        comment.getUser().setAll(false);
+                        comment.getUser().setInfoAll(false);
                         comment.getUser().setId(user.getString("id"));
                         comment.getUser().setScreen_name(user.getString("screen_name"));
                         comment.getUser().setProfile_image_url(user.getString("profile_image_url"));

@@ -11,7 +11,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
-import com.umeng.analytics.MobclickAgent;
 
 import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.support.bean.TabItem;
@@ -121,6 +120,8 @@ public class SettingsPagerFragment extends ATabsTabLayoutFragment<TabItem> {
 		super.onCreateOptionsMenu(menu, inflater);
 
 		inflater.inflate(R.menu.menu_settings, menu);
+
+		menu.findItem(R.id.donate).setVisible(false);
 	}
 
 	private void showDonateDialog() {

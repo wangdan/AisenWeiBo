@@ -1,6 +1,7 @@
 package org.aisen.weibo.sina.ui.fragment.settings;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -12,12 +13,14 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.setting.SettingUtility;
 import org.aisen.android.common.utils.ActivityHelper;
+import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.support.action.IAction;
 import org.aisen.android.support.permissions.APermissionsAction;
 import org.aisen.android.ui.activity.basic.BaseActivity;
@@ -25,6 +28,7 @@ import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.base.MyApplication;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
 
 /**
@@ -42,6 +46,7 @@ public class OtherItemFragment extends VersionSettingsFragment
 	
 	private Preference pAppFeedback;// 用户反馈
 	private Preference pAbout;
+	private Preference pNonate;
 	private Preference pFeedback;
 	private Preference pOpensource;// 开源协议
 	private Preference pGithub;// Github
@@ -83,6 +88,9 @@ public class OtherItemFragment extends VersionSettingsFragment
 		
 		pOpensource = (Preference) findPreference("pOpensource");
 		pOpensource.setOnPreferenceClickListener(this);
+
+		pNonate = (Preference) findPreference("pNonate");
+		pNonate.setOnPreferenceClickListener(this);
 		
 		pGithub = (Preference) findPreference("pGithub");
 		pGithub.setOnPreferenceClickListener(this);
@@ -131,6 +139,9 @@ public class OtherItemFragment extends VersionSettingsFragment
 		}
 		else if ("pAbout".equals(preference.getKey())) {
 			AboutWebFragment.launchAbout(getActivity());
+		}
+		else if ("pNonate".equals(preference.getKey())) {
+			showDonateDialog();
 		}
 		else if ("pHelp".equals(preference.getKey())) {
 			AboutWebFragment.launchHelp(getActivity());
@@ -201,6 +212,33 @@ public class OtherItemFragment extends VersionSettingsFragment
 			}
 
 		}.run();
+	}
+
+	private void showDonateDialog() {
+		new AlertDialogWrapper.Builder(getActivity())
+				.setTitle(R.string.settings_donate_dialog_title)
+				.setMessage(R.string.settings_donate_dialog_message)
+				.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						UMengUtil.onEvent(getActivity(), "donate_cancel");
+					}
+
+				})
+				.setPositiveButton(R.string.settings_donate_yes, new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						UMengUtil.onEvent(getActivity(), "donate_yes");
+
+						AisenUtils.copyToClipboard("binglanhappy@163.com");
+
+						SystemUtils.startActivity(getActivity(), "com.eg.android.AlipayGphone");
+					}
+
+				})
+				.show();
 	}
 
 }

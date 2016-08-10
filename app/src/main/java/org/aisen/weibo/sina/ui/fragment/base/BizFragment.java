@@ -194,7 +194,7 @@ public class BizFragment extends ABaseFragment {
 
                 @Override
                 public void doAction() {
-                    if (user.isAll())
+                    if (user.isInfoAll())
                         ProfilePagerFragment.launch(getRealActivity(), user);
                     else
                         UserProfileActivity.launch(getRealActivity(), user.getScreen_name());

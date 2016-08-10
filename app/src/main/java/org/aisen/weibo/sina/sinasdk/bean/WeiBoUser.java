@@ -22,14 +22,14 @@ public class WeiBoUser implements Serializable {
 	private String recentStatusId;
 	private byte[] photoData;
 
-	private boolean all = true;
+	private boolean infoAll = true;
 
-	public boolean isAll() {
-		return all;
+	public boolean isInfoAll() {
+		return infoAll;
 	}
 
-	public void setAll(boolean all) {
-		this.all = all;
+	public void setInfoAll(boolean infoAll) {
+		this.infoAll = infoAll;
 	}
 
 	/**

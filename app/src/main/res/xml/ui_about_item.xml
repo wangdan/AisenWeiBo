@@ -5,6 +5,8 @@
 	 	    android:summary="@string/settings_about_feedback_summary" /> -->
 
 	<Preference android:key="pAbout" android:title="@string/settings_about" />
+
+	<Preference android:key="pNonate" android:title="@string/settings_donate_dialog_title" />
  	
  	<!--<Preference android:key="pHelp" android:title="@string/settings_help" />-->
  	
