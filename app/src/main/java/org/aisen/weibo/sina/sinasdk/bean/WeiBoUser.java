@@ -22,6 +22,16 @@ public class WeiBoUser implements Serializable {
 	private String recentStatusId;
 	private byte[] photoData;
 
+	private boolean all = true;
+
+	public boolean isAll() {
+		return all;
+	}
+
+	public void setAll(boolean all) {
+		this.all = all;
+	}
+
 	/**
 	 * 用户UID
 	 */

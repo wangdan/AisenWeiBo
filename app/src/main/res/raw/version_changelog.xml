@@ -8,6 +8,18 @@
         chg:changeLogFileResourceId="@raw/custom_changelog"
         in your View component in layout file -->
 
+	<changelogversion versionName="6.1.3" changeDate="2016-08">
+		<changelogtext>支持热门评论.</changelogtext>
+	</changelogversion>
+
+	<changelogversion versionName="6.1.2" changeDate="2016-08">
+		<changelogtext>支持热门微博啦.</changelogtext>
+	</changelogversion>
+
+	<changelogversion versionName="6.1.1" changeDate="2016-08">
+		<changelogtext>修复Crash率较高的一些问题.</changelogtext>
+	</changelogversion>
+
 	<changelogversion versionName="6.1.0" changeDate="2016-08">
 		<changelogtext>支持美拍、新浪、微拍视频原生播放.</changelogtext>
 		<changelogtext>支持图片链接解析.</changelogtext>

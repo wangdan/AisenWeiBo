@@ -46,6 +46,7 @@ import org.aisen.weibo.sina.support.utils.FabAnimator;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
 import org.aisen.weibo.sina.ui.activity.base.MainActivity;
 import org.aisen.weibo.sina.ui.activity.picture.PicsActivity;
+import org.aisen.weibo.sina.ui.activity.profile.UserProfileActivity;
 import org.aisen.weibo.sina.ui.activity.profile.WeiboClientActivity;
 import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
 import org.aisen.weibo.sina.ui.fragment.account.WebLoginFragment;
@@ -193,7 +194,10 @@ public class BizFragment extends ABaseFragment {
 
                 @Override
                 public void doAction() {
-                    ProfilePagerFragment.launch(getRealActivity(), user);
+                    if (user.isAll())
+                        ProfilePagerFragment.launch(getRealActivity(), user);
+                    else
+                        UserProfileActivity.launch(getRealActivity(), user.getScreen_name());
                 }
 
             }.run();

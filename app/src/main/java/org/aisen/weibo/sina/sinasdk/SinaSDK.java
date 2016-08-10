@@ -24,6 +24,7 @@ import org.aisen.android.network.http.HttpConfig;
 import org.aisen.android.network.http.IHttpUtility;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
+import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.sinasdk.bean.AccessToken;
 import org.aisen.weibo.sina.sinasdk.bean.DirectMessages;
 import org.aisen.weibo.sina.sinasdk.bean.DmMessages;
@@ -54,8 +55,10 @@ import org.aisen.weibo.sina.sinasdk.bean.UnreadCount;
 import org.aisen.weibo.sina.sinasdk.bean.UploadPictureResultBean;
 import org.aisen.weibo.sina.sinasdk.bean.UrlsBean;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
+import org.aisen.weibo.sina.sinasdk.http.CommentsHotHttpUtility;
 import org.aisen.weibo.sina.sinasdk.http.HttpsUtility;
 import org.aisen.weibo.sina.sinasdk.http.TimelineCommentHttpUtility;
+import org.aisen.weibo.sina.sinasdk.http.TimelineHotHttpUtility;
 import org.aisen.weibo.sina.sinasdk.http.TimelineHttpUtility;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 
@@ -335,6 +338,31 @@ public class SinaSDK extends ABizLogic {
 	}
 
 	/**
+	 * 根据ID批量获取微博
+	 *
+	 * @param idArr
+	 * @return
+	 * @throws TaskException
+     */
+	public StatusContents statusShowBatch(String[] idArr) throws TaskException {
+		Setting action = getSetting("statusShowBatch");
+
+		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TimelineHttpUtility.class.getName(), ""));
+
+		StringBuffer sb = new StringBuffer();
+		for (String id : idArr) {
+			sb.append(id).append(",");
+		}
+
+		String ids = sb.toString();
+
+		Params params = new Params();
+		params.addParameter("ids", ids.substring(0, ids.length() - 1));
+
+		return doGet(action, configParams(params), StatusContents.class);
+	}
+
+	/**
 	 * 返回用户最新发表的微博消息列表<br>
 	 * 建议使用该参数<br>
 	 * <br>
@@ -551,6 +579,37 @@ public class SinaSDK extends ABizLogic {
 		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TimelineCommentHttpUtility.class.getName(), ""));
 
 		return doGet(action, configParams(params), StatusComments.class);
+	}
+
+	/**
+	 * 热门评论
+	 *
+	 * @param statusId
+	 * @param page
+	 * @return
+	 * @throws TaskException
+     */
+	public StatusComments commentsHotShow(String statusId, int page) throws TaskException {
+		if (AppContext.getAccount() == null || AppContext.getAccount().getCookie() == null)
+			throw new TaskException("", "网页授权已失效，请点击左侧私信菜单再次登录授权");
+
+		HttpConfig config = configHttpConfig();
+		config.baseUrl = "http://m.weibo.cn/single/rcList";
+		config.cookie = AppContext.getAccount().getCookie();
+
+		Params params = new Params();
+		params.addParameter("id", statusId);
+		params.addParameter("format", "cards");
+		params.addParameter("type", "comment");
+		params.addParameter("hot", "1");
+		if (page > 1) {
+			params.addParameter("page", String.valueOf(page));
+		}
+
+		Setting action = newSetting("", "", "");
+		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, CommentsHotHttpUtility.class.getName(), ""));
+
+		return doGet(config, action, params, StatusComments.class);
 	}
 
 	/**
@@ -1684,8 +1743,28 @@ public class SinaSDK extends ABizLogic {
 		return resultUsers;
 	}
 
+	public StatusContents getHotStatuses(int page) throws TaskException {
+		if (AppContext.getAccount() == null || AppContext.getAccount().getCookie() == null)
+			throw new TaskException("", "网页授权已失效，请点击左侧私信菜单再次登录授权");
+
+		HttpConfig config = configHttpConfig();
+		config.baseUrl = "http://m.weibo.cn/container/getIndex";
+		config.cookie = AppContext.getAccount().getCookie();
+
+		Params params = new Params();
+		params.addParameter("containerid", "102803");
+		if (page > 0) {
+			params.addParameter("since_id", String.valueOf(page));
+		}
+
+		Setting action = newSetting("", "", "");
+		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TimelineHotHttpUtility.class.getName(), ""));
+
+		return doGet(config, action, params, StatusContents.class);
+	}
+
 	protected String getPageCount(Setting setting) {
 		return SettingUtil.getSettingValue(setting, "page_count");
 	}
-	
+
 }

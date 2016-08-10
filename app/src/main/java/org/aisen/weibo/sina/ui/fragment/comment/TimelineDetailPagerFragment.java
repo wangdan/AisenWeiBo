@@ -59,7 +59,10 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
 
     public static void launch(Activity from, StatusContent status) {
         FragmentArgs args = new FragmentArgs();
+
         args.add("status", status);
+        if (status.getComments_count() < 20)
+            args.add(SET_INDEX, "1");
 
         SinaCommonActivity.launch(from, TimelineDetailPagerFragment.class, args);
     }
@@ -276,6 +279,8 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
     protected ArrayList<TabItem> generateTabs() {
         ArrayList<TabItem> tabItems = new ArrayList<>();
 
+        tabItems.add(new TabItem("0", getString(R.string.comment_hot)));
+
         if (mStatusContent.getComments_count() > 0 || mStatusContent.getReposts_count() == 0) {
             tabItems.add(new TabItem("1", String.format(getString(R.string.comment_format), AisenUtils.getCounter(mStatusContent.getComments_count()))));
         }
@@ -288,8 +293,12 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
 
     @Override
     protected Fragment newFragment(TabItem bean) {
+        // 热门评论
+        if ("0".equals(bean.getType())) {
+            return TimelineHotCommentFragment.newInstance(mStatusContent);
+        }
         // 微博评论
-        if ("1".equals(bean.getType())) {
+        else if ("1".equals(bean.getType())) {
             return TimelineCommentFragment.newInstance(mStatusContent);
         }
         // 微博转发

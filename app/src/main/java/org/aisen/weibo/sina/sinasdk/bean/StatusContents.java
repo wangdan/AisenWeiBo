@@ -18,6 +18,8 @@ public class StatusContents extends ResultBean implements Serializable, OfflineS
 	private int total_number;
 
 	private long length;
+
+	private long since_id;// 适配热门微博
 	
 	public StatusContents() {
 		statuses = new ArrayList<StatusContent>();
@@ -63,4 +65,13 @@ public class StatusContents extends ResultBean implements Serializable, OfflineS
 	public void setLength(long length) {
 		this.length = length;
 	}
+
+	public long getSince_id() {
+		return since_id;
+	}
+
+	public void setSince_id(long since_id) {
+		this.since_id = since_id;
+	}
+
 }

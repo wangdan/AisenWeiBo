@@ -52,7 +52,7 @@ public class TimelineCommentFragment extends AListFragment<StatusComment, Status
         return fragment;
     }
 
-    private StatusContent mStatusContent;
+    StatusContent mStatusContent;
 
     @Override
     public int inflateContentView() {

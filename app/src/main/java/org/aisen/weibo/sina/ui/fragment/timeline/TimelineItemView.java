@@ -175,7 +175,8 @@ public class TimelineItemView extends ARecycleViewItemView<StatusContent> implem
         }
         setLikeView();
         // 文本
-        txtContent.setContent(data.getText());
+        String text = data.getText();
+        txtContent.setContent(text);
         setTextSize(txtContent, textSize);
 
         // reContent

@@ -58,6 +58,7 @@
     <string name="myfav_title">我的收藏</string>
 
     <!--微博详情-->
+    <string name="comment_hot">热门</string>
     <string name="comment_format">%s 评论</string>
     <string name="repost_format">%s 转发</string>
     <string name="attitudes_format">%s 赞</string>

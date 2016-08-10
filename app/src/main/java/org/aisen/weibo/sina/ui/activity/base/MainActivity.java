@@ -57,6 +57,7 @@ import org.aisen.weibo.sina.ui.fragment.comment.CommentPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.comment.NotificationPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.draft.DraftFragment;
 import org.aisen.weibo.sina.ui.fragment.friendship.FriendshipPagerFragment;
+import org.aisen.weibo.sina.ui.fragment.hot.TimelineHotFragment;
 import org.aisen.weibo.sina.ui.fragment.images.ImagesPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.mention.MentionPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.menu.FabGroupsFragment;
@@ -196,6 +197,10 @@ public class MainActivity extends BaseActivity
                         }
                     })
                     .show();
+        }
+
+        if (ActivityHelper.getBooleanShareData(this, "show_cookie_remind", true)) {
+
         }
     }
 
@@ -426,7 +431,15 @@ public class MainActivity extends BaseActivity
             break;
         // 热门微博
         case MenuFragment.MENU_HOT_STATUS:
-            WeiboClientActivity.launchHotStatuses(this);
+//            WeiboClientActivity.launchHotStatuses(this);
+            new IAction(MainActivity.this, new WebLoginAction(MainActivity.this, BizFragment.createBizFragment(this))) {
+
+                @Override
+                public void doAction() {
+                    TimelineHotFragment.launch(MainActivity.this);
+                }
+
+            }.run();
 
             UMengUtil.onEvent(MainActivity.this, "hot_status");
             break;

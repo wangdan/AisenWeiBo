@@ -8,6 +8,7 @@ import android.widget.TextView;
 import org.aisen.android.common.utils.Utils;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.support.inject.ViewInject;
+import org.aisen.android.ui.fragment.ABaseFragment;
 import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.sinasdk.bean.StatusComment;
@@ -36,12 +37,12 @@ public class TimelineCommentItemView extends ARecycleViewItemView<StatusComment>
     @ViewInject(id = R.id.pic)
     CommentPictureView imgPic;
 
-    private TimelineCommentFragment mFragment;
+    private ABaseFragment mFragment;
     private BizFragment bizFragment;
     int firstTop;
     int normalTop;
 
-    public TimelineCommentItemView(TimelineCommentFragment fragment, View itemView) {
+    public TimelineCommentItemView(ABaseFragment fragment, View itemView) {
         super(fragment.getActivity(), itemView);
 
         this.mFragment = fragment;
