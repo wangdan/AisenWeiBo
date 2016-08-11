@@ -172,8 +172,6 @@ public class MainActivity extends BaseActivity
         mInstance = this;
 
         OtherItemFragment.checkPhotoPermission(this, true);
-
-        checkCookie();
     }
 
     @Override
@@ -184,31 +182,9 @@ public class MainActivity extends BaseActivity
             outState.putString("toolbarTitle", toolbarTitle);
     }
 
-    private void checkCookie() {
-        if (AppContext.getAccount().getCookie() == null) {
-            new AlertDialogWrapper.Builder(this)
-                    .setMessage("强烈建议网页版微博登录后再体验，微博图片链接、评论图片链接等功能的正常使用都需要先授权网页版微博。")
-                    .setNegativeButton(R.string.cancel, null)
-                    .setPositiveButton(R.string.account_relogin, new DialogInterface.OnClickListener() {
-
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            BizFragment.createBizFragment(MainActivity.this).requestWebLogin(null);
-                        }
-                    })
-                    .show();
-        }
-
-        if (ActivityHelper.getBooleanShareData(this, "show_cookie_remind", true)) {
-
-        }
-    }
-
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-
-        checkCookie();
 
         if (intent == null)
             return;

@@ -268,9 +268,11 @@ public class MenuHeaderView implements View.OnClickListener {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                AccountFragment.login(account, true);
+                if (menuFragment.getActivity() != null) {
+                    AccountFragment.login(menuFragment.getActivity(), account, true);
 
-                setAccounts();
+                    setAccounts();
+                }
             }
 
             @Override
