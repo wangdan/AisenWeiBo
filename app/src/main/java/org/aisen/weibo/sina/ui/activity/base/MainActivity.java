@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.alibaba.fastjson.JSONObject;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.md.MDHelper;
@@ -113,6 +114,8 @@ public class MainActivity extends BaseActivity
 
     private int newIntentNotificationIndex = -1;
     private String toolbarTitle;
+
+    private boolean cookieRemind = true;
 
     public static void login() {
         Intent intent = new Intent(GlobalContext.getInstance(), MainActivity.class);
@@ -756,8 +759,13 @@ public class MainActivity extends BaseActivity
             return;
         }
 
+        // 账号过期了，就提示重新授权
         if (AppContext.getAccount().getAccessToken().isExpired()) {
             requestLogin(this, AppContext.getAccount());
+        }
+        // 检查Cookie是否过期
+        else if (TextUtils.isEmpty(AppContext.getAccount().getCookie())) {
+            remindCookieInvalid(this);
         }
 
         invalidateOptionsMenu();
@@ -773,11 +781,40 @@ public class MainActivity extends BaseActivity
         return false;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE_AUTH) {
+            if (resultCode == Activity.RESULT_OK) {
+                AccountBean accountBean = (AccountBean) data.getSerializableExtra("account");
+
+                AppContext.getAccount().setAccessToken(accountBean.getAccessToken());
+                if (accountBean.getUser() != null) {
+                    AppContext.getAccount().setUser(accountBean.getUser());
+                }
+                if (accountBean.getGroups() != null) {
+                    AppContext.getAccount().setGroups(accountBean.getGroups());
+                }
+
+                AccountUtils.newAccount(AppContext.getAccount());
+                AccountUtils.setLogedinAccount(AppContext.getAccount());
+
+                login();
+            }
+        }
+    }
+
+
+
+    // 检查用户有效期
     public static void runCheckAccountTask(AccountBean account) {
         // 已经过期了就不用检查了
         if (!account.getAccessToken().isExpired()) {
             new CheckAccountValidTask().execute(account);
         }
+
+        new CheckCookieValidTask().execute(account);
     }
 
     public static class CheckAccountValidTask extends WorkTask<AccountBean, Void, TokenInfo> {
@@ -854,34 +891,80 @@ public class MainActivity extends BaseActivity
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                     WebLoginFragment.launch(activity, WebLoginFragment.Client.aisen, account.getAccount(), account.getPassword(), REQUEST_CODE_AUTH);
+                        WebLoginFragment.launch(activity, WebLoginFragment.Client.aisen, account.getAccount(), account.getPassword(), REQUEST_CODE_AUTH);
                     }
                 })
                 .show();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    static class CheckCookieValidTask extends WorkTask<AccountBean, Void, Boolean> {
 
-        if (requestCode == REQUEST_CODE_AUTH) {
-            if (resultCode == Activity.RESULT_OK) {
-                AccountBean accountBean = (AccountBean) data.getSerializableExtra("account");
+        @Override
+        public Boolean workInBackground(AccountBean... params) throws TaskException {
+            AccountBean account = params[0];
 
-                AppContext.getAccount().setAccessToken(accountBean.getAccessToken());
-                if (accountBean.getUser() != null) {
-                    AppContext.getAccount().setUser(accountBean.getUser());
-                }
-                if (accountBean.getGroups() != null) {
-                    AppContext.getAccount().setGroups(accountBean.getGroups());
-                }
+            String unreadStr = SinaSDK.getInstance(account.getAccessToken()).webGetUnread();
 
-                AccountUtils.newAccount(AppContext.getAccount());
-                AccountUtils.setLogedinAccount(AppContext.getAccount());
-
-                login();
+            // 获取到的数据是JSON数据，认为是授权未过期的
+            try {
+                JSONObject.parse(unreadStr);
+                return true;
+            } catch (Exception e) {
+                return false;
             }
         }
+
+        @Override
+        protected void onSuccess(Boolean result) {
+            super.onSuccess(result);
+
+            AccountBean accountBean = getParams()[0];
+
+            // 同一登录账户
+            if (!result && AppContext.isLoggedIn() && AppContext.getAccount().getUid().equals(accountBean.getUid())) {
+                if (BaseActivity.getRunningActivity() != null && BaseActivity.getRunningActivity() instanceof MainActivity) {
+                    if (getParams()[0].getAccessToken().isExpired())
+                        remindCookieInvalid((MainActivity) BaseActivity.getRunningActivity());
+                }
+            }
+        }
+
+    }
+
+    private static void remindCookieInvalid(final MainActivity activity) {
+        if (activity.isDestory())
+            return;
+
+        new AlertDialogWrapper.Builder(activity)
+                .setMessage("检测到网页授权未授权或者已过期，Aisen微博没有所有功能的使用权限，未授权涉及点赞、网页私信、热门评论、视频播放等重要功能的正常使用，建议立即授权！")
+                .setNegativeButton("暂不需要", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        activity.cookieRemind = false;
+                    }
+
+                })
+                .setPositiveButton("现在授权", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        activity.cookieRemind = false;
+
+                        BizFragment.createBizFragment(activity).requestWebLogin(new IAction(activity, null) {
+
+                            @Override
+                            public void run() {
+                                super.run();
+
+                                if (!TextUtils.isEmpty(AppContext.getAccount().getCookie()))
+                                    activity.showMessage("网页授权成功");
+                            }
+
+                        });
+                    }
+                })
+                .show();
     }
 
 }

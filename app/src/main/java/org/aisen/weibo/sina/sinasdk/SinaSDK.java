@@ -79,6 +79,8 @@ import java.util.Map;
  */
 public class SinaSDK extends ABizLogic {
 
+	public static final String WEB_BASE_URL = "http://m.weibo.cn/";
+
 	private Token token;
 
 	@Override
@@ -1743,28 +1745,62 @@ public class SinaSDK extends ABizLogic {
 		return resultUsers;
 	}
 
-	public StatusContents getHotStatuses(int page) throws TaskException {
+	protected String getPageCount(Setting setting) {
+		return SettingUtil.getSettingValue(setting, "page_count");
+	}
+
+
+
+
+
+
+
+	// 以下开始计划写网页版接口
+
+	private HttpConfig webConfig() throws TaskException {
 		if (AppContext.getAccount() == null || AppContext.getAccount().getCookie() == null)
 			throw new TaskException("", "网页授权已失效，请点击左侧私信菜单再次登录授权");
 
 		HttpConfig config = configHttpConfig();
-		config.baseUrl = "http://m.weibo.cn/container/getIndex";
+		config.baseUrl = WEB_BASE_URL;
 		config.cookie = AppContext.getAccount().getCookie();
 
+		return config;
+	}
+
+	/**
+	 * 热门微博
+	 *
+	 * @param page
+	 * @return
+	 * @throws TaskException
+     */
+	public StatusContents webGetHotStatuses(int page) throws TaskException {
 		Params params = new Params();
 		params.addParameter("containerid", "102803");
 		if (page > 0) {
 			params.addParameter("since_id", String.valueOf(page));
 		}
 
-		Setting action = newSetting("", "", "");
+		Setting action = newSetting("getHotStatuses", "container/getIndex", "热门微博");
 		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TimelineHotHttpUtility.class.getName(), ""));
 
-		return doGet(config, action, params, StatusContents.class);
+		return doGet(webConfig(), action, params, StatusContents.class);
 	}
 
-	protected String getPageCount(Setting setting) {
-		return SettingUtil.getSettingValue(setting, "page_count");
+	/**
+	 * 获取网页版未读消息
+	 *
+	 * @return
+	 * @throws TaskException
+     */
+	public String webGetUnread() throws TaskException {
+		Params params = new Params();
+		params.addParameter("t", System.currentTimeMillis() + "");
+
+		Setting action = newSetting("getWebUnread", "unread", "网页版未读");
+
+		return doGet(webConfig(), action, params, String.class);
 	}
 
 }

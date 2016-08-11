@@ -82,7 +82,7 @@
     <string name="account_relogin">登录</string>
     <string name="account_ad_expired">高级授权过期或未授权，需要重新授权才能正常使用</string>
     <string name="account_newaccount_remind">请注意，根据新浪微博的平台政策，刚添加的帐号会在 %s 天后过期，到时需要重新登录</string>
-    <string name="account_account_expired">授权已过期，是否重新授权</string>
+    <string name="account_account_expired">授权已过期，是否重新授权，建议重新授权！</string>
     <string name="account_relogin_remind">授权过期或者未高级授权</string>
     <string name="account_destory_account_remind">确定删除选中的账号吗？</string>
     <string name="account_delete_account_loading">正在删除账号</string>
@@ -379,7 +379,7 @@
     <string name="profile_tab3">相册</string>
     <string name="profile_tab4">收藏</string>
     <string name="profile_feature_dialog">微博类型</string>
-    <string name="profile_ad_title">高级权限未授权或者已过期</string>
+    <string name="profile_ad_title">高级权限未授权或者已过期，建议重新授权！</string>
     <string name="profile_ad_message">看不了用户个人微博，哎，Sina也是醉了，是否开始高级授权？</string>
 
     <!-- 查看图片 -->

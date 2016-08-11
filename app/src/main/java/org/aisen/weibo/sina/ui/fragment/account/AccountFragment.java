@@ -68,7 +68,6 @@ public class AccountFragment extends ARecycleViewFragment<AccountBean, ArrayList
     // 登录账号，现在有两个地方可以切换账号
     // 1、首页左侧抽屉，点击小头像切换
     // 2、账号列表点击Item切换
-    // 切换账号，必须清理Cookie，提示用户的Cookie失效，强制用户再次登录刷新WebView的Cookie
     public static void login(Activity context, AccountBean accountBean, boolean toMain) {
         if (AppContext.isLoggedIn()) {
             // 1、清理定时发布

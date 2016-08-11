@@ -62,7 +62,7 @@ public class TimelineHotFragment extends ATimelineFragment {
             if (!TextUtils.isEmpty(nextPage))
                 page = Integer.parseInt(nextPage);
 
-            StatusContents result = SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).getHotStatuses(page);
+            StatusContents result = SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).webGetHotStatuses(page);
 
             for (StatusContent content : result.getStatuses()) {
                 AisenTextView.addText(content.getText());
