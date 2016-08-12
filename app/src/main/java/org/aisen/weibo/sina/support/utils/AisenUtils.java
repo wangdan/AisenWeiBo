@@ -340,7 +340,7 @@ public class AisenUtils {
         }
     }
 
-    public static String getCounter(int count, String append) {
+    public static String getCounter(long count, String append) {
         Resources res = GlobalContext.getInstance().getResources();
 
         if (count < 10000)
@@ -351,7 +351,7 @@ public class AisenUtils {
             return new DecimalFormat("#").format(count * 1.0f / 10000) + append + res.getString(R.string.msg_ten_thousand);
     }
 
-    public static String getCounter(int count) {
+    public static String getCounter(long count) {
         return getCounter(count, "");
     }
 

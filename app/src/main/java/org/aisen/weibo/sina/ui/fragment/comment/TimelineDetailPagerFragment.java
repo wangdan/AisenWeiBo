@@ -64,8 +64,6 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
         FragmentArgs args = new FragmentArgs();
 
         args.add("status", status);
-        if (status.getComments_count() < HOT_CMT_SHOW_MIN_COUNT)
-            args.add(SET_INDEX, "1");
 
         SinaCommonActivity.launch(from, TimelineDetailPagerFragment.class, args);
     }
@@ -443,12 +441,12 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
     }
 
     @Override
-    public void onLikeFaild() {
+    public void onLikeFaild(BizFragment.ILikeBean data) {
         setLikeText();
     }
 
     @Override
-    public void onLikeSuccess(StatusContent data, View likeView) {
+    public void onLikeSuccess(BizFragment.ILikeBean data, View likeView) {
         if (getActivity() == null)
             return;
 

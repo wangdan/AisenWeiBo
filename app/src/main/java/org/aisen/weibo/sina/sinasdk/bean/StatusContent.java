@@ -1,11 +1,12 @@
 package org.aisen.weibo.sina.sinasdk.bean;
 
 import org.aisen.android.component.orm.annotation.PrimaryKey;
+import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class StatusContent implements Serializable {
+public class StatusContent implements Serializable, BizFragment.ILikeBean {
 
     private static final long serialVersionUID = 4658890626870999594L;
 
@@ -303,5 +304,10 @@ public class StatusContent implements Serializable {
 
     public void setVideoUrl(UrlBean videoUrl) {
         this.videoUrl = videoUrl;
+    }
+
+    @Override
+    public String getLikeId() {
+        return getId() + "";
     }
 }

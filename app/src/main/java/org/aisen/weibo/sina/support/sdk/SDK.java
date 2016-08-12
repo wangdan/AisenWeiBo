@@ -76,69 +76,6 @@ public class SDK extends ABizLogic {
     }
 
     /**
-     * 点赞
-     *
-     * @param statusId
-     * @param like
-     * @param cookie
-     * @return
-     * @throws TaskException
-     */
-    public LikeResultBean doLike(String statusId, boolean like, String cookie) throws TaskException {
-        try {
-            String url = like ? "http://m.weibo.cn/attitudesDeal/add" : "http://m.weibo.cn/attitudesDeal/delete";
-
-            Map<String, String> cookieMap = new HashMap<String, String>();
-
-            String[] cookieValues = cookie.split(";");
-            for (String cookieValue : cookieValues) {
-                String key = cookieValue.split("=")[0];
-                String value = cookieValue.split("=")[1];
-
-                cookieMap.put(key, value);
-            }
-//            Logger.d(WeiboClientActivity.TAG, cookieMap);
-
-            Connection connection = Jsoup.connect(url);
-            connection.userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:33.0) Gecko/20100101 Firefox/33.0")
-                    .referrer("http://m.weibo.cn/")
-                    .cookies(cookieMap)
-                    .data("id", statusId)
-                    .method(Connection.Method.POST);
-            if (like)
-                connection.data("attitude", "heart");
-
-            String body = connection.execute().body();
-            if (!TextUtils.isEmpty(body)) {
-                Logger.d(TAG, body);
-
-                if (body.indexOf("http://passport.weibo.cn/sso/crossdomain") != -1)
-                    throw new TaskException("-100", "未登录");
-                else if (body.indexOf("<html") != -1)
-                    throw new TaskException("-100", "未登录");
-
-                LikeResultBean likeBean = JSON.parseObject(body, LikeResultBean.class);
-                if (likeBean.getOk() == 1) {
-                    return likeBean;
-                }
-                else if (likeBean.getOk() == -100) {
-                    throw new TaskException("-100", "未登录");
-                }
-                else {
-                    throw new TaskException("", likeBean.getMsg());
-                }
-            }
-        } catch (Exception e) {
-            if (e instanceof TaskException)
-                throw (TaskException) e;
-
-            e.printStackTrace();
-        }
-
-        throw new TaskException(TaskException.TaskError.timeout.toString());
-    }
-
-    /**
      * 获取笑料百科列表
      *
      * @param id
@@ -193,6 +130,69 @@ public class SDK extends ABizLogic {
             throw new TaskException(TaskException.TaskError.resultIllegal.toString());
         }
         return beans;
+    }
+
+    /**
+     * 微博点赞
+     *
+     * @param statusId
+     * @param like
+     * @param cookie
+     * @return
+     * @throws TaskException
+     */
+    public LikeResultBean webStatusLike(String statusId, boolean like, String cookie) throws TaskException {
+        try {
+            String url = like ? "http://m.weibo.cn/attitudesDeal/add" : "http://m.weibo.cn/attitudesDeal/delete";
+
+            Map<String, String> cookieMap = new HashMap<String, String>();
+
+            String[] cookieValues = cookie.split(";");
+            for (String cookieValue : cookieValues) {
+                String key = cookieValue.split("=")[0];
+                String value = cookieValue.split("=")[1];
+
+                cookieMap.put(key, value);
+            }
+//            Logger.d(WeiboClientActivity.TAG, cookieMap);
+
+            Connection connection = Jsoup.connect(url);
+            connection.userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:33.0) Gecko/20100101 Firefox/33.0")
+                    .referrer("http://m.weibo.cn/")
+                    .cookies(cookieMap)
+                    .data("id", statusId)
+                    .method(Connection.Method.POST);
+            if (like)
+                connection.data("attitude", "heart");
+
+            String body = connection.execute().body();
+            if (!TextUtils.isEmpty(body)) {
+                Logger.d(TAG, body);
+
+                if (body.indexOf("http://passport.weibo.cn/sso/crossdomain") != -1)
+                    throw new TaskException("-100", "未登录");
+                else if (body.indexOf("<html") != -1)
+                    throw new TaskException("-100", "未登录");
+
+                LikeResultBean likeBean = JSON.parseObject(body, LikeResultBean.class);
+                if (likeBean.getOk() == 1) {
+                    return likeBean;
+                }
+                else if (likeBean.getOk() == -100) {
+                    throw new TaskException("-100", "未登录");
+                }
+                else {
+                    throw new TaskException("", likeBean.getMsg());
+                }
+            }
+        } catch (Exception e) {
+            if (e instanceof TaskException)
+                throw (TaskException) e;
+
+            e.printStackTrace();
+        }
+
+        throw new TaskException(TaskException.TaskError.timeout.toString());
     }
 
     public ArrayList<SavedImageBean> getSavedImages() throws TaskException {

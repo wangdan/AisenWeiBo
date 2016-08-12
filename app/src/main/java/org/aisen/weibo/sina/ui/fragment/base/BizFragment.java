@@ -1042,15 +1042,21 @@ public class BizFragment extends ABaseFragment {
      * 点赞或者取消点赞
      *
      */
-    public void doLike(final StatusContent data, final boolean like, View likeView, final DoLikeAction.OnLikeCallback callback) {
-        String key = String.valueOf(data.getId());
+    public void doLike(final ILikeBean data, final boolean like, View likeView, final DoLikeAction.OnLikeCallback callback) {
+        String key = data.getLikeId();
         DoLikeAction action = likeActionMap.containsKey(key) ? likeActionMap.get(key).get() : null;
         if (action != null && action.isRunning())
             return;
 
         action = new DoLikeAction(getActivity(), this, likeView, data, like, callback);
-        likeActionMap.put(key, new WeakReference<DoLikeAction>(action));
+        likeActionMap.put(key, new WeakReference<>(action));
         action.run();
+    }
+
+    public interface ILikeBean {
+
+        String getLikeId();
+
     }
 
     private IAction requestWebLoginAction;

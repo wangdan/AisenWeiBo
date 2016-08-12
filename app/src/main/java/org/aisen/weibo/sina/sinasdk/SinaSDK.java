@@ -60,9 +60,11 @@ import org.aisen.weibo.sina.sinasdk.http.HttpsUtility;
 import org.aisen.weibo.sina.sinasdk.http.TimelineCommentHttpUtility;
 import org.aisen.weibo.sina.sinasdk.http.TimelineHotHttpUtility;
 import org.aisen.weibo.sina.sinasdk.http.TimelineHttpUtility;
+import org.aisen.weibo.sina.support.bean.LikeResultBean;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 
 import java.io.File;
+import java.net.PasswordAuthentication;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -1786,6 +1788,49 @@ public class SinaSDK extends ABizLogic {
 		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TimelineHotHttpUtility.class.getName(), ""));
 
 		return doGet(webConfig(), action, params, StatusContents.class);
+	}
+
+	/**
+	 * 评论点赞
+	 *
+	 * @param comment
+	 * @param like
+	 * @return
+	 * @throws TaskException
+     */
+	public LikeResultBean webCommentLike(StatusComment comment, boolean like) throws TaskException {
+		Params params = new Params();
+		params.addParameter("id", comment.getLikeId());
+		params.addParameter("st", "380e9f");
+
+		Setting action = newSetting("webCommentLike", like ? "comment/like" : "comment/dislike", "评论点赞");
+
+		HttpConfig config = webConfig();
+		config.addHeader("Referer", String.format("http://m.weibo.cn/status/%s", comment.getStatusId()));
+		config.addHeader("Content-Type", "application/x-www-form-urlencoded");
+
+		String body = doPost(config, action, null, params, null, String.class);
+		if (!TextUtils.isEmpty(body)) {
+			Logger.d(TAG, body);
+
+			if (body.indexOf("http://passport.weibo.cn/sso/crossdomain") != -1)
+				throw new TaskException("-100", "未登录");
+			else if (body.indexOf("<html") != -1)
+				throw new TaskException("-100", "未登录");
+
+			LikeResultBean likeBean = JSON.parseObject(body, LikeResultBean.class);
+			if (likeBean.getOk() == 1) {
+				return likeBean;
+			}
+			else if (likeBean.getOk() == -100) {
+				throw new TaskException("-100", "未登录");
+			}
+			else {
+				throw new TaskException("", likeBean.getMsg());
+			}
+		}
+
+		throw new TaskException("-100", "未登录");
 	}
 
 	/**

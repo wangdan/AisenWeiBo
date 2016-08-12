@@ -51,4 +51,13 @@
         android:layout_below="@id/pic" android:layout_toRightOf="@id/imgPhoto" android:ellipsize="end" android:singleLine="true"
         android:text="昨天 来自Aisen微博" android:textSize="12sp"/>
 
+    <org.aisen.android.ui.widget.MDButton
+        android:id="@+id/btnLike"
+        style="@style/TextSubhead" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
+        android:layout_marginRight="16dip" android:background="?attr/selectableItemBackgroundBorderless"
+        android:gravity="bottom" android:paddingLeft="8dip" android:paddingRight="8dip"
+        android:paddingTop="20dip" android:text="赞"
+        android:textColor="@color/text_54" android:textSize="12sp"/>
+
 </RelativeLayout>

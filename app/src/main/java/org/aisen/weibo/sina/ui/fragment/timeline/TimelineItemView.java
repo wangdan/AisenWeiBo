@@ -391,12 +391,12 @@ public class TimelineItemView extends ARecycleViewItemView<StatusContent> implem
     }
 
     @Override
-    public void onLikeFaild() {
+    public void onLikeFaild(BizFragment.ILikeBean data) {
         setLikeView();
     }
 
     @Override
-    public void onLikeSuccess(StatusContent data, View likeView) {
+    public void onLikeSuccess(BizFragment.ILikeBean data, View likeView) {
         if (fragment.getActivity() == null)
             return;
 

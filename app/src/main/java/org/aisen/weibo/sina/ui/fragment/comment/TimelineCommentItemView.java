@@ -1,18 +1,23 @@
 package org.aisen.weibo.sina.ui.fragment.comment;
 
+import android.content.Context;
 import android.text.Html;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.Utils;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.fragment.ABaseFragment;
 import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
+import org.aisen.android.ui.widget.MDButton;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.sinasdk.bean.StatusComment;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
+import org.aisen.weibo.sina.support.action.DoLikeAction;
+import org.aisen.weibo.sina.support.bean.LikeBean;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
@@ -22,7 +27,7 @@ import org.aisen.weibo.sina.ui.widget.CommentPictureView;
 /**
  * Created by wangdan on 16/1/8.
  */
-public class TimelineCommentItemView extends ARecycleViewItemView<StatusComment> {
+public class TimelineCommentItemView extends ARecycleViewItemView<StatusComment> implements View.OnClickListener, DoLikeAction.OnLikeCallback {
 
     public static final int LAYOUT_RES = R.layout.item_timeline_comment;
 
@@ -43,16 +48,20 @@ public class TimelineCommentItemView extends ARecycleViewItemView<StatusComment>
     ImageView imgRePhoto;
     @ViewInject(id = R.id.txtReContent)
     AisenTextView txtReContent;
+    @ViewInject(id = R.id.btnLike)
+    MDButton btnLike;
 
     private ABaseFragment mFragment;
     private BizFragment bizFragment;
     int firstTop;
     int normalTop;
+    private Context context;
 
     public TimelineCommentItemView(ABaseFragment fragment, View itemView) {
         super(fragment.getActivity(), itemView);
 
         this.mFragment = fragment;
+        this.context = GlobalContext.getInstance();
         bizFragment = BizFragment.createBizFragment(fragment);
 
         firstTop = Utils.dip2px(getContext(), 16);
@@ -117,6 +126,55 @@ public class TimelineCommentItemView extends ARecycleViewItemView<StatusComment>
             layRe.setVisibility(View.GONE);
         }
 
+        btnLike.setTag(data);
+        setLikeBtn(data);
+        btnLike.setOnClickListener(this);
+    }
+
+    private void setLikeBtn(StatusComment comment) {
+        if (comment.isLiked()) {
+            if (comment.getLikedCount() > 0)
+                btnLike.setText(String.format(context.getString(R.string.attitudes_format), AisenUtils.getCounter(comment.getLikedCount(), "+1")));
+            else
+                btnLike.setText(String.format(context.getString(R.string.attitudes_format), "+1"));
+        }
+        else {
+            if (comment.getLikedCount() > 0)
+                btnLike.setText(String.format(context.getString(R.string.attitudes_format), AisenUtils.getCounter(comment.getLikedCount())));
+            else
+                btnLike.setText("赞");
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        StatusComment comment = (StatusComment) v.getTag();
+
+        if (comment != null && v.getId() == R.id.btnLike) {
+            LikeBean likeBean = DoLikeAction.likeCache.get(comment.getLikeId());
+            boolean liked = likeBean == null || !likeBean.isLiked();
+            comment.setLiked(liked);
+
+            setLikeBtn(comment);
+
+            bizFragment.doLike(comment, liked, v, this);
+        }
+    }
+
+    @Override
+    public void onLikeFaild(BizFragment.ILikeBean data) {
+        ((StatusComment) data).setLiked(!((StatusComment) data).isLiked());
+
+        setLikeBtn(((StatusComment) data));
+    }
+
+    @Override
+    public void onLikeSuccess(BizFragment.ILikeBean data, View likeView) {
+        if (likeView.getTag() == data) {
+            bizFragment.animScale(likeView);
+
+            setLikeBtn((StatusComment) data);
+        }
     }
 
 }
