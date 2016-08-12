@@ -94,6 +94,9 @@ public class SettingsPagerFragment extends ATabsTabLayoutFragment<TabItem> {
 		// 其他
 		case 3:
 			return OtherItemFragment.newInstance();
+		// 帮助
+		case 4:
+			return AisenHelpFragment.newInstance();
 		}
 		
 		return BasicItemSettingsFragment.newInstance();

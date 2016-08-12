@@ -14,6 +14,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -57,11 +58,13 @@ import java.util.ArrayList;
 public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
                                             implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener, DoLikeAction.OnLikeCallback, SwipeRefreshLayout.OnRefreshListener {
 
+    private static final int HOT_CMT_SHOW_MIN_COUNT = 20;
+
     public static void launch(Activity from, StatusContent status) {
         FragmentArgs args = new FragmentArgs();
 
         args.add("status", status);
-        if (status.getComments_count() < 20)
+        if (status.getComments_count() < HOT_CMT_SHOW_MIN_COUNT)
             args.add(SET_INDEX, "1");
 
         SinaCommonActivity.launch(from, TimelineDetailPagerFragment.class, args);
@@ -277,10 +280,12 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
 
     @Override
     protected ArrayList<TabItem> generateTabs() {
+
         ArrayList<TabItem> tabItems = new ArrayList<>();
 
-        tabItems.add(new TabItem("0", getString(R.string.comment_hot)));
-
+        if (mStatusContent.getComments_count() >= HOT_CMT_SHOW_MIN_COUNT && !TextUtils.isEmpty(AppContext.getAccount().getCookie())) {
+            tabItems.add(new TabItem("0", getString(R.string.comment_hot)));
+        }
         if (mStatusContent.getComments_count() > 0 || mStatusContent.getReposts_count() == 0) {
             tabItems.add(new TabItem("1", String.format(getString(R.string.comment_format), AisenUtils.getCounter(mStatusContent.getComments_count()))));
         }

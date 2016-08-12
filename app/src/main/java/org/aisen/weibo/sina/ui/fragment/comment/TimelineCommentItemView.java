@@ -37,6 +37,13 @@ public class TimelineCommentItemView extends ARecycleViewItemView<StatusComment>
     @ViewInject(id = R.id.pic)
     CommentPictureView imgPic;
 
+    @ViewInject(id = R.id.layRe)
+    View layRe;
+    @ViewInject(id = R.id.imgRePhoto)
+    ImageView imgRePhoto;
+    @ViewInject(id = R.id.txtReContent)
+    AisenTextView txtReContent;
+
     private ABaseFragment mFragment;
     private BizFragment bizFragment;
     int firstTop;
@@ -68,7 +75,7 @@ public class TimelineCommentItemView extends ARecycleViewItemView<StatusComment>
             imgPhoto.setImageResource(R.drawable.user_placeholder);
         }
 
-        txtContent.setContent(data.getText());
+        txtContent.setContent(AisenUtils.getCommentText(data.getText()));
         AisenUtils.setTextSize(txtContent);
 
         String createAt = AisenUtils.convDate(data.getCreated_at());
@@ -87,6 +94,29 @@ public class TimelineCommentItemView extends ARecycleViewItemView<StatusComment>
         else {
             imgPic.setVisibility(View.GONE);
         }
+
+        // 源评论
+        if (data.getReply_comment() != null) {
+            layRe.setVisibility(View.VISIBLE);
+
+            txtReContent.setContent(AisenUtils.getCommentText(data.getReply_comment().getText()));
+            AisenUtils.setTextSize(txtReContent);
+
+            if (data.getReply_comment().getUser() != null) {
+                BitmapLoader.getInstance().display(mFragment,
+                                                    AisenUtils.getUserPhoto(data.getReply_comment().getUser()),
+                                                    imgRePhoto,
+                                                    ImageConfigUtils.getLargePhotoConfig());
+                bizFragment.userShow(imgRePhoto, data.getReply_comment().getUser());
+            }
+            else {
+                bizFragment.userShow(imgRePhoto, null);
+            }
+        }
+        else {
+            layRe.setVisibility(View.GONE);
+        }
+
     }
 
 }

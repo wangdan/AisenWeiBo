@@ -701,6 +701,7 @@
         <item>基本</item>
         <item>高级</item>
         <item>其他</item>
+        <item>帮助</item>
     </string-array>
 
     <string-array name="publish_pic">
