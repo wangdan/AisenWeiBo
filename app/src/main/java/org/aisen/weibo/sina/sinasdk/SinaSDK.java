@@ -54,12 +54,14 @@ import org.aisen.weibo.sina.sinasdk.bean.TrendsBean;
 import org.aisen.weibo.sina.sinasdk.bean.UnreadCount;
 import org.aisen.weibo.sina.sinasdk.bean.UploadPictureResultBean;
 import org.aisen.weibo.sina.sinasdk.bean.UrlsBean;
+import org.aisen.weibo.sina.sinasdk.bean.WebHotTopicssBean;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.sinasdk.http.CommentsHotHttpUtility;
 import org.aisen.weibo.sina.sinasdk.http.HttpsUtility;
 import org.aisen.weibo.sina.sinasdk.http.TimelineCommentHttpUtility;
 import org.aisen.weibo.sina.sinasdk.http.TimelineHotHttpUtility;
 import org.aisen.weibo.sina.sinasdk.http.TimelineHttpUtility;
+import org.aisen.weibo.sina.sinasdk.http.TopicHotHttpUtility;
 import org.aisen.weibo.sina.support.bean.LikeResultBean;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 
@@ -1791,6 +1793,33 @@ public class SinaSDK extends ABizLogic {
 	}
 
 	/**
+	 * 热门话题
+	 *
+	 * @param sinceId
+	 * @return
+	 * @throws TaskException
+     */
+	public WebHotTopicssBean webGetHotTopics(String containerId, String sinceId) throws TaskException {
+		Params params = new Params();
+		params.addParameter("containerid", containerId);
+		if (!TextUtils.isEmpty(sinceId)) {
+			params.addParameter("since_id", sinceId);
+		}
+
+		Setting action = newSetting("webGetHotTopics", "container/getIndex", "热门话题");
+		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TopicHotHttpUtility.class.getName(), ""));
+
+		try {
+			return doGet(webConfig(), action, params, WebHotTopicssBean.class);
+		} catch (Exception e) {
+			if (e instanceof TaskException)
+				checkWebResult((TaskException) e);
+
+			throw e;
+		}
+	}
+
+	/**
 	 * 评论点赞
 	 *
 	 * @param comment
@@ -1831,6 +1860,15 @@ public class SinaSDK extends ABizLogic {
 		}
 
 		throw new TaskException("-100", "未登录");
+	}
+
+	private void checkWebResult(TaskException e) throws TaskException {
+		// 未登录，或者登录失效
+		if ("-100".equalsIgnoreCase(e.getCode())) {
+			AppContext.clearCookie();
+
+			throw new TaskException("", "网页授权已失效，请重新授权");
+		}
 	}
 
 	/**

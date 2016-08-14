@@ -970,4 +970,11 @@ public class AisenUtils {
         CookieSyncManager.getInstance().sync();
     }
 
+    public static void checkWebResult(String body) throws TaskException {
+        if (body.indexOf("http://passport.weibo.cn/sso/crossdomain") != -1)
+            throw new TaskException("-100", "未登录");
+        else if (body.indexOf("<html>") != -1)
+            throw new TaskException("-100", "未登录");
+    }
+
 }

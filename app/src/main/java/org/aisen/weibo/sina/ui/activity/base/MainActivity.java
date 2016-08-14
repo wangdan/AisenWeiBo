@@ -59,6 +59,7 @@ import org.aisen.weibo.sina.ui.fragment.comment.NotificationPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.draft.DraftFragment;
 import org.aisen.weibo.sina.ui.fragment.friendship.FriendshipPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.hot.TimelineHotFragment;
+import org.aisen.weibo.sina.ui.fragment.hot.TopicsHotPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.images.ImagesPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.mention.MentionPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.menu.FabGroupsFragment;
@@ -410,7 +411,6 @@ public class MainActivity extends BaseActivity
             break;
         // 热门微博
         case MenuFragment.MENU_HOT_STATUS:
-//            WeiboClientActivity.launchHotStatuses(this);
             new IAction(MainActivity.this, new WebLoginAction(MainActivity.this, BizFragment.createBizFragment(this))) {
 
                 @Override
@@ -421,6 +421,19 @@ public class MainActivity extends BaseActivity
             }.run();
 
             UMengUtil.onEvent(MainActivity.this, "hot_status");
+            break;
+        // 热门微博
+        case MenuFragment.MENU_HOT_TOPICS:
+            new IAction(MainActivity.this, new WebLoginAction(MainActivity.this, BizFragment.createBizFragment(this))) {
+
+                @Override
+                public void doAction() {
+                    TopicsHotPagerFragment.launch(MainActivity.this);
+                }
+
+            }.run();
+
+            UMengUtil.onEvent(MainActivity.this, "hot_topics");
             break;
         // 草稿箱
         case MenuFragment.MENU_DRAT:
@@ -910,6 +923,8 @@ public class MainActivity extends BaseActivity
                 JSONObject.parse(unreadStr);
                 return true;
             } catch (Exception e) {
+                AppContext.clearCookie();
+
                 return false;
             }
         }
@@ -923,7 +938,7 @@ public class MainActivity extends BaseActivity
             // 同一登录账户
             if (!result && AppContext.isLoggedIn() && AppContext.getAccount().getUid().equals(accountBean.getUid())) {
                 if (BaseActivity.getRunningActivity() != null && BaseActivity.getRunningActivity() instanceof MainActivity) {
-                    if (getParams()[0].getAccessToken().isExpired())
+                    if (TextUtils.isEmpty(accountBean.getCookie()))
                         remindCookieInvalid((MainActivity) BaseActivity.getRunningActivity());
                 }
             }

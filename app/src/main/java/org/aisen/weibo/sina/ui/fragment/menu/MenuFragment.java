@@ -47,6 +47,7 @@ public class MenuFragment extends ABaseFragment {
     public static final int MENU_FRIENDSHIP = 4;
     public static final int MENU_MD = 10;
     public static final int MENU_HOT_STATUS = 11;
+    public static final int MENU_HOT_TOPICS = 17;
     public static final int MENU_DRAT = 6;
     public static final int MENU_SETTINGS = 5;
     public static final int MENU_PROFIL = 0;
@@ -286,13 +287,21 @@ public class MenuFragment extends ABaseFragment {
 //        items.add(new NavMenuItem(MENU_CMT, R.drawable.ic_question_answer_grey600_24dp, R.string.draw_comment));
         items.add(new NavMenuItem(MENU_NOTIFICATION, R.drawable.ic_notification_gray_24, R.string.draw_private_notification));
         items.add(new NavMenuItem(MENU_MD, R.drawable.ic_email_grey600_24dp, R.string.draw_private_msg));
+
         items.add(new NavMenuSeparator());
+
+        items.add(new NavMenuItem(MENU_FAV, -1, R.string.draw_fav));
+
+        items.add(new NavMenuSeparator());
+
 //        items.add(new NavMenuItem(MENU_JOKE, -1, R.string.draw_joke));
 //        items.add(new NavMenuItem(MENU_WALLPAPER, -1, R.string.draw_wallpaper));
-        items.add(new NavMenuItem(MENU_FAV, -1, R.string.draw_fav));
 //        items.add(new NavMenuItem(MENU_IMAGES, -1, R.string.draw_images));
-        items.add(new NavMenuSeparator());
         items.add(new NavMenuItem(MENU_HOT_STATUS, -1, R.string.draw_hot_statuses));
+        items.add(new NavMenuItem(MENU_HOT_TOPICS, -1, R.string.draw_hot_topics));
+
+        items.add(new NavMenuSeparator());
+
         items.add(new NavMenuItem(MENU_DRAT, -1, R.string.draw_draft));
         items.add(new NavMenuItem(MENU_SETTINGS, -1, R.string.draw_settings));
 

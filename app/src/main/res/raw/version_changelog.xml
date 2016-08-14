@@ -10,6 +10,8 @@
 
 	<changelogversion versionName="6.1.5" changeDate="2016-08">
 		<changelogtext>切换账号，同步Cookie.</changelogtext>
+		<changelogtext>支持评论点赞.</changelogtext>
+		<changelogtext>支持热门话题.</changelogtext>
 	</changelogversion>
 
 	<changelogversion versionName="6.1.3" changeDate="2016-08">
