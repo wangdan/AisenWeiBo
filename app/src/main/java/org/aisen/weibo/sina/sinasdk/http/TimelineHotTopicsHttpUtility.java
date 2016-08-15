@@ -1,5 +1,7 @@
 package org.aisen.weibo.sina.sinasdk.http;
 
+import android.text.TextUtils;
+
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
@@ -88,8 +90,12 @@ public class TimelineHotTopicsHttpUtility extends HttpsUtility {
                 throw  new TaskException("", "未知错误，请稍后再试");
             }
         } catch (Exception e) {
-            if (e instanceof TaskException)
+            if (e instanceof TaskException) {
                 throw e;
+            }
+            else if (!TextUtils.isEmpty(resultStr) && resultStr.indexOf("你要找的页面") != -1) {
+                throw new TaskException("", "啊哦，你要找的页面不见啦！");
+            }
 
             throw  new TaskException(TaskException.TaskError.resultIllegal.toString());
         }

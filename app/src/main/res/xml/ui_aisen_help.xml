@@ -2,25 +2,30 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <Preference
-        android:key="1" android:summary="新浪官方给予Aisen的授权周期只有7天，失效后必须再次授权"
-        android:title="1、每隔7天授权就会失效"/>
+        android:key="1" android:summary="官方只给了7天有效期啊"
+        android:title="1、授权有效期只有7天"/>
 
     <Preference
         android:key="2"
-        android:summary="2、新浪官方给予Aisen只有部分普通功能权限，目前第三方公开权限有很大的限制，所以必须使用高级授权后才能保证功能性完整使用"
+        android:summary="2、Aisen只有部分权限，凡是提示高级权限的操作都是需要额外授权的"
         android:title="2、高级授权是什么"/>
 
     <Preference
-        android:key="3" android:summary="同2，点赞、热门评论、视屏播放等部分功能都必须要网页授权后才能正常使用，Aisen自身并没有这些权限"
+        android:key="3" android:summary="同2"
         android:title="3、网页授权是什么"/>
 
     <Preference
         android:key="4"
-        android:summary="我只是一个小码农，要兼顾产品、UE、UI、开发、测试职能，没有精力和时间维护全面功能的完整性，只能保障大部分功能的正常使用，所以当你遇到不能解决的问题时，可以尝试第一、账号界面删除重新授权；第二、系统设置-所有应用-Aisen-清除数据后再尝试"
-        android:title="4、使用过程中遇到不能解决的问题怎么办"/>
+        android:summary="要么是网络问题，要么，是渣浪问题，反正不是我的问题"
+        android:title="4、为什么请求数据反应那么慢，比如视频播放、热门话题、微博搜索等功能"/>
 
     <Preference
-        android:key="5" android:summary="兴趣为主，我是雯雯的爸爸，下班肥家我要把多余时间投入给我崽，作为开源项目目前有500+fork，相信是很多共同爱好编码的朋友对项目感兴趣，希望参与进来共同维护"
-        android:title="5、Aisen后期的维护"/>
+        android:key="5"
+        android:summary="重启是万能的，去设置-应用管理-Aisen-清除数据操作后，再试试"
+        android:title="5、遇到不能解决的问题时怎么办"/>
+
+    <Preference
+        android:key="6" android:summary="以前我的爱好是敲代码，现在的爱好是肥家带我闺女，这是开源项目，期望更多的人参与进来"
+        android:title="6、Aisen后期的维护"/>
 
 </PreferenceScreen>
