@@ -177,7 +177,7 @@
     <string name="draw_timeline">首页</string>
     <string name="draw_message">提及</string>
     <string name="draw_comment">评论</string>
-    <string name="draw_fav">我的收藏</string>
+    <string name="draw_fav">收藏</string>
     <string name="draw_images">相册</string>
     <string name="draw_fav_title">收藏的微博</string>
     <string name="draw_search_v2">搜索</string>
