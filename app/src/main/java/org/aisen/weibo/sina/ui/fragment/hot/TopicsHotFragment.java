@@ -68,6 +68,13 @@ public class TopicsHotFragment extends ARecycleViewSwipeRefreshFragment<WebHotTo
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putSerializable("menu", mMenu);
+    }
+
+    @Override
     protected void setupRefreshView(Bundle savedInstanceSate) {
         super.setupRefreshView(savedInstanceSate);
 

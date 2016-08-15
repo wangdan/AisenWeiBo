@@ -2,10 +2,8 @@ package org.aisen.weibo.sina.ui.fragment.hot;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.view.LayoutInflater;
 
 import org.aisen.android.support.bean.TabItem;
 import org.aisen.android.ui.activity.basic.BaseActivity;
@@ -35,13 +33,6 @@ public class TopicsHotTimelinePagerFragment extends ATabsTabLayoutFragment<TabIt
     @Override
     public int inflateContentView() {
         return R.layout.ui_settings_tabs;
-    }
-
-    @Override
-    protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceState) {
-        super.layoutInit(inflater, savedInstanceState);
-
-        getContentView().setBackgroundColor(Color.WHITE);
     }
 
     @Override

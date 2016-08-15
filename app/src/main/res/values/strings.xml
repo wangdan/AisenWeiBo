@@ -526,6 +526,7 @@
     <string name="settings_vibrate_summary">内容发送成功后震动反馈</string>
     <string name="category_other">其他</string>
     <string name="settings_pic_path">图片保存路径</string>
+    <string name="settings_video_path">视频保存路径</string>
     <string name="settings_mention_history">清理@好友历史记录</string>
     <string name="settings_fab_type">Fab按钮功能</string>
     <string name="settings_fab_type_summary">点击切换微博分组，长按可刷新列表</string>

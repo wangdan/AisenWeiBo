@@ -81,6 +81,9 @@ import java.io.File;
 //		pPicSavePath.setSummary(SystemUtility.getSdcardPath() + File.separator + AppSettings.getImageSavePath() + File.separator);
 		pPicSavePath.setSummary("/sdcard" + File.separator + AppSettings.getImageSavePath() + File.separator);
 
+		Preference pVideoSavePath = findPreference("pVideoSavePath");
+		pVideoSavePath.setSummary("/sdcard" + File.separator + AppSettings.getVideoSavePath() + File.separator);
+
 		pClearRecentMention = (Preference) findPreference("pClearRecentMention");
 		pClearRecentMention.setOnPreferenceClickListener(this);
 		setMentionHint();

@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -71,8 +70,8 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
     View layoutContent;
 
     private VideoView mVideoPlayer;
-    private View mControlsView;
 
+    private Uri shortUri;
     private Uri videoUri;
     private VideoBean videoBean;
     private DownloadProxy mDownloadProxy = new DownloadProxy();
@@ -84,11 +83,7 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
 
         setContentView(R.layout.ui_video_player);
 
-        mControlsView = findViewById(R.id.fullscreen_content_controls);
         mVideoPlayer = (VideoView) findViewById(R.id.videoView);
-        TextView tv = (TextView) findViewById(R.id.video_title_text);
-
-        tv.setVisibility(View.INVISIBLE);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
@@ -125,12 +120,13 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
         mVideoPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
-                Logger.w(TAG, "onPrepared");
 //                if (mPlayingWhenPaused)
                 mVideoPlayer.start();
 
                 layoutContent.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
+
+                invalidateOptionsMenu();
             }
         });
 
@@ -158,7 +154,7 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
 
         invalidateOptionsMenu();
 
-        mControlsView.setVisibility(View.VISIBLE);
+        mDownloadProxy.attach(this);
     }
 
     @Override
@@ -191,7 +187,6 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
         if (DownloadManager.getInstance() != null) {
             DownloadManager.getInstance().getController().unregister(mDownloadProxy);
         }
-        mDownloadProxy.detach(this);
     }
 
     @Override
@@ -212,12 +207,13 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
         if (DownloadManager.getInstance() != null) {
             DownloadManager.getInstance().getController().register(mDownloadProxy);
         }
-        mDownloadProxy.attach(this);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+        mDownloadProxy.detach(this);
     }
 
     @Override
@@ -243,6 +239,8 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void playWithShort(final String url) {
+        shortUri = Uri.parse(url);
+        
         Logger.d(TAG, "short : " + url);
 
         new WorkTask<Void, Void, VideoBean>() {
@@ -381,52 +379,68 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_video, menu);
+        menu.findItem(R.id.download).setVisible(false);
+        menu.findItem(R.id.progress).setVisible(false);
 
         return super.onCreateOptionsMenu(menu);
+    }
+
+    private boolean isRunning(int status) {
+        switch (status) {
+        case DownloadManager.STATUS_PENDING:
+        case DownloadManager.STATUS_WAITING:
+        case DownloadManager.STATUS_RUNNING:
+            return true;
+        default:
+            return false;
+        }
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
 
-        File file = getVideoFile(videoUri);
-        if (mDownloadMsg != null) {
-            int status = mDownloadMsg.getStatus();
-            // 失败
-            if (status == DownloadManager.STATUS_FAILED) {
-                menu.findItem(R.id.download).setVisible(true);
-            }
-            // 成功
-            else if (status == DownloadManager.STATUS_SUCCESSFUL) {
-                menu.findItem(R.id.download).setVisible(false);
-            }
-            // 暂停
-            else if (status == DownloadManager.STATUS_PAUSED) {
-                menu.findItem(R.id.download).setVisible(true);
-            }
-            // 等待
-            else if (status == DownloadManager.STATUS_PENDING ||
-                    status == DownloadManager.STATUS_WAITING) {
-                menu.findItem(R.id.download).setVisible(false);
-            }
-            // 下载中
-            else if (status == DownloadManager.STATUS_RUNNING) {
-                menu.findItem(R.id.download).setVisible(false);
-            }
+        if (videoUri == null) {
+            menu.findItem(R.id.download).setVisible(false);
+            menu.findItem(R.id.progress).setVisible(false);
         }
         else {
-            menu.findItem(R.id.download).setVisible(file == null || !file.exists());
-        }
+            File file = getVideoFile();
+            if ((file != null && file.exists())) {
+                menu.findItem(R.id.download).setVisible(false);
+                menu.findItem(R.id.progress).setVisible(false);
+            }
+            else {
+                if (mDownloadMsg != null) {
+                    MenuItem progressItem = menu.findItem(R.id.progress);
+                    // 正在下载
+                    if (isRunning(mDownloadMsg.getStatus())) {
+                        progressItem.setVisible(true);
 
-        menu.findItem(R.id.download).setVisible(false);// 暂时不支持下载
+                        long total = mDownloadMsg.getTotal() == 0 ? 1 : mDownloadMsg.getTotal();
+                        long progress = mDownloadMsg.getCurrent() == 0 ? 0 : mDownloadMsg.getCurrent();
+                        String progressed = String.valueOf(Math.round(progress * 100.0f / total));
+                        progressItem.setTitle(progressed + "%");
+                    }
+
+
+                }
+
+                // 下载失败、未下载
+                if (mDownloadMsg == null || mDownloadMsg.getStatus() == DownloadManager.STATUS_FAILED ||
+                        mDownloadMsg.isNull()) {
+                    menu.findItem(R.id.download).setVisible(true);
+                }
+            }
+        }
 
         return super.onPrepareOptionsMenu(menu);
     }
 
     private void download() {
-        File file = getVideoFile(videoUri);
+        File file = getVideoFile();
         Uri uri = Uri.parse(videoUri.toString());
         Request request = new Request(uri, Uri.fromFile(file));
-        request.setNotificationVisibility(Request.VISIBILITY_VISIBLE);
+        request.setNotificationVisibility(Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         request.setTitle(KeyGenerator.generateMD5(videoUri.toString()) + ".mp4");
         DownloadManager.getInstance().enqueue(request);
     }
@@ -434,14 +448,12 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.download) {
-            if (mDownloadMsg != null) {
-                // 失败
-                if (mDownloadMsg.getStatus() == DownloadManager.STATUS_FAILED) {
-                    DownloadManager.getInstance().resume(mDownloadMsg.getKey());
-                }
-            }
-            else {
+            if (mDownloadMsg == null ||
+                    mDownloadMsg.isNull()) {
                 download();
+            }
+            else if (mDownloadMsg.getStatus() == DownloadManager.STATUS_FAILED) {
+                DownloadManager.getInstance().resume(mDownloadMsg.getKey());
             }
 
             invalidateOptionsMenu();
@@ -460,9 +472,9 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
         return super.onOptionsItemSelected(item);
     }
 
-    private File getVideoFile(Uri uri) {
-        if (uri != null) {
-            return new File(SystemUtils.getSdcardPath() + File.separator + AppSettings.getVideoSavePath() + File.separator + KeyGenerator.generateMD5(uri.toString()) + ".mp4");
+    private File getVideoFile() {
+        if (shortUri != null) {
+            return new File(SystemUtils.getSdcardPath() + File.separator + AppSettings.getVideoSavePath() + File.separator + KeyGenerator.generateMD5(shortUri.toString()) + ".mp4");
         }
 
         return null;
@@ -475,22 +487,27 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public Uri downloadFileURI() {
-        return Uri.fromFile(getVideoFile(videoUri));
+        return Uri.fromFile(getVideoFile());
     }
 
     @Override
     public void onPublish(DownloadMsg downloadMsg) {
-        this.mDownloadMsg = downloadMsg;
-
+        mDownloadMsg = downloadMsg;
         int status = downloadMsg.getStatus();
 
+        if (downloadMsg.isNull()) {
+
+        }
         // 失败
-        if (status == DownloadManager.STATUS_FAILED) {
+        else if (status == DownloadManager.STATUS_FAILED) {
             showMessage("下载视频失败");
         }
         // 成功
         else if (status == DownloadManager.STATUS_SUCCESSFUL) {
-            showMessage(String.format(getString(R.string.msg_save_video_success), getVideoFile(videoUri).getParentFile().getAbsolutePath()));
+            showMessage(String.format(getString(R.string.msg_save_video_success), getVideoFile().getParentFile().getAbsolutePath()));
+
+            if (getVideoFile() != null)
+                SystemUtils.scanPhoto(this, getVideoFile());
         }
         // 暂停
         else if (status == DownloadManager.STATUS_PAUSED) {
@@ -502,6 +519,8 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
         // 下载中
         else if (status == DownloadManager.STATUS_RUNNING) {
         }
+
+        invalidateOptionsMenu();
     }
 
     @Override

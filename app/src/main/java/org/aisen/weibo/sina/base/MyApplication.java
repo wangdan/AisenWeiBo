@@ -43,7 +43,7 @@ public class MyApplication extends GlobalContext {
     public void onCreate() {
         super.onCreate();
 
-        DownloadManager.setup(this, BuildConfig.LOG_DEBUG, 3);
+        DownloadManager.setup(this, BuildConfig.LOG_DEBUG, 6);
 
         // 添加一些配置项
         SettingUtility.addSettings(this, "actions");

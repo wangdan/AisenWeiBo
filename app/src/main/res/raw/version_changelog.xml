@@ -13,6 +13,7 @@
 		<changelogtext>支持评论点赞.</changelogtext>
 		<changelogtext>支持热门话题.</changelogtext>
 		<changelogtext>支持视频横屏播放.</changelogtext>
+		<changelogtext>支持视频下载.</changelogtext>
 		<changelogtext>优化微博搜索接口，支持多图、视频等.</changelogtext>
 		<changelogtext>优化视频播放，解决视频链接过期不能播放的问题.</changelogtext>
 	</changelogversion>

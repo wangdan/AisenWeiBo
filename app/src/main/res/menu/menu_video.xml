@@ -5,5 +5,8 @@
         android:id="@+id/download" android:title="@string/download" app:showAsAction="always"/>
 
     <item
+        android:id="@+id/progress" android:title="" app:showAsAction="always"/>
+
+    <item
         android:id="@+id/browser" android:title="@string/to_browser" app:showAsAction="never"/>
 </menu>
