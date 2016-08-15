@@ -40,6 +40,7 @@ import org.aisen.weibo.sina.support.utils.ThemeUtils;
 import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 import org.aisen.weibo.sina.ui.fragment.timeline.ATimelineFragment;
+import org.aisen.weibo.sina.ui.widget.AisenTextView;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -356,8 +357,24 @@ public class SearchFragment extends ATimelineFragment {
             ArrayList<StatusContent> statusList = SinaSDK.getInstance(AppContext.getAccount().getAccessToken())
                                             .searchsResultStatuss(q, Integer.parseInt(nextPage), AppContext.getAccount().getCookie());
 
-            StatusContents datas = new StatusContents();
-            datas.setStatuses(statusList);
+            // 3、刷新微博数据
+            String[] ids = new String[statusList.size()];
+            for (int i = 0; i < statusList.size(); i++) {
+                ids[i] = statusList.get(i).getId() + "";
+            }
+
+            StatusContents datas = SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).statusShowBatch(ids);
+
+            for (StatusContent content : datas.getStatuses()) {
+                AisenTextView.addText(content.getText());
+
+                if (content.getRetweeted_status() != null) {
+                    String reUserName = "";
+                    if (content.getRetweeted_status().getUser() != null && !TextUtils.isEmpty(content.getRetweeted_status().getUser().getScreen_name()))
+                        reUserName = String.format("@%s :", content.getRetweeted_status().getUser().getScreen_name());
+                    AisenTextView.addText(reUserName + content.getRetweeted_status().getText());
+                }
+            }
 
             return datas;
         }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -58,8 +59,8 @@ public class TopicsHotFragment extends ARecycleViewSwipeRefreshFragment<WebHotTo
     private TabItem mMenu;
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         mMenu = savedInstanceState == null ? (TabItem) getArguments().getSerializable("menu")
                                            : (TabItem) savedInstanceState.getSerializable("menu");
@@ -70,7 +71,7 @@ public class TopicsHotFragment extends ARecycleViewSwipeRefreshFragment<WebHotTo
         super.setupRefreshView(savedInstanceSate);
 
         DefDividerItemView divider = new DefDividerItemView(getActivity(), R.color.divider_timeline_item);
-        divider.setSize(0.5f);
+        divider.setSize(1.0f);
         getRefreshView().addItemDecoration(divider);
     }
 
@@ -160,6 +161,13 @@ public class TopicsHotFragment extends ARecycleViewSwipeRefreshFragment<WebHotTo
             return SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).webGetHotTopics(mMenu.getType(), nextPage);
         }
 
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        super.onItemClick(parent, view, position, id);
+
+        TopicsHotTimelineFragment.launch(getActivity(), getAdapterItems().get(position));
     }
 
     @Override

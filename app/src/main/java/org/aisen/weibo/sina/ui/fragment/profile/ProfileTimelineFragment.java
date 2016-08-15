@@ -144,6 +144,13 @@ public class ProfileTimelineFragment extends ATimelineFragment {
             return statusContents;
         }
 
+        @Override
+        protected void onFailure(TaskException exception) {
+            super.onFailure(exception);
+
+            showMessage(exception.getMessage());
+        }
+
     }
 
     @Override

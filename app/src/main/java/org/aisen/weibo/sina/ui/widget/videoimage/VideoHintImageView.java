@@ -117,12 +117,12 @@ public class VideoHintImageView extends ImageView implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        if (videoBean == null || TextUtils.isEmpty(videoBean.getVideoUrl())) {
+//        if (videoBean == null || TextUtils.isEmpty(videoBean.getVideoUrl())) {
             VideoPlayerActivity.launchByShort(getContext(), urlBean.getUrl_short());
-        }
-        else {
-            VideoPlayerActivity.launchByVideo(getContext(), videoBean.getVideoUrl(), videoBean);
-        }
+//        }
+//        else {
+//            VideoPlayerActivity.launchByVideo(getContext(), videoBean.getVideoUrl(), videoBean);
+//        }
     }
 
     public void release() {

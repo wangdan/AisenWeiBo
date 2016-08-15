@@ -60,6 +60,7 @@ import org.aisen.weibo.sina.sinasdk.http.CommentsHotHttpUtility;
 import org.aisen.weibo.sina.sinasdk.http.HttpsUtility;
 import org.aisen.weibo.sina.sinasdk.http.TimelineCommentHttpUtility;
 import org.aisen.weibo.sina.sinasdk.http.TimelineHotHttpUtility;
+import org.aisen.weibo.sina.sinasdk.http.TimelineHotTopicsHttpUtility;
 import org.aisen.weibo.sina.sinasdk.http.TimelineHttpUtility;
 import org.aisen.weibo.sina.sinasdk.http.TopicHotHttpUtility;
 import org.aisen.weibo.sina.support.bean.LikeResultBean;
@@ -1811,6 +1812,35 @@ public class SinaSDK extends ABizLogic {
 
 		try {
 			return doGet(webConfig(), action, params, WebHotTopicssBean.class);
+		} catch (Exception e) {
+			if (e instanceof TaskException)
+				checkWebResult((TaskException) e);
+
+			throw e;
+		}
+	}
+
+	/**
+	 * 热门话题的微博列表
+	 *
+	 * @param uid
+	 * @param containerId
+	 * @return
+	 * @throws TaskException
+     */
+	public StatusContents webGetHotTopicsStatus(String uid, String containerId, String sinceId) throws TaskException {
+		Params params = new Params();
+		params.addParameter("uid", uid);
+		params.addParameter("containerid", String.format("230530%s__default__mobile_info_-_pageapp:2305576d91c8d1eef00b0e5caac7d245bc1350", containerId));
+		if (!TextUtils.isEmpty(sinceId)) {
+			params.addParameter("since_id", sinceId);
+		}
+
+		Setting action = newSetting("webGetHotTopicsStatus", "container/getIndex", "热门话题微博");
+		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TimelineHotTopicsHttpUtility.class.getName(), ""));
+
+		try {
+			return doGet(webConfig(), action, params, StatusContents.class);
 		} catch (Exception e) {
 			if (e instanceof TaskException)
 				checkWebResult((TaskException) e);

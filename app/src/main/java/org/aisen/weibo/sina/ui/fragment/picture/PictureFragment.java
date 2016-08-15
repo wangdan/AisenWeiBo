@@ -525,12 +525,15 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
 		if (getActivity() != null) {
-			File file = BitmapLoader.getInstance().getCacheFile(getOrigImage());
+			File file = BitmapLoader.getInstance().getCacheFile(getImage());
 			menu.findItem(R.id.savePicture).setVisible(file.exists());
 			menu.findItem(R.id.share).setVisible(file.exists());
 
 			MenuItem origItem = menu.findItem(R.id.origPicture);
-			origItem.setVisible(!file.exists());
+			if (file.exists())
+				origItem.setVisible(!origFile.exists());
+			else
+				origItem.setVisible(false);
 
 			if (origItem.isVisible()) {
 				if (downloadMsg != null && !downloadMsg.isNull()) {

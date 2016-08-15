@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.aisen.weibo.sina.ui.widget.KitkatViewGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                                                xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+                                                android:orientation="vertical" app:insetStatus="?attr/themeColor" app:insetStatusForeground="@color/statusForeground">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" android:background="@color/comm_white">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <org.aisen.android.ui.widget.AsToolbar
+                android:id="@+id/toolbar" android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/collapsingToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fitsSystemWindows="?attr/fitSystemWindows"
+                android:minHeight="?attr/actionBarSize" app:contentScrim="#00000000"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap" app:profileInsetForeground="#40000000"
+                app:statusBarScrim="?attr/colorPrimaryDark">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="haha"/>
+
+                <TextView
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginTop="8dip" android:text="heihei"/>
+
+            </android.support.design.widget.CollapsingToolbarLayout>
+        </android.support.design.widget.AppBarLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutContent"
+            android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipeRefreshLayout" android:layout_width="match_parent" android:layout_height="match_parent">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@id/recycleview"
+                    android:layout_width="match_parent" android:layout_height="match_parent"/>
+            </android.support.v4.widget.SwipeRefreshLayout>
+        </LinearLayout>
+
+        <include
+            android:id="@id/layoutLoading" layout="@layout/comm_lay_loading" android:layout_width="match_parent" android:layout_height="match_parent"
+            android:visibility="gone"/>
+
+        <include
+            android:id="@id/layoutLoadFailed" layout="@layout/comm_lay_loadfailed" android:layout_width="match_parent" android:layout_height="match_parent"
+            android:visibility="gone"/>
+
+        <include
+            android:id="@id/layoutEmpty" layout="@layout/comm_lay_emptyview" android:layout_width="match_parent" android:layout_height="match_parent"
+            android:visibility="gone"/>
+
+    </android.support.design.widget.CoordinatorLayout>
+</org.aisen.weibo.sina.ui.widget.KitkatViewGroup>

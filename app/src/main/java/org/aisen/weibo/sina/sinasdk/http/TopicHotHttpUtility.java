@@ -29,45 +29,51 @@ public class TopicHotHttpUtility extends HttpsUtility {
                 throw new TaskException("", result.getString("error"));
             }
 
-            if (result.containsKey("ok") && result.getInteger("ok") == 1) {
+            if (result.containsKey("ok")) {
+                if (result.getInteger("ok") == 0 && result.containsKey("msg")) {
+                    throw new TaskException("", result.getString("msg"));
+                }
+
                 JSONObject cardlistInfo = result.getJSONObject("cardlistInfo");
                 beans.setSince_id(cardlistInfo.getString("since_id"));
 
                 JSONArray cards = result.getJSONArray("cards");
 
-                JSONArray card_group = null;
-                for (int i = 0; i < cards.size(); i++) {
-                    if (cards.getJSONObject(i).containsKey("card_group")) {
-                        card_group = cards.getJSONObject(i).getJSONArray("card_group");
-                        break;
+                if (cards.size() > 0) {
+                    JSONArray card_group = null;
+                    for (int i = 0; i < cards.size(); i++) {
+                        if (cards.getJSONObject(i).containsKey("card_group")) {
+                            card_group = cards.getJSONObject(i).getJSONArray("card_group");
+                            break;
+                        }
                     }
-                }
 
-                if (card_group != null) {
-                    for (int i = 0; i < card_group.size(); i++) {
-                        JSONObject group = card_group.getJSONObject(i);
+                    if (card_group != null) {
+                        for (int i = 0; i < card_group.size(); i++) {
+                            JSONObject group = card_group.getJSONObject(i);
 
-                        WebHotTopicsBean bean = new WebHotTopicsBean();
-                        bean.setCard_type(group.getInteger("card_type"));
-                        // 普通样式
-                        if (bean.getCard_type() == 8) {
-                            bean.setPic(group.getString("pic"));
-                            bean.setTitle_sub(group.getString("title_sub"));
-                            bean.setCard_type_name(group.getString("card_type_name"));
-                            bean.setDesc1(group.getString("desc1"));
-                            bean.setDesc2(group.getString("desc2"));
-                            bean.setOid(group.getJSONObject("actionlog").getString("oid"));
-                            bean.setFid(group.getJSONObject("actionlog").getString("fid"));
-                        }
-                        // 多个图片、暂不支持
-                        else if (bean.getCard_type() == 3) {
-                            continue;
-                        }
-                        else {
-                            continue;
-                        }
+                            WebHotTopicsBean bean = new WebHotTopicsBean();
+                            bean.setCard_type(group.getInteger("card_type"));
+                            // 普通样式
+                            if (bean.getCard_type() == 8) {
+                                bean.setPic(group.getString("pic"));
+                                bean.setTitle_sub(group.getString("title_sub"));
+                                bean.setCard_type_name(group.getString("card_type_name"));
+                                bean.setDesc1(group.getString("desc1"));
+                                bean.setDesc2(group.getString("desc2"));
+                                bean.setOid(group.getJSONObject("actionlog").getString("oid"));
+                                bean.setFid(group.getJSONObject("actionlog").getString("fid"));
+                            }
+                            // 多个图片、暂不支持
+                            else if (bean.getCard_type() == 3) {
+                                continue;
+                            }
+                            else {
+                                continue;
+                            }
 
-                        beans.getList().add(bean);
+                            beans.getList().add(bean);
+                        }
                     }
                 }
 
