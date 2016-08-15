@@ -286,8 +286,8 @@ public class MenuFragment extends ABaseFragment {
 //        items.add(new NavMenuItem(MENU_MENTION, R.drawable.ic_drawer_at, R.string.draw_message, R.string.mention_title));
 //        items.add(new NavMenuItem(MENU_CMT, R.drawable.ic_question_answer_grey600_24dp, R.string.draw_comment));
         items.add(new NavMenuItem(MENU_NOTIFICATION, R.drawable.ic_notification_gray_24, R.string.draw_private_notification));
-        items.add(new NavMenuItem(MENU_MD, R.drawable.ic_email_grey600_24dp, R.string.draw_private_msg));
         items.add(new NavMenuItem(MENU_FAV, R.drawable.ic_unfavorite_dark, R.string.draw_fav, R.string.myfav_title));
+        items.add(new NavMenuItem(MENU_MD, R.drawable.ic_email_grey600_24dp, R.string.draw_private_msg));
 
         items.add(new NavMenuSeparator());
 

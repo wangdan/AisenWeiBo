@@ -1769,6 +1769,7 @@ public class SinaSDK extends ABizLogic {
 		HttpConfig config = configHttpConfig();
 		config.baseUrl = WEB_BASE_URL;
 		config.cookie = AppContext.getAccount().getCookie();
+		config.addHeader("User-Agent", "Mozilla/5.0 (Linux; Android 5.1.1; SM801 Build/LMY47V) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/39.0.0.0 Mobile Safari/537.36");
 
 		return config;
 	}
@@ -1870,8 +1871,11 @@ public class SinaSDK extends ABizLogic {
 		Setting action = newSetting("webGetHotTopicsHotStatus", "container/getIndex", "热门话题热门微博");
 		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TimelineHotTopicsHttpUtility.class.getName(), ""));
 
+		HttpConfig config = webConfig();
+		config.addHeader("Referer", String.format("http://m.weibo.cn/p/index?containerid=%s", containerId));
+
 		try {
-			return doGet(webConfig(), action, params, StatusContents.class);
+			return doGet(config, action, params, StatusContents.class);
 		} catch (Exception e) {
 			if (e instanceof TaskException)
 				checkWebResult((TaskException) e);
@@ -1898,6 +1902,9 @@ public class SinaSDK extends ABizLogic {
 		HttpConfig config = webConfig();
 		config.addHeader("Referer", String.format("http://m.weibo.cn/status/%s", comment.getStatusId()));
 		config.addHeader("Content-Type", "application/x-www-form-urlencoded");
+		config.addHeader("Host", "m.weibo.cn");
+		config.addHeader("Accept-Language", "zh-CN,en-US;q=0.8");
+		config.addHeader("Accept", "application/json, text/plain, */*");
 
 		String body = doPost(config, action, null, params, null, String.class);
 		if (!TextUtils.isEmpty(body)) {
