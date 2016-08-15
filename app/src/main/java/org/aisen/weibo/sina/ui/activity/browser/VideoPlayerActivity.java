@@ -508,7 +508,12 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-        Logger.d("VideoPlayer", newConfig.orientation + ", ");
+        if (newConfig.orientation == 2) {
+            getToolbar().setVisibility(View.GONE);
+        }
+        else {
+            getToolbar().setVisibility(View.VISIBLE);
+        }
     }
 
 }

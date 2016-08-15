@@ -91,7 +91,9 @@
             </intent-filter>
         </activity>
         <!--视频播放-->
-        <activity android:name=".ui.activity.browser.VideoPlayerActivity">
+        <activity android:name=".ui.activity.browser.VideoPlayerActivity"
+                  android:configChanges="orientation|screenSize|keyboardHidden"
+                  android:screenOrientation="user">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <data android:scheme="videopath"/>
