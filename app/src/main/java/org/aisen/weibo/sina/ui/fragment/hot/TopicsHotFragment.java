@@ -3,6 +3,7 @@ package org.aisen.weibo.sina.ui.fragment.hot;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -158,7 +159,19 @@ public class TopicsHotFragment extends ARecycleViewSwipeRefreshFragment<WebHotTo
 
         @Override
         protected WebHotTopicssBean workInBackground(RefreshMode mode, String previousPage, String nextPage, Void... params) throws TaskException {
-            return SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).webGetHotTopics(mMenu.getType(), nextPage);
+            String sinceId = null;
+            int page = 0;
+
+            if (!TextUtils.isEmpty(nextPage)) {
+                if (nextPage.startsWith("page_")) {
+                    page = Integer.parseInt(nextPage.replace("page_", ""));
+                }
+                else {
+                    sinceId = nextPage;
+                }
+            }
+
+            return SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).webGetHotTopics(mMenu.getType(), sinceId, page);
         }
 
     }
@@ -167,7 +180,7 @@ public class TopicsHotFragment extends ARecycleViewSwipeRefreshFragment<WebHotTo
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         super.onItemClick(parent, view, position, id);
 
-        TopicsHotTimelineFragment.launch(getActivity(), getAdapterItems().get(position));
+        TopicsHotTimelinePagerFragment.launch(getActivity(), getAdapterItems().get(position));
     }
 
     @Override

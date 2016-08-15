@@ -17,8 +17,13 @@ public class TopicsHotPaging implements IPaging<WebHotTopicsBean, WebHotTopicssB
 
     @Override
     public void processData(WebHotTopicssBean newDatas, WebHotTopicsBean firstData, WebHotTopicsBean lastData) {
-        if (newDatas != null && !TextUtils.isEmpty(newDatas.getSince_id())) {
-            nextPage = newDatas.getSince_id();
+        if (newDatas != null) {
+            if (!TextUtils.isEmpty(newDatas.getSince_id())) {
+                nextPage = newDatas.getSince_id();
+            }
+            else if (newDatas.getPage() != -1) {
+                nextPage = "page_" + newDatas.getPage();
+            }
         }
     }
 

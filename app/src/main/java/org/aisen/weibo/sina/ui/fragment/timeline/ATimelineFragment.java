@@ -179,13 +179,17 @@ public abstract class ATimelineFragment extends ARecycleViewSwipeRefreshFragment
 
                     @Override
                     protected String loadingText() {
-                        return String.format(getString(R.string.loading_status), AppSettings.getCommentCount());
+                        return String.format(getString(R.string.loading_status), timelineCount());
                     }
 
                 };
             }
 
         };
+    }
+
+    protected int timelineCount() {
+        return AppSettings.getCommentCount();
     }
 
     class TimelineAdapter extends BasicRecycleViewAdapter<StatusContent> {

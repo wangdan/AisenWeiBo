@@ -1,21 +1,17 @@
 package org.aisen.weibo.sina.ui.fragment.hot;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
 
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.support.paging.IPaging;
-import org.aisen.android.ui.activity.basic.BaseActivity;
-import org.aisen.android.ui.activity.container.FragmentArgs;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContents;
 import org.aisen.weibo.sina.sinasdk.bean.WebHotTopicsBean;
 import org.aisen.weibo.sina.support.paging.HotPaging;
-import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 import org.aisen.weibo.sina.ui.fragment.timeline.ATimelineFragment;
 import org.aisen.weibo.sina.ui.widget.AisenTextView;
 
@@ -26,38 +22,29 @@ import org.aisen.weibo.sina.ui.widget.AisenTextView;
  */
 public class TopicsHotTimelineFragment extends ATimelineFragment {
 
-    public static void launch(Activity from, WebHotTopicsBean bean) {
-        FragmentArgs args = new FragmentArgs();
-        args.add("bean", bean);
+    public static TopicsHotTimelineFragment newInstance(WebHotTopicsBean bean, Type type) {
+        Bundle args = new Bundle();
+        args.putSerializable("bean", bean);
+        args.putString("type", type.toString());
 
-        SinaCommonActivity.launch(from , TopicsHotTimelineFragment.class, args);
+        TopicsHotTimelineFragment fragment = new TopicsHotTimelineFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
-    private WebHotTopicsBean mBean;
+    public enum Type {
+        recommend, hot
+    }
 
-//    @Override
-//    public int inflateContentView() {
-//        return -1;
-//    }
-//
-//    @Override
-//    public int inflateActivityContentView() {
-//        return R.layout.ui_hottopics_timeline;
-//    }
-//
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        InjectUtility.initInjectedView(getActivity(), this, ((BaseActivity) getActivity()).getRootView());
-//        layoutInit(inflater, savedInstanceState);
-//
-//        return null;
-//    }
+    private Type mType;
+    private WebHotTopicsBean mBean;
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
         outState.putSerializable("bean", mBean);
+        outState.putString("type", mType.toString());
     }
 
     @Override
@@ -66,15 +53,13 @@ public class TopicsHotTimelineFragment extends ATimelineFragment {
 
         mBean = savedInstanceState != null ? (WebHotTopicsBean) savedInstanceState.getSerializable("bean")
                                            : (WebHotTopicsBean) getArguments().getSerializable("bean");
+        mType = savedInstanceState != null ? Type.valueOf(savedInstanceState.getString("type"))
+                                           : Type.valueOf(getArguments().getString("type"));
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        BaseActivity activity = (BaseActivity) getActivity();
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        activity.getSupportActionBar().setTitle(mBean.getCard_type_name());
+    protected int timelineCount() {
+        return 10;
     }
 
     @Override
@@ -95,8 +80,29 @@ public class TopicsHotTimelineFragment extends ATimelineFragment {
 
         @Override
         protected StatusContents workInBackground(RefreshMode mode, String previousPage, String nextPage, Void... p) throws TaskException {
-            String uid = AppContext.getAccount().getUid();
-            StatusContents result = SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).webGetHotTopicsStatus(uid, mBean.getOid(), nextPage);
+            // 系统繁忙的错误，多尝试几次接口拉取
+            StatusContents result = null;
+            int retry = 5;
+            while (true) {
+                try {
+                    if (mType == Type.recommend) {
+                        String uid = AppContext.getAccount().getUid();
+                        result = SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).webGetHotTopicsRecommendStatus(uid, mBean.getOid(), nextPage);
+                    }
+                    else {
+                        result = SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).webGetHotTopicsHotStatus(mBean.getOid(), nextPage);
+                    }
+                } catch (TaskException e) {
+                    // 系统繁忙错误重试几次
+                    if ("1040002".equals(e.getCode()) && --retry > 0) {
+                        continue;
+                    }
+
+                    throw e;
+                }
+
+                break;
+            }
 
             for (StatusContent content : result.getStatuses()) {
                 AisenTextView.addText(content.getText());
@@ -108,6 +114,9 @@ public class TopicsHotTimelineFragment extends ATimelineFragment {
                     AisenTextView.addText(reUserName + content.getRetweeted_status().getText());
                 }
             }
+
+            if (!result.isEndPaging())
+                result.setEndPaging(result.getStatuses().size() <= 3);
 
             return result;
         }

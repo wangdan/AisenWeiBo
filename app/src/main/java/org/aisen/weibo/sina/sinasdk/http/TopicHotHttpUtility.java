@@ -35,7 +35,17 @@ public class TopicHotHttpUtility extends HttpsUtility {
                 }
 
                 JSONObject cardlistInfo = result.getJSONObject("cardlistInfo");
-                beans.setSince_id(cardlistInfo.getString("since_id"));
+                if (cardlistInfo.containsKey("since_id")) {
+                    beans.setSince_id(cardlistInfo.getString("since_id"));
+                }
+                else if (cardlistInfo.containsKey("page")) {
+                    beans.setPage(cardlistInfo.getInteger("page"));
+                }
+                else {
+                    beans.setEndPaging(true);
+
+                    return (T) beans;
+                }
 
                 JSONArray cards = result.getJSONArray("cards");
 

@@ -2,6 +2,7 @@ package org.aisen.weibo.sina.ui.activity.browser;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -69,7 +70,7 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
     @ViewInject(id = R.id.layoutContent)
     View layoutContent;
 
-    private VideoView mContentView;
+    private VideoView mVideoPlayer;
     private View mControlsView;
 
     private Uri videoUri;
@@ -84,7 +85,7 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
         setContentView(R.layout.ui_video_player);
 
         mControlsView = findViewById(R.id.fullscreen_content_controls);
-        mContentView = (VideoView) findViewById(R.id.videoView);
+        mVideoPlayer = (VideoView) findViewById(R.id.videoView);
         TextView tv = (TextView) findViewById(R.id.video_title_text);
 
         tv.setVisibility(View.INVISIBLE);
@@ -117,23 +118,23 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
         videoUri = uri;
 
         mediaController = new MediaController(this);
-        mediaController.setAnchorView(mContentView);
-        mContentView.setMediaController(mediaController);
-        mContentView.requestFocus();
+        mediaController.setAnchorView(mVideoPlayer);
+        mVideoPlayer.setMediaController(mediaController);
+        mVideoPlayer.requestFocus();
 
-        mContentView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+        mVideoPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 Logger.w(TAG, "onPrepared");
 //                if (mPlayingWhenPaused)
-                mContentView.start();
+                mVideoPlayer.start();
 
                 layoutContent.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
             }
         });
 
-        mContentView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+        mVideoPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
 
             @Override
             public boolean onError(MediaPlayer mp, int what, int extra) {
@@ -144,16 +145,16 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
             }
         });
 
-        mContentView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+        mVideoPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 
             @Override
             public void onCompletion(MediaPlayer mp) {
                 Logger.w(TAG, "onCompletion");
-                mContentView.seekTo(1);
+                mVideoPlayer.seekTo(1);
             }
         });
 
-        mContentView.setVideoURI(uri);
+        mVideoPlayer.setVideoURI(uri);
 
         invalidateOptionsMenu();
 
@@ -167,7 +168,7 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onBackPressed() {
-        mContentView.stopPlayback();
+        mVideoPlayer.stopPlayback();
         super.onBackPressed();
     }
 
@@ -176,14 +177,14 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void onPause() {
         super.onPause();
-        if (mContentView.isPlaying()) {
-            mContentView.pause();
+        if (mVideoPlayer.isPlaying()) {
+            mVideoPlayer.pause();
             mPlayingWhenPaused = true;
         } else {
             mPlayingWhenPaused = false;
         }
 
-        mPositionWhenPaused = mContentView.getCurrentPosition();
+        mPositionWhenPaused = mVideoPlayer.getCurrentPosition();
 
         UMengUtil.onPageEnd(this, "视频播放页");
 
@@ -202,7 +203,7 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
     protected void onResume() {
         super.onResume();
         if (mPositionWhenPaused >= 0) {
-            mContentView.seekTo(mPositionWhenPaused);
+            mVideoPlayer.seekTo(mPositionWhenPaused);
             mPositionWhenPaused = -1;
         }
 
@@ -257,16 +258,16 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
             @Override
             public VideoBean workInBackground(Void... params) throws TaskException {
                 String id = KeyGenerator.generateMD5(url);
-                VideoBean videoBean = SinaDB.getDB().selectById(null, VideoBean.class, id);
-                if (videoBean != null && !TextUtils.isEmpty(videoBean.getImage()) && !TextUtils.isEmpty(videoBean.getVideoUrl())) {
-                    return videoBean;
-                }
+//                VideoBean videoBean = SinaDB.getDB().selectById(null, VideoBean.class, id);
+//                if (videoBean != null && !TextUtils.isEmpty(videoBean.getImage()) && !TextUtils.isEmpty(videoBean.getVideoUrl())) {
+//                    return videoBean;
+//                }
 
                 UrlsBean urlsBean = SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).shortUrlExpand(url);
                 if (urlsBean != null && urlsBean.getUrls() != null && urlsBean.getUrls().size() > 0) {
                     UrlBean urlBean = urlsBean.getUrls().get(0);
 
-                    videoBean = new VideoBean();
+                    VideoBean videoBean = new VideoBean();
                     videoBean.setIdStr(KeyGenerator.generateMD5(url));
                     videoBean.setShortUrl(urlBean.getUrl_short());
                     videoBean.setLongUrl(urlBean.getUrl_long());
@@ -501,6 +502,13 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
         // 下载中
         else if (status == DownloadManager.STATUS_RUNNING) {
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        Logger.d("VideoPlayer", newConfig.orientation + ", ");
     }
 
 }

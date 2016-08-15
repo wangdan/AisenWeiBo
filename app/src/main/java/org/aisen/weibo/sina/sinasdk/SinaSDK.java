@@ -1800,11 +1800,14 @@ public class SinaSDK extends ABizLogic {
 	 * @return
 	 * @throws TaskException
      */
-	public WebHotTopicssBean webGetHotTopics(String containerId, String sinceId) throws TaskException {
+	public WebHotTopicssBean webGetHotTopics(String containerId, String sinceId, int page) throws TaskException {
 		Params params = new Params();
 		params.addParameter("containerid", containerId);
 		if (!TextUtils.isEmpty(sinceId)) {
 			params.addParameter("since_id", sinceId);
+		}
+		else if (page > 0) {
+			params.addParameter("page", String.valueOf(page));
 		}
 
 		Setting action = newSetting("webGetHotTopics", "container/getIndex", "热门话题");
@@ -1821,14 +1824,14 @@ public class SinaSDK extends ABizLogic {
 	}
 
 	/**
-	 * 热门话题的微博列表
+	 * 热门话题的推荐微博列表
 	 *
 	 * @param uid
 	 * @param containerId
 	 * @return
 	 * @throws TaskException
      */
-	public StatusContents webGetHotTopicsStatus(String uid, String containerId, String sinceId) throws TaskException {
+	public StatusContents webGetHotTopicsRecommendStatus(String uid, String containerId, String sinceId) throws TaskException {
 		Params params = new Params();
 		params.addParameter("uid", uid);
 		params.addParameter("containerid", String.format("230530%s__default__mobile_info_-_pageapp:2305576d91c8d1eef00b0e5caac7d245bc1350", containerId));
@@ -1836,7 +1839,35 @@ public class SinaSDK extends ABizLogic {
 			params.addParameter("since_id", sinceId);
 		}
 
-		Setting action = newSetting("webGetHotTopicsStatus", "container/getIndex", "热门话题微博");
+		Setting action = newSetting("webGetHotTopicsStatus", "container/getIndex", "热门话题推荐微博");
+		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TimelineHotTopicsHttpUtility.class.getName(), ""));
+
+		try {
+			return doGet(webConfig(), action, params, StatusContents.class);
+		} catch (Exception e) {
+			if (e instanceof TaskException)
+				checkWebResult((TaskException) e);
+
+			throw e;
+		}
+	}
+
+	/**
+	 * 热门话题的推荐推荐微博列表
+	 *
+	 * @param containerId
+	 * @param sinceId
+	 * @return
+	 * @throws TaskException
+     */
+	public StatusContents webGetHotTopicsHotStatus(String containerId, String sinceId) throws TaskException {
+		Params params = new Params();
+		params.addParameter("containerid", containerId);
+		if (!TextUtils.isEmpty(sinceId)) {
+			params.addParameter("since_id", sinceId);
+		}
+
+		Setting action = newSetting("webGetHotTopicsHotStatus", "container/getIndex", "热门话题热门微博");
 		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TimelineHotTopicsHttpUtility.class.getName(), ""));
 
 		try {

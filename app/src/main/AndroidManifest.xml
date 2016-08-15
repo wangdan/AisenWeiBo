@@ -30,7 +30,7 @@
                  android:theme="@style/AppBaseTheme">
         <!--友盟配置-->
         <!--release-->
-        <meta-data android:value="56dee57be0f55a98a00032d8" android:name="UMENG_APPKEY"/>
+        <meta-data android:name="UMENG_APPKEY" android:value="56dee57be0f55a98a00032d8"/>
         <!--debug-->
         <!--<meta-data android:name="UMENG_APPKEY" android:value="56dee56ae0f55af007001d9d"/>-->
         <!-- 启动界面 -->

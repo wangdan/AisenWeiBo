@@ -49,6 +49,11 @@ public class TimelineHotFragment extends ATimelineFragment {
         return new HotPaging();
     }
 
+    @Override
+    protected int timelineCount() {
+        return 10;
+    }
+
     class HotTimelineTask extends ATimelineTask {
 
         public HotTimelineTask(RefreshMode mode) {

@@ -11,6 +11,7 @@ import org.aisen.weibo.sina.sinasdk.bean.StatusContents;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by wangdan on 16/7/21.
@@ -25,7 +26,7 @@ public class TimelineHotTopicsHttpUtility extends HttpsUtility {
             JSONObject result = JSONObject.parseObject(resultStr);
 
             if (result.containsKey("error")) {
-                throw new TaskException("", result.getString("error"));
+                throw new TaskException(result.getString("error_code"), result.getString("error"));
             }
 
             if (result.containsKey("ok")) {
@@ -38,15 +39,28 @@ public class TimelineHotTopicsHttpUtility extends HttpsUtility {
                 if (cards.size() > 0) {
                     JSONArray card_group = null;
                     for (int i = 0; i < cards.size(); i++) {
-                        if (cards.getJSONObject(i).containsKey("card_group")) {
-                            card_group = cards.getJSONObject(i).getJSONArray("card_group");
-                            break;
+                        JSONObject card = cards.getJSONObject(i);
+                        if (card.containsKey("card_group")) {
+//                            if ("timeline".equals(card.getString("_cur_filter")) || "".equals(card.getString("_cur_filter"))) {
+//
+//                            }
+                            if (card.containsKey("_cur_filter")) {
+                                card_group = cards.getJSONObject(i).getJSONArray("card_group");
+                                break;
+                            }
                         }
                     }
 
-                    String[] ids = new String[card_group.size()];
+                    List<String> idList = new ArrayList<>();
                     for (int i = 0; i < card_group.size(); i++) {
-                        ids[i] = card_group.getJSONObject(i).getJSONObject("mblog").getString("id");
+                        JSONObject group = card_group.getJSONObject(i);
+                        if (group.containsKey("mblog")) {
+                            idList.add(group.getJSONObject("mblog").getString("id"));
+                        }
+                    }
+                    String[] ids = new String[idList.size()];
+                    for (int i = 0; i < idList.size(); i++) {
+                        ids[i] = idList.get(i);
                     }
                     beans = SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).statusShowBatch(ids); ;
                 }
@@ -55,8 +69,18 @@ public class TimelineHotTopicsHttpUtility extends HttpsUtility {
                     beans.setStatuses(new ArrayList<StatusContent>());
                 }
 
-                JSONObject cardlistInfo = result.getJSONObject("cardlistInfo");
-                beans.setSince_id(cardlistInfo.getString("since_id"));
+                if (result.containsKey("cardlistInfo")) {
+                    JSONObject cardlistInfo = result.getJSONObject("cardlistInfo");
+                    beans.setSince_id(cardlistInfo.getString("since_id"));
+
+                    // 是否加载完了
+                    int total = cardlistInfo.getInteger("total");
+                    beans.setEndPaging(beans.getStatuses().size() == total);
+                }
+                else if (result.containsKey("pageInfo")) {
+                    JSONObject cardlistInfo = result.getJSONObject("pageInfo");
+                    beans.setSince_id(cardlistInfo.getString("since_id"));
+                }
 
                 return (T) beans;
             }
