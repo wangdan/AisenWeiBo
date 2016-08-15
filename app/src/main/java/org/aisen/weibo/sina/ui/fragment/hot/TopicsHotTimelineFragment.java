@@ -2,6 +2,7 @@ package org.aisen.weibo.sina.ui.fragment.hot;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
@@ -65,6 +66,13 @@ public class TopicsHotTimelineFragment extends ATimelineFragment {
     @Override
     public void requestData(RefreshMode mode) {
         new HotTimelineTask(mode != RefreshMode.update ? RefreshMode.reset : mode).execute();
+    }
+
+    @Override
+    protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
+        super.layoutInit(inflater, savedInstanceSate);
+
+        getSwipeRefreshLayout().setEnabled(false);
     }
 
     @Override

@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.view.LayoutInflater;
+import android.widget.TextView;
 
 import org.aisen.android.support.bean.TabItem;
+import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.activity.container.FragmentArgs;
 import org.aisen.android.ui.fragment.ATabsTabLayoutFragment;
@@ -28,11 +31,16 @@ public class TopicsHotTimelinePagerFragment extends ATabsTabLayoutFragment<TabIt
         SinaCommonActivity.launch(from, TopicsHotTimelinePagerFragment.class, args);
     }
 
+    @ViewInject(id = R.id.txtDesc1)
+    TextView txtDesc1;
+    @ViewInject(id = R.id.txtDesc2)
+    TextView txtDesc2;
+
     private WebHotTopicsBean mBean;
 
     @Override
     public int inflateContentView() {
-        return R.layout.ui_settings_tabs;
+        return R.layout.ui_topicshot_timeline_tabs;
     }
 
     @Override
@@ -54,7 +62,15 @@ public class TopicsHotTimelinePagerFragment extends ATabsTabLayoutFragment<TabIt
         super.onCreate(savedInstanceState);
 
         mBean = savedInstanceState == null ? (WebHotTopicsBean) getArguments().getSerializable("bean")
-                                           : (WebHotTopicsBean) savedInstanceState.getSerializable("bean");
+                : (WebHotTopicsBean) savedInstanceState.getSerializable("bean");
+    }
+
+    @Override
+    protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceState) {
+        super.layoutInit(inflater, savedInstanceState);
+
+        txtDesc1.setText(mBean.getDesc1());
+        txtDesc2.setText(mBean.getDesc2());
     }
 
     @Override
@@ -72,7 +88,7 @@ public class TopicsHotTimelinePagerFragment extends ATabsTabLayoutFragment<TabIt
         ArrayList<TabItem> items = new ArrayList<>();
 
         items.add(new TabItem("0", "推荐"));
-        items.add(new TabItem("1", "热门"));
+        items.add(new TabItem("1", "热门讨论"));
 
         return items;
     }
@@ -81,8 +97,7 @@ public class TopicsHotTimelinePagerFragment extends ATabsTabLayoutFragment<TabIt
     protected Fragment newFragment(TabItem bean) {
         if ("0".equals(bean.getType())) {
             return TopicsHotTimelineFragment.newInstance(mBean, TopicsHotTimelineFragment.Type.recommend);
-        }
-        else if ("1".equals(bean.getType())) {
+        } else if ("1".equals(bean.getType())) {
             return TopicsHotTimelineFragment.newInstance(mBean, TopicsHotTimelineFragment.Type.hot);
         }
 
