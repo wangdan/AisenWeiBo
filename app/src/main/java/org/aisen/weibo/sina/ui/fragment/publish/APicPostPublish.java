@@ -56,6 +56,8 @@ public abstract class APicPostPublish extends APublishFragment {
         if (pics == null || pics.length != 1)
             return;
 
+        getPublishBean().setPics(null);
+
         new UploadPicTask().execute(pics);
     }
 
@@ -127,7 +129,8 @@ public abstract class APicPostPublish extends APublishFragment {
 //                    return true;
 //                }
 
-                publishProgress(uploadPictureBean.getThumbnail_pic());
+                thumbnailUrl = thumbnailUrl.replace("bmiddle", "large").replace("thumbnail", "large");
+                publishProgress(thumbnailUrl);
 
                 return true;
             }
