@@ -357,6 +357,14 @@ public class SearchFragment extends ATimelineFragment {
             ArrayList<StatusContent> statusList = SinaSDK.getInstance(AppContext.getAccount().getAccessToken())
                                             .searchsResultStatuss(q, Integer.parseInt(nextPage), AppContext.getAccount().getCookie());
 
+            if (statusList.size() == 0) {
+                StatusContents result = new StatusContents();
+                result.setStatuses(new ArrayList<StatusContent>());
+                result.setEndPaging(true);
+
+                return result;
+            }
+
             // 3、刷新微博数据
             String[] ids = new String[statusList.size()];
             for (int i = 0; i < statusList.size(); i++) {

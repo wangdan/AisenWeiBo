@@ -53,6 +53,14 @@ public class TimelineHotTopicsHttpUtility extends HttpsUtility {
                         }
                     }
 
+                    if (card_group.size() == 0) {
+                        beans = new StatusContents();
+                        beans.setStatuses(new ArrayList<StatusContent>());
+                        beans.setEndPaging(true);
+
+                        return (T) beans;
+                    }
+
                     List<String> idList = new ArrayList<>();
                     for (int i = 0; i < card_group.size(); i++) {
                         JSONObject group = card_group.getJSONObject(i);

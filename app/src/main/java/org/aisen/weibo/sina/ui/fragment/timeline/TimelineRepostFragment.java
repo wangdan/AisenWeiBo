@@ -210,7 +210,8 @@ public class TimelineRepostFragment extends AListFragment<StatusContent, StatusC
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         super.onItemClick(parent, view, position, id);
 
-        TimelineDetailPagerFragment.launch(getActivity(), getAdapterItems().get(position));
+        if (position < getAdapterItems().size())
+            TimelineDetailPagerFragment.launch(getActivity(), getAdapterItems().get(position));
     }
 
     @Override

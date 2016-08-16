@@ -23,6 +23,7 @@ import org.aisen.android.common.utils.Logger;
 import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
+import org.aisen.android.support.action.IAction;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.download.DownloadManager;
@@ -38,6 +39,7 @@ import org.aisen.weibo.sina.sinasdk.SinaSDK;
 import org.aisen.weibo.sina.sinasdk.bean.UrlBean;
 import org.aisen.weibo.sina.sinasdk.bean.UrlsBean;
 import org.aisen.weibo.sina.support.bean.VideoBean;
+import org.aisen.weibo.sina.support.permissions.SdcardPermissionAction;
 import org.aisen.weibo.sina.support.sqlit.SinaDB;
 import org.aisen.weibo.sina.support.utils.UMengUtil;
 
@@ -88,6 +90,10 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setTitle("");
+
+        if (getResources().getConfiguration().orientation == 2) {
+            getToolbar().setVisibility(View.GONE);
+        }
 
         mPlayingWhenPaused = true;
 
@@ -437,12 +443,19 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void download() {
-        File file = getVideoFile();
-        Uri uri = Uri.parse(videoUri.toString());
-        Request request = new Request(uri, Uri.fromFile(file));
-        request.setNotificationVisibility(Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setTitle(KeyGenerator.generateMD5(videoUri.toString()) + ".mp4");
-        DownloadManager.getInstance().enqueue(request);
+        new IAction(this, new SdcardPermissionAction(this, null)) {
+
+            @Override
+            public void doAction() {
+                File file = getVideoFile();
+                Uri uri = Uri.parse(videoUri.toString());
+                Request request = new Request(uri, Uri.fromFile(file));
+                request.setNotificationVisibility(Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                request.setTitle(KeyGenerator.generateMD5(videoUri.toString()) + ".mp4");
+                DownloadManager.getInstance().enqueue(request);
+            }
+
+        }.run();
     }
 
     @Override
