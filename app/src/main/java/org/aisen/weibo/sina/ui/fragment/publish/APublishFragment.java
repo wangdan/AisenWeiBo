@@ -489,6 +489,7 @@ public abstract class APublishFragment extends ABaseFragment
 	 */
 	void getPicture(View v) {
 		// 已经有图片了
+		// 屏蔽删图片Dialog
 		if (false && getPublishBean().getExtras() != null &&
 				(getPublishBean().getPics() != null && getPublishBean().getPics().length > 0) || getPublishBean().getParams().containsKey("url")) {
 			new AlertDialogWrapper.Builder(getActivity())
@@ -529,7 +530,7 @@ public abstract class APublishFragment extends ABaseFragment
 									// 相册
 									case 0:
 										String[] images = getPublishBean().getPics();
-										PicturePickFragment.launch(APublishFragment.this, 9, images, 3333);
+										PicturePickFragment.launch(APublishFragment.this, picPickerSize(), images, 3333);
 										break;
 									// 拍照
 									case 1:
@@ -554,6 +555,10 @@ public abstract class APublishFragment extends ABaseFragment
 			}
 
 		}.run();
+	}
+
+	int picPickerSize() {
+		return 9;
 	}
 
 	/**
@@ -809,8 +814,19 @@ public abstract class APublishFragment extends ABaseFragment
         }
         getPublishBean().setPics(pics);
 
+		onPicChanged(new String[]{ image });
+
 		// 刷新视图
 		refreshUI();
+	}
+
+	/**
+	 * 图片选择发生了改变
+	 *
+	 * @param pics
+     */
+	protected void onPicChanged(String[] pics) {
+		Logger.w(pics);
 	}
 
 	@Override
@@ -868,9 +884,10 @@ public abstract class APublishFragment extends ABaseFragment
         else if (requestCode == 3333 && resultCode == Activity.RESULT_OK) {
             if (data != null) {
                 String[] pics = data.getStringArrayExtra("pics");
-				Logger.w(pics);
                 if (pics != null) {
                     getPublishBean().setPics(pics);
+
+					onPicChanged(pics);
 
                     refreshUI();
                 }

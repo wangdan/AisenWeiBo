@@ -267,7 +267,7 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
 //                    return videoBean;
 //                }
 
-                UrlsBean urlsBean = SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).shortUrlExpand(url);
+                UrlsBean urlsBean = SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).urlShort2Long(url);
                 if (urlsBean != null && urlsBean.getUrls() != null && urlsBean.getUrls().size() > 0) {
                     UrlBean urlBean = urlsBean.getUrls().get(0);
 

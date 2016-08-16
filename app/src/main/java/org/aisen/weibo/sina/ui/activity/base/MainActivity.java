@@ -422,7 +422,7 @@ public class MainActivity extends BaseActivity
 
             UMengUtil.onEvent(MainActivity.this, "hot_status");
             break;
-        // 热门微博
+        // 热门话题
         case MenuFragment.MENU_HOT_TOPICS:
             new IAction(MainActivity.this, new WebLoginAction(MainActivity.this, BizFragment.createBizFragment(this))) {
 

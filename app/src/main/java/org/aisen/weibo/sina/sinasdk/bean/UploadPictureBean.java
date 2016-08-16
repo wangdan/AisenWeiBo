@@ -16,6 +16,10 @@ public class UploadPictureBean implements Serializable {
 
     private String pic_id;// 服务端返回的id
 
+    private String shortUrl;
+
+    private String thumbnail_pic;
+
     private String error;// 是否发生了异常
 
     private String path;// 本地路径
@@ -52,4 +56,19 @@ public class UploadPictureBean implements Serializable {
         this.pic_id = pic_id;
     }
 
+    public String getShortUrl() {
+        return shortUrl;
+    }
+
+    public void setShortUrl(String shortUrl) {
+        this.shortUrl = shortUrl;
+    }
+
+    public String getThumbnail_pic() {
+        return thumbnail_pic;
+    }
+
+    public void setThumbnail_pic(String thumbnail_pic) {
+        this.thumbnail_pic = thumbnail_pic;
+    }
 }

@@ -98,7 +98,7 @@ public class VideoService {
                 }
 
                 Logger.w(TAG, parseArr);
-                UrlsBean urlsBean = SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).shortUrlExpand(parseArr);
+                UrlsBean urlsBean = SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).urlShort2Long(parseArr);
                 for (UrlBean urlBean : urlsBean.getUrls()) {
                     String id = KeyGenerator.generateMD5(urlBean.getUrl_short());
 
@@ -212,7 +212,7 @@ public class VideoService {
                 }
 
                 Logger.w(TAG, parseArr);
-                UrlsBean urlsBean = SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).shortUrlExpand(parseArr);
+                UrlsBean urlsBean = SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).urlShort2Long(parseArr);
                 for (UrlBean urlBean : urlsBean.getUrls()) {
                     String id = KeyGenerator.generateMD5(urlBean.getUrl_short());
 
@@ -288,6 +288,15 @@ public class VideoService {
             throw new TaskException("123", "解析链接失败");
         }
 
+        if (video.getShortUrl().startsWith("http://t.cn/")) {
+            UrlsBean urlsBean = SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).urlShort2Long(video.getShortUrl());
+            if (urlsBean.getUrls() != null && urlsBean.getUrls().size() > 0) {
+                video.setImage(urlsBean.getUrls().get(0).getUrl_long());
+                video.setImage(video.getImage().replace("bmiddle", "small").replace("thumbnail", "small"));
+                return;
+            }
+        }
+
         HttpConfig config = new HttpConfig();
         config.baseUrl = video.getShortUrl();
         config.cookie = AppContext.getAccount().getCookie();
@@ -307,7 +316,7 @@ public class VideoService {
         Elements divs = dom.select("img");
         if (divs != null && divs.size() > 0) {
             video.setImage(divs.get(0).attr("src"));
-            video.setImage(video.getImage().replace("bmiddle", "small"));
+            video.setImage(video.getImage().replace("bmiddle", "small").replace("thumbnail", "small"));
         }
     }
 
@@ -348,7 +357,7 @@ public class VideoService {
     }
 
     public static boolean isPhoto(String url) {
-        if (url.startsWith("http://photo.weibo.com/h5")) {
+        if (url.startsWith("http://photo.weibo.com/h5") || url.startsWith("http://ww4.sinaimg.cn")) {
             return true;
         }
 

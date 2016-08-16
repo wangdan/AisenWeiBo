@@ -16,7 +16,6 @@ import org.aisen.weibo.sina.sinasdk.bean.StatusComment;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.support.bean.LikeBean;
 import org.aisen.weibo.sina.support.bean.LikeResultBean;
-import org.aisen.weibo.sina.support.sdk.SDK;
 import org.aisen.weibo.sina.support.sqlit.LikeDB;
 import org.aisen.weibo.sina.support.sqlit.SinaDB;
 import org.aisen.weibo.sina.support.utils.UMengUtil;
@@ -123,7 +122,7 @@ public class DoLikeAction extends IAction {
         public LikeResultBean workInBackground(Void... params) throws TaskException {
             LikeResultBean likeResultBean = null;
             if (data instanceof StatusContent) {
-                likeResultBean = SDK.newInstance().webStatusLike(data.getLikeId(), like, AppContext.getAccount().getCookie());
+                likeResultBean = SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).webStatusLike(data.getLikeId(), like, AppContext.getAccount().getCookie());
             }
             else if (data instanceof StatusComment) {
                 likeResultBean = SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).webCommentLike((StatusComment) data, like);

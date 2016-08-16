@@ -65,6 +65,8 @@ import org.aisen.weibo.sina.sinasdk.http.TimelineHttpUtility;
 import org.aisen.weibo.sina.sinasdk.http.TopicHotHttpUtility;
 import org.aisen.weibo.sina.support.bean.LikeResultBean;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
 
 import java.io.File;
 import java.net.PasswordAuthentication;
@@ -1505,7 +1507,7 @@ public class SinaSDK extends ABizLogic {
 	 * @return
 	 * @throws TaskException
      */
-	public UrlsBean shortUrlExpand(String... shortUrlArr) throws TaskException {
+	public UrlsBean urlShort2Long(String... shortUrlArr) throws TaskException {
 		StringBuffer sb = new StringBuffer();
 		for (int i = 0; i < shortUrlArr.length; i++) {
 			if (shortUrlArr[i] == null)
@@ -1520,6 +1522,30 @@ public class SinaSDK extends ABizLogic {
 		config.baseUrl = config.baseUrl + "short_url/expand.json?access_token=" + token.getToken() + "&" + sb.toString();
 
 		return doGet(config, getSetting("shortUrlExpand"), null, UrlsBean.class);
+	}
+
+	/**
+	 * 将一个或多个长链接转换成短链接
+	 *
+	 * @param longUrlArr
+	 * @return
+	 * @throws TaskException
+     */
+	public UrlsBean urlLong2Short(String... longUrlArr) throws TaskException {
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < longUrlArr.length; i++) {
+			if (longUrlArr[i] == null)
+				continue;
+
+			if (i > 0) {
+				sb.append("&");
+			}
+			sb.append("url_long").append("=").append(longUrlArr[i]);
+		}
+		HttpConfig config = configHttpConfig();
+		config.baseUrl = config.baseUrl + "short_url/shorten.json?access_token=" + token.getToken() + "&" + sb.toString();
+
+		return doGet(config, getSetting("urlLong2Short"), null, UrlsBean.class);
 	}
 
 	// {"bmiddle_pic":"http://ww1.sinaimg.cn/bmiddle/94389574jw1etl94fy67qj21kw0w0qjd.jpg","original_pic":"http://ww1.sinaimg.cn/large/94389574jw1etl94fy67qj21kw0w0qjd.jpg","pic_id":"94389574jw1etl94fy67qj21kw0w0qjd","thumbnail_pic":"http://ww1.sinaimg.cn/thumbnail/94389574jw1etl94fy67qj21kw0w0qjd.jpg"}
@@ -1758,8 +1784,6 @@ public class SinaSDK extends ABizLogic {
 
 
 
-
-
 	// 以下开始计划写网页版接口
 
 	private HttpConfig webConfig() throws TaskException {
@@ -1882,6 +1906,54 @@ public class SinaSDK extends ABizLogic {
 
 			throw e;
 		}
+	}
+
+	/**
+	 * 微博点赞
+	 *
+	 * @param statusId
+	 * @param like
+	 * @param cookie
+	 * @return
+	 * @throws TaskException
+	 */
+	public LikeResultBean webStatusLike(String statusId, boolean like, String cookie) throws TaskException {
+		Params params = new Params();
+		params.addParameter("id", statusId);
+		if (like)
+			params.addParameter("attitude", "heart");
+
+		Setting action = newSetting("webStatusLike", like ? "attitudesDeal/add" : "attitudesDeal/delete", "微博点赞");
+
+		HttpConfig config = webConfig();
+		config.addHeader("Referer", config.baseUrl);
+		config.addHeader("Content-Type", "application/x-www-form-urlencoded");
+		config.addHeader("Host", "m.weibo.cn");
+		config.addHeader("Accept-Language", "zh-CN,en-US;q=0.8");
+		config.addHeader("Accept", "application/json, text/plain, */*");
+
+		String body = doPost(config, action, null, params, null, String.class);
+		if (!TextUtils.isEmpty(body)) {
+			Logger.d(TAG, body);
+
+			if (body.indexOf("http://passport.weibo.cn/sso/crossdomain") != -1)
+				throw new TaskException("-100", "未登录");
+			else if (body.indexOf("<html") != -1)
+				throw new TaskException("-100", "未登录");
+
+			LikeResultBean likeBean = JSON.parseObject(body, LikeResultBean.class);
+			if (likeBean.getOk() == 1) {
+				return likeBean;
+			}
+			else if (likeBean.getOk() == -100) {
+				throw new TaskException("-100", "未登录");
+			}
+			else {
+				throw new TaskException("", likeBean.getMsg());
+			}
+		}
+
+		throw new TaskException(TaskException.TaskError.timeout.toString());
 	}
 
 	/**

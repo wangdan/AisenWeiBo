@@ -28,7 +28,7 @@ import org.aisen.weibo.sina.support.utils.UMengUtil;
  * @author wangdan
  *
  */
-public class PublishStatusCommentFragment extends APublishFragment implements OnCheckedChangeListener {
+public class PublishStatusCommentFragment extends APicPostPublish implements OnCheckedChangeListener {
 
 	public static ABaseFragment newInstance(PublishBean bean) {
 		PublishStatusCommentFragment fragment = new PublishStatusCommentFragment();
@@ -47,7 +47,6 @@ public class PublishStatusCommentFragment extends APublishFragment implements On
 	protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceState) {
 		super.layoutInit(inflater, savedInstanceState);
 		
-		btnCamera.setVisibility(View.GONE);
 		btnOverflow.setVisibility(View.GONE);
 		
 		editContent.setHint(R.string.publish_cmt_def);
