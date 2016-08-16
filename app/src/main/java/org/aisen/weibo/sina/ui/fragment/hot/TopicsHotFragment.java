@@ -84,6 +84,13 @@ public class TopicsHotFragment extends ARecycleViewSwipeRefreshFragment<WebHotTo
     }
 
     @Override
+    protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
+        super.layoutInit(inflater, savedInstanceSate);
+
+        getSwipeRefreshLayout().setEnabled(false);
+    }
+
+    @Override
     protected IPaging<WebHotTopicsBean, WebHotTopicssBean> newPaging() {
         return new TopicsHotPaging();
     }
