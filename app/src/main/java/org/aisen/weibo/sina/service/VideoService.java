@@ -288,15 +288,6 @@ public class VideoService {
             throw new TaskException("123", "解析链接失败");
         }
 
-        if (video.getShortUrl().startsWith("http://t.cn/")) {
-            UrlsBean urlsBean = SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).urlShort2Long(video.getShortUrl());
-            if (urlsBean.getUrls() != null && urlsBean.getUrls().size() > 0) {
-                video.setImage(urlsBean.getUrls().get(0).getUrl_long());
-                video.setImage(video.getImage().replace("bmiddle", "small").replace("thumbnail", "small"));
-                return;
-            }
-        }
-
         HttpConfig config = new HttpConfig();
         config.baseUrl = video.getShortUrl();
         config.cookie = AppContext.getAccount().getCookie();
@@ -317,6 +308,21 @@ public class VideoService {
         if (divs != null && divs.size() > 0) {
             video.setImage(divs.get(0).attr("src"));
             video.setImage(video.getImage().replace("bmiddle", "small").replace("thumbnail", "small"));
+        }
+
+        if (TextUtils.isEmpty(video.getImage())) {
+            String longUrl = video.getLongUrl();
+
+            if (TextUtils.isEmpty(longUrl)) {
+                UrlsBean urlsBean = SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).urlShort2Long(video.getShortUrl());
+                if (urlsBean.getUrls() != null && urlsBean.getUrls().size() > 0) {
+                    longUrl = urlsBean.getUrls().get(0).getUrl_long();
+                    longUrl.replace("bmiddle", "small").replace("thumbnail", "small");
+                }
+            }
+            if (!TextUtils.isEmpty(longUrl)) {
+                video.setImage(longUrl);
+            }
         }
     }
 
@@ -357,7 +363,8 @@ public class VideoService {
     }
 
     public static boolean isPhoto(String url) {
-        if (url.startsWith("http://photo.weibo.com/h5") || url.startsWith("http://ww4.sinaimg.cn")) {
+        if (url.startsWith("http://photo.weibo.com/h5") ||
+                url.indexOf("sinaimg.cn") != -1) {
             return true;
         }
 

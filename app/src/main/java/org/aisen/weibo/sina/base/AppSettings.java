@@ -501,9 +501,6 @@ public class AppSettings {
      * @return
      */
     public static boolean isScreenRotate() {
-        if (isDebug())
-            return true;
-
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
         return prefs.getBoolean("pScreenRotate", false);
     }

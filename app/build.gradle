@@ -8,8 +8,8 @@ android {
         applicationId "org.aisen.weibo.sina"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 616
-        versionName "6.1.6"
+        versionCode 618
+        versionName "6.1.8"
         multiDexEnabled true
 //        ndk {
 //            //设置支持的SO库架构

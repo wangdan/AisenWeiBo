@@ -2,6 +2,7 @@ package org.aisen.weibo.sina.ui.activity.browser;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -213,6 +214,8 @@ public class VideoPlayerActivity extends BaseActivity implements View.OnClickLis
         if (DownloadManager.getInstance() != null) {
             DownloadManager.getInstance().getController().register(mDownloadProxy);
         }
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
     }
 
     @Override

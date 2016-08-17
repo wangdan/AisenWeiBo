@@ -44,7 +44,7 @@ public class PictureDownloader implements Downloader {
             }
 
             if (!TextUtils.isEmpty(videoBean.getImage())) {
-                return webDownloader.downloadBitmap(context, videoBean.getImage(), config);
+                return webDownloader.downloadBitmap(context, videoBean.getImage().replaceAll("large", "thumbnail"), config);
             }
         }
 
