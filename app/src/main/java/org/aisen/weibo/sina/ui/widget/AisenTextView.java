@@ -129,6 +129,12 @@ public class AisenTextView extends TextView {
 	}
 
 	public void setContent(String text) {
+		if (!TextUtils.isEmpty(text) && text.indexOf("http://t.cn/") != -1) {
+			if (text.length() == 19) {
+				text = text + " .";
+			}
+		}
+
 		boolean replace = false;
 
 		if (!replace)
