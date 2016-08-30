@@ -52,7 +52,7 @@ import java.util.List;
 /**
  * Created by wangdan on 15/4/25.
  */
-public class AddFriendMentionFragment extends AListSwipeRefreshFragment<WeiBoUser, Friendship>
+public class AddFriendMentionFragment extends AListSwipeRefreshFragment<WeiBoUser, Friendship, WeiBoUser>
                                             implements AdapterView.OnItemClickListener, SearchView.OnQueryTextListener, MenuItemCompat.OnActionExpandListener{
 
     public static void launch(ABaseFragment from, int requestCode) {

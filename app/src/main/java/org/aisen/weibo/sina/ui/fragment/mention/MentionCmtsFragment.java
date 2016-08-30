@@ -32,7 +32,7 @@ import java.util.List;
  *
  * Created by wangdan on 16/1/24.
  */
-public class MentionCmtsFragment extends ARecycleViewSwipeRefreshFragment<StatusComment, StatusComments>
+public class MentionCmtsFragment extends ARecycleViewSwipeRefreshFragment<StatusComment, StatusComments, StatusComment>
                                     implements ATabsFragment.ITabInitData {
 
     public static MentionCmtsFragment newInstance() {

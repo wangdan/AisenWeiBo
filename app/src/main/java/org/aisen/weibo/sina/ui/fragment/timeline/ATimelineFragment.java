@@ -38,7 +38,7 @@ import java.util.List;
  *
  * Created by wangdan on 16/1/2.
  */
-public abstract class ATimelineFragment extends ARecycleViewSwipeRefreshFragment<StatusContent, StatusContents> {
+public abstract class ATimelineFragment extends ARecycleViewSwipeRefreshFragment<StatusContent, StatusContents, StatusContent> {
 
     private String feature = "0";
 

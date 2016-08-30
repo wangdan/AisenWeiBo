@@ -49,7 +49,7 @@ import java.util.List;
  *
  * @author wangdan
  */
-public class DraftFragment extends ARecycleViewFragment<PublishBean, ArrayList<PublishBean>>
+public class DraftFragment extends ARecycleViewFragment<PublishBean, ArrayList<PublishBean>, PublishBean>
                                 implements View.OnClickListener {
 
     public static ABaseFragment newInstance() {

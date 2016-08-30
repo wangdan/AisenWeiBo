@@ -8,6 +8,7 @@ import android.telephony.TelephonyManager;
 import android.telephony.gsm.GsmCellLocation;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.webkit.WebView;
 
 import com.alibaba.fastjson.JSON;
@@ -22,6 +23,7 @@ import org.aisen.android.common.utils.Logger;
 import org.aisen.android.network.biz.ABizLogic;
 import org.aisen.android.network.http.HttpConfig;
 import org.aisen.android.network.http.IHttpUtility;
+import org.aisen.android.network.http.OnFileProgress;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.weibo.sina.base.AppContext;

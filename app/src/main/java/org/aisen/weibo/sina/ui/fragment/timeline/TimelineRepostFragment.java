@@ -48,7 +48,7 @@ import java.util.List;
  *
  * Created by wangdan on 16/1/22.
  */
-public class TimelineRepostFragment extends AListFragment<StatusContent, StatusContents> implements ATabsFragment.ITabInitData {
+public class TimelineRepostFragment extends AListFragment<StatusContent, StatusContents, StatusContent> implements ATabsFragment.ITabInitData {
 
     public static TimelineRepostFragment newInstance(StatusContent statusContent) {
         Bundle args = new Bundle();

@@ -57,7 +57,7 @@ import java.util.List;
  *
  * Created by wangdan on 16/1/21.
  */
-public class AccountFragment extends ARecycleViewFragment<AccountBean, ArrayList<AccountBean>> {
+public class AccountFragment extends ARecycleViewFragment<AccountBean, ArrayList<AccountBean>, AccountBean> {
 
     public static final String TAG = "Account";
 

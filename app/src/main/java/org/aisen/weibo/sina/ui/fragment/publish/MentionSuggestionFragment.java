@@ -43,7 +43,7 @@ import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
  * @author wangdan
  *
  */
-public class MentionSuggestionFragment extends AListFragment<MentionSuggestionBean, MentionSuggestionBeans>
+public class MentionSuggestionFragment extends AListFragment<MentionSuggestionBean, MentionSuggestionBeans, MentionSuggestionBean>
 											implements OnItemClickListener {
 
 	public static MentionSuggestionFragment newInstance() {

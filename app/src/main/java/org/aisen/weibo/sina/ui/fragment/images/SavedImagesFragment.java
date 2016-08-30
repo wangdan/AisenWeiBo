@@ -39,7 +39,7 @@ import java.util.List;
 /**
  * Created by wangdan on 16/7/19.
  */
-public class SavedImagesFragment extends ARecycleViewFragment<SavedImageBean, ArrayList<SavedImageBean>> {
+public class SavedImagesFragment extends ARecycleViewFragment<SavedImageBean, ArrayList<SavedImageBean>, SavedImageBean> {
 
     public static SavedImagesFragment newInstance() {
         return new SavedImagesFragment();

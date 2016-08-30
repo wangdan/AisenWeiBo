@@ -41,7 +41,7 @@ import java.util.List;
  * @author wangdan
  * 
  */
-public abstract class AFriendshipFragment extends AListSwipeRefreshFragment<WeiBoUser, Friendship>
+public abstract class AFriendshipFragment extends AListSwipeRefreshFragment<WeiBoUser, Friendship, WeiBoUser>
 												implements OnItemClickListener, ATabsFragment.ITabInitData {
 
 	private WeiBoUser mUser;

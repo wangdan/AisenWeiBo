@@ -120,7 +120,7 @@ public class PublishManager extends Handler implements PublishQueue.PublishQueue
 		}
 
 		PublishBean firstBean = publishQueue.peek();
-		if (firstBean != null && firstBean.getId().equals(bean.getId())) {
+		if (firstBean != null && firstBean.getId() == bean.getId()) {
 			// 定时发布
 			if (bean.getTiming() > 0) {
 				Logger.d(TimingBroadcastReceiver.TAG, bean.getText() + "-定时发布");

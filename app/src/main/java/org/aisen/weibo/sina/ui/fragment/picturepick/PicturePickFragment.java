@@ -52,7 +52,7 @@ import java.util.Map;
  *
  * Created by wangdan on 15-1-29.
  */
-public class PicturePickFragment extends AGridFragment<String, ArrayList<String>>
+public class PicturePickFragment extends AGridFragment<String, ArrayList<String>, String>
                                     implements AdapterView.OnItemClickListener, PictureDireListFragment.OnPictureDireSelectedCallback {
 
     public static void launch(ABaseFragment from, int maxSize, String[] pics, int requestCode) {

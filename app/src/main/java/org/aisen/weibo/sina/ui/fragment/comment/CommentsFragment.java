@@ -35,7 +35,7 @@ import java.util.List;
  *
  * Created by wangdan on 16/1/24.
  */
-public class CommentsFragment extends ARecycleViewSwipeRefreshFragment<StatusComment, StatusComments>
+public class CommentsFragment extends ARecycleViewSwipeRefreshFragment<StatusComment, StatusComments, StatusComment>
                                 implements AdapterView.OnItemLongClickListener, ATabsFragment.ITabInitData {
 
     public static CommentsFragment newInstance(Type type) {

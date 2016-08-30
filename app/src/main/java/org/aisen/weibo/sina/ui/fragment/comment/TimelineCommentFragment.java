@@ -41,7 +41,7 @@ import java.util.List;
  *
  * Created by wangdan on 16/1/7.
  */
-public class TimelineCommentFragment extends AListFragment<StatusComment, StatusComments> {
+public class TimelineCommentFragment extends AListFragment<StatusComment, StatusComments, StatusComment> {
 
     public static TimelineCommentFragment newInstance(StatusContent status) {
         Bundle arts = new Bundle();

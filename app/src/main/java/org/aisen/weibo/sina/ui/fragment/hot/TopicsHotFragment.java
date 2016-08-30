@@ -42,7 +42,7 @@ import java.util.List;
  *
  * Created by wangdan on 16/8/14.
  */
-public class TopicsHotFragment extends ARecycleViewSwipeRefreshFragment<WebHotTopicsBean, WebHotTopicssBean> {
+public class TopicsHotFragment extends ARecycleViewSwipeRefreshFragment<WebHotTopicsBean, WebHotTopicssBean, WebHotTopicsBean> {
 
     public static void launch(Activity from) {
         SinaCommonActivity.launch(from , TopicsHotFragment.class, null);

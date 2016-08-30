@@ -296,12 +296,12 @@ public class MenuFragment extends ABaseFragment {
 
         items.add(new NavMenuSeparator());
 
-//        items.add(new NavMenuItem(MENU_JOKE, -1, R.string.draw_joke));
+        items.add(new NavMenuItem(MENU_JOKE, -1, R.string.draw_joke));
 //        items.add(new NavMenuItem(MENU_WALLPAPER, -1, R.string.draw_wallpaper));
 //        items.add(new NavMenuItem(MENU_IMAGES, -1, R.string.draw_images));
 
 
-//        items.add(new NavMenuSeparator());
+        items.add(new NavMenuSeparator());
 
         items.add(new NavMenuItem(MENU_DRAT, -1, R.string.draw_draft));
         items.add(new NavMenuItem(MENU_SETTINGS, -1, R.string.draw_settings));

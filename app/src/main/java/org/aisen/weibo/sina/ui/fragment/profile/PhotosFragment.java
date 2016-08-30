@@ -49,7 +49,7 @@ import java.util.List;
  *
  * Created by wangdan on 15/4/15.
  */
-public class PhotosFragment extends AGridSwipyRefreshFragment<PhotoBean, PhotosBean>
+public class PhotosFragment extends AGridSwipyRefreshFragment<PhotoBean, PhotosBean, PhotoBean>
                                 implements ProfilePagerFragment.IUserProfileRefresh, ATabsFragment.ITabInitData {
 
     public static PhotosFragment newInstance(WeiBoUser user) {

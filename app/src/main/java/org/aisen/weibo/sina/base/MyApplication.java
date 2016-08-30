@@ -15,6 +15,7 @@ import org.aisen.android.common.utils.Logger;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
+import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.download.DownloadManager;
 import org.aisen.weibo.sina.BuildConfig;
 import org.aisen.weibo.sina.receiver.TimingBroadcastReceiver;
@@ -28,6 +29,7 @@ import org.aisen.weibo.sina.support.sqlit.PublishDB;
 import org.aisen.weibo.sina.support.sqlit.SinaDB;
 import org.aisen.weibo.sina.support.utils.AccountUtils;
 import org.aisen.weibo.sina.support.utils.UMengUtil;
+import org.aisen.weibo.sina.ui.activity.base.AisenActivityHelper;
 import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
 
 import java.io.File;
@@ -45,6 +47,7 @@ public class MyApplication extends GlobalContext {
 
         DownloadManager.setup(this, BuildConfig.LOG_DEBUG, 6);
 
+        BaseActivity.setHelper(AisenActivityHelper.class);
         // 添加一些配置项
         SettingUtility.addSettings(this, "actions");
         SettingUtility.addSettings(this, "settings");
