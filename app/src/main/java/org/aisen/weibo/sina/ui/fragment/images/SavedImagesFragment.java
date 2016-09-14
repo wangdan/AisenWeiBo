@@ -1,5 +1,6 @@
 package org.aisen.weibo.sina.ui.fragment.images;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
 import android.net.Uri;
@@ -148,7 +149,7 @@ public class SavedImagesFragment extends ARecycleViewFragment<SavedImageBean, Ar
 
         final int size;
 
-        public NormalPhotoItem(Context context, BitmapOwner owner, View itemView) {
+        public NormalPhotoItem(Activity context, BitmapOwner owner, View itemView) {
             super(context, itemView);
 
             this.owner = owner;

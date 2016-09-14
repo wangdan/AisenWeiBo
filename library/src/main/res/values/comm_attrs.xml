@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="flat_text" format="reference|color"/>
+    <!--<attr name="comm_toolbar" format="color" />-->
+    <declare-styleable name="CircleImageView">
+        <attr name="border_width" format="dimension" />
+        <attr name="border_color" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="RoundImageView">
+        <attr name="borderRadius" format="dimension" />
+        <attr name="type">
+            <enum name="round" value="1" />
+            <enum name="circle" value="0" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="ScrimInsetsView">
+        <attr name="appInsetForeground" format="reference|color" />
+    </declare-styleable>
+
+    <declare-styleable name="FitWindowsFrameLayout">
+        <attr name="fitType">
+            <enum name="top" value="0" />
+            <enum name="bottom" value="1" />
+            <enum name="both" value="2" />
+        </attr>
+        <attr name="statusBarColor" format="reference|color" />
+        <attr name="navigationBarColor" format="reference|color" />
+        <attr name="drawStatusBar" format="boolean"/>
+        <attr name="drawNavigationBar" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="ForegroundView">
+        <attr name="android:foreground" />
+        <attr name="foregroundInsidePadding" />
+        <attr name="android:foregroundGravity" />
+    </declare-styleable>
+
+    <attr name="MDbuttonSelector" format="reference"/>
+
+</resources>

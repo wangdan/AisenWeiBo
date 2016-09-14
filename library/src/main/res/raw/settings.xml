@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<app-settings>
+
+	<setting-array type="root_path" index="0">
+		<des>应用程序相对sdcard的相对路径目录，所有的文件都存储在这个文件夹中</des>
+		<setting>
+			<value>android</value>
+		</setting>
+	</setting-array>
+
+	<setting-array type="com_m_common_json" index="0">
+		<des>业务数据sdcard缓存路径，相对root_path路径</des>
+		<setting>
+			<value>app_data</value>
+		</setting>
+	</setting-array>
+
+	<setting-array type="com_m_common_image" index="0">
+		<des>图片数据sdcard缓存路径，相对root_path路径</des>
+		<setting>
+			<value>app_image</value>
+		</setting>
+	</setting-array>
+	
+	<setting type="crashlogenable">
+		<des>错误日志记录</des>
+		<value>true</value>
+	</setting>
+	
+	<setting type="crashlog">
+		<des>错误日志目录</des>
+		<value>crashlog</value>
+	</setting>
+
+	<setting-array type="cache_utility" index="2">
+		<des>缓存模式设置</des>
+		<setting>
+			<des>DB数据缓存</des>
+			<value>org.aisen.android.support.cache.DBCacheUtility</value>
+		</setting>
+		<setting>
+			<des>文件数据缓存</des>
+			<value>com.sysweal.marketing.support.cache.FileCacheUtility_2</value>
+		</setting>
+	</setting-array>
+
+	<setting type="memory_cache_validity">
+		<des>内存缓存数据有效期，等于0为不保持内存数据，单位(s)</des>
+		<value>0</value>
+	</setting>
+	
+	<setting type="http">
+	    <value>org.aisen.android.network.http.DefHttpUtility</value>
+	</setting>
+
+	<setting type="http_delay">
+		<des>Http延迟</des>
+		<value>0</value>
+	</setting>
+
+	<setting type="cache_validtime">
+		<des>缓存数据的有效期，max_date为永久有效，单位(s)</des>
+		<value>max_date</value>
+	</setting>
+
+	<setting type="debug">
+		<des>APP是否是DEBUG模式</des>
+		<value>true</value>
+	</setting>
+
+	<setting type="cache_enable">
+		<des>缓存开关，在这里设置无效，需要在action.xml中覆盖这个设置</des>
+		<value>true</value>
+	</setting>
+
+	<setting type="page_count">
+		<des>分页大小</des>
+		<value>50</value>
+	</setting>
+
+	<setting type="image_suffix">
+		<des>图片缓存的后缀</des>
+		<value>auto</value>
+	</setting>
+	
+	<setting type="activity_helper">
+		<des>Activity帮助类</des>
+		<value></value>
+	</setting>
+
+</app-settings>

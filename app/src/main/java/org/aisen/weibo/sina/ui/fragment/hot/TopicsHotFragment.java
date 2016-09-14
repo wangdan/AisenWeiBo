@@ -1,7 +1,6 @@
 package org.aisen.weibo.sina.ui.fragment.hot;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -125,7 +124,7 @@ public class TopicsHotFragment extends ARecycleViewSwipeRefreshFragment<WebHotTo
 
         private ImageConfig config;
 
-        public TopicsHotItemView(Context context, View itemView) {
+        public TopicsHotItemView(Activity context, View itemView) {
             super(context, itemView);
 
             config = new ImageConfig();

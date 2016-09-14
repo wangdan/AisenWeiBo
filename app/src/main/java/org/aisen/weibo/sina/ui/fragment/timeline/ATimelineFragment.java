@@ -1,6 +1,7 @@
 package org.aisen.weibo.sina.ui.fragment.timeline;
 
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -144,7 +145,7 @@ public abstract class ATimelineFragment extends ARecycleViewSwipeRefreshFragment
 
     @Override
     protected IPagingAdapter<StatusContent> newAdapter(ArrayList<StatusContent> datas) {
-        return new TimelineAdapter(this, configItemViewCreator(), datas);
+        return new TimelineAdapter(configItemViewCreator(), datas);
     }
 
     @Override
@@ -192,10 +193,10 @@ public abstract class ATimelineFragment extends ARecycleViewSwipeRefreshFragment
         return AppSettings.getCommentCount();
     }
 
-    class TimelineAdapter extends BasicRecycleViewAdapter<StatusContent> {
+    class TimelineAdapter extends BasicRecycleViewAdapter<StatusContent, RecyclerView> {
 
-        public TimelineAdapter(APagingFragment holderFragment, IItemViewCreator<StatusContent> itemViewCreator, ArrayList<StatusContent> datas) {
-            super(holderFragment, itemViewCreator, datas);
+        public TimelineAdapter(IItemViewCreator<StatusContent> itemViewCreator, ArrayList<StatusContent> datas) {
+            super(getActivity(), getRefreshView(), itemViewCreator, datas);
         }
 
         @Override

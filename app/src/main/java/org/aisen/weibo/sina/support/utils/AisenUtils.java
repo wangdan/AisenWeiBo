@@ -21,6 +21,7 @@ import android.support.v7.widget.ShareActionProvider;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -42,6 +43,8 @@ import org.aisen.android.common.utils.Utils;
 import org.aisen.android.common.utils.ViewUtils;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.component.bitmaploader.core.BitmapDecoder;
+import org.aisen.android.component.cardmenu.CardMenuBuilder;
+import org.aisen.android.component.cardmenu.CardMenuOptions;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.ui.activity.basic.BaseActivity;
@@ -222,11 +225,33 @@ public class AisenUtils {
         return file;
     }
 
-    public static void showMenuDialog(ABaseFragment fragment, final View targetView,
+    public static void showMenuDialog(final ABaseFragment fragment, final View targetView,
                                       String[] menuArr, DialogInterface.OnClickListener onItemClickListener) {
-        new AlertDialogWrapper.Builder(fragment.getActivity())
-                .setItems(menuArr, onItemClickListener)
-                .show();
+        CardMenuOptions options = new CardMenuOptions(android.support.v7.appcompat.R.style.Theme_AppCompat_Light_NoActionBar,
+                android.support.v7.appcompat.R.attr.actionOverflowMenuStyle,
+                android.support.v7.appcompat.R.layout.abc_action_menu_layout,
+                android.support.v7.appcompat.R.layout.abc_action_menu_item_layout);
+        CardMenuBuilder builder = new CardMenuBuilder(fragment.getActivity(),
+                                                        targetView,
+                                                        options);
+        SubMenu subMenu = builder.addSubMenu(1, 100, 1, "嘿嘿");
+        String[] items = new String[]{ "嘿嘿1", "嘿嘿2" };
+        for (int i = 0; i < items.length; i++) {
+            builder.addSubMenuItem(subMenu, 100, i, i, items[i]);
+        }
+        builder.setOnCardMenuCallback(new CardMenuBuilder.OnCardMenuCallback() {
+
+            @Override
+            public boolean onCardMenuItemSelected(MenuItem menuItem) {
+                ViewUtils.showMessage(fragment.getActivity(), menuItem.getTitle() + "");
+                return true;
+            }
+
+        });
+        builder.show();
+//        new AlertDialogWrapper.Builder(fragment.getActivity())
+//                .setItems(menuArr, onItemClickListener)
+//                .show();
     }
 
     public static String getFirstId(@SuppressWarnings("rawtypes") List datas) {
