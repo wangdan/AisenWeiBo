@@ -59,7 +59,8 @@ public class BasicListAdapter<T extends Serializable> extends BaseAdapter implem
             itemView = (IITemView<T>) convertView.getTag(R.id.itemview);
         }
 
-        itemView.reset(datas.size(), position, datas.get(position));
+        itemView.reset(datas.size(), position);
+
         itemView.onBindData(convertView, datas.get(position), position);
 
         return convertView;

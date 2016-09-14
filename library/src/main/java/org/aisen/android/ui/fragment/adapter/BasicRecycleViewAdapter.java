@@ -153,10 +153,9 @@ public class BasicRecycleViewAdapter<T extends Serializable, RefreshView extends
         if (position >= headerCount) {
             int realPosition = position - headerCount;
 
-            T data = datas.get(realPosition);
-            itemView.reset(datas.size(), realPosition, data);
+            itemView.reset(datas.size(), realPosition);
             if (realPosition < datas.size()) {
-                itemView.onBindData(itemView.getConvertView(), data, realPosition);
+                itemView.onBindData(itemView.getConvertView(), datas.get(realPosition), realPosition);
             }
 
             if (onItemClickListener != null) {

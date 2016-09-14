@@ -1,7 +1,6 @@
 package org.aisen.android.ui.fragment.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -19,11 +18,9 @@ public abstract class ARecycleViewItemView<T extends Serializable> extends Recyc
 
     private int position;
 
-    private View convertView;
+    private final View convertView;
 
-    private Activity context;
-
-    private T data;
+    private final Activity context;
 
     public ARecycleViewItemView(Activity context, View itemView) {
         super(itemView);
@@ -38,10 +35,9 @@ public abstract class ARecycleViewItemView<T extends Serializable> extends Recyc
     }
 
     @Override
-    public void reset(int size, int position, T data) {
+    public void reset(int size, int position) {
         this.size = size;
         this.position = position;
-        this.data = data;
     }
 
     @Override
@@ -61,10 +57,6 @@ public abstract class ARecycleViewItemView<T extends Serializable> extends Recyc
 
     public Activity getContext() {
         return context;
-    }
-
-    public T getData() {
-        return data;
     }
 
 }

@@ -3,7 +3,6 @@ package org.aisen.android.ui.fragment.itemview;
 import android.view.View;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by wangdan on 16/1/5.
@@ -38,7 +37,7 @@ public interface IITemView<T extends Serializable> {
      *
      * @return
      */
-    void reset(int size, int position, T data);
+    void reset(int size, int position);
 
     /**
      * Item的数据size

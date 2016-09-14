@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 
-import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.support.inject.InjectUtility;
 import org.aisen.android.ui.fragment.itemview.IITemView;
 
@@ -15,15 +14,13 @@ import java.io.Serializable;
  */
 public abstract class ABasicItemView<T extends Serializable> implements IITemView<T> {
 
-    private Activity context;
+    private final Activity context;
 
     private int size;
 
     private int position;
 
-    private View convertView;
-
-    private T data;
+    private final View convertView;
 
     public ABasicItemView(Activity context, View convertView) {
         this.context = context;
@@ -41,10 +38,9 @@ public abstract class ABasicItemView<T extends Serializable> implements IITemVie
     }
 
     @Override
-    public void reset(int size, int position, T data) {
+    public void reset(int size, int position) {
         this.size = size;
         this.position = position;
-        this.data = data;
     }
 
     @Override
@@ -59,10 +55,6 @@ public abstract class ABasicItemView<T extends Serializable> implements IITemVie
 
     public Context getContext() {
         return context;
-    }
-
-    public T getData() {
-        return data;
     }
 
 }
