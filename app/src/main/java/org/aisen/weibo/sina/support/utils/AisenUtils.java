@@ -21,7 +21,6 @@ import android.support.v7.widget.ShareActionProvider;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -225,25 +224,28 @@ public class AisenUtils {
         return file;
     }
 
+    public static CardMenuOptions getCardMenuOptions() {
+        return getCardMenuOptions(ThemeUtils.themeArr[AppSettings.getThemeColor()][0]);
+    }
+
+    public static CardMenuOptions getCardMenuOptions(int theme) {
+        return new CardMenuOptions(theme,
+                                    android.support.v7.appcompat.R.attr.actionOverflowMenuStyle,
+                                    android.support.v7.appcompat.R.layout.abc_action_menu_layout,
+                                    android.support.v7.appcompat.R.layout.abc_action_menu_item_layout);
+    }
+
     public static void showMenuDialog(final ABaseFragment fragment, final View targetView,
-                                      String[] menuArr, DialogInterface.OnClickListener onItemClickListener) {
-        CardMenuOptions options = new CardMenuOptions(android.support.v7.appcompat.R.style.Theme_AppCompat_Light_NoActionBar,
-                android.support.v7.appcompat.R.attr.actionOverflowMenuStyle,
-                android.support.v7.appcompat.R.layout.abc_action_menu_layout,
-                android.support.v7.appcompat.R.layout.abc_action_menu_item_layout);
-        CardMenuBuilder builder = new CardMenuBuilder(fragment.getActivity(),
-                                                        targetView,
-                                                        options);
-        SubMenu subMenu = builder.addSubMenu(1, 100, 1, "嘿嘿");
-        String[] items = new String[]{ "嘿嘿1", "嘿嘿2" };
-        for (int i = 0; i < items.length; i++) {
-            builder.addSubMenuItem(subMenu, 100, i, i, items[i]);
+                                      String[] menuArr, final DialogInterface.OnClickListener onItemClickListener) {
+        CardMenuBuilder builder = new CardMenuBuilder(fragment.getActivity(), targetView, getCardMenuOptions());
+        for (int i = 0; i < menuArr.length; i++) {
+            builder.add(i, menuArr[i]);
         }
         builder.setOnCardMenuCallback(new CardMenuBuilder.OnCardMenuCallback() {
 
             @Override
             public boolean onCardMenuItemSelected(MenuItem menuItem) {
-                ViewUtils.showMessage(fragment.getActivity(), menuItem.getTitle() + "");
+                onItemClickListener.onClick(null, menuItem.getItemId());
                 return true;
             }
 

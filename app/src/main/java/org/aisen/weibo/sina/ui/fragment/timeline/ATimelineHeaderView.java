@@ -1,16 +1,16 @@
 package org.aisen.weibo.sina.ui.fragment.timeline;
 
-import android.content.DialogInterface;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
-
+import org.aisen.android.component.cardmenu.CardMenuBuilder;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.ui.fragment.APagingFragment;
 import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
+import org.aisen.weibo.sina.support.utils.AisenUtils;
 
 /**
  * Created by wangdan on 16/4/3.
@@ -55,33 +55,31 @@ public abstract class ATimelineHeaderView extends ARecycleViewItemView<StatusCon
 
         String[] titles = fragment.getResources().getStringArray(getTitleArrRes());
 
-        new AlertDialogWrapper.Builder(fragment.getActivity())
-                .setTitle(R.string.profile_feature_dialog)
-                .setNegativeButton(R.string.cancel, null)
-                .setSingleChoiceItems(titles, getFeaturePosition(), new DialogInterface.OnClickListener() {
+        CardMenuBuilder cardMenuBuilder = new CardMenuBuilder(getContext(), v, AisenUtils.getCardMenuOptions());
+        for (int i = 0; i < titles.length; i++) {
+            cardMenuBuilder.add(i, titles[i]);
+        }
+        cardMenuBuilder.setOnCardMenuCallback(new CardMenuBuilder.OnCardMenuCallback() {
 
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (getFeaturePosition() == which) {
-                            dialog.dismiss();
+            @Override
+            public boolean onCardMenuItemSelected(MenuItem menuItem) {
+                if (getFeaturePosition() == menuItem.getItemId()) {
+                    return true;
+                }
 
-                            return;
-                        }
+                fragment.setFeature(getTitleFeature()[menuItem.getItemId()]);
 
-                        fragment.setFeature(getTitleFeature()[which]);
+                // 清理线程状态，可以加载缓存
+                fragment.cleatTaskCount(APagingFragment.PAGING_TASK_ID);
 
-                        // 清理线程状态，可以加载缓存
-                        fragment.cleatTaskCount(APagingFragment.PAGING_TASK_ID);
+                setHeaderView();
 
-                        setHeaderView();
+                fragment.requestDataDelaySetRefreshing(200);
+                return true;
+            }
 
-                        fragment.requestDataDelaySetRefreshing(200);
-
-                        dialog.dismiss();
-                    }
-
-                })
-                .show();
+        });
+        cardMenuBuilder.show();
     }
 
     private void setHeaderView() {
