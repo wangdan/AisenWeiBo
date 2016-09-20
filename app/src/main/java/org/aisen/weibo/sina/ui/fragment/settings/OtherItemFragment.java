@@ -1,7 +1,6 @@
 package org.aisen.weibo.sina.ui.fragment.settings;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -11,9 +10,9 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -215,21 +214,23 @@ public class OtherItemFragment extends VersionSettingsFragment
 	}
 
 	private void showDonateDialog() {
-		new AlertDialogWrapper.Builder(getActivity())
-				.setTitle(R.string.settings_donate_dialog_title)
-				.setMessage(R.string.settings_donate_dialog_message)
-				.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+		new MaterialDialog.Builder(getActivity())
+				.title(R.string.settings_donate_dialog_title)
+				.content(R.string.settings_donate_dialog_message)
+				.negativeText(R.string.cancel)
+				.onNegative(new MaterialDialog.SingleButtonCallback() {
 
 					@Override
-					public void onClick(DialogInterface dialog, int which) {
+					public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 						UMengUtil.onEvent(getActivity(), "donate_cancel");
 					}
 
 				})
-				.setPositiveButton(R.string.settings_donate_yes, new DialogInterface.OnClickListener() {
+				.positiveText(R.string.settings_donate_yes)
+				.onPositive(new MaterialDialog.SingleButtonCallback() {
 
 					@Override
-					public void onClick(DialogInterface dialog, int which) {
+					public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 						UMengUtil.onEvent(getActivity(), "donate_yes");
 
 						AisenUtils.copyToClipboard("binglanhappy@163.com");

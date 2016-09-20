@@ -1,7 +1,6 @@
 package org.aisen.weibo.sina.ui.fragment.comment;
 
 import android.app.Fragment;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.network.http.Params;
@@ -117,13 +116,14 @@ public class TimelineCommentFragment extends AListFragment<StatusComment, Status
         if (comment.getUser() != null && AppContext.getAccount().getUser().getIdstr().equals(comment.getUser().getIdstr()))
             menuList.add(commentMenuArr[2]);
 
-        new AlertDialogWrapper.Builder(getActivity())
-                .setTitle(comment.getUser().getScreen_name())
-                .setItems(menuList.toArray(new String[0]), new DialogInterface.OnClickListener() {
+        new MaterialDialog.Builder(getActivity())
+                .title(comment.getUser().getScreen_name())
+                .items(menuList.toArray(new String[0]))
+                .itemsCallback(new MaterialDialog.ListCallback() {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        AisenUtils.commentMenuSelected(TimelineCommentFragment.this, menuList.toArray(new String[0])[which], comment);
+                    public void onSelection(MaterialDialog dialog, View itemView, int position, CharSequence text) {
+                        AisenUtils.commentMenuSelected(TimelineCommentFragment.this, menuList.toArray(new String[0])[position], comment);
                     }
 
                 })

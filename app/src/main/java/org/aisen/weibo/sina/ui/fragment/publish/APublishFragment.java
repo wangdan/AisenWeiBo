@@ -7,14 +7,13 @@ import android.content.ClipData;
 import android.content.ClipData.Item;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spannable;
@@ -34,7 +33,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.ActivityHelper;
@@ -357,13 +357,14 @@ public abstract class APublishFragment extends ABaseFragment
 		public void onClick(View v) {
 			final String path = v.getTag().toString();
 
-			new AlertDialogWrapper.Builder(getActivity())
-					.setMessage(R.string.publish_delete_pic)
-					.setNegativeButton(R.string.cancel, null)
-					.setPositiveButton(R.string.confirm, new OnClickListener() {
+			new MaterialDialog.Builder(getActivity())
+					.title(R.string.publish_delete_pic)
+					.negativeText(R.string.cancel)
+					.positiveText(R.string.confirm)
+					.onPositive(new MaterialDialog.SingleButtonCallback() {
 
 						@Override
-						public void onClick(DialogInterface dialog, int which) {
+						public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 							String[] pathArr = getPublishBean().getPics();
 							List<String> pathList = new ArrayList<String>();
 							Collections.addAll(pathList, pathArr);
@@ -492,22 +493,24 @@ public abstract class APublishFragment extends ABaseFragment
 		// 屏蔽删图片Dialog
 		if (false && getPublishBean().getExtras() != null &&
 				(getPublishBean().getPics() != null && getPublishBean().getPics().length > 0) || getPublishBean().getParams().containsKey("url")) {
-			new AlertDialogWrapper.Builder(getActivity())
-							.setItems(R.array.publish_pic_edit, new OnClickListener() {
-					
+			new MaterialDialog.Builder(getActivity())
+							.items(R.array.publish_pic_edit)
+							.itemsCallback(new MaterialDialog.ListCallback() {
+
 								@Override
-								public void onClick(DialogInterface dialog, int which) {
-									if (which == 0) {
+								public void onSelection(MaterialDialog dialog, View itemView, int position, CharSequence text) {
+									if (position == 0) {
 										showGetPictureDialog();
 									}
 									else {
-                                        getPublishBean().setPics(null);
+										getPublishBean().setPics(null);
 //										getPublishBean().getExtras().remove("images");
 										getPublishBean().getParams().remove("url");
 
 										refreshUI();
 									}
 								}
+
 							})
 							.show();
 		}
@@ -521,11 +524,12 @@ public abstract class APublishFragment extends ABaseFragment
 
 			@Override
 			public void doAction() {
-				new AlertDialogWrapper.Builder(getActivity())
-						.setItems(R.array.publish_pic, new OnClickListener() {
+				new MaterialDialog.Builder(getActivity())
+						.items(R.array.publish_pic)
+						.itemsCallback(new MaterialDialog.ListCallback() {
 
 							@Override
-							public void onClick(DialogInterface dialog, int which) {
+							public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
 								switch (which) {
 									// 相册
 									case 0:
@@ -550,6 +554,7 @@ public abstract class APublishFragment extends ABaseFragment
 										break;
 								}
 							}
+
 						})
 						.show();
 			}
@@ -675,24 +680,28 @@ public abstract class APublishFragment extends ABaseFragment
 	}
 
 	private void askSaveToDraft() {
-		new AlertDialogWrapper.Builder(getActivity()).setMessage(R.string.publish_draft_title)
-												.setNegativeButton(R.string.no, new OnClickListener() {
+		new MaterialDialog.Builder(getActivity()).content(R.string.publish_draft_title)
+												.negativeText(R.string.no)
+												.onNegative(new MaterialDialog.SingleButtonCallback() {
 
 													@Override
-													public void onClick(DialogInterface dialog, int which) {
+													public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 														getActivity().finish();
 													}
+
 												})
-												.setPositiveButton(R.string.yes, new OnClickListener() {
+												.positiveText(R.string.yes)
+												.onPositive(new MaterialDialog.SingleButtonCallback() {
 
 													@Override
-													public void onClick(DialogInterface dialog, int which) {
+													public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 														getPublishBean().setStatus(PublishStatus.draft);
 
 														PublishDB.addPublish(getPublishBean(), AppContext.getAccount().getUser());
 
 														getActivity().finish();
 													}
+
 												})
 												.show();
 
@@ -714,16 +723,18 @@ public abstract class APublishFragment extends ABaseFragment
 
 		// 当拍摄照片时，提示是否设置旋转90度
 		if (!AppSettings.isRotatePic() && !ActivityHelper.getBooleanShareData(GlobalContext.getInstance(), "RotatePicNoRemind", false)) {
-			new AlertDialogWrapper.Builder(getActivity()).setTitle(R.string.remind)
-									.setMessage(R.string.publish_rotate_remind)
-									.setNegativeButton(R.string.donnot_remind, new OnClickListener() {
-										
+			new MaterialDialog.Builder(getActivity()).title(R.string.remind)
+									.content(R.string.publish_rotate_remind)
+									.negativeText(R.string.donnot_remind)
+									.onNegative(new MaterialDialog.SingleButtonCallback() {
+
 										@Override
-										public void onClick(DialogInterface dialog, int which) {
+										public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 											ActivityHelper.putBooleanShareData(GlobalContext.getInstance(), "RotatePicNoRemind", true);
 										}
+
 									})
-									.setPositiveButton(R.string.i_know, null)
+									.positiveText(R.string.i_know)
 									.show();
 		}
 		

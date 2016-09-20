@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
 import android.text.TextUtils;
@@ -29,7 +30,8 @@ import android.webkit.CookieSyncManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.md.MDHelper;
@@ -483,13 +485,14 @@ public class AisenUtils {
     }
 
     private static void deleteStatus(final ABaseFragment fragment, final StatusContent status) {
-        new AlertDialogWrapper.Builder(fragment.getActivity())
-                .setMessage(R.string.msg_del_status_remind)
-                .setNegativeButton(R.string.cancel, null)
-                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+        new MaterialDialog.Builder(fragment.getActivity())
+                .content(R.string.msg_del_status_remind)
+                .negativeText(R.string.cancel)
+                .positiveText(R.string.confirm)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         BizFragment.createBizFragment(fragment).statusDestory(status.getId() + "", new BizFragment.OnStatusDestoryCallback() {
 
                             @SuppressWarnings({"rawtypes"})
@@ -528,18 +531,20 @@ public class AisenUtils {
                             }
                         });
                     }
+
                 })
                 .show();
     }
 
     private static void shieldStatus(final ABaseFragment fragment, final StatusContent status) {
-        new AlertDialogWrapper.Builder(fragment.getActivity())
-                .setMessage(R.string.msg_shield_remind)
-                .setNegativeButton(R.string.cancel, null)
-                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+        new MaterialDialog.Builder(fragment.getActivity())
+                .content(R.string.msg_shield_remind)
+                .negativeText(R.string.cancel)
+                .positiveText(R.string.confirm)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         new WorkTask<Void, Void, GroupSortResult>() {
 
                             @Override
@@ -584,6 +589,7 @@ public class AisenUtils {
 
                         }.execute();
                     }
+
                 })
                 .show();
     }
@@ -655,12 +661,13 @@ public class AisenUtils {
                     break;
                 // 删除
                 case 2:
-                    new AlertDialogWrapper.Builder(fragment.getActivity()).setMessage(R.string.msg_del_cmt_remind)
-                            .setNegativeButton(R.string.cancel, null)
-                            .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                    new MaterialDialog.Builder(fragment.getActivity()).content(R.string.msg_del_cmt_remind)
+                            .negativeText(R.string.cancel)
+                            .positiveText(R.string.confirm)
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
 
                                 @Override
-                                public void onClick(DialogInterface dialog, int which) {
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     BizFragment.createBizFragment(fragment).commentDestory(comment, new BizFragment.OnCommentDestoryCallback() {
 
                                         @SuppressWarnings("unchecked")
@@ -681,6 +688,7 @@ public class AisenUtils {
                                         }
                                     });
                                 }
+
                             })
                             .show();
                     break;

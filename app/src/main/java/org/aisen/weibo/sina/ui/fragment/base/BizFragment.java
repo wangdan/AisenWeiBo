@@ -1,8 +1,8 @@
 package org.aisen.weibo.sina.ui.fragment.base;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
@@ -11,7 +11,8 @@ import android.view.animation.ScaleAnimation;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.Logger;
@@ -253,14 +254,15 @@ public class BizFragment extends ABaseFragment {
 
         @Override
         public void doInterrupt() {
-            new AlertDialogWrapper.Builder(getRealActivity())
+            new MaterialDialog.Builder(getRealActivity())
 //                        .setTitle(R.string.profile_ad_title)
 //                        .setMessage(R.string.profile_ad_message)
-                    .setMessage(R.string.profile_ad_title)
-                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    .content(R.string.profile_ad_title)
+                    .positiveText(R.string.yes)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
 
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             checkAdTokenAction = CheckAdTokenAction.this;
 
                             String account = AppContext.getAccount().getAccount();
@@ -270,10 +272,11 @@ public class BizFragment extends ABaseFragment {
                         }
 
                     })
-                    .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    .negativeText(R.string.no)
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
 
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             if (callback != null)
                                 callback.onCheckProfileFaild();
                         }
@@ -323,12 +326,13 @@ public class BizFragment extends ABaseFragment {
             token = AppContext.getAccount().getAdvancedToken();
         final Token trueToken = token;
 
-        new AlertDialogWrapper.Builder(getRealActivity()).setMessage(R.string.biz_destory_friend)
-                .setNegativeButton(R.string.no, null)
-                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+        new MaterialDialog.Builder(getRealActivity()).content(R.string.biz_destory_friend)
+                .negativeText(R.string.no)
+                .positiveText(R.string.yes)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         new WorkTask<Void, Void, WeiBoUser>() {
 
                             @Override
@@ -371,6 +375,7 @@ public class BizFragment extends ABaseFragment {
 
                         }.execute();
                     }
+
                 })
                 .show();
     }
@@ -464,17 +469,14 @@ public class BizFragment extends ABaseFragment {
             editRemark.setHint(R.string.profile_remark_hint);
             editRemark.setText(TextUtils.isEmpty(user.getRemark()) ? "" : user.getRemark());
             editRemark.setSelection(editRemark.getText().toString().length());
-            new AlertDialogWrapper.Builder(getRealActivity()).setTitle(R.string.biz_remark_update)
-                    .setView(entryView)
-                    .setNegativeButton(R.string.cancel, null)
-                    .setPositiveButton(R.string.update, new DialogInterface.OnClickListener() {
+            new MaterialDialog.Builder(getRealActivity()).title(R.string.biz_remark_update)
+                    .customView(entryView, false)
+                    .negativeText(R.string.cancel)
+                    .positiveText(R.string.update)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
 
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-//										if (TextUtils.isEmpty(dialog.getInput())) {
-//											showMessage("备注名称不能为空");
-//											return true;
-//										}
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             new WorkTask<Void, Void, WeiBoUser>() {
 
                                 @Override
@@ -584,14 +586,15 @@ public class BizFragment extends ABaseFragment {
             token = AppContext.getAccount().getAdvancedToken();
         final Token trueToken = token;
 
-        new AlertDialogWrapper.Builder(getRealActivity())
-                .setTitle(R.string.title_destory_friend)
-                .setMessage(R.string.biz_destory_follower)
-                .setNegativeButton(R.string.cancel, null)
-                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+        new MaterialDialog.Builder(getRealActivity())
+                .title(R.string.title_destory_friend)
+                .content(R.string.biz_destory_follower)
+                .negativeText(R.string.cancel)
+                .positiveText(R.string.confirm)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         new WorkTask<Void, Void, WeiBoUser>() {
 
                             @Override
@@ -629,6 +632,7 @@ public class BizFragment extends ABaseFragment {
 
                         }.execute();
                     }
+
                 })
                 .show();
     }

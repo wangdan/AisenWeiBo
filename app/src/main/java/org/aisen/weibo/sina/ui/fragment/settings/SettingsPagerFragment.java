@@ -2,15 +2,16 @@ package org.aisen.weibo.sina.ui.fragment.settings;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.support.bean.TabItem;
@@ -128,21 +129,23 @@ public class SettingsPagerFragment extends ATabsTabLayoutFragment<TabItem> {
 	}
 
 	private void showDonateDialog() {
-		new AlertDialogWrapper.Builder(getActivity())
-				.setTitle(R.string.settings_donate_dialog_title)
-				.setMessage(R.string.settings_donate_dialog_message)
-				.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+		new MaterialDialog.Builder(getActivity())
+				.title(R.string.settings_donate_dialog_title)
+				.content(R.string.settings_donate_dialog_message)
+				.negativeText(R.string.cancel)
+				.onNegative(new MaterialDialog.SingleButtonCallback() {
 
 					@Override
-					public void onClick(DialogInterface dialog, int which) {
+					public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 						UMengUtil.onEvent(getActivity(), "donate_cancel");
 					}
 
 				})
-				.setPositiveButton(R.string.settings_donate_yes, new DialogInterface.OnClickListener() {
+				.positiveText(R.string.settings_donate_yes)
+				.onPositive(new MaterialDialog.SingleButtonCallback() {
 
 					@Override
-					public void onClick(DialogInterface dialog, int which) {
+					public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 						UMengUtil.onEvent(getActivity(), "donate_yes");
 
 						AisenUtils.copyToClipboard("binglanhappy@163.com");

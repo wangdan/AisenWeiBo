@@ -4,13 +4,15 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.aisen.android.common.utils.ViewUtils;
 import org.aisen.android.network.task.TaskException;
@@ -33,6 +35,7 @@ import org.aisen.weibo.sina.ui.activity.profile.WeiboClientActivity;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by wangdan on 16/1/12.
@@ -286,6 +289,7 @@ public class ProfileAboutFragment extends ABaseFragment
         String[] items = new String[AppContext.getAccount().getGroups().getLists().size()];
         final boolean[] checkedItems = new boolean[AppContext.getAccount().getGroups().getLists().size()];
         final boolean[] editCheckedItems = new boolean[AppContext.getAccount().getGroups().getLists().size()];
+        List<Integer> selectedList = new ArrayList<>();
 
         for (int i = 0; i < AppContext.getAccount().getGroups().getLists().size(); i++) {
             Group group = AppContext.getAccount().getGroups().getLists().get(i);
@@ -297,6 +301,7 @@ public class ProfileAboutFragment extends ABaseFragment
                 if (groupListed.getIdstr().equals(group.getIdstr())) {
                     checkedItems[i] = true;
                     editCheckedItems[i] = true;
+                    selectedList.add(i);
                     break;
                 }
             }
@@ -311,19 +316,37 @@ public class ProfileAboutFragment extends ABaseFragment
 //                GroupSortFragment.lanuch(getActivity());
 //            }
 //        });
-        AlertDialogWrapper.Builder dialogBuilder = new AlertDialogWrapper.Builder(getActivity())
-                .setTitle(R.string.profile_group_setting)
-                .setMultiChoiceItems(items, editCheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
+        Integer[] selectedIndices = new Integer[selectedList.size()];
+        for (int i = 0; i < selectedList.size(); i++) {
+            selectedIndices[i] = selectedList.get(i);
+        }
+        MaterialDialog.Builder dialogBuilder = new MaterialDialog.Builder(getActivity())
+                .title(R.string.profile_group_setting)
+                .alwaysCallInputCallback()
+                .items(items)
+                .itemsCallbackMultiChoice(selectedIndices, new MaterialDialog.ListCallbackMultiChoice() {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        editCheckedItems[which] = isChecked;
+                    public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+                        for (int i = 0; i < editCheckedItems.length; i++) {
+                            editCheckedItems[i] = false;
+
+                            for (int i1 = 0; i1 < which.length; i1++) {
+                                if (i == which[i1]) {
+                                    editCheckedItems[i] = true;
+
+                                    break;
+                                }
+                            }
+                        }
+                        return true;
                     }
+
                 });
         try {
             try {
                 // 解决有些设备版本较低的BUG，没查这个方法的最低版本要求
-                dialogBuilder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                dialogBuilder.dismissListener(new DialogInterface.OnDismissListener() {
 
                     @Override
                     public void onDismiss(DialogInterface dialog) {
@@ -335,13 +358,15 @@ public class ProfileAboutFragment extends ABaseFragment
             }
         } catch (Exception e) {
         }
-        groupDialog = dialogBuilder.setNegativeButton(R.string.cancel, null)
-                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+        groupDialog = dialogBuilder.negativeText(R.string.cancel)
+                .positiveText(R.string.confirm)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         new SetGroupTask().execute(checkedItems, editCheckedItems);
                     }
+
                 })
                 .show();
     }

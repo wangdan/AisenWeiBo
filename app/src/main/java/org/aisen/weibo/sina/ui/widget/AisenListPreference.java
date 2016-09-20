@@ -6,9 +6,12 @@ import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.view.View;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -56,12 +59,14 @@ public class AisenListPreference extends ListPreference {
                 String mNegativeButtonText = getFieldValue("mNegativeButtonText");
 
 
-                new AlertDialogWrapper.Builder(getContext())
-                        .setTitle(dialogTitle)
-                        .setSingleChoiceItems(mEntriesStrArr, mClickedDialogEntryIndex, new DialogInterface.OnClickListener() {
+                new MaterialDialog.Builder(getContext())
+                        .title(dialogTitle)
+                        .items(mEntriesStrArr)
+                        .itemsCallbackSingleChoice(mClickedDialogEntryIndex, new MaterialDialog.ListCallbackSingleChoice() {
 
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                            public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+
                                 try {
                                     Field titleField = AisenListPreference.class.getSuperclass().getDeclaredField("mClickedDialogEntryIndex");
                                     titleField.setAccessible(true);
@@ -71,11 +76,23 @@ public class AisenListPreference extends ListPreference {
 
                                 AisenListPreference.this.onClick(dialog, DialogInterface.BUTTON_POSITIVE);
                                 dialog.dismiss();
+
+                                return true;
                             }
 
                         })
-                        .setOnDismissListener(AisenListPreference.this)
-                        .setNegativeButton(mNegativeButtonText, AisenListPreference.this)
+                        .dismissListener(AisenListPreference.this)
+                        .negativeText(mNegativeButtonText)
+                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                AisenListPreference.this.onClick(dialog, DialogInterface.BUTTON_NEGATIVE);
+
+                                dialog.dismiss();
+                            }
+
+                        })
                         .show();
             }
             else {

@@ -1,11 +1,11 @@
 package org.aisen.weibo.sina.ui.fragment.account;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,7 +16,8 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.aisen.android.common.utils.Logger;
 import org.aisen.android.common.utils.ViewUtils;
@@ -150,13 +151,14 @@ public class AccountFragment extends ARecycleViewFragment<AccountBean, ArrayList
         final AccountBean account = getAdapterItems().get(position);
         // 重新授权Aisen
         if (account.getAccessToken() == null || account.getAccessToken().isExpired()) {
-            new AlertDialogWrapper.Builder(getActivity())
-                    .setTitle(R.string.remind)
-                    .setMessage(R.string.account_expired)
-                    .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+            new MaterialDialog.Builder(getActivity())
+                    .title(R.string.remind)
+                    .content(R.string.account_expired)
+                    .positiveText(R.string.confirm)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
 
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             WebLoginFragment.launch(AccountFragment.this, WebLoginFragment.Client.aisen, account.getAccount(), account.getPassword(), BizFragment.REQUEST_CODE_AUTH);
                         }
 
@@ -266,14 +268,15 @@ public class AccountFragment extends ARecycleViewFragment<AccountBean, ArrayList
         void deleteAccount(View v) {
             final AccountBean account = (AccountBean) v.getTag();
 
-            new AlertDialogWrapper.Builder(getActivity())
-                    .setTitle(R.string.remind)
-                    .setMessage(R.string.account_destory_account_remind)
-                    .setNegativeButton(R.string.cancel, null)
-                    .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+            new MaterialDialog.Builder(getActivity())
+                    .title(R.string.remind)
+                    .content(R.string.account_destory_account_remind)
+                    .negativeText(R.string.cancel)
+                    .positiveText(R.string.confirm)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
 
                         @Override
-                        public void onClick(DialogInterface arg0, int arg1) {
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             new WorkTask<Void, Void, Boolean>() {
 
                                 @Override
@@ -310,6 +313,7 @@ public class AccountFragment extends ARecycleViewFragment<AccountBean, ArrayList
 
                             }.execute();
                         }
+
                     })
                     .show();
         }
@@ -338,16 +342,17 @@ public class AccountFragment extends ARecycleViewFragment<AccountBean, ArrayList
     @Override
     public boolean onBackClick() {
         if (!AppContext.isLoggedIn()) {
-            new AlertDialogWrapper.Builder(getActivity()).setTitle(R.string.remind)
-                    .setMessage(R.string.account_account_exit_remind)
-                    .setNegativeButton(R.string.cancel, null)
-                    .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+            new MaterialDialog.Builder(getActivity()).title(R.string.remind)
+                    .content(R.string.account_account_exit_remind)
+                    .negativeText(R.string.cancel)
+                    .positiveText(R.string.confirm)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
 
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // android.os.Process.killProcess(android.os.Process.myPid());
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             getActivity().finish();
                         }
+
                     })
                     .show();
             return true;

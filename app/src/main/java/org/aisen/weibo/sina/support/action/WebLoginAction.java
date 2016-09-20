@@ -1,10 +1,11 @@
 package org.aisen.weibo.sina.support.action;
 
 import android.app.Activity;
-import android.content.DialogInterface;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.aisen.android.support.action.IAction;
 import org.aisen.weibo.sina.R;
@@ -42,12 +43,13 @@ public class WebLoginAction extends IAction {
 
     @Override
     public void doInterrupt() {
-        new AlertDialogWrapper.Builder(getContext()).setMessage(getContext().getString(R.string.acount_timeout))
-                .setNegativeButton(getContext().getString(R.string.no), null)
-                .setPositiveButton(getContext().getString(R.string.yes), new DialogInterface.OnClickListener() {
+        new MaterialDialog.Builder(getContext()).content(getContext().getString(R.string.acount_timeout))
+                .negativeText(getContext().getString(R.string.no))
+                .positiveText(getContext().getString(R.string.yes))
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         mBizFragment.requestWebLogin(WebLoginAction.this);
                     }
 

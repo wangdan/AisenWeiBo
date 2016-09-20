@@ -3,11 +3,11 @@ package org.aisen.weibo.sina.ui.activity.base;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -19,7 +19,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.alibaba.fastjson.JSONObject;
 
 import org.aisen.android.common.context.GlobalContext;
@@ -897,15 +898,17 @@ public class MainActivity extends BaseActivity
     }
 
     private static void requestLogin(final Activity activity, final AccountBean account) {
-        new AlertDialogWrapper.Builder(activity)
-                .setMessage(R.string.account_account_expired)
-                .setNegativeButton(R.string.cancel, null)
-                .setPositiveButton(R.string.account_relogin, new DialogInterface.OnClickListener() {
+        new MaterialDialog.Builder(activity)
+                .content(R.string.account_account_expired)
+                .negativeText(R.string.cancel)
+                .positiveText(R.string.account_relogin)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         WebLoginFragment.launch(activity, WebLoginFragment.Client.aisen, account.getAccount(), account.getPassword(), REQUEST_CODE_AUTH);
                     }
+
                 })
                 .show();
     }
@@ -950,20 +953,22 @@ public class MainActivity extends BaseActivity
         if (activity.isDestory())
             return;
 
-        new AlertDialogWrapper.Builder(activity)
-                .setMessage("检测到网页授权未授权或者已过期，Aisen微博没有所有功能的使用权限，未授权涉及点赞、网页私信、热门评论、视频播放等重要功能的正常使用，建议立即授权！")
-                .setNegativeButton("暂不需要", new DialogInterface.OnClickListener() {
+        new MaterialDialog.Builder(activity)
+                .content("检测到网页授权未授权或者已过期，Aisen微博没有所有功能的使用权限，未授权涉及点赞、网页私信、热门评论、视频播放等重要功能的正常使用，建议立即授权！")
+                .negativeText("暂不需要")
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         activity.cookieRemind = false;
                     }
 
                 })
-                .setPositiveButton("现在授权", new DialogInterface.OnClickListener() {
+                .positiveText("现在授权")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         activity.cookieRemind = false;
 
                         BizFragment.createBizFragment(activity).requestWebLogin(new IAction(activity, null) {
@@ -978,6 +983,7 @@ public class MainActivity extends BaseActivity
 
                         });
                     }
+
                 })
                 .show();
     }
