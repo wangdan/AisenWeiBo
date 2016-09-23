@@ -27,8 +27,6 @@ import android.view.ViewGroup;
 
 import org.aisen.android.ui.fragment.APagingFragment;
 
-import java.io.Serializable;
-
 /**
  * Implementation of {@link PagerAdapter} that
  * represents each page as a {@link Fragment} that is persistently kept in the
@@ -108,7 +106,7 @@ public abstract class FragmentPagerAdapter extends PagerAdapter {
 			if (DEBUG)
 				Log.v(TAG, "Attaching item #" + itemId + ": f=" + fragment);
 //			mCurTransaction.attach(fragment);
-			freshUI(fragment);
+			freshUI(position, fragment);
 		} else {
 			fragment = getItem(position);
 			if (DEBUG)
@@ -125,7 +123,7 @@ public abstract class FragmentPagerAdapter extends PagerAdapter {
 		return fragment;
 	}
 	
-	protected void freshUI(Fragment fragment) {
+	protected void freshUI(int position, Fragment fragment) {
 		if (fragment instanceof APagingFragment)
 			((APagingFragment) fragment).refreshUI();
 	}

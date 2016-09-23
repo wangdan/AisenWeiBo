@@ -320,6 +320,14 @@ public class BaseActivity extends ActionBarActivity implements BitmapOwner, ITas
                 return true;
         }
 
+        Set<String> keys = fragmentRefs.keySet();
+        for (String key : keys) {
+            WeakReference<ABaseFragment> fragmentRef = fragmentRefs.get(key);
+            ABaseFragment fragment = fragmentRef.get();
+            if (fragment != null && fragment.onHomeClick())
+                return true;
+        }
+
         return onBackClick();
     }
 

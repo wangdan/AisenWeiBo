@@ -297,7 +297,12 @@ public abstract class ATabsFragment<T extends TabItem> extends ABaseFragment
         }
 
         @Override
-        protected void freshUI(Fragment fragment) {
+        protected void freshUI(int position, Fragment fragment) {
+            super.freshUI(position, fragment);
+
+            if (!fragments.containsValue(fragment)) {
+                fragments.put(makeFragmentName(position), fragment);
+            }
         }
 
         @Override
