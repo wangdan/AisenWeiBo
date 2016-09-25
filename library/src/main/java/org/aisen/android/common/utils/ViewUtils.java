@@ -15,8 +15,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.aisen.android.common.context.GlobalContext;
-
 import java.lang.reflect.Field;
 
 public class ViewUtils {
@@ -76,13 +74,15 @@ public class ViewUtils {
 	}
 
 	public static void showMessage(Context context, String message) {
-//		MToast.showMessage(message);
-		Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+		if (context != null) {
+			Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	public static void showMessage(Context context, int messageId) {
-//		MToast.showMessage(messageId);
-		Toast.makeText(context, messageId, Toast.LENGTH_SHORT).show();
+		if (context != null) {
+			Toast.makeText(context, messageId, Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	public static ProgressDialog progressDialog2;
