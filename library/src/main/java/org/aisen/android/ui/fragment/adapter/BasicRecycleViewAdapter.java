@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 import org.aisen.android.R;
+import org.aisen.android.ui.fragment.APagingFragment;
 import org.aisen.android.ui.fragment.itemview.AHeaderItemViewCreator;
 import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
  *
  * Created by wangdan on 16/1/5.
  */
-public class BasicRecycleViewAdapter<T extends Serializable, RefreshView extends View> extends RecyclerView.Adapter implements IPagingAdapter {
+public class BasicRecycleViewAdapter<T extends Serializable> extends RecyclerView.Adapter implements IPagingAdapter {
 
     private IItemViewCreator<T> itemViewCreator;
     private ArrayList<T> datas;
@@ -34,14 +35,14 @@ public class BasicRecycleViewAdapter<T extends Serializable, RefreshView extends
     private AdapterView.OnItemLongClickListener onItemLongClickListener;
 
     private final Activity activity;
-    private final RefreshView refreshView;
+    private final APagingFragment ownerFragment;
 
-    public BasicRecycleViewAdapter(Activity activity, RefreshView refreshView, IItemViewCreator<T> itemViewCreator, ArrayList<T> datas) {
+    public BasicRecycleViewAdapter(Activity activity, APagingFragment ownerFragment, IItemViewCreator<T> itemViewCreator, ArrayList<T> datas) {
         this.activity = activity;
-        this.refreshView = refreshView;
         if (datas == null)
             datas = new ArrayList<T>();
         this.itemViewCreator = itemViewCreator;
+        this.ownerFragment = ownerFragment;
         this.datas = datas;
     }
 
@@ -105,8 +106,8 @@ public class BasicRecycleViewAdapter<T extends Serializable, RefreshView extends
 
             convertView = itemView.getConvertView();
 
-            if (refreshView instanceof RecyclerView) {
-                RecyclerView recyclerView = (RecyclerView) refreshView;
+            if (ownerFragment.getRefreshView() != null && ownerFragment.getRefreshView() instanceof RecyclerView) {
+                RecyclerView recyclerView = (RecyclerView) ownerFragment.getRefreshView();
                 if (recyclerView.getLayoutManager() instanceof StaggeredGridLayoutManager) {
                     StaggeredGridLayoutManager.LayoutParams layoutParams;
                     if (convertView.getLayoutParams() == null || !(convertView.getLayoutParams() instanceof StaggeredGridLayoutManager.LayoutParams)) {

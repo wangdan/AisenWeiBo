@@ -45,7 +45,7 @@ public class SearchHeaderView extends ARecycleViewItemView<StatusContent> implem
     RecyclerView mRecycleView;
 
     private APagingFragment fragment;
-    private BasicRecycleViewAdapter<SearchsResultUser, RecyclerView> basicRecycleViewAdapter;
+    private BasicRecycleViewAdapter<SearchsResultUser> basicRecycleViewAdapter;
 
     public SearchHeaderView(APagingFragment fragment, View itemView) {
         super(fragment.getActivity(), itemView);
@@ -59,7 +59,7 @@ public class SearchHeaderView extends ARecycleViewItemView<StatusContent> implem
 
         GridLayoutManager linearLayoutManager = new GridLayoutManager(fragment.getActivity(), 2, LinearLayoutManager.HORIZONTAL, false);
         mRecycleView.setLayoutManager(linearLayoutManager);
-        basicRecycleViewAdapter = new BasicRecycleViewAdapter(fragment.getActivity(), mRecycleView, new HeaderItemCreator(), new ArrayList<>());
+        basicRecycleViewAdapter = new BasicRecycleViewAdapter(fragment.getActivity(), fragment, new HeaderItemCreator(), new ArrayList<>());
         basicRecycleViewAdapter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override

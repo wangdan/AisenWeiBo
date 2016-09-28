@@ -96,7 +96,7 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 		ArrayList<T> datas = savedInstanceState == null ? new ArrayList<T>()
                                                         : (ArrayList<T>) savedInstanceState.getSerializable(SAVED_DATAS);
 		mAdapter = newAdapter(datas);
-		
+
 		if (savedInstanceState != null && savedInstanceState.getSerializable(SAVED_PAGING) != null) {
             mPaging = (IPaging) savedInstanceState.getSerializable(SAVED_PAGING);
 		} else {
@@ -133,7 +133,7 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
 	@Override
 	void _layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
 		super._layoutInit(inflater, savedInstanceSate);
-		
+
 		setupRefreshConfig(refreshConfig);
 
 		setupRefreshView(savedInstanceSate);
