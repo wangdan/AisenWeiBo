@@ -66,11 +66,11 @@ public class TaskException extends Exception {
 
 				TaskError error = TaskError.valueOf(code);
 				if (error == TaskError.noneNetwork || error == TaskError.failIOError)
-					msg = res.getString(R.string.comm_error_noneNetwork);
+					msg = res.getString(R.string.comm_error_none_network);
 				else if (error == TaskError.socketTimeout || error == TaskError.timeout)
 					msg = res.getString(R.string.comm_error_timeout);
 				else if (error == TaskError.resultIllegal)
-					msg = res.getString(R.string.comm_error_resultIllegal);
+					msg = res.getString(R.string.comm_error_result_illegal);
 				if (!TextUtils.isEmpty(msg))
 					return msg + "";
 			}
