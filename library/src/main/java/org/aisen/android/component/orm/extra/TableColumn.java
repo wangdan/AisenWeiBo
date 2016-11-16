@@ -12,6 +12,8 @@ public class TableColumn {
 
     private String columnType;
 
+	private String columnValue;
+
 	public String getDataType() {
 		return dataType;
 	}
@@ -43,4 +45,13 @@ public class TableColumn {
     public void setColumnType(String columnType) {
         this.columnType = columnType;
     }
+
+	public String getColumnValue() {
+		return columnValue;
+	}
+
+	public void setColumnValue(String columnValue) {
+		this.columnValue = columnValue;
+	}
+
 }

@@ -26,16 +26,24 @@ public class TableInfo {
 	
 	private String tableName;
 	
-	private List<TableColumn> columns;
+	private final List<TableColumn> columns;
 	
 	public TableInfo(Class<?> clazz) {
+		columns = new ArrayList<TableColumn>();
+
 		this.clazz = clazz;
 		
 		setInit();
 	}
+
+	public TableInfo(String tableName, TableColumn primaryKey) {
+		columns = new ArrayList<TableColumn>();
+
+		this.tableName = tableName;
+		this.primaryKey = primaryKey;
+	}
 	
 	private <T> void setInit() {
-		columns = new ArrayList<TableColumn>();
 		// 设置表名
 		setTableName();
 		// 获取所有的属性
