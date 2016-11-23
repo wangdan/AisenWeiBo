@@ -107,8 +107,10 @@ public class VideoService {
                         s.setVideoUrl(urlBean);
 
                         VideoBean videoBean = SinaDB.getDB().selectById(null, VideoBean.class, id);
+                        boolean isNew = false;
                         if (videoBean == null) {
                             videoBean = new VideoBean();
+                            isNew = true;
                         }
                         videoBean.setIdStr(id);
                         videoBean.setShortUrl(urlBean.getUrl_short());
@@ -133,7 +135,12 @@ public class VideoService {
                             videoBean.setType(VideoService.TYPE_VIDEO_NONE);
                         }
 
-                        SinaDB.getDB().update(null, videoBean);
+                        if (isNew) {
+                            SinaDB.getDB().insert(null, videoBean);
+                        }
+                        else {
+                            SinaDB.getDB().update(null, videoBean);
+                        }
 
                         Logger.v(TAG, "Id[%s], Type[%d], 短链[%s], 长链[%s]", videoBean.getIdStr(), videoBean.getType(), urlBean.getUrl_short(), urlBean.getUrl_long());
                     }
@@ -220,9 +227,11 @@ public class VideoService {
                     for (StatusContent s : statusList) {
                         s.setVideoUrl(urlBean);
 
+                        boolean isNew = false;
                         VideoBean videoBean = SinaDB.getDB().selectById(null, VideoBean.class, id);
                         if (videoBean == null) {
                             videoBean = new VideoBean();
+                            isNew = true;
                         }
                         videoBean.setIdStr(id);
                         videoBean.setShortUrl(urlBean.getUrl_short());
@@ -250,7 +259,12 @@ public class VideoService {
                             videoBean.setType(VideoService.TYPE_VIDEO_NONE);
                         }
 
-                        SinaDB.getDB().update(null, videoBean);
+                        if (isNew) {
+                            SinaDB.getDB().insert(null, videoBean);
+                        }
+                        else {
+                            SinaDB.getDB().update(null, videoBean);
+                        }
 
                         Logger.v(TAG, "Id[%s], Type[%d], 短链[%s], 长链[%s]", videoBean.getIdStr(), videoBean.getType(), urlBean.getUrl_short(), urlBean.getUrl_long());
                     }
