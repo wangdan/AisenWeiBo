@@ -133,13 +133,13 @@
 }
 
 #避免混淆泛型 如果混淆报错建议关掉
--keepattributes Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,*Annotation*,EnclosingMethod
+#-keepattributes Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,*Annotation*,EnclosingMethod
 
--keep public class org.aisen.android.** {
-    !private <fields>;
-    !private <methods>;
-}
--keep class org.aisen.android.ui.fragment.APagingFragment$* {
-    !private <fields>;
-    !private <methods>;
-}
+#-keep public class org.aisen.android.** {
+#    !private <fields>;
+#    !private <methods>;
+#}
+#-keep class org.aisen.android.ui.fragment.APagingFragment$* {
+#    !private <fields>;
+#    !private <methods>;
+#}

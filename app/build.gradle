@@ -1,25 +1,22 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion '24.0.2'
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
 
     defaultConfig {
-        applicationId "org.aisen.weibo.sina"
-        minSdkVersion 19
-        targetSdkVersion 24
-        versionCode 618
-        versionName "6.1.8"
+        applicationId rootProject.ext.android.applicationId
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
         multiDexEnabled true
 //        ndk {
 //            //设置支持的SO库架构
 //            abiFilters 'armeabi' , 'x86'//, 'armeabi-v7a', 'x86_64', 'arm64-v8a'
 //        }
-        manifestPlaceholders = [
-                AISEN_PROVIDER: "org.aisen.downloader.sinaweibo.provider",
-                AISEN_STORAGE_PROVIDER: "org.aisen.downloader.sinaweibo.storage.provider"
-        ]
     }
+
     buildTypes {
         release {
             buildConfigField "String", "BUGLY_APP_ID", "\"900021592\""
@@ -42,12 +39,18 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(':library')
     compile project(':datetimerpicker')
+    compile('org.aisen.android:aisen:3.0.0-SNAPSHOT@aar') {
+        changing = true
+    }
+    compile "com.alibaba:fastjson:${rootProject.ext.fastjsonLibVersion}"
+    compile "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
+    compile "com.android.support:design:${rootProject.ext.supportLibVersion}"
+    compile "com.squareup.okhttp:okhttp:${rootProject.ext.okhttpLibVersion}"
+    // 以上是library使用的包
+    compile "com.android.support:cardview-v7:${rootProject.ext.supportLibVersion}"
     compile 'org.aisen.android:searchview:2.1.1@aar'
     compile 'org.aisen.android:downloadmanager:2.0.0-SNAPSHOT@aar'
-    //    compile 'org.aisen.android:downloadmanager:1.0.0-SNAPSHOT@aar'
-    compile 'com.android.support:cardview-v7:24.2.0'
     compile 'com.github.gabrielemariotti.changeloglib:changelog:2.0.0'
     compile 'com.melnykov:floatingactionbutton:1.3.0'
     compile 'com.afollestad.material-dialogs:core:0.9.0.1'

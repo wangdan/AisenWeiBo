@@ -93,8 +93,12 @@ public class TimelineFavoritesFragment extends ATimelineFragment
             activity.getSupportActionBar().setTitle(R.string.myfav_title);
         }
 
-        setViewVisiable(getLoadingLayout(), View.VISIBLE);
-        setViewVisiable(getEmptyLayout(), View.GONE);
+        if (getLoadingLayout() != null) {
+            getLoadingLayout().setVisibility(View.VISIBLE);
+        }
+        if (getEmptyLayout() != null) {
+            getEmptyLayout().setVisibility(View.GONE);
+        }
     }
 
     @Override

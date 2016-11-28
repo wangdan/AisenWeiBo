@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -128,6 +129,16 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
     }
 
     @Override
+    public TabLayout getTablayout() {
+        return (TabLayout) getActivity().findViewById(R.id.tabLayout);
+    }
+
+    @Override
+    public ViewPager getViewPager() {
+        return (ViewPager) getActivity().findViewById(R.id.viewPager);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -148,9 +159,10 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
     }
 
     @Override
-    protected void setupTabLayout(Bundle savedInstanceSate, TabLayout tabLayout) {
-        super.setupTabLayout(savedInstanceSate, tabLayout);
+    protected void setupTabLayout(Bundle savedInstanceSate) {
+        super.setupTabLayout(savedInstanceSate);
 
+        TabLayout tabLayout = getTablayout();
         tabLayout.setPadding(Utils.dip2px(getActivity(), 8), tabLayout.getPaddingTop(), tabLayout.getPaddingRight(), tabLayout.getPaddingBottom());
         tabLayout.setTabTextColors(getResources().getColor(R.color.text_54),
                 getResources().getColor(R.color.text_80));

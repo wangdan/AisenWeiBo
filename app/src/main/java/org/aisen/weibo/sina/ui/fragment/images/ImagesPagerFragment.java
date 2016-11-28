@@ -30,10 +30,10 @@ public class ImagesPagerFragment extends ATabsTabLayoutFragment<TabItem> {
     }
 
     @Override
-    protected void setupTabLayout(Bundle savedInstanceSate, TabLayout tabLayout) {
-        super.setupTabLayout(savedInstanceSate, tabLayout);
+    protected void setupTabLayout(Bundle savedInstanceSate) {
+        super.setupTabLayout(savedInstanceSate);
 
-        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        getTablayout().setTabMode(TabLayout.MODE_SCROLLABLE);
     }
 
     @Override

@@ -43,11 +43,21 @@ public class TopicsHotTimelinePagerFragment extends ATabsTabLayoutFragment<TabIt
         return R.layout.ui_topicshot_timeline_tabs;
     }
 
-    @Override
-    protected void setupTabLayout(Bundle savedInstanceSate, TabLayout tabLayout) {
-        super.setupTabLayout(savedInstanceSate, tabLayout);
+    //    @Override
+//    public TabLayout getTablayout() {
+//        return (TabLayout) findViewById(R.id.tabLayout);
+//    }
+//
+//    @Override
+//    public ViewPager getViewPager() {
+//        return (ViewPager) findViewById(R.id.viewPager);
+//    }
 
-        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+    @Override
+    protected void setupTabLayout(Bundle savedInstanceSate) {
+        super.setupTabLayout(savedInstanceSate);
+
+        getTablayout().setTabMode(TabLayout.MODE_SCROLLABLE);
     }
 
     @Override

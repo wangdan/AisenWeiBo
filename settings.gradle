@@ -1,1 +1,1 @@
-include ':app', ':library', ':datetimerpicker', ':downloadmanager', ':dashboard'
+include ':app', ':datetimerpicker', ':downloadmanager', ':dashboard'

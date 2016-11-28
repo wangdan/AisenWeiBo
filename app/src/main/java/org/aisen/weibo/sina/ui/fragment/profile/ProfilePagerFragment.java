@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -97,10 +98,10 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
     @ViewInject(id = R.id.imgGender)
     ImageView imgGender;
     // 粉丝数
-    @ViewInject(id = R.id.txtFollowersCounter, click = "onClick")
+    @ViewInject(id = R.id.txtFollowersCounter)
     TextView txtFollowersCounter;
     // 关注数
-    @ViewInject(id = R.id.txtFriendsCounter, click = "onClick")
+    @ViewInject(id = R.id.txtFriendsCounter)
     TextView txtFriendsCounter;
     // 简介
     @ViewInject(id = R.id.txtDesc)
@@ -133,6 +134,16 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
     }
 
     @Override
+    public TabLayout getTablayout() {
+        return (TabLayout) getActivity().findViewById(R.id.tabLayout);
+    }
+
+    @Override
+    public ViewPager getViewPager() {
+        return (ViewPager) getActivity().findViewById(R.id.viewPager);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -141,11 +152,11 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
     }
 
     @Override
-    protected void setupTabLayout(Bundle savedInstanceSate, TabLayout tabLayout) {
-        super.setupTabLayout(savedInstanceSate, tabLayout);
+    protected void setupTabLayout(Bundle savedInstanceSate) {
+        super.setupTabLayout(savedInstanceSate);
 
-        tabLayout.setTabTextColors(getResources().getColor(R.color.text_87_inverse), Color.WHITE);
-        tabLayout.setSelectedTabIndicatorColor(Color.WHITE);
+        getTablayout().setTabTextColors(getResources().getColor(R.color.text_87_inverse), Color.WHITE);
+        getTablayout().setSelectedTabIndicatorColor(Color.WHITE);
     }
 
     public void setUser(WeiBoUser user) {
@@ -176,6 +187,9 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
 //        activity.getToolbar().setBackgroundColor(Color.TRANSPARENT);
 
         setHasOptionsMenu(true);
+
+        txtFriendsCounter.setOnClickListener(this);
+        txtFollowersCounter.setOnClickListener(this);
     }
 
     @Override

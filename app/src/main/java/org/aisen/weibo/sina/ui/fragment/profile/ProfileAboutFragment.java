@@ -69,11 +69,11 @@ public class ProfileAboutFragment extends ABaseFragment
     View item05;
     @ViewInject(id = R.id.scrollView)
     ScrollView scrollView;
-    @ViewInject(id = R.id.btnMention, click = "onClick")
+    @ViewInject(id = R.id.btnMention)
     TextView btnMention;
-    @ViewInject(id = R.id.btnDM, click = "onClick")
+    @ViewInject(id = R.id.btnDM)
     TextView btnDM;
-    @ViewInject(id = R.id.btnDetail, click = "onClick")
+    @ViewInject(id = R.id.btnDetail)
     TextView btnDetail;
 
     private WeiBoUser mUser;
@@ -108,6 +108,16 @@ public class ProfileAboutFragment extends ABaseFragment
 
         if (savedInstanceSate == null) {
             loadFriendship();
+        }
+
+        if (btnMention != null) {
+            btnMention.setOnClickListener(this);
+        }
+        if (btnDM != null) {
+            btnDM.setOnClickListener(this);
+        }
+        if (btnDetail != null) {
+            btnDetail.setOnClickListener(this);
         }
     }
 

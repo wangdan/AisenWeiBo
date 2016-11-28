@@ -107,7 +107,7 @@ public class MenuFragment extends ABaseFragment {
         super.onActivityCreated(savedInstanceState);
 
         menuHeaderView = new MenuHeaderView(this);
-        menuHeaderView.setupHeaderView((FrameLayout) findViewById(R.id.layHeaderContainer));
+        menuHeaderView.setupHeaderView(getActivity(), (FrameLayout) findViewById(R.id.layHeaderContainer));
     }
 
     @Override
@@ -135,7 +135,7 @@ public class MenuFragment extends ABaseFragment {
      */
     public void changeAccount() {
 
-        menuHeaderView.setupHeaderView((FrameLayout) findViewById(R.id.layHeaderContainer));
+        menuHeaderView.setupHeaderView(getActivity(), (FrameLayout) findViewById(R.id.layHeaderContainer));
 
         int menuId = MENU_MAIN;
         View viewItem = layMenuItems.findViewById(menuId);

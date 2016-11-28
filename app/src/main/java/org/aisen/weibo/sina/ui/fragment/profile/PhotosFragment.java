@@ -98,8 +98,12 @@ public class PhotosFragment extends AGridSwipyRefreshFragment<PhotoBean, PhotosB
     protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
         super.layoutInit(inflater, savedInstanceSate);
 
-        setViewVisiable(getLoadingLayout(), View.VISIBLE);
-        setViewVisiable(getEmptyLayout(), View.GONE);
+        if (getLoadingLayout() != null) {
+            getLoadingLayout().setVisibility(View.VISIBLE);
+        }
+        if (getEmptyLayout() != null) {
+            getEmptyLayout().setVisibility(View.GONE);
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getRefreshView().setNestedScrollingEnabled(true);
         }

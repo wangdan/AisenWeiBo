@@ -3,6 +3,8 @@ package org.aisen.weibo.sina.ui.fragment.friendship;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +54,16 @@ public class FriendshipPagerFragment extends ATabsTabLayoutFragment<TabItem> {
     @Override
     public int inflateActivityContentView() {
         return R.layout.ui_tabs;
+    }
+
+    @Override
+    public TabLayout getTablayout() {
+        return (TabLayout) getActivity().findViewById(R.id.tabLayout);
+    }
+
+    @Override
+    public ViewPager getViewPager() {
+        return (ViewPager) getActivity().findViewById(R.id.viewPager);
     }
 
     @Override

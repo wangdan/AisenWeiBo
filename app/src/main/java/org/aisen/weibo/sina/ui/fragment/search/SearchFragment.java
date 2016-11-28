@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -99,6 +101,21 @@ public class SearchFragment extends ATimelineFragment {
         setupContentView(inflater, (ViewGroup) ((BaseActivity) getActivity()).getRootView(), savedInstanceState);
 
         return null;
+    }
+
+    @Override
+    public ViewGroup getContentView() {
+        return (ViewGroup) ((BaseActivity) getActivity()).getRootView();
+    }
+
+    @Override
+    public RecyclerView getRefreshView() {
+        return (RecyclerView) (getActivity()).findViewById(R.id.recycleview);
+    }
+
+    @Override
+    public SwipeRefreshLayout getSwipeRefreshLayout() {
+        return (SwipeRefreshLayout) (getActivity()).findViewById(R.id.swipeRefreshLayout);
     }
 
     @Override
@@ -482,7 +499,7 @@ public class SearchFragment extends ATimelineFragment {
         protected void onSuccess(String[] result) {
             super.onSuccess(result);
 
-            if (isCancelByUser() || getActivity() == null || shadowView.getVisibility() != View.VISIBLE) {
+            if (isCancelled() || getActivity() == null || shadowView.getVisibility() != View.VISIBLE) {
                 return;
             }
 

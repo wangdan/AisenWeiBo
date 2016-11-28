@@ -35,3 +35,21 @@ allprojects {
         maven { url "https://jitpack.io" }
     }
 }
+
+ext {
+    // android build info
+    android = [
+            compileSdkVersion: 24,
+            buildToolsVersion: "24.0.2",
+            minSdkVersion    : 19,
+            targetSdkVersion : 24,
+            applicationId    : "org.aisen.weibo.sina",
+            versionCode      : 618,
+            versionName      : "6.1.8"
+    ]
+
+    // support lib version
+    supportLibVersion = "24.2.0"
+    okhttpLibVersion = "2.6.0"
+    fastjsonLibVersion = "1.2.6"
+}

@@ -80,7 +80,7 @@ import java.util.Collections;
 import java.util.List;
 
 public abstract class APublishFragment extends ABaseFragment
-						implements OnEmotionSelectedListener, PhotoChoice.PhotoChoiceListener {
+						implements OnEmotionSelectedListener, PhotoChoice.PhotoChoiceListener, View.OnClickListener {
 
 	public static final String TAG = "Publish";
 	
@@ -88,19 +88,19 @@ public abstract class APublishFragment extends ABaseFragment
 	
 	@ViewInject(id = R.id.layBtns)
 	View layBtns;
-	@ViewInject(id = R.id.btnLocation, click = "loadGPSLocation")
+	@ViewInject(id = R.id.btnLocation)
 	View btnLocation;
-	@ViewInject(id = R.id.btnCamera, click = "getPicture")
+	@ViewInject(id = R.id.btnCamera)
 	View btnCamera;
-	@ViewInject(id = R.id.btnEmotion, click = "switchEmotionSoftinput")
+	@ViewInject(id = R.id.btnEmotion)
 	View btnEmotion;
-	@ViewInject(id = R.id.btnMention, click = "getFriend")
+	@ViewInject(id = R.id.btnMention)
 	View btnMention;
-	@ViewInject(id = R.id.btnTrends, click = "insertTrends")
+	@ViewInject(id = R.id.btnTrends)
 	View btnTrends;
-	@ViewInject(id = R.id.btnOverflow, click = "popOverflowMenu")
+	@ViewInject(id = R.id.btnOverflow)
 	View btnOverflow;
-    @ViewInject(id = R.id.btnSend, click = "sendContent")
+    @ViewInject(id = R.id.btnSend)
     View btnSend;
 	
 	@ViewInject(id = R.id.layContainer)
@@ -204,8 +204,48 @@ public abstract class APublishFragment extends ABaseFragment
 			tempFilePath = savedInstanceState.getString("tempFilePath");
 		photoChoice.setFileName(tempFilePath);
 		photoChoice.setMode(PhotoChoice.PhotoChoiceMode.uriType);
+
+		if (btnLocation != null)
+			btnLocation.setOnClickListener(this);
+		if (btnCamera != null)
+			btnCamera.setOnClickListener(this);
+		if (btnEmotion != null)
+			btnEmotion.setOnClickListener(this);
+		if (btnMention != null)
+			btnMention.setOnClickListener(this);
+		if (btnTrends != null)
+			btnTrends.setOnClickListener(this);
+		if (btnOverflow != null)
+			btnOverflow.setOnClickListener(this);
+		if (btnSend != null)
+			btnSend.setOnClickListener(this);
 	}
-	
+
+	@Override
+	public void onClick(View v) {
+		if (v.getId() == R.id.btnLocation) {
+
+		}
+		else if (v.getId() == R.id.btnCamera) {
+			getPicture(v);
+		}
+		else if (v.getId() == R.id.btnEmotion) {
+			switchEmotionSoftinput(v);
+		}
+		else if (v.getId() == R.id.btnMention) {
+			getFriend(v);
+		}
+		else if (v.getId() == R.id.btnTrends) {
+			insertTrends(v);
+		}
+		else if (v.getId() == R.id.btnOverflow) {
+
+		}
+		else if (v.getId() == R.id.btnSend) {
+			sendContent(v);
+		}
+	}
+
 	// 如果有照片了，也显示黑色文字
 	protected boolean configWhite() {
 		return getPublishBean().getExtras() != null && getPublishBean().getPics() != null && getPublishBean().getPics().length > 0;

@@ -98,7 +98,7 @@ public class AccountFragment extends ARecycleViewFragment<AccountBean, ArrayList
         }
     }
 
-    @ViewInject(id = R.id.btnAccountAdd, click = "addAccount")
+    @ViewInject(id = R.id.btnAccountAdd)
     View btnAccountAdd;
 
     @Override
@@ -122,6 +122,14 @@ public class AccountFragment extends ARecycleViewFragment<AccountBean, ArrayList
         activity.getSupportActionBar().setTitle(R.string.title_acount);
 
         setHasOptionsMenu(true);
+
+        btnAccountAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addAccount(v);
+            }
+        });
+
     }
 
     @Override
@@ -224,7 +232,7 @@ public class AccountFragment extends ARecycleViewFragment<AccountBean, ArrayList
         CircleImageView viewCover;
         @ViewInject(id = R.id.txtTokenInfo)
         TextView txtTokenInfo;
-        @ViewInject(id = R.id.btnRight, click = "deleteAccount")
+        @ViewInject(id = R.id.btnRight)
         View btnRight;
         @ViewInject(id = R.id.divider)
         View divider;
@@ -233,6 +241,20 @@ public class AccountFragment extends ARecycleViewFragment<AccountBean, ArrayList
 
         public AccountItemView(View itemView) {
             super(getActivity(), itemView);
+        }
+
+        @Override
+        public void onBindView(View convertView) {
+            super.onBindView(convertView);
+
+            btnRight.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    deleteAccount(v);
+                }
+
+            });
         }
 
         @Override
@@ -260,9 +282,10 @@ public class AccountFragment extends ARecycleViewFragment<AccountBean, ArrayList
                 viewCover.setVisibility(View.VISIBLE);
 
             viewCover.setImageDrawable(grayDrawable);
-            btnRight.setTag(data);
 
             divider.setVisibility(itemPosition() == itemSize() - 1 ? View.GONE : View.VISIBLE);
+
+            btnRight.setTag(data);
         }
 
         void deleteAccount(View v) {

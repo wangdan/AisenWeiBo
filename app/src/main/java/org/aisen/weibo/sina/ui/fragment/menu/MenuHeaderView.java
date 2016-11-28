@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -63,7 +64,7 @@ public class MenuHeaderView implements View.OnClickListener {
         this.menuFragment = menuFragment;
     }
 
-    public void setupHeaderView(FrameLayout parent) {
+    public void setupHeaderView(Context context, FrameLayout parent) {
         LayoutInflater inflater = LayoutInflater.from(menuFragment.getActivity());
 
         // 初始化View
@@ -76,7 +77,7 @@ public class MenuHeaderView implements View.OnClickListener {
             parent.addView(mHeaderView, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, height));
 
             // 绑定视图
-            InjectUtility.initInjectedView(GlobalContext.getInstance(), this, mHeaderView);
+            InjectUtility.initInjectedView(context, this, mHeaderView);
         }
         View view = mHeaderView.findViewById(R.id.material_drawer_account_header);
         if (Build.VERSION.SDK_INT >= 19) {

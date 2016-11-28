@@ -86,11 +86,11 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 		return fragment;
 	}
 	
-	@ViewInject(idStr = "photoview")
+	@ViewInject(id = R.id.photoview)
 	PhotoView photoView;
-	@ViewInject(idStr = "webview")
+	@ViewInject(id = R.id.webview)
 	WebView mWebView;
-	@ViewInject(idStr = "txtFailure", click = "loadPicture")
+	@ViewInject(id = R.id.txtFailure)
 	View viewFailure;
 	@ViewInject(id = R.id.viewProgress)
 	PictureProgressView progressView;
@@ -147,6 +147,15 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 		layError.setPadding(0, 0, 0, SystemUtils.getNavigationBarHeight(getActivity()));
 
 		loadPicture(viewFailure);
+
+		findViewById(R.id.txtFailure).setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				loadPicture(v);
+			}
+
+		});
 	}
 
 	final class PictureJavaScriptInterface {
@@ -179,7 +188,7 @@ import uk.co.senab.photoview.PhotoViewAttacher;
     private String getOrigImage() {
         return image.getThumbnail_pic().replace("thumbnail", "large");
     }
-	
+
 	void loadPicture(View v) {
         String url = null;// 下载路径
 

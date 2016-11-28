@@ -40,7 +40,7 @@ public class PublishStatusRepostFragment extends APicPostPublish implements OnCh
 		
 		return fragment;
 	}
-	
+
 	@ViewInject(id = R.id.imgPhoto)
 	ImageView imgPhoto;
 	
