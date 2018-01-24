@@ -8,6 +8,7 @@ import android.telephony.TelephonyManager;
 import android.telephony.gsm.GsmCellLocation;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.webkit.WebView;
 
 import com.alibaba.fastjson.JSON;
@@ -22,8 +23,10 @@ import org.aisen.android.common.utils.Logger;
 import org.aisen.android.network.biz.ABizLogic;
 import org.aisen.android.network.http.HttpConfig;
 import org.aisen.android.network.http.IHttpUtility;
+import org.aisen.android.network.http.OnFileProgress;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
+import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.sinasdk.bean.AccessToken;
 import org.aisen.weibo.sina.sinasdk.bean.DirectMessages;
 import org.aisen.weibo.sina.sinasdk.bean.DmMessages;
@@ -52,11 +55,23 @@ import org.aisen.weibo.sina.sinasdk.bean.TokenInfo;
 import org.aisen.weibo.sina.sinasdk.bean.TrendsBean;
 import org.aisen.weibo.sina.sinasdk.bean.UnreadCount;
 import org.aisen.weibo.sina.sinasdk.bean.UploadPictureResultBean;
+import org.aisen.weibo.sina.sinasdk.bean.UrlsBean;
+import org.aisen.weibo.sina.sinasdk.bean.WebHotTopicssBean;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
+import org.aisen.weibo.sina.sinasdk.http.CommentsHotHttpUtility;
 import org.aisen.weibo.sina.sinasdk.http.HttpsUtility;
+import org.aisen.weibo.sina.sinasdk.http.TimelineCommentHttpUtility;
+import org.aisen.weibo.sina.sinasdk.http.TimelineHotHttpUtility;
+import org.aisen.weibo.sina.sinasdk.http.TimelineHotTopicsHttpUtility;
+import org.aisen.weibo.sina.sinasdk.http.TimelineHttpUtility;
+import org.aisen.weibo.sina.sinasdk.http.TopicHotHttpUtility;
+import org.aisen.weibo.sina.support.bean.LikeResultBean;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
 
 import java.io.File;
+import java.net.PasswordAuthentication;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -72,6 +87,8 @@ import java.util.Map;
  * 
  */
 public class SinaSDK extends ABizLogic {
+
+	public static final String WEB_BASE_URL = "http://m.weibo.cn/";
 
 	private Token token;
 
@@ -259,7 +276,11 @@ public class SinaSDK extends ABizLogic {
         if (!params.containsKey("count"))
             params.addParameter("count", getPageCount(getSetting("friendshipGroupsTimeline")));
 
-        return doGet(getSetting("friendshipGroupsTimeline"), configParams(params), StatusContents.class);
+		Setting action = getSetting("friendshipGroupsTimeline");
+
+		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TimelineHttpUtility.class.getName(), ""));
+
+        return doGet(action, configParams(params), StatusContents.class);
 	}
 
     public StatusContents offlineFriendshipGroupsTimeline(Params params) throws TaskException {
@@ -313,7 +334,11 @@ public class SinaSDK extends ABizLogic {
 		if (!params.containsKey("count"))
 			params.addParameter("count", getPageCount(getSetting("statusesFriendsTimeLine")));
 
-		return doGet(getSetting("statusesFriendsTimeLine"), configParams(params), StatusContents.class);
+		Setting action = getSetting("statusesFriendsTimeLine");
+
+		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TimelineHttpUtility.class.getName(), ""));
+
+		return doGet(action, configParams(params), StatusContents.class);
 	}
 
 	public StatusContents statusesHomeTimeLine(Params params) throws TaskException {
@@ -321,6 +346,31 @@ public class SinaSDK extends ABizLogic {
 			params.addParameter("count", getPageCount(getSetting("statusesHomeTimeLine")));
 
 		return doGet(getSetting("statusesHomeTimeLine"), configParams(params), StatusContents.class);
+	}
+
+	/**
+	 * 根据ID批量获取微博
+	 *
+	 * @param idArr
+	 * @return
+	 * @throws TaskException
+     */
+	public StatusContents statusShowBatch(String[] idArr) throws TaskException {
+		Setting action = getSetting("statusShowBatch");
+
+		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TimelineHttpUtility.class.getName(), ""));
+
+		StringBuffer sb = new StringBuffer();
+		for (String id : idArr) {
+			sb.append(id).append(",");
+		}
+
+		String ids = sb.toString();
+
+		Params params = new Params();
+		params.addParameter("ids", ids.substring(0, ids.length() - 1));
+
+		return doGet(action, configParams(params), StatusContents.class);
 	}
 
 	/**
@@ -352,7 +402,11 @@ public class SinaSDK extends ABizLogic {
 			params.addParameter("count", getPageCount(getSetting("statusesUserTimeLine")));
 		params.setEncodeAble(false);
 
-		return doGet(getSetting("statusesUserTimeLine"), configParams(params), StatusContents.class);
+		Setting action = getSetting("statusesUserTimeLine");
+
+		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TimelineHttpUtility.class.getName(), ""));
+
+		return doGet(action, configParams(params), StatusContents.class);
 	}
 
 	/**
@@ -378,7 +432,11 @@ public class SinaSDK extends ABizLogic {
 		if (!params.containsKey("count"))
 			params.addParameter("count", getPageCount(getSetting("statusesBilateralTimeLine")));
 
-		return doGet(getSetting("statusesBilateralTimeLine"), configParams(params), StatusContents.class);
+		Setting action = getSetting("statusesBilateralTimeLine");
+
+		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TimelineHttpUtility.class.getName(), ""));
+
+		return doGet(action, configParams(params), StatusContents.class);
 	}
 
 	/**
@@ -432,7 +490,11 @@ public class SinaSDK extends ABizLogic {
 	 * @return
 	 */
 	public StatusContents statusesMentions(Params params) throws TaskException {
-		return doGet(getSetting("statusesMentions"), configParams(params), StatusContents.class);
+		Setting action = getSetting("statusesMentions");
+
+		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TimelineHttpUtility.class.getName(), ""));
+
+		return doGet(action, configParams(params), StatusContents.class);
 	}
 
 	/**
@@ -446,7 +508,11 @@ public class SinaSDK extends ABizLogic {
 		if (!params.containsKey("count"))
 			params.addParameter("count", getPageCount(getSetting("statusesToMe")));
 
-		return doGet(getSetting("statusesToMe"), configParams(params), StatusContents.class);
+		Setting action = getSetting("statusesToMe");
+
+		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TimelineHttpUtility.class.getName(), ""));
+
+		return doGet(action, configParams(params), StatusContents.class);
 	}
 	
 	/**
@@ -519,7 +585,42 @@ public class SinaSDK extends ABizLogic {
 		if (!params.containsKey("count"))
 			params.addParameter("count", getPageCount(getSetting("commentsShow")));
 
-		return doGet(getSetting("commentsShow"), configParams(params), StatusComments.class);
+		Setting action = getSetting("commentsShow");
+
+		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TimelineCommentHttpUtility.class.getName(), ""));
+
+		return doGet(action, configParams(params), StatusComments.class);
+	}
+
+	/**
+	 * 热门评论
+	 *
+	 * @param statusId
+	 * @param page
+	 * @return
+	 * @throws TaskException
+     */
+	public StatusComments commentsHotShow(String statusId, int page) throws TaskException {
+		if (AppContext.getAccount() == null || AppContext.getAccount().getCookie() == null)
+			throw new TaskException("", "网页授权已失效，请点击左侧私信菜单再次登录授权");
+
+		HttpConfig config = configHttpConfig();
+		config.baseUrl = "http://m.weibo.cn/single/rcList";
+		config.cookie = AppContext.getAccount().getCookie();
+
+		Params params = new Params();
+		params.addParameter("id", statusId);
+		params.addParameter("format", "cards");
+		params.addParameter("type", "comment");
+		params.addParameter("hot", "1");
+		if (page > 1) {
+			params.addParameter("page", String.valueOf(page));
+		}
+
+		Setting action = newSetting("", "", "");
+		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, CommentsHotHttpUtility.class.getName(), ""));
+
+		return doGet(config, action, params, StatusComments.class);
 	}
 
 	/**
@@ -812,7 +913,11 @@ public class SinaSDK extends ABizLogic {
 		else
 			params.addParameter("count", getPageCount(getSetting("favorites")));
 
-		return doGet(getSetting("favorites"), configParams(params), Favorities.class);
+		Setting action = getSetting("favorites");
+
+		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TimelineHttpUtility.class.getName(), ""));
+
+		return doGet(action, configParams(params), Favorities.class);
 	}
 
 	/**
@@ -871,7 +976,11 @@ public class SinaSDK extends ABizLogic {
 		params.addParameter("q", topics);
 		params.setEncodeAble(false);
 
-		return doGet(getSetting("searchTopics"), configParams(params), StatusContents.class);
+		Setting action = getSetting("searchTopics");
+
+		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TimelineHttpUtility.class.getName(), ""));
+
+		return doGet(action, configParams(params), StatusContents.class);
 	}
 
 	/**
@@ -1393,6 +1502,54 @@ public class SinaSDK extends ABizLogic {
 		return doGet(getSetting("getGroupsTimelineIds"), params, StatusesIds.class);
 	}
 
+	/**
+	 * 将一个或多个短链接还原成原始的长链接
+	 *
+	 * @param shortUrlArr
+	 * @return
+	 * @throws TaskException
+     */
+	public UrlsBean urlShort2Long(String... shortUrlArr) throws TaskException {
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < shortUrlArr.length; i++) {
+			if (shortUrlArr[i] == null)
+				continue;
+
+			if (i > 0) {
+				sb.append("&");
+			}
+			sb.append("url_short").append("=").append(shortUrlArr[i]);
+		}
+		HttpConfig config = configHttpConfig();
+		config.baseUrl = config.baseUrl + "short_url/expand.json?access_token=" + token.getToken() + "&" + sb.toString();
+
+		return doGet(config, getSetting("shortUrlExpand"), null, UrlsBean.class);
+	}
+
+	/**
+	 * 将一个或多个长链接转换成短链接
+	 *
+	 * @param longUrlArr
+	 * @return
+	 * @throws TaskException
+     */
+	public UrlsBean urlLong2Short(String... longUrlArr) throws TaskException {
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < longUrlArr.length; i++) {
+			if (longUrlArr[i] == null)
+				continue;
+
+			if (i > 0) {
+				sb.append("&");
+			}
+			sb.append("url_long").append("=").append(longUrlArr[i]);
+		}
+		HttpConfig config = configHttpConfig();
+		config.baseUrl = config.baseUrl + "short_url/shorten.json?access_token=" + token.getToken() + "&" + sb.toString();
+
+		return doGet(config, getSetting("urlLong2Short"), null, UrlsBean.class);
+	}
+
 	// {"bmiddle_pic":"http://ww1.sinaimg.cn/bmiddle/94389574jw1etl94fy67qj21kw0w0qjd.jpg","original_pic":"http://ww1.sinaimg.cn/large/94389574jw1etl94fy67qj21kw0w0qjd.jpg","pic_id":"94389574jw1etl94fy67qj21kw0w0qjd","thumbnail_pic":"http://ww1.sinaimg.cn/thumbnail/94389574jw1etl94fy67qj21kw0w0qjd.jpg"}
 	/**
 	 * 上传一张图片<br/>
@@ -1624,5 +1781,251 @@ public class SinaSDK extends ABizLogic {
 	protected String getPageCount(Setting setting) {
 		return SettingUtil.getSettingValue(setting, "page_count");
 	}
-	
+
+
+
+
+
+	// 以下开始计划写网页版接口
+
+	private HttpConfig webConfig() throws TaskException {
+		if (AppContext.getAccount() == null || AppContext.getAccount().getCookie() == null)
+			throw new TaskException("", "网页授权已失效，请点击左侧私信菜单再次登录授权");
+
+		HttpConfig config = configHttpConfig();
+		config.baseUrl = WEB_BASE_URL;
+		config.cookie = AppContext.getAccount().getCookie();
+		config.addHeader("User-Agent", "Mozilla/5.0 (Linux; Android 5.1.1; SM801 Build/LMY47V) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/39.0.0.0 Mobile Safari/537.36");
+
+		return config;
+	}
+
+	/**
+	 * 热门微博
+	 *
+	 * @param page
+	 * @return
+	 * @throws TaskException
+     */
+	public StatusContents webGetHotStatuses(int page) throws TaskException {
+		Params params = new Params();
+		params.addParameter("containerid", "102803");
+		if (page > 0) {
+			params.addParameter("since_id", String.valueOf(page));
+		}
+
+		Setting action = newSetting("getHotStatuses", "container/getIndex", "热门微博");
+		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TimelineHotHttpUtility.class.getName(), ""));
+
+		return doGet(webConfig(), action, params, StatusContents.class);
+	}
+
+	/**
+	 * 热门话题
+	 *
+	 * @param sinceId
+	 * @return
+	 * @throws TaskException
+     */
+	public WebHotTopicssBean webGetHotTopics(String containerId, String sinceId, int page) throws TaskException {
+		Params params = new Params();
+		params.addParameter("containerid", containerId);
+		if (!TextUtils.isEmpty(sinceId)) {
+			params.addParameter("since_id", sinceId);
+		}
+		else if (page > 0) {
+			params.addParameter("page", String.valueOf(page));
+		}
+
+		Setting action = newSetting("webGetHotTopics", "container/getIndex", "热门话题");
+		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TopicHotHttpUtility.class.getName(), ""));
+
+		try {
+			return doGet(webConfig(), action, params, WebHotTopicssBean.class);
+		} catch (Exception e) {
+			if (e instanceof TaskException)
+				checkWebResult((TaskException) e);
+
+			throw e;
+		}
+	}
+
+	/**
+	 * 热门话题的推荐微博列表
+	 *
+	 * @param uid
+	 * @param containerId
+	 * @return
+	 * @throws TaskException
+     */
+	public StatusContents webGetHotTopicsRecommendStatus(String uid, String containerId, String sinceId) throws TaskException {
+		Params params = new Params();
+		params.addParameter("uid", uid);
+		params.addParameter("containerid", String.format("230530%s__default__mobile_info_-_pageapp:2305576d91c8d1eef00b0e5caac7d245bc1350", containerId));
+		if (!TextUtils.isEmpty(sinceId)) {
+			params.addParameter("since_id", sinceId);
+		}
+
+		Setting action = newSetting("webGetHotTopicsStatus", "container/getIndex", "热门话题推荐微博");
+		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TimelineHotTopicsHttpUtility.class.getName(), ""));
+
+		try {
+			return doGet(webConfig(), action, params, StatusContents.class);
+		} catch (Exception e) {
+			if (e instanceof TaskException)
+				checkWebResult((TaskException) e);
+
+			throw e;
+		}
+	}
+
+	/**
+	 * 热门话题的推荐推荐微博列表
+	 *
+	 * @param containerId
+	 * @param sinceId
+	 * @return
+	 * @throws TaskException
+     */
+	public StatusContents webGetHotTopicsHotStatus(String containerId, String sinceId) throws TaskException {
+		Params params = new Params();
+		params.addParameter("containerid", containerId);
+		if (!TextUtils.isEmpty(sinceId)) {
+			params.addParameter("since_id", sinceId);
+		}
+
+		Setting action = newSetting("webGetHotTopicsHotStatus", "container/getIndex", "热门话题热门微博");
+		action.getExtras().put(HTTP_UTILITY, newSettingExtra(HTTP_UTILITY, TimelineHotTopicsHttpUtility.class.getName(), ""));
+
+		HttpConfig config = webConfig();
+		config.addHeader("Referer", String.format("http://m.weibo.cn/p/index?containerid=%s", containerId));
+
+		try {
+			return doGet(config, action, params, StatusContents.class);
+		} catch (Exception e) {
+			if (e instanceof TaskException)
+				checkWebResult((TaskException) e);
+
+			throw e;
+		}
+	}
+
+	/**
+	 * 微博点赞
+	 *
+	 * @param statusId
+	 * @param like
+	 * @param cookie
+	 * @return
+	 * @throws TaskException
+	 */
+	public LikeResultBean webStatusLike(String statusId, boolean like, String cookie) throws TaskException {
+		Params params = new Params();
+		params.addParameter("id", statusId);
+		if (like)
+			params.addParameter("attitude", "heart");
+
+		Setting action = newSetting("webStatusLike", like ? "attitudesDeal/add" : "attitudesDeal/delete", "微博点赞");
+
+		HttpConfig config = webConfig();
+		config.addHeader("Referer", config.baseUrl);
+		config.addHeader("Content-Type", "application/x-www-form-urlencoded");
+		config.addHeader("Host", "m.weibo.cn");
+		config.addHeader("Accept-Language", "zh-CN,en-US;q=0.8");
+		config.addHeader("Accept", "application/json, text/plain, */*");
+
+		String body = doPost(config, action, null, params, null, String.class);
+		if (!TextUtils.isEmpty(body)) {
+			Logger.d(TAG, body);
+
+			if (body.indexOf("http://passport.weibo.cn/sso/crossdomain") != -1)
+				throw new TaskException("-100", "未登录");
+			else if (body.indexOf("<html") != -1)
+				throw new TaskException("-100", "未登录");
+
+			LikeResultBean likeBean = JSON.parseObject(body, LikeResultBean.class);
+			if (likeBean.getOk() == 1) {
+				return likeBean;
+			}
+			else if (likeBean.getOk() == -100) {
+				throw new TaskException("-100", "未登录");
+			}
+			else {
+				throw new TaskException("", likeBean.getMsg());
+			}
+		}
+
+		throw new TaskException(TaskException.TaskError.timeout.toString());
+	}
+
+	/**
+	 * 评论点赞
+	 *
+	 * @param comment
+	 * @param like
+	 * @return
+	 * @throws TaskException
+     */
+	public LikeResultBean webCommentLike(StatusComment comment, boolean like) throws TaskException {
+		Params params = new Params();
+		params.addParameter("id", comment.getLikeId());
+		params.addParameter("st", "380e9f");
+
+		Setting action = newSetting("webCommentLike", like ? "comment/like" : "comment/dislike", "评论点赞");
+
+		HttpConfig config = webConfig();
+		config.addHeader("Referer", String.format("http://m.weibo.cn/status/%s", comment.getStatusId()));
+		config.addHeader("Content-Type", "application/x-www-form-urlencoded");
+		config.addHeader("Host", "m.weibo.cn");
+		config.addHeader("Accept-Language", "zh-CN,en-US;q=0.8");
+		config.addHeader("Accept", "application/json, text/plain, */*");
+
+		String body = doPost(config, action, null, params, null, String.class);
+		if (!TextUtils.isEmpty(body)) {
+			Logger.d(TAG, body);
+
+			if (body.indexOf("http://passport.weibo.cn/sso/crossdomain") != -1)
+				throw new TaskException("-100", "未登录");
+			else if (body.indexOf("<html") != -1)
+				throw new TaskException("-100", "未登录");
+
+			LikeResultBean likeBean = JSON.parseObject(body, LikeResultBean.class);
+			if (likeBean.getOk() == 1) {
+				return likeBean;
+			}
+			else if (likeBean.getOk() == -100) {
+				throw new TaskException("-100", "未登录");
+			}
+			else {
+				throw new TaskException("", likeBean.getMsg());
+			}
+		}
+
+		throw new TaskException("-100", "未登录");
+	}
+
+	private void checkWebResult(TaskException e) throws TaskException {
+		// 未登录，或者登录失效
+		if ("-100".equalsIgnoreCase(e.getCode())) {
+			AppContext.clearCookie();
+
+			throw new TaskException("", "网页授权已失效，请重新授权");
+		}
+	}
+
+	/**
+	 * 获取网页版未读消息
+	 *
+	 * @return
+	 * @throws TaskException
+     */
+	public String webGetUnread() throws TaskException {
+		Params params = new Params();
+		params.addParameter("t", System.currentTimeMillis() + "");
+
+		Setting action = newSetting("getWebUnread", "unread", "网页版未读");
+
+		return doGet(webConfig(), action, params, String.class);
+	}
+
 }

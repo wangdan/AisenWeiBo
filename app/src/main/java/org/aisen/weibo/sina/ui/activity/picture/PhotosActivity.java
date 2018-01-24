@@ -35,7 +35,7 @@ import org.aisen.weibo.sina.ui.fragment.profile.PhotosFragment;
  *
  * @date 2014年11月6日
  */
-public class PhotosActivity extends BaseActivity implements OnPageChangeListener {
+public class PhotosActivity extends BaseActivity implements OnPageChangeListener, View.OnClickListener {
 
 	public static void launch(ABaseFragment from, int index, int requestCode) {
 		Intent intent  = new Intent(from.getActivity(), PhotosActivity.class);
@@ -45,11 +45,11 @@ public class PhotosActivity extends BaseActivity implements OnPageChangeListener
 	
 	@ViewInject(id = R.id.viewPager)
 	ViewPager viewPager;
-	@ViewInject(id = R.id.layStatus, click = "launchStatus")
+	@ViewInject(id = R.id.layStatus)
 	View layStatus;
     @ViewInject(id = R.id.viewStatus)
     View viewStatus;
-	@ViewInject(id = R.id.txtStatus, click = "launchStatus")
+	@ViewInject(id = R.id.txtStatus)
 	TextView txtStatus;
     @ViewInject(id = R.id.layToolbar)
     ViewGroup layToolbar;
@@ -58,6 +58,16 @@ public class PhotosActivity extends BaseActivity implements OnPageChangeListener
 	private int index;
 
     MyViewPagerAdapter myViewPagerAdapter;
+
+	@Override
+	public void onClick(View v) {
+		if (v.getId() == R.id.layStatus) {
+			launchStatus(v);
+		}
+		else if (v.getId() == R.id.txtStatus) {
+			launchStatus(v);
+		}
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -124,7 +134,7 @@ public class PhotosActivity extends BaseActivity implements OnPageChangeListener
 	private StatusContent getStatus(int index) {
 		return mBean.getList().get(index).getStatus();
 	}
-	
+
 	void launchStatus(View v) {
 		TimelineDetailPagerFragment.launch(this, getStatus(index));
 	}

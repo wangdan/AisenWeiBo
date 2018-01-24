@@ -183,7 +183,7 @@ public class PublishActivity extends BaseActivity implements AisenActivityHelper
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.comm_ui_fragment_container);
+		setContentView(R.layout.ui_fragment_container);
 		
 		getSupportActionBar().setDisplayShowHomeEnabled(false);
 

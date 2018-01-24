@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="comm_error_none_network">没有网络连接</string>
+    <string name="comm_error_result_illegal">数据解析出错</string>
+    <string name="comm_error_timeout">网络不给力</string>
+</resources>

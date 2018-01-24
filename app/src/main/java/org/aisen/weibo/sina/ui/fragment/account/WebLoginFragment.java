@@ -93,6 +93,7 @@ public class WebLoginFragment extends ABaseFragment {
         super.onActivityCreated(savedInstanceState);
 
         BaseActivity activity = (BaseActivity) getActivity();
+        activity.getToolbar();
         activity.getSupportActionBar().setTitle(R.string.login_title);
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }

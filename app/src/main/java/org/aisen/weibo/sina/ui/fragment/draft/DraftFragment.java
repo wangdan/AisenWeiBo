@@ -2,10 +2,10 @@ package org.aisen.weibo.sina.ui.fragment.draft;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +13,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.DateUtils;
@@ -49,7 +50,7 @@ import java.util.List;
  *
  * @author wangdan
  */
-public class DraftFragment extends ARecycleViewFragment<PublishBean, ArrayList<PublishBean>>
+public class DraftFragment extends ARecycleViewFragment<PublishBean, ArrayList<PublishBean>, PublishBean>
                                 implements View.OnClickListener {
 
     public static ABaseFragment newInstance() {
@@ -265,13 +266,14 @@ public class DraftFragment extends ARecycleViewFragment<PublishBean, ArrayList<P
     }
 
     private void deleteDraft(final PublishBean bean) {
-        new AlertDialogWrapper.Builder(getActivity())
-                .setMessage(R.string.draft_del_confirm)
-                .setNegativeButton(R.string.cancel, null)
-                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+        new MaterialDialog.Builder(getActivity())
+                .content(R.string.draft_del_confirm)
+                .negativeText(R.string.cancel)
+                .positiveText(R.string.confirm)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         new WorkTask<Void, Void, Void>() {
 
                             @Override

@@ -8,6 +8,8 @@ import org.aisen.android.common.utils.ActivityHelper;
 import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.weibo.sina.R;
 
+import java.io.File;
+
 /**
  * Created by wangdan on 15/4/12.
  */
@@ -389,11 +391,15 @@ public class AppSettings {
     }
 
     public static String getImageSavePath() {
-        return ActivityHelper.getShareData(GlobalContext.getInstance(), "org.aisen.weibo.sina.Images", "Images");
+        return ActivityHelper.getShareData(GlobalContext.getInstance(), "org.aisen.weibo.sina.Images", "Aisen" + File.separator + "Images");
     }
 
     public static void setImageSavePath(String path) {
         ActivityHelper.putShareData(GlobalContext.getInstance(), "org.aisen.weibo.sina.Images", path);
+    }
+
+    public static String getVideoSavePath() {
+        return ActivityHelper.getShareData(GlobalContext.getInstance(), "org.aisen.weibo.sina.Images", "Aisen" + File.separator + "Video");
     }
 
     /**
@@ -495,9 +501,6 @@ public class AppSettings {
      * @return
      */
     public static boolean isScreenRotate() {
-        if (isDebug())
-            return true;
-
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GlobalContext.getInstance());
         return prefs.getBoolean("pScreenRotate", false);
     }

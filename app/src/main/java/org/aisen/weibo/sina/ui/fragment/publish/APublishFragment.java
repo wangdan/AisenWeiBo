@@ -7,14 +7,13 @@ import android.content.ClipData;
 import android.content.ClipData.Item;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spannable;
@@ -34,7 +33,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.ActivityHelper;
@@ -80,7 +80,7 @@ import java.util.Collections;
 import java.util.List;
 
 public abstract class APublishFragment extends ABaseFragment
-						implements OnEmotionSelectedListener, PhotoChoice.PhotoChoiceListener {
+						implements OnEmotionSelectedListener, PhotoChoice.PhotoChoiceListener, View.OnClickListener {
 
 	public static final String TAG = "Publish";
 	
@@ -88,19 +88,19 @@ public abstract class APublishFragment extends ABaseFragment
 	
 	@ViewInject(id = R.id.layBtns)
 	View layBtns;
-	@ViewInject(id = R.id.btnLocation, click = "loadGPSLocation")
+	@ViewInject(id = R.id.btnLocation)
 	View btnLocation;
-	@ViewInject(id = R.id.btnCamera, click = "getPicture")
+	@ViewInject(id = R.id.btnCamera)
 	View btnCamera;
-	@ViewInject(id = R.id.btnEmotion, click = "switchEmotionSoftinput")
+	@ViewInject(id = R.id.btnEmotion)
 	View btnEmotion;
-	@ViewInject(id = R.id.btnMention, click = "getFriend")
+	@ViewInject(id = R.id.btnMention)
 	View btnMention;
-	@ViewInject(id = R.id.btnTrends, click = "insertTrends")
+	@ViewInject(id = R.id.btnTrends)
 	View btnTrends;
-	@ViewInject(id = R.id.btnOverflow, click = "popOverflowMenu")
+	@ViewInject(id = R.id.btnOverflow)
 	View btnOverflow;
-    @ViewInject(id = R.id.btnSend, click = "sendContent")
+    @ViewInject(id = R.id.btnSend)
     View btnSend;
 	
 	@ViewInject(id = R.id.layContainer)
@@ -204,8 +204,48 @@ public abstract class APublishFragment extends ABaseFragment
 			tempFilePath = savedInstanceState.getString("tempFilePath");
 		photoChoice.setFileName(tempFilePath);
 		photoChoice.setMode(PhotoChoice.PhotoChoiceMode.uriType);
+
+		if (btnLocation != null)
+			btnLocation.setOnClickListener(this);
+		if (btnCamera != null)
+			btnCamera.setOnClickListener(this);
+		if (btnEmotion != null)
+			btnEmotion.setOnClickListener(this);
+		if (btnMention != null)
+			btnMention.setOnClickListener(this);
+		if (btnTrends != null)
+			btnTrends.setOnClickListener(this);
+		if (btnOverflow != null)
+			btnOverflow.setOnClickListener(this);
+		if (btnSend != null)
+			btnSend.setOnClickListener(this);
 	}
-	
+
+	@Override
+	public void onClick(View v) {
+		if (v.getId() == R.id.btnLocation) {
+
+		}
+		else if (v.getId() == R.id.btnCamera) {
+			getPicture(v);
+		}
+		else if (v.getId() == R.id.btnEmotion) {
+			switchEmotionSoftinput(v);
+		}
+		else if (v.getId() == R.id.btnMention) {
+			getFriend(v);
+		}
+		else if (v.getId() == R.id.btnTrends) {
+			insertTrends(v);
+		}
+		else if (v.getId() == R.id.btnOverflow) {
+
+		}
+		else if (v.getId() == R.id.btnSend) {
+			sendContent(v);
+		}
+	}
+
 	// 如果有照片了，也显示黑色文字
 	protected boolean configWhite() {
 		return getPublishBean().getExtras() != null && getPublishBean().getPics() != null && getPublishBean().getPics().length > 0;
@@ -357,13 +397,14 @@ public abstract class APublishFragment extends ABaseFragment
 		public void onClick(View v) {
 			final String path = v.getTag().toString();
 
-			new AlertDialogWrapper.Builder(getActivity())
-					.setMessage(R.string.publish_delete_pic)
-					.setNegativeButton(R.string.cancel, null)
-					.setPositiveButton(R.string.confirm, new OnClickListener() {
+			new MaterialDialog.Builder(getActivity())
+					.title(R.string.publish_delete_pic)
+					.negativeText(R.string.cancel)
+					.positiveText(R.string.confirm)
+					.onPositive(new MaterialDialog.SingleButtonCallback() {
 
 						@Override
-						public void onClick(DialogInterface dialog, int which) {
+						public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 							String[] pathArr = getPublishBean().getPics();
 							List<String> pathList = new ArrayList<String>();
 							Collections.addAll(pathList, pathArr);
@@ -489,24 +530,27 @@ public abstract class APublishFragment extends ABaseFragment
 	 */
 	void getPicture(View v) {
 		// 已经有图片了
+		// 屏蔽删图片Dialog
 		if (false && getPublishBean().getExtras() != null &&
 				(getPublishBean().getPics() != null && getPublishBean().getPics().length > 0) || getPublishBean().getParams().containsKey("url")) {
-			new AlertDialogWrapper.Builder(getActivity())
-							.setItems(R.array.publish_pic_edit, new OnClickListener() {
-					
+			new MaterialDialog.Builder(getActivity())
+							.items(R.array.publish_pic_edit)
+							.itemsCallback(new MaterialDialog.ListCallback() {
+
 								@Override
-								public void onClick(DialogInterface dialog, int which) {
-									if (which == 0) {
+								public void onSelection(MaterialDialog dialog, View itemView, int position, CharSequence text) {
+									if (position == 0) {
 										showGetPictureDialog();
 									}
 									else {
-                                        getPublishBean().setPics(null);
+										getPublishBean().setPics(null);
 //										getPublishBean().getExtras().remove("images");
 										getPublishBean().getParams().remove("url");
 
 										refreshUI();
 									}
 								}
+
 							})
 							.show();
 		}
@@ -520,16 +564,17 @@ public abstract class APublishFragment extends ABaseFragment
 
 			@Override
 			public void doAction() {
-				new AlertDialogWrapper.Builder(getActivity())
-						.setItems(R.array.publish_pic, new OnClickListener() {
+				new MaterialDialog.Builder(getActivity())
+						.items(R.array.publish_pic)
+						.itemsCallback(new MaterialDialog.ListCallback() {
 
 							@Override
-							public void onClick(DialogInterface dialog, int which) {
+							public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
 								switch (which) {
 									// 相册
 									case 0:
 										String[] images = getPublishBean().getPics();
-										PicturePickFragment.launch(APublishFragment.this, 9, images, 3333);
+										PicturePickFragment.launch(APublishFragment.this, picPickerSize(), images, 3333);
 										break;
 									// 拍照
 									case 1:
@@ -549,11 +594,16 @@ public abstract class APublishFragment extends ABaseFragment
 										break;
 								}
 							}
+
 						})
 						.show();
 			}
 
 		}.run();
+	}
+
+	int picPickerSize() {
+		return 9;
 	}
 
 	/**
@@ -670,24 +720,28 @@ public abstract class APublishFragment extends ABaseFragment
 	}
 
 	private void askSaveToDraft() {
-		new AlertDialogWrapper.Builder(getActivity()).setMessage(R.string.publish_draft_title)
-												.setNegativeButton(R.string.no, new OnClickListener() {
+		new MaterialDialog.Builder(getActivity()).content(R.string.publish_draft_title)
+												.negativeText(R.string.no)
+												.onNegative(new MaterialDialog.SingleButtonCallback() {
 
 													@Override
-													public void onClick(DialogInterface dialog, int which) {
+													public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 														getActivity().finish();
 													}
+
 												})
-												.setPositiveButton(R.string.yes, new OnClickListener() {
+												.positiveText(R.string.yes)
+												.onPositive(new MaterialDialog.SingleButtonCallback() {
 
 													@Override
-													public void onClick(DialogInterface dialog, int which) {
+													public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 														getPublishBean().setStatus(PublishStatus.draft);
 
 														PublishDB.addPublish(getPublishBean(), AppContext.getAccount().getUser());
 
 														getActivity().finish();
 													}
+
 												})
 												.show();
 
@@ -709,16 +763,18 @@ public abstract class APublishFragment extends ABaseFragment
 
 		// 当拍摄照片时，提示是否设置旋转90度
 		if (!AppSettings.isRotatePic() && !ActivityHelper.getBooleanShareData(GlobalContext.getInstance(), "RotatePicNoRemind", false)) {
-			new AlertDialogWrapper.Builder(getActivity()).setTitle(R.string.remind)
-									.setMessage(R.string.publish_rotate_remind)
-									.setNegativeButton(R.string.donnot_remind, new OnClickListener() {
-										
+			new MaterialDialog.Builder(getActivity()).title(R.string.remind)
+									.content(R.string.publish_rotate_remind)
+									.negativeText(R.string.donnot_remind)
+									.onNegative(new MaterialDialog.SingleButtonCallback() {
+
 										@Override
-										public void onClick(DialogInterface dialog, int which) {
+										public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 											ActivityHelper.putBooleanShareData(GlobalContext.getInstance(), "RotatePicNoRemind", true);
 										}
+
 									})
-									.setPositiveButton(R.string.i_know, null)
+									.positiveText(R.string.i_know)
 									.show();
 		}
 		
@@ -809,8 +865,19 @@ public abstract class APublishFragment extends ABaseFragment
         }
         getPublishBean().setPics(pics);
 
+		onPicChanged(new String[]{ image });
+
 		// 刷新视图
 		refreshUI();
+	}
+
+	/**
+	 * 图片选择发生了改变
+	 *
+	 * @param pics
+     */
+	protected void onPicChanged(String[] pics) {
+		Logger.w(pics);
 	}
 
 	@Override
@@ -868,9 +935,10 @@ public abstract class APublishFragment extends ABaseFragment
         else if (requestCode == 3333 && resultCode == Activity.RESULT_OK) {
             if (data != null) {
                 String[] pics = data.getStringArrayExtra("pics");
-				Logger.w(pics);
                 if (pics != null) {
                     getPublishBean().setPics(pics);
+
+					onPicChanged(pics);
 
                     refreshUI();
                 }

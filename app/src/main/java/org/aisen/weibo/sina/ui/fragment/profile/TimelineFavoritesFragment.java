@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -31,6 +32,7 @@ import org.aisen.weibo.sina.support.cache.FavoritesCacheUtility;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 import org.aisen.weibo.sina.ui.fragment.timeline.ATimelineFragment;
+import org.aisen.weibo.sina.ui.widget.AisenTextView;
 
 import java.util.ArrayList;
 
@@ -91,8 +93,12 @@ public class TimelineFavoritesFragment extends ATimelineFragment
             activity.getSupportActionBar().setTitle(R.string.myfav_title);
         }
 
-        setViewVisiable(getLoadingLayout(), View.VISIBLE);
-        setViewVisiable(getEmptyLayout(), View.GONE);
+        if (getLoadingLayout() != null) {
+            getLoadingLayout().setVisibility(View.VISIBLE);
+        }
+        if (getEmptyLayout() != null) {
+            getEmptyLayout().setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -115,7 +121,7 @@ public class TimelineFavoritesFragment extends ATimelineFragment
         boolean load = true;
 
         // 如果还没有加载过数据，切且显示的是当前的页面
-        if (getTaskCount(PAGING_TASK_ID) == 0) {
+        if (getTaskCount(PAGING_TASK_ID) == 0 && !launch) {
             load = AisenUtils.checkTabsFragmentCanRequestData(this);
         }
 
@@ -150,6 +156,17 @@ public class TimelineFavoritesFragment extends ATimelineFragment
             total += favorities.getFavorites().size();
             if (total >= favorities.getTotal_number())
                 statusContents.setEndPaging(true);
+
+            for (StatusContent content : statusContents.getStatuses()) {
+                AisenTextView.addText(content.getText());
+
+                if (content.getRetweeted_status() != null) {
+                    String reUserName = "";
+                    if (content.getRetweeted_status().getUser() != null && !TextUtils.isEmpty(content.getRetweeted_status().getUser().getScreen_name()))
+                        reUserName = String.format("@%s :", content.getRetweeted_status().getUser().getScreen_name());
+                    AisenTextView.addText(reUserName + content.getRetweeted_status().getText());
+                }
+            }
 
             return statusContents;
         }

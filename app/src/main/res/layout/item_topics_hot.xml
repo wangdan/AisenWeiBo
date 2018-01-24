@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground" android:orientation="vertical" android:paddingRight="8dip"
+                android:paddingBottom="8dip" android:paddingLeft="8dip" android:paddingTop="8dip">
+
+    <ImageView
+        android:id="@+id/imgPic"
+        android:layout_width="75dip" android:layout_height="75dip" android:layout_marginRight="8dip" android:scaleType="centerCrop"/>
+
+    <TextView
+        android:id="@+id/txtTitle" style="@style/TextTitle"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/imgPic"
+        android:gravity="center_vertical"
+        android:text="我是评论正文"/>
+
+    <TextView
+        android:id="@+id/txtDesc1" style="@style/TextSubhead" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:layout_below="@id/txtTitle" android:layout_marginBottom="8dip"
+        android:layout_marginTop="8dip" android:layout_toRightOf="@id/imgPic" android:ellipsize="end"
+        android:lineSpacingExtra="1.5dip" android:singleLine="true"
+        android:text="昨天 来自Aisen微博" android:textSize="12sp"/>
+
+
+    <TextView
+        android:id="@+id/txtDesc2"
+        style="@style/TextSubhead"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_below="@id/txtDesc1" android:layout_toRightOf="@id/imgPic" android:ellipsize="end" android:singleLine="true"
+        android:text="昨天 来自Aisen微博" android:textSize="12sp"/>
+
+</RelativeLayout>

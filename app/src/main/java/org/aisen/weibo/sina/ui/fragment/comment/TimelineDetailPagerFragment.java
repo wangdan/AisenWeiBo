@@ -12,8 +12,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,7 +28,6 @@ import android.widget.TextView;
 import com.getbase.floatingactionbutton.AddFloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
-import com.umeng.analytics.MobclickAgent;
 
 import org.aisen.android.common.utils.Utils;
 import org.aisen.android.support.bean.TabItem;
@@ -58,8 +59,11 @@ import java.util.ArrayList;
 public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
                                             implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener, DoLikeAction.OnLikeCallback, SwipeRefreshLayout.OnRefreshListener {
 
+    private static final int HOT_CMT_SHOW_MIN_COUNT = 20;
+
     public static void launch(Activity from, StatusContent status) {
         FragmentArgs args = new FragmentArgs();
+
         args.add("status", status);
 
         SinaCommonActivity.launch(from, TimelineDetailPagerFragment.class, args);
@@ -116,12 +120,22 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
         // 添加HeaderView
         View itemConvertView = inflater.inflate(CommentHeaderItemView.COMMENT_HEADER_01_RES, layHeader, false);
         CommentHeaderItemView headerItemView = new CommentHeaderItemView(this, itemConvertView, mStatusContent);
-        headerItemView.onBindData(layHeader, null, 0);
+//        headerItemView.onBindData(layHeader, null, 0);
         layHeader.addView(itemConvertView, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 
         BizFragment.createBizFragment(getActivity()).createFabAnimator(action_menu);
 
         return null;
+    }
+
+    @Override
+    public TabLayout getTablayout() {
+        return (TabLayout) getActivity().findViewById(R.id.tabLayout);
+    }
+
+    @Override
+    public ViewPager getViewPager() {
+        return (ViewPager) getActivity().findViewById(R.id.viewPager);
     }
 
     @Override
@@ -145,9 +159,10 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
     }
 
     @Override
-    protected void setupTabLayout(Bundle savedInstanceSate, TabLayout tabLayout) {
-        super.setupTabLayout(savedInstanceSate, tabLayout);
+    protected void setupTabLayout(Bundle savedInstanceSate) {
+        super.setupTabLayout(savedInstanceSate);
 
+        TabLayout tabLayout = getTablayout();
         tabLayout.setPadding(Utils.dip2px(getActivity(), 8), tabLayout.getPaddingTop(), tabLayout.getPaddingRight(), tabLayout.getPaddingBottom());
         tabLayout.setTabTextColors(getResources().getColor(R.color.text_54),
                 getResources().getColor(R.color.text_80));
@@ -275,8 +290,12 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
 
     @Override
     protected ArrayList<TabItem> generateTabs() {
+
         ArrayList<TabItem> tabItems = new ArrayList<>();
 
+        if (mStatusContent.getComments_count() >= HOT_CMT_SHOW_MIN_COUNT && !TextUtils.isEmpty(AppContext.getAccount().getCookie())) {
+            tabItems.add(new TabItem("0", getString(R.string.comment_hot)));
+        }
         if (mStatusContent.getComments_count() > 0 || mStatusContent.getReposts_count() == 0) {
             tabItems.add(new TabItem("1", String.format(getString(R.string.comment_format), AisenUtils.getCounter(mStatusContent.getComments_count()))));
         }
@@ -289,8 +308,12 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
 
     @Override
     protected Fragment newFragment(TabItem bean) {
+        // 热门评论
+        if ("0".equals(bean.getType())) {
+            return TimelineHotCommentFragment.newInstance(mStatusContent);
+        }
         // 微博评论
-        if ("1".equals(bean.getType())) {
+        else if ("1".equals(bean.getType())) {
             return TimelineCommentFragment.newInstance(mStatusContent);
         }
         // 微博转发
@@ -344,7 +367,7 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
             else {
                 showOverlay();
 
-                MobclickAgent.onEvent(getActivity(), "toggle_cmt_fag");
+                UMengUtil.onEvent(getActivity(), "toggle_cmt_fag");
             }
 
             action_menu.toggle();
@@ -430,12 +453,12 @@ public class TimelineDetailPagerFragment extends ATabsTabLayoutFragment<TabItem>
     }
 
     @Override
-    public void onLikeFaild() {
+    public void onLikeFaild(BizFragment.ILikeBean data) {
         setLikeText();
     }
 
     @Override
-    public void onLikeSuccess(StatusContent data, View likeView) {
+    public void onLikeSuccess(BizFragment.ILikeBean data, View likeView) {
         if (getActivity() == null)
             return;
 

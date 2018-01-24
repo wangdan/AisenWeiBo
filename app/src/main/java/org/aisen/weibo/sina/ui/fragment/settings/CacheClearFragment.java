@@ -3,11 +3,11 @@ package org.aisen.weibo.sina.ui.fragment.settings;
 import android.content.DialogInterface;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.support.annotation.NonNull;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.GravityEnum;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.umeng.analytics.MobclickAgent;
 
 import org.aisen.android.common.utils.DateUtils;
 import org.aisen.android.common.utils.Logger;
@@ -16,6 +16,7 @@ import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.ui.fragment.ABaseFragment;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.MyApplication;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 
 import java.io.File;
 import java.text.DecimalFormat;
@@ -53,30 +54,34 @@ public class CacheClearFragment extends ABaseFragment implements OnPreferenceCli
 	@Override
 	public boolean onPreferenceClick(Preference preference) {
 		if (clearCachePref.getKey().equals(preference.getKey())) {
-			new AlertDialogWrapper.Builder(getActivity()).setTitle("清理建议")
-								.setMessage("【确定】将清理掉SD卡中所有的图片缓存，建议保留近期缓存节省流量开销")
-								.setNeutralButton("取消", null)
-								.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+			new MaterialDialog.Builder(getActivity()).title("清理建议")
+								.content("【确定】将清理掉SD卡中所有的图片缓存，建议保留近期缓存节省流量开销")
+								.neutralText("取消")
+								.positiveText("确定")
+								.onPositive(new MaterialDialog.SingleButtonCallback() {
 
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        clearCache(true);
-                                    }
-                                })
-								.setNegativeButton("保留最新", new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+										clearCache(true);
+									}
 
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        clearCache(false);
-                                    }
-                                })
+								})
+								.negativeText("保留最新")
+								.onNegative(new MaterialDialog.SingleButtonCallback() {
+
+									@Override
+									public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+										clearCache(false);
+									}
+
+								})
 								.show();
 		}
 		return true;
 	}
 	
 	private void clearCache(final boolean all) {
-		MobclickAgent.onEvent(getActivity(), all ? "clear_cache_all" : "clear_cache_outofdate");
+		UMengUtil.onEvent(getActivity(), all ? "clear_cache_all" : "clear_cache_outofdate");
 
 		final WorkTask<Void, String, Void> task = new WorkTask<Void, String, Void>() {
 

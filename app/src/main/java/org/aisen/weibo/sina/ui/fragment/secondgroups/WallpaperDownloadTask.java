@@ -480,7 +480,7 @@ public class WallpaperDownloadTask extends WorkTask<Void, Long, Boolean> {
 
         //判断网络是否连接
         if(SystemUtils.getNetworkType(GlobalContext.getInstance()) == SystemUtils.NetWorkType.none){
-            throw new TaskException("", mContext.getResources().getString(org.aisen.android.R.string.comm_error_noneNetwork));
+            throw new TaskException("", mContext.getResources().getString(org.aisen.android.R.string.comm_error_none_network));
         }
 
         // 先下载一个临时文件

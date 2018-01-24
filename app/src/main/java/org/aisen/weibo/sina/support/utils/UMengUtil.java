@@ -66,6 +66,9 @@ public class UMengUtil {
         MobclickAgent.onPageStart(name);
         MobclickAgent.onResume(context);
 
+//        TmaAgent.onPageStart(name);
+//        TmaAgent.onResume(context);
+
         Logger.v("UMeng", "onPageStart(%s)", name);
     }
 
@@ -73,7 +76,16 @@ public class UMengUtil {
         MobclickAgent.onPageEnd(name);
         MobclickAgent.onPause(context);
 
+//        TmaAgent.onPageEnd(name);
+//        TmaAgent.onPause(context);
+
         Logger.v("UMeng", "onPageEnd(%s)", name);
+    }
+
+    public static void onEvent(Context context, String eventId) {
+        MobclickAgent.onEvent(context, eventId);
+
+//        TmaAgent.onEvent(context, eventId);
     }
 
 }

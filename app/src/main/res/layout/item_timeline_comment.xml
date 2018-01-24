@@ -12,19 +12,52 @@
         android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_toRightOf="@id/imgPhoto" android:ellipsize="end" android:singleLine="true"
         android:text="名字" android:textColor="?attr/text_subhead"/>
 
+    <RelativeLayout
+        android:id="@+id/layRe"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_below="@id/txtName" android:layout_toRightOf="@id/imgPhoto" android:orientation="vertical" android:paddingRight="16dip"
+        android:paddingTop="8dip">
+
+        <org.aisen.android.ui.widget.CircleImageView
+            android:id="@+id/imgRePhoto" android:layout_width="40dip" android:layout_height="40dip"
+            android:layout_marginRight="@dimen/comm_h_gap"/>
+
+        <org.aisen.weibo.sina.ui.widget.AisenTextView
+            android:id="@+id/txtReContent" style="@style/TextSubhead" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/imgRePhoto" android:ellipsize="end" android:gravity="center_vertical" android:maxLines="2"
+            android:minHeight="40dip" android:textSize="14sp"/>
+
+    </RelativeLayout>
+
     <org.aisen.weibo.sina.ui.widget.AisenTextView
         android:id="@+id/txtContent" style="@style/TextBody"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_below="@id/txtName" android:layout_marginBottom="8dip" android:layout_marginTop="8dip" android:layout_toRightOf="@id/imgPhoto"
+        android:layout_below="@id/layRe" android:layout_marginBottom="8dip" android:layout_marginTop="8dip" android:layout_toRightOf="@id/imgPhoto"
         android:gravity="center_vertical" android:lineSpacingExtra="1.5dip" android:minHeight="26dip"
         android:paddingRight="16dip"
         android:text="我是评论正文"/>
+
+    <org.aisen.weibo.sina.ui.widget.CommentPictureView
+        android:id="@+id/pic" android:layout_width="75dip" android:layout_height="75dip"
+        android:layout_below="@id/txtContent"
+        android:layout_marginBottom="8dip" android:layout_toRightOf="@id/imgPhoto"
+        android:scaleType="centerCrop"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/txtDesc"
         style="@style/TextSubhead"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_below="@id/txtContent" android:layout_toRightOf="@id/imgPhoto" android:ellipsize="end" android:singleLine="true"
+        android:layout_below="@id/pic" android:layout_toRightOf="@id/imgPhoto" android:ellipsize="end" android:singleLine="true"
         android:text="昨天 来自Aisen微博" android:textSize="12sp"/>
+
+    <org.aisen.android.ui.widget.MDButton
+        android:id="@+id/btnLike"
+        style="@style/TextSubhead" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" android:layout_alignParentRight="true"
+        android:layout_marginRight="16dip" android:background="?attr/selectableItemBackgroundBorderless"
+        android:gravity="bottom" android:paddingLeft="8dip" android:paddingRight="8dip"
+        android:paddingTop="20dip" android:text="赞"
+        android:textColor="@color/text_54" android:textSize="12sp"/>
 
 </RelativeLayout>

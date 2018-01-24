@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -19,8 +20,6 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.umeng.analytics.MobclickAgent;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.SystemUtils;
@@ -38,6 +37,7 @@ import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
 import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.support.utils.AccountUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.activity.base.MainActivity;
 import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
@@ -64,7 +64,7 @@ public class MenuHeaderView implements View.OnClickListener {
         this.menuFragment = menuFragment;
     }
 
-    public void setupHeaderView(FrameLayout parent) {
+    public void setupHeaderView(Context context, FrameLayout parent) {
         LayoutInflater inflater = LayoutInflater.from(menuFragment.getActivity());
 
         // 初始化View
@@ -77,7 +77,7 @@ public class MenuHeaderView implements View.OnClickListener {
             parent.addView(mHeaderView, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, height));
 
             // 绑定视图
-            InjectUtility.initInjectedView(GlobalContext.getInstance(), this, mHeaderView);
+            InjectUtility.initInjectedView(context, this, mHeaderView);
         }
         View view = mHeaderView.findViewById(R.id.material_drawer_account_header);
         if (Build.VERSION.SDK_INT >= 19) {
@@ -176,7 +176,8 @@ public class MenuHeaderView implements View.OnClickListener {
                 List<AccountBean> accounts = AccountUtils.queryAccount();
                 List<AccountBean> newAccounts = new ArrayList<>();
                 for (AccountBean account : accounts) {
-                    if (!AppContext.getAccount().getUid().equals(account.getUid())) {
+                    if (AppContext.getAccount() != null &&
+                            !AppContext.getAccount().getUid().equals(account.getUid())) {
                         newAccounts.add(account);
                     }
                 }
@@ -206,7 +207,7 @@ public class MenuHeaderView implements View.OnClickListener {
 
                 @Override
                 public void onClick(View v) {
-                    MobclickAgent.onEvent(menuFragment.getActivity(), "menuheader_account_change");
+                    UMengUtil.onEvent(menuFragment.getActivity(), "menuheader_account_change");
 
                     AccountBean account = (AccountBean) v.getTag();
 
@@ -268,9 +269,11 @@ public class MenuHeaderView implements View.OnClickListener {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                AccountFragment.login(account, true);
+                if (menuFragment.getActivity() != null) {
+                    AccountFragment.login(menuFragment.getActivity(), account, true);
 
-                setAccounts();
+                    setAccounts();
+                }
             }
 
             @Override
@@ -295,7 +298,7 @@ public class MenuHeaderView implements View.OnClickListener {
 //            switchAccountLayout();
             AccountFragment.launch(menuFragment.getActivity());
 
-            MobclickAgent.onEvent(menuFragment.getActivity(), "menuheader_show_accounts");
+            UMengUtil.onEvent(menuFragment.getActivity(), "menuheader_show_accounts");
         }
     }
 

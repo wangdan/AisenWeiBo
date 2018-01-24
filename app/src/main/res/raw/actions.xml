@@ -449,6 +449,17 @@
 		<des>调整当前登录用户的好友分组顺序</des>
 		<value>friendships/groups/order.json</value>
 	</setting>
+
+	<setting type="shortUrlExpand">
+		<des>将一个或多个短链接还原成原始的长链接</des>
+		<value></value>
+		<!--short_url/expand.json-->
+	</setting>
+
+	<setting type="urlLong2Short">
+		<des>将一个或多个长链接转换成短链接</des>
+		<value></value>
+	</setting>
 	
 	<setting type="locationMobileGetLocation">
 		<des>根据移动基站WIFI等数据获取当前位置信息</des>
@@ -559,6 +570,11 @@
 	<setting type="publishUploadPicture">
 		<des>上传一张图片</des>
 		<value>statuses/upload_pic.json</value>
+	</setting>
+
+	<setting type="statusShowBatch">
+		<des>根据ID批量获取微博</des>
+		<value>statuses/show_batch.json</value>
 	</setting>
 
 </app-settings>

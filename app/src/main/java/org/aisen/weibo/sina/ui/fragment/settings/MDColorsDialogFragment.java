@@ -13,7 +13,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.aisen.android.common.utils.ViewUtils;
 import org.aisen.android.ui.activity.basic.BaseActivity;
@@ -21,6 +21,7 @@ import org.aisen.android.ui.widget.CircleImageView;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
+import org.aisen.weibo.sina.ui.widget.AisenTextView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,10 +58,10 @@ public class MDColorsDialogFragment extends DialogFragment
 		gridView.setOnItemClickListener(this);
         gridView.setOnItemLongClickListener(this);
 		
-		return new AlertDialogWrapper.Builder(getActivity())
-                                            .setView(view)
-                                            .setPositiveButton(R.string.cancel, null)
-                                            .create();
+		return new MaterialDialog.Builder(getActivity())
+                                            .customView(view, false)
+                                            .positiveText(R.string.cancel)
+                                            .build();
 	}
 	
 	class MDColorsAdapter extends BaseAdapter {
@@ -107,6 +108,9 @@ public class MDColorsDialogFragment extends DialogFragment
 
             return;
         }
+
+		AisenTextView.textSpannableCache.evictAll();
+		AisenTextView.textNoneSpannableCache.evictAll();
 
         AppSettings.setThemeColor(position);
 

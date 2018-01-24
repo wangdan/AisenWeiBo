@@ -23,16 +23,16 @@
     <!-- 开机自启动 -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <!--<uses-permission android:name="android.permission.READ_LOGS"/>-->
-    <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <uses-permission android:name="android.permission.SET_WALLPAPER"/>
 
     <application android:name=".base.MyApplication" android:allowBackup="true"
                  android:icon="@drawable/a_icon_b" android:label="@string/app_name"
                  android:theme="@style/AppBaseTheme">
         <!--友盟配置-->
         <!--release-->
-        <!--<meta-data android:value="56dee57be0f55a98a00032d8" android:name="UMENG_APPKEY"/>-->
+        <meta-data android:name="UMENG_APPKEY" android:value="56dee57be0f55a98a00032d8"/>
         <!--debug-->
-        <meta-data android:value="56dee56ae0f55af007001d9d" android:name="UMENG_APPKEY"/>
+        <!--<meta-data android:name="UMENG_APPKEY" android:value="56dee56ae0f55af007001d9d"/>-->
         <!-- 启动界面 -->
         <activity android:name=".ui.activity.base.SplashActivity"
                   android:screenOrientation="portrait"
@@ -83,28 +83,31 @@
         <activity android:name=".ui.activity.picture.PhotosActivity"/>
         <!-- 浏览器 -->
         <activity android:name=".ui.activity.browser.BrowserActivity">
-            <!-- <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <data android:host="e.weibo.com"
-                      android:scheme="http"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <data android:host="weibo.com"
-                      android:scheme="http"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <data android:host="t.cn"
-                      android:scheme="http"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter> -->
             <!-- 默认浏览器 -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <data android:scheme="aisen"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <!--视频播放-->
+        <activity android:name=".ui.activity.browser.VideoPlayerActivity"
+                  android:configChanges="orientation|screenSize|keyboardHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <data android:scheme="videopath"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <data android:scheme="videoshort"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.activity.picture.TimelinePicActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <data android:scheme="timeline_pic"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>

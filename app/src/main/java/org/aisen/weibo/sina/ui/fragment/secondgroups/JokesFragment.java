@@ -3,15 +3,16 @@ package org.aisen.weibo.sina.ui.fragment.secondgroups;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.umeng.analytics.MobclickAgent;
 
 import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.common.utils.Utils;
@@ -20,12 +21,11 @@ import org.aisen.android.component.bitmaploader.core.ImageConfig;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.support.inject.ViewInject;
 import org.aisen.android.support.paging.IPaging;
+import org.aisen.android.ui.fragment.ARecycleViewSwipeRefreshFragment;
 import org.aisen.android.ui.fragment.ATabsFragment;
-import org.aisen.android.ui.fragment.AWaterfallSwipeRefreshFragment;
 import org.aisen.android.ui.fragment.adapter.ARecycleViewItemView;
 import org.aisen.android.ui.fragment.itemview.IITemView;
 import org.aisen.android.ui.fragment.itemview.IItemViewCreator;
-import org.aisen.android.ui.widget.pla.PLAAdapterView;
 import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.sinasdk.bean.PicUrls;
@@ -35,6 +35,7 @@ import org.aisen.weibo.sina.support.bean.JokeBeans;
 import org.aisen.weibo.sina.support.paging.JokePaging;
 import org.aisen.weibo.sina.support.sdk.SDK;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.activity.picture.PicsActivity;
 
 import java.util.List;
@@ -44,7 +45,7 @@ import java.util.List;
  *
  * Created by wangdan on 16/3/14.
  */
-public class JokesFragment extends AWaterfallSwipeRefreshFragment<JokeBean, JokeBeans> implements ATabsFragment.ITabInitData {
+public class JokesFragment extends ARecycleViewSwipeRefreshFragment<JokeBean, JokeBeans, JokeBean> implements ATabsFragment.ITabInitData {
 
     final static int[] themeColorArr = {
             R.color.md_red_700,
@@ -92,10 +93,15 @@ public class JokesFragment extends AWaterfallSwipeRefreshFragment<JokeBean, Joke
     }
 
     @Override
+    protected RecyclerView.LayoutManager configLayoutManager() {
+        return new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+    }
+
+    @Override
     protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceSate) {
         super.layoutInit(inflater, savedInstanceSate);
 
-        setViewPadding(getContentView());
+//        setViewPadding(getContentView());
     }
 
     private void setViewPadding(View viewGroup) {
@@ -104,7 +110,7 @@ public class JokesFragment extends AWaterfallSwipeRefreshFragment<JokeBean, Joke
     }
 
     @Override
-    public void onItemClick(PLAAdapterView<?> parent, View view, int position, long id) {
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         super.onItemClick(parent, view, position, id);
 
         final JokeBean bean = getAdapterItems().get(position);
@@ -115,12 +121,12 @@ public class JokesFragment extends AWaterfallSwipeRefreshFragment<JokeBean, Joke
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     if (which == 0) {
-                        MobclickAgent.onEvent(getActivity(), "joke_text_copy");
+                        UMengUtil.onEvent(getActivity(), "joke_text_copy");
 
                         AisenUtils.copyToClipboard(bean.getExcerpt());
                     }
                     else if (which == 1) {
-                        MobclickAgent.onEvent(getActivity(), "joke_text_share");
+                        UMengUtil.onEvent(getActivity(), "joke_text_share");
 
                         startActivity(Utils.getShareIntent("", bean.getExcerpt(), ""));
                     }
@@ -310,6 +316,12 @@ public class JokesFragment extends AWaterfallSwipeRefreshFragment<JokeBean, Joke
                 beans.setEndPaging(true);
             }
 
+            try {
+                Thread.sleep(2000);
+            } catch (Exception e) {
+
+            }
+
             return beans;
         }
 
@@ -319,7 +331,7 @@ public class JokesFragment extends AWaterfallSwipeRefreshFragment<JokeBean, Joke
     public boolean onToolbarDoubleClick() {
         if (AisenUtils.checkTabsFragmentCanRequestData(this)) {
             requestDataDelaySetRefreshing(AppSettings.REQUEST_DATA_DELAY);
-            getRefreshView().setSelectionFromTop(0, 0);
+            getRefreshView().scrollToPosition(0);
 
             return true;
         }

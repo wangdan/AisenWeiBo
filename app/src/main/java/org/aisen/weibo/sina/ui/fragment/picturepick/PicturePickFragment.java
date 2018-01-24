@@ -52,7 +52,7 @@ import java.util.Map;
  *
  * Created by wangdan on 15-1-29.
  */
-public class PicturePickFragment extends AGridFragment<String, ArrayList<String>>
+public class PicturePickFragment extends AGridFragment<String, ArrayList<String>, String>
                                     implements AdapterView.OnItemClickListener, PictureDireListFragment.OnPictureDireSelectedCallback {
 
     public static void launch(ABaseFragment from, int maxSize, String[] pics, int requestCode) {
@@ -67,11 +67,11 @@ public class PicturePickFragment extends AGridFragment<String, ArrayList<String>
 //    View btnCounter;
 //    @ViewInject(id = R.id.txtCounter)
 //    TextView txtCounter;
-    @ViewInject(id = R.id.layCurrent, click = "switchDireListFragment")
+    @ViewInject(id = R.id.layCurrent)
     View layCurrent;
     @ViewInject(id = R.id.layFileDires)
     View layFileDires;
-    @ViewInject(id = R.id.layFileDireBg, click = "switchDireListFragment")
+    @ViewInject(id = R.id.layFileDireBg)
     View layFileDireBg;
     @ViewInject(id = R.id.txtCurrent)
     TextView txtCurrent;
@@ -136,6 +136,23 @@ public class PicturePickFragment extends AGridFragment<String, ArrayList<String>
         else if (savedInstanceSate != null) {
             selectedFile = (ArrayList) savedInstanceSate.getSerializable("selectedFile");
         }
+
+        layCurrent.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                switchDireListFragment(v);
+            }
+
+        });
+        layFileDireBg.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                switchDireListFragment(v);
+            }
+
+        });
     }
 
     @Override

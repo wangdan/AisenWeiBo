@@ -7,14 +7,13 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 
-import com.umeng.analytics.MobclickAgent;
-
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.common.utils.Utils;
 import org.aisen.android.common.utils.ViewUtils;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.weibo.sina.R;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 
 public class VersionSettingsFragment extends BasePreferenceFragment
 										implements OnPreferenceClickListener{
@@ -54,7 +53,7 @@ public class VersionSettingsFragment extends BasePreferenceFragment
 		if ("pVersion".equals(preference.getKey())) {
             showVersionDialog(getActivity());
 
-			MobclickAgent.onEvent(getActivity(), "show_version");
+			UMengUtil.onEvent(getActivity(), "show_version");
         }
 		else if ("pGrade".equals(preference.getKey())) {
 			startMarket();

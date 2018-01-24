@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="comm_h_margin">16dip</dimen>
+    <dimen name="comm_v_margin">16dip</dimen>
+    <dimen name="comm_h_gap">10dip</dimen>
+    <dimen name="comm_v_gap">10dip</dimen>
+
+    <!--FooterView的高度-->
+    <dimen name="comm_footer_height">58dip</dimen>
+
+    <!-- The maximum width we would prefer dialogs to be.  0 if there is no
+    maximum (let them grow as large as the screen).  Actual values are
+    specified for -large and -xlarge configurations. -->
+    <dimen name="abc_config_prefDialogWidth">320dp</dimen>
+</resources>

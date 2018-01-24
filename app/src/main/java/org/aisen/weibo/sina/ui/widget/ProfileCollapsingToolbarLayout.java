@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
@@ -112,7 +113,7 @@ public class ProfileCollapsingToolbarLayout extends CollapsingToolbarLayout {
             CollapsingToolbarLayout.LayoutParams lp = (CollapsingToolbarLayout.LayoutParams) imgCover.getLayoutParams();
             lp.height = layDetail.getHeight() + coverHeight;
             imgCover.setLayoutParams(lp);
-            imgCover.setPadding(imgCover.getPaddingLeft(), imgCover.getPaddingTop(), imgCover.getPaddingRight(), layDetail.getHeight());
+            imgCover.setPadding(0, 0, 0, layDetail.getHeight());
         }
 
         if (appbarHeight != appBarLayout.getHeight()) {
@@ -122,6 +123,9 @@ public class ProfileCollapsingToolbarLayout extends CollapsingToolbarLayout {
             CollapsingToolbarLayout.LayoutParams params = (CollapsingToolbarLayout.LayoutParams) layDetail.getLayoutParams();
             // 最大移动的距离
             maxVerticalOffset = appBarLayout.getHeight() - (statusbarHeight + toolbar.getHeight() + tabLayout.getHeight()) - 2;
+            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
+                maxVerticalOffset = appBarLayout.getHeight() - (statusbarHeight + toolbar.getHeight() + tabLayout.getHeight()) - 2 - statusbarHeight;
+            }
             // 计算移动后的top减去移动前的top就是需要offset，再用offset计算出multiplier
             float multiplier = ((maxVerticalOffset + statusbarHeight) -
                     (collapsingToolbarLayout.getHeight() - layDetail.getHeight())) * 1.0f / maxVerticalOffset;

@@ -38,7 +38,7 @@ import java.util.List;
  *
  * Created by wangdan on 16/3/23.
  */
-public class WallpaperFragment extends AWaterfallSwipeRefreshFragment<WallpaperBean, WallpaperBeans> {
+public class WallpaperFragment extends AWaterfallSwipeRefreshFragment<WallpaperBean, WallpaperBeans, WallpaperBean> {
 
     public static WallpaperFragment newInstance() {
         return new WallpaperFragment();

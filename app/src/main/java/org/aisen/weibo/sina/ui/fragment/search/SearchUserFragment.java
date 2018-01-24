@@ -16,7 +16,7 @@ import org.aisen.weibo.sina.sinasdk.bean.SuggestionsUser;
  *
  * Created by wangdan on 16/2/24.
  */
-public class SearchUserFragment extends ARecycleViewFragment<SuggestionsUser, SuggestionsUser[]> {
+public class SearchUserFragment extends ARecycleViewFragment<SuggestionsUser, SuggestionsUser[], SuggestionsUser> {
 
     @Override
     protected void setupRefreshConfig(RefreshConfig config) {

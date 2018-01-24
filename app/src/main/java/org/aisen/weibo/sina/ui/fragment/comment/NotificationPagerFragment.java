@@ -8,9 +8,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import org.aisen.android.support.bean.TabItem;
 import org.aisen.android.ui.fragment.ATabsTabLayoutFragment;
@@ -59,10 +56,8 @@ public class NotificationPagerFragment extends ATabsTabLayoutFragment<TabItem> {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        setTabLayout((TabLayout) getActivity().findViewById(R.id.tabLayout));
-
-        return super.onCreateView(inflater, container, savedInstanceState);
+    public TabLayout getTablayout() {
+        return (TabLayout) getActivity().findViewById(R.id.tabLayout);
     }
 
     @Override

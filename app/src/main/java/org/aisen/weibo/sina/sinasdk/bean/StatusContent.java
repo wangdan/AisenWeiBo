@@ -1,11 +1,12 @@
 package org.aisen.weibo.sina.sinasdk.bean;
 
 import org.aisen.android.component.orm.annotation.PrimaryKey;
+import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class StatusContent implements Serializable {
+public class StatusContent implements Serializable, BizFragment.ILikeBean {
 
     private static final long serialVersionUID = 4658890626870999594L;
 
@@ -116,6 +117,10 @@ public class StatusContent implements Serializable {
      * 表态数
      */
     private int attitudes_count;
+
+    private boolean video;
+
+    private UrlBean videoUrl;
 
     public String getCreated_at() {
         return created_at;
@@ -285,4 +290,24 @@ public class StatusContent implements Serializable {
         this.visible = visible;
     }
 
+    public boolean isVideo() {
+        return video;
+    }
+
+    public void setVideo(boolean video) {
+        this.video = video;
+    }
+
+    public UrlBean getVideoUrl() {
+        return videoUrl;
+    }
+
+    public void setVideoUrl(UrlBean videoUrl) {
+        this.videoUrl = videoUrl;
+    }
+
+    @Override
+    public String getLikeId() {
+        return getId() + "";
+    }
 }

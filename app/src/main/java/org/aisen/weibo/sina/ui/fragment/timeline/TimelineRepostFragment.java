@@ -37,7 +37,6 @@ import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
 import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
-import org.aisen.weibo.sina.ui.fragment.comment.TimelineCommentItemView;
 import org.aisen.weibo.sina.ui.fragment.comment.TimelineDetailPagerFragment;
 import org.aisen.weibo.sina.ui.widget.AisenTextView;
 
@@ -49,7 +48,7 @@ import java.util.List;
  *
  * Created by wangdan on 16/1/22.
  */
-public class TimelineRepostFragment extends AListFragment<StatusContent, StatusContents> implements ATabsFragment.ITabInitData {
+public class TimelineRepostFragment extends AListFragment<StatusContent, StatusContents, StatusContent> implements ATabsFragment.ITabInitData {
 
     public static TimelineRepostFragment newInstance(StatusContent statusContent) {
         Bundle args = new Bundle();
@@ -196,7 +195,7 @@ public class TimelineRepostFragment extends AListFragment<StatusContent, StatusC
 
             @Override
             public View newContentView(LayoutInflater inflater, ViewGroup parent, int viewType) {
-                return inflater.inflate(TimelineCommentItemView.LAYOUT_RES, parent, false);
+                return inflater.inflate(R.layout.item_timeline_repost, parent, false);
             }
 
             @Override
@@ -211,7 +210,8 @@ public class TimelineRepostFragment extends AListFragment<StatusContent, StatusC
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         super.onItemClick(parent, view, position, id);
 
-        TimelineDetailPagerFragment.launch(getActivity(), getAdapterItems().get(position));
+        if (position < getAdapterItems().size())
+            TimelineDetailPagerFragment.launch(getActivity(), getAdapterItems().get(position));
     }
 
     @Override

@@ -29,7 +29,7 @@ import java.util.ArrayList;
  *
  * Created by wangdan on 16/1/2.
  */
-public class FabGroupsFragment extends AListFragment<Group, Groups> {
+public class FabGroupsFragment extends AListFragment<Group, Groups, Group> {
 
     private int selectedPosition = 0;
 

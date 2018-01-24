@@ -15,6 +15,8 @@ import org.aisen.android.common.utils.Logger;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
+import org.aisen.android.ui.activity.basic.BaseActivity;
+import org.aisen.download.DownloadManager;
 import org.aisen.weibo.sina.BuildConfig;
 import org.aisen.weibo.sina.receiver.TimingBroadcastReceiver;
 import org.aisen.weibo.sina.receiver.TimingIntent;
@@ -27,6 +29,7 @@ import org.aisen.weibo.sina.support.sqlit.PublishDB;
 import org.aisen.weibo.sina.support.sqlit.SinaDB;
 import org.aisen.weibo.sina.support.utils.AccountUtils;
 import org.aisen.weibo.sina.support.utils.UMengUtil;
+import org.aisen.weibo.sina.ui.activity.base.AisenActivityHelper;
 import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
 
 import java.io.File;
@@ -42,6 +45,9 @@ public class MyApplication extends GlobalContext {
     public void onCreate() {
         super.onCreate();
 
+        DownloadManager.setup(this, BuildConfig.LOG_DEBUG, 6);
+
+        BaseActivity.setHelper(AisenActivityHelper.class);
         // 添加一些配置项
         SettingUtility.addSettings(this, "actions");
         SettingUtility.addSettings(this, "settings");
@@ -86,9 +92,15 @@ public class MyApplication extends GlobalContext {
         if (BuildConfig.LOG_DEBUG) {
             CrashHandler.setupCrashHandler(this);
         }
+
+//        TmaAgent.setSessionContinueMillis(5000);
+//        TmaAgent.openActivityDurationTrack(false);
+//        TmaAgent.setDebugMode(Logger.DEBUG);
+//        TmaAgent.startWithConfigure(this, new TmaAnalyticsConfig(this));
+
         // UMENG统计设置
         MobclickAgent.setDebugMode(Logger.DEBUG);
-//        AnalyticsConfig.setAppkey(this, BuildConfig.UMENG_APP_ID);
+//        AnalyticsConfig.setAppkey(BuildConfig.UMENG_APP_ID);
         MobclickAgent.setCatchUncaughtExceptions(false);
         MobclickAgent.openActivityDurationTrack(false);
         if (BuildConfig.LOG_DEBUG) {

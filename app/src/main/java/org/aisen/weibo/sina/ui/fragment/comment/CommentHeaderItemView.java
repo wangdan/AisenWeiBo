@@ -6,6 +6,7 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,6 +29,7 @@ import org.aisen.weibo.sina.support.utils.ImageConfigUtils;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.widget.AisenTextView;
 import org.aisen.weibo.sina.ui.widget.TimelinePicsView;
+import org.aisen.weibo.sina.ui.widget.videoimage.VideoHintImageView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -61,6 +63,9 @@ public class CommentHeaderItemView extends ARecycleViewItemView<StatusComment> i
 
     @ViewInject(id = R.id.layPicturs)
     public TimelinePicsView layPicturs;
+
+    @ViewInject(id = R.id.imgVideo)
+    VideoHintImageView imgVideo;
 
     @ViewInject(id = R.id.txtPics)
     TextView txtPics;
@@ -140,21 +145,57 @@ public class CommentHeaderItemView extends ARecycleViewItemView<StatusComment> i
         }
 
         // pictures
-        StatusContent s = statusContent.getRetweeted_status() != null ? statusContent.getRetweeted_status() : statusContent;
-        if (AppSettings.isPicNone() && !(fragment instanceof TimelineDetailPagerFragment)) {
+        final StatusContent s = statusContent.getRetweeted_status() != null ? statusContent.getRetweeted_status() : statusContent;
+        if (s.isVideo()) {
             layPicturs.setVisibility(View.GONE);
-            if (s.getPic_urls() != null && s.getPic_urls().length > 0) {
-                txtPics.setText(String.format("%dPics", s.getPic_urls().length));
-                txtPics.setVisibility(View.VISIBLE);
-                txtPics.setTag(s);
-                txtPics.setOnClickListener(this);
+            layPicturs.release();
+            txtPics.setVisibility(View.GONE);
+
+            if (AppSettings.isPicNone() || s.getVideoUrl() == null) {
+                imgVideo.setVisibility(View.GONE);
             }
-            else
-                txtPics.setVisibility(View.GONE);
+            else {
+                imgVideo.setVisibility(View.VISIBLE);
+
+                if (imgVideo.getWidth() > 0) {
+                    imgVideo.display(fragment, s.getVideoUrl());
+                }
+                else {
+                    imgVideo.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+
+                        @Override
+                        public boolean onPreDraw() {
+                            imgVideo.getViewTreeObserver().removeOnPreDrawListener(this);
+
+                            imgVideo.display(fragment, s.getVideoUrl());
+
+                            return true;
+                        }
+
+                    });
+                }
+            }
         }
         else {
-            txtPics.setVisibility(View.GONE);
-            layPicturs.setPics(s, fragment);
+            imgVideo.setVisibility(View.GONE);
+            imgVideo.release();
+
+            // pictures
+            if (AppSettings.isPicNone() && !(fragment instanceof TimelineDetailPagerFragment)) {
+                layPicturs.setVisibility(View.GONE);
+                if (s.getPic_urls() != null && s.getPic_urls().length > 0) {
+                    txtPics.setText(String.format("%dPics", s.getPic_urls().length));
+                    txtPics.setVisibility(View.VISIBLE);
+                    txtPics.setTag(s);
+                    txtPics.setOnClickListener(this);
+                }
+                else
+                    txtPics.setVisibility(View.GONE);
+            }
+            else {
+                txtPics.setVisibility(View.GONE);
+                layPicturs.setPics(s, fragment);
+            }
         }
 
         // group visiable
@@ -190,7 +231,9 @@ public class CommentHeaderItemView extends ARecycleViewItemView<StatusComment> i
         if (statusContent.getRetweeted_status() == null &&
                 (statusContent.getPic_urls() == null || statusContent.getPic_urls().length == 0)) {
             txtContent.setPadding(txtContent.getPaddingLeft(), txtContent.getPaddingTop(), txtContent.getPaddingRight(), 0);
-            layReStatusContainer.setVisibility(View.GONE);
+            if (!s.isVideo()) {
+                layReStatusContainer.setVisibility(View.GONE);
+            }
         }
         // 如果没有图片，有原微博，底部加点空隙
         if (statusContent.getRetweeted_status() != null &&

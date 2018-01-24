@@ -25,7 +25,7 @@ import java.util.ArrayList;
 /**
  * Created by wangdan on 15-1-29.
  */
-public class PictureDireListFragment extends AListFragment<PictureDireListFragment.PictureFileDire, ArrayList<PictureDireListFragment.PictureFileDire>>
+public class PictureDireListFragment extends AListFragment<PictureDireListFragment.PictureFileDire, ArrayList<PictureDireListFragment.PictureFileDire>, PictureDireListFragment.PictureFileDire>
                                         implements AdapterView.OnItemClickListener {
 
     public static PictureDireListFragment newInstance(String currentDire, ArrayList<PictureFileDire> files) {

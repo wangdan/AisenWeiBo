@@ -28,6 +28,7 @@ import org.aisen.weibo.sina.ui.activity.base.MainActivity;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.fragment.comment.TimelineDetailPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.mention.MentionTimelineFragment;
+import org.aisen.weibo.sina.ui.widget.AisenTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ import java.util.List;
  *
  * Created by wangdan on 16/1/2.
  */
-public abstract class ATimelineFragment extends ARecycleViewSwipeRefreshFragment<StatusContent, StatusContents> {
+public abstract class ATimelineFragment extends ARecycleViewSwipeRefreshFragment<StatusContent, StatusContents, StatusContent> {
 
     private String feature = "0";
 
@@ -143,7 +144,7 @@ public abstract class ATimelineFragment extends ARecycleViewSwipeRefreshFragment
 
     @Override
     protected IPagingAdapter<StatusContent> newAdapter(ArrayList<StatusContent> datas) {
-        return new TimelineAdapter(this, configItemViewCreator(), datas);
+        return new TimelineAdapter(configItemViewCreator(), datas);
     }
 
     @Override
@@ -178,7 +179,7 @@ public abstract class ATimelineFragment extends ARecycleViewSwipeRefreshFragment
 
                     @Override
                     protected String loadingText() {
-                        return String.format(getString(R.string.loading_status), AppSettings.getCommentCount());
+                        return String.format(getString(R.string.loading_status), timelineCount());
                     }
 
                 };
@@ -187,10 +188,14 @@ public abstract class ATimelineFragment extends ARecycleViewSwipeRefreshFragment
         };
     }
 
+    protected int timelineCount() {
+        return AppSettings.getCommentCount();
+    }
+
     class TimelineAdapter extends BasicRecycleViewAdapter<StatusContent> {
 
-        public TimelineAdapter(APagingFragment holderFragment, IItemViewCreator<StatusContent> itemViewCreator, ArrayList<StatusContent> datas) {
-            super(holderFragment, itemViewCreator, datas);
+        public TimelineAdapter(IItemViewCreator<StatusContent> itemViewCreator, ArrayList<StatusContent> datas) {
+            super(getActivity(), ATimelineFragment.this, itemViewCreator, datas);
         }
 
         @Override
@@ -240,7 +245,20 @@ public abstract class ATimelineFragment extends ARecycleViewSwipeRefreshFragment
 
             params.addParameter("count", String.valueOf(AppSettings.getTimelineCount()));
 
-            return getStatusContents(params);
+            StatusContents result = getStatusContents(params);
+
+            for (StatusContent content : result.getStatuses()) {
+                AisenTextView.addText(content.getText());
+
+                if (content.getRetweeted_status() != null) {
+                    String reUserName = "";
+                    if (content.getRetweeted_status().getUser() != null && !TextUtils.isEmpty(content.getRetweeted_status().getUser().getScreen_name()))
+                        reUserName = String.format("@%s :", content.getRetweeted_status().getUser().getScreen_name());
+                    AisenTextView.addText(reUserName + content.getRetweeted_status().getText());
+                }
+            }
+
+            return result;
         }
 
         @Override

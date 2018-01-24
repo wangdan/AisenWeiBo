@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--公共-->
+    <string name="comm_footer_loading">正在加载...</string>
+    <string name="comm_footer_more">加载更多</string>
+    <string name="comm_footer_faild">加载失败，重新加载</string>
+    <string name="comm_footer_pagingend">全部加载完了</string>
+    <string name="comm_reload_hint">刷新看看</string>
+    <string name="comm_content_empty">数据为空</string>
+    <string name="comm_hint_copied">已经复制 %s</string>
+
+    <string-array name="prefValues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+    </string-array>
+</resources>

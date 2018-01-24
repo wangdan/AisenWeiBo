@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.aisen.weibo.sina.ui.widget.KitkatViewGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                                                xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+                                                android:orientation="vertical" app:insetStatus="?attr/themeColor" app:insetStatusForeground="@color/statusForeground">
+
+    <include
+        layout="@layout/comm_lay_toolbar" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+    <FrameLayout
+        android:id="@+id/fragmentContainer" android:layout_width="match_parent" android:layout_height="0dip"
+        android:layout_weight="1"/>
+</org.aisen.weibo.sina.ui.widget.KitkatViewGroup>

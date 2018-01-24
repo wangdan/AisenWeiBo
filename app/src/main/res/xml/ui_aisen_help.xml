@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+        android:key="1" android:summary="官方只给了7天有效期啊"
+        android:title="1、授权有效期只有7天"/>
+
+    <Preference
+        android:key="2"
+        android:summary="Aisen只有部分权限，凡是提示高级权限的操作都是需要额外授权的"
+        android:title="2、高级授权是什么"/>
+
+    <Preference
+        android:key="3" android:summary="同2"
+        android:title="3、网页授权是什么"/>
+
+    <Preference
+        android:key="5" android:summary="渣浪近期抽风，接口炸掉了，如果长期不稳定再考虑更换了，目前请耐心使用"
+        android:title="5、个人微博页面时常加载不出"/>
+
+    <Preference
+        android:key="6"
+        android:summary="比如视频播放、热门话题、微博搜索等功能加载慢，要么是网络问题，要么，是渣浪问题，反正不是我的问题"
+        android:title="6、为什么请求数据反应那么慢"/>
+
+    <Preference
+        android:key="7"
+        android:summary="重启是万能的，去设置-应用管理-Aisen-清除数据操作后，再试试"
+        android:title="7、遇到不能解决的问题时怎么办"/>
+
+    <Preference
+        android:key="8" android:summary="以前我的爱好是敲代码，现在的爱好是肥家带我闺女，这是开源项目，期望更多的人参与进来"
+        android:title="8、Aisen后期的维护"/>
+
+</PreferenceScreen>

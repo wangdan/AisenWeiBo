@@ -1,9 +1,10 @@
 package org.aisen.weibo.sina.support.utils;
 
 import android.app.Activity;
-import android.content.DialogInterface;
+import android.support.annotation.NonNull;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.Logger;
@@ -37,34 +38,34 @@ public class OfflineUtils {
         if (groups.size() == 0) {
             Logger.d(TAG, "离线分组未设置过");
 
-            new AlertDialogWrapper.Builder(context)
-                    .setMessage(R.string.offline_none_groups_remind)
-                    .setNegativeButton(R.string.cancel, null)
-                    .setPositiveButton(R.string.yes,
-                            new DialogInterface.OnClickListener() {
+            new MaterialDialog.Builder(context)
+                    .content(R.string.offline_none_groups_remind)
+                    .negativeText(R.string.cancel)
+                    .positiveText(R.string.yes)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
 
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    showOfflineGroupsModifyDialog(context, new ArrayList<Group>(),
-                                            new OnOfflineGroupSetCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            showOfflineGroupsModifyDialog(context, new ArrayList<Group>(),
+                                    new OnOfflineGroupSetCallback() {
 
-                                                @Override
-                                                public void onChanged(List<Group> newGroups) {
-                                                    // 设置离线分组
-                                                    Logger.d(TAG, "设置离线分组%d个", newGroups.size());
+                                        @Override
+                                        public void onChanged(List<Group> newGroups) {
+                                            // 设置离线分组
+                                            Logger.d(TAG, "设置离线分组%d个", newGroups.size());
 
-                                                    if (newGroups.size() > 0) {
-                                                        SinaDB.getOfflineSqlite().insert(getLoggedExtra(null), newGroups);
+                                            if (newGroups.size() > 0) {
+                                                SinaDB.getOfflineSqlite().insert(getLoggedExtra(null), newGroups);
 
-                                                        toggleOffline(context);
-                                                    }
-                                                }
+                                                toggleOffline(context);
+                                            }
+                                        }
 
-                                            },
-                                            R.string.offline_groups_dialog);
-                                }
+                                    },
+                                    R.string.offline_groups_dialog);
+                        }
 
-                            })
+                    })
                     .show();
         }
         else {
@@ -80,55 +81,63 @@ public class OfflineUtils {
      * @param callback
      * @param titleId
      */
-    public static void showOfflineGroupsModifyDialog(Activity activity, List<Group> selectedGroups,
+    public static void showOfflineGroupsModifyDialog(Activity activity, final List<Group> selectedGroups,
                                                      final OnOfflineGroupSetCallback callback, int titleId) {
         String[] items = new String[AppContext.getAccount().getGroups().getLists().size()];
-        final boolean[] editCheckedItems = new boolean[AppContext.getAccount().getGroups().getLists().size()];
+        Integer[] selectedIndices = new Integer[selectedGroups.size()];
 
+        int index = 0;
         for (int i = 0; i < AppContext.getAccount().getGroups().getLists().size(); i++) {
             Group group = AppContext.getAccount().getGroups().getLists().get(i);
 
             items[i] = group.getName();
-            editCheckedItems[i] = false;
             for (Group groupSelectd : selectedGroups) {
                 if (groupSelectd.getId().equals(group.getIdstr())) {
-                    editCheckedItems[i] = true;
+                    selectedIndices[index++] = i;
                     break;
                 }
             }
         }
-        AlertDialogWrapper.Builder dialogBuilder = new AlertDialogWrapper.Builder(activity)
-                .setTitle(titleId)
-                .setMultiChoiceItems(items, editCheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
+
+        MaterialDialog.Builder dialogBuilder = new MaterialDialog.Builder(activity)
+                .title(titleId)
+                .items(items)
+                .itemsCallbackMultiChoice(selectedIndices, new MaterialDialog.ListCallbackMultiChoice() {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        editCheckedItems[which] = isChecked;
+                    public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+                        selectedGroups.clear();
+
+                        List<Group> groups = AppContext.getAccount().getGroups().getLists();
+                        for (int i = 0; i < groups.size(); i++) {
+                            for (int i1 = 0; i1 < which.length; i1++) {
+                                if (i == which[i1]) {
+                                    selectedGroups.add(groups.get(i));
+                                }
+                            }
+                        }
+
+                        return true;
                     }
 
-                });
-        dialogBuilder.setNegativeButton(R.string.cancel, null)
-                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                })
+                .alwaysCallMultiChoiceCallback();
+        dialogBuilder.negativeText(R.string.cancel)
+                .positiveText(R.string.confirm)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         // 艹，这个控件这里有bug
                         GlobalContext.getInstance().getHandler()
                                 .postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        List<Group> groups = new ArrayList<Group>();
-
-                                        for (int i = 0; i < editCheckedItems.length; i++) {
-                                            if (editCheckedItems[i]) {
-                                                groups.add(AppContext.getAccount().getGroups().getLists().get(i));
-                                            }
-                                        }
-
-                                        callback.onChanged(groups);
+                                        callback.onChanged(selectedGroups);
                                     }
                                 }, 300);
                     }
+
                 })
                 .show();
     }

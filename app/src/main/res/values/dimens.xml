@@ -21,6 +21,8 @@
 
     <dimen name="fab_scrollthreshold">4dip</dimen>
 
+    <dimen name="video_min_height">150dip</dimen>
+
     <!--DrawLayoutHeader-->
     <dimen name="material_drawer_account_header_height">148dp</dimen>
     <dimen name="material_drawer_account_header_height_compact">72dp</dimen>

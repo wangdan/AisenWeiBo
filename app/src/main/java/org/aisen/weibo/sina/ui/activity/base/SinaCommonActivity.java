@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import org.aisen.android.ui.activity.basic.BaseActivity;
 import org.aisen.android.ui.activity.container.FragmentArgs;
 import org.aisen.android.ui.fragment.ABaseFragment;
+import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 
 import java.lang.reflect.Method;
@@ -61,7 +62,7 @@ public class SinaCommonActivity extends BaseActivity implements AisenActivityHel
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        contentId = savedInstanceState == null ? org.aisen.android.R.layout.comm_ui_fragment_container
+        contentId = savedInstanceState == null ? R.layout.ui_fragment_container
                                                : savedInstanceState.getInt("contentId");
         overrideTheme = savedInstanceState == null ? -1
                                                    : savedInstanceState.getInt("overrideTheme");

@@ -3,7 +3,6 @@ package org.aisen.weibo.sina.ui.fragment.mention;
 import org.aisen.android.network.http.Params;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.ui.fragment.ATabsFragment;
-import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
@@ -67,13 +66,12 @@ public class MentionTimelineFragment extends ATimelineFragment implements ATabsF
 
             // 如果是缓存，发现有未读提及微博提醒，刷新列表
             try {
-                if (AppContext.getAccount().getUnreadCount() != null && AppContext.getAccount().getUnreadCount().getMention_status() > 0
-                        && result.fromCache()) {
-                    requestDataDelaySetRefreshing(AppSettings.REQUEST_DATA_DELAY);
-
+                if (AppContext.getAccount().getUnreadCount() != null && AppContext.getAccount().getUnreadCount().getMention_status() > 0) {
                     BizFragment.createBizFragment(MentionTimelineFragment.this).remindSetCount(BizFragment.RemindType.mention_status);
+                    if (result.fromCache()) {
+                        requestDataDelaySetRefreshing(AppSettings.REQUEST_DATA_DELAY);
+                    }
                 }
-
             } catch (Exception e) {
             }
         }

@@ -8,6 +8,7 @@
             android:id="@+id/publish" android:icon="@drawable/ic_menu_edit_white"
             android:orderInCategory="2"
             android:title="@string/publish" app:showAsAction="never"/>
+
         <item
             android:id="@+id/search" android:icon="@drawable/ic_search_white_24dp"
             android:orderInCategory="2"

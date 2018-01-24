@@ -59,12 +59,12 @@ public class SearchHeaderView extends ARecycleViewItemView<StatusContent> implem
 
         GridLayoutManager linearLayoutManager = new GridLayoutManager(fragment.getActivity(), 2, LinearLayoutManager.HORIZONTAL, false);
         mRecycleView.setLayoutManager(linearLayoutManager);
-        basicRecycleViewAdapter = new BasicRecycleViewAdapter(fragment, new HeaderItemCreator(), new ArrayList<>());
+        basicRecycleViewAdapter = new BasicRecycleViewAdapter(fragment.getActivity(), fragment, new HeaderItemCreator(), new ArrayList<>());
         basicRecycleViewAdapter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                UserProfileActivity.launch(fragment.getActivity(), basicRecycleViewAdapter.getDatas().get(position).getScreen_name());
+                UserProfileActivity.launch(fragment.getActivity(), basicRecycleViewAdapter.getData(position).getScreen_name());
             }
 
         });

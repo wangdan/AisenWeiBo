@@ -3,11 +3,11 @@ package org.aisen.weibo.sina.ui.activity.base;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -19,15 +19,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
-import com.umeng.analytics.MobclickAgent;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.alibaba.fastjson.JSONObject;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.md.MDHelper;
 import org.aisen.android.common.utils.ActivityHelper;
 import org.aisen.android.common.utils.Logger;
-import org.aisen.weibo.sina.ui.widget.sheetfab.MaterialSheetFab;
-import org.aisen.weibo.sina.ui.widget.sheetfab.MaterialSheetFabEventListener;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.support.action.IAction;
@@ -47,9 +46,11 @@ import org.aisen.weibo.sina.sinasdk.bean.Group;
 import org.aisen.weibo.sina.sinasdk.bean.TokenInfo;
 import org.aisen.weibo.sina.support.action.WebLoginAction;
 import org.aisen.weibo.sina.support.bean.AccountBean;
+import org.aisen.weibo.sina.support.permissions.SdcardPermissionAction;
 import org.aisen.weibo.sina.support.utils.AccountUtils;
 import org.aisen.weibo.sina.support.utils.OfflineUtils;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.activity.profile.WeiboClientActivity;
 import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
 import org.aisen.weibo.sina.ui.fragment.account.WebLoginFragment;
@@ -58,9 +59,13 @@ import org.aisen.weibo.sina.ui.fragment.comment.CommentPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.comment.NotificationPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.draft.DraftFragment;
 import org.aisen.weibo.sina.ui.fragment.friendship.FriendshipPagerFragment;
+import org.aisen.weibo.sina.ui.fragment.hot.TimelineHotFragment;
+import org.aisen.weibo.sina.ui.fragment.hot.TopicsHotPagerFragment;
+import org.aisen.weibo.sina.ui.fragment.images.ImagesPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.mention.MentionPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.menu.FabGroupsFragment;
 import org.aisen.weibo.sina.ui.fragment.menu.MenuFragment;
+import org.aisen.weibo.sina.ui.fragment.profile.TimelineFavoritesFragment;
 import org.aisen.weibo.sina.ui.fragment.search.SearchFragment;
 import org.aisen.weibo.sina.ui.fragment.secondgroups.JokesPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.secondgroups.WallpaperFragment;
@@ -71,6 +76,8 @@ import org.aisen.weibo.sina.ui.fragment.settings.SettingsPagerFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineDefFragment;
 import org.aisen.weibo.sina.ui.fragment.timeline.TimelineGroupsFragment;
 import org.aisen.weibo.sina.ui.widget.MainFloatingActionButton;
+import org.aisen.weibo.sina.ui.widget.sheetfab.MaterialSheetFab;
+import org.aisen.weibo.sina.ui.widget.sheetfab.MaterialSheetFabEventListener;
 
 import java.util.ArrayList;
 
@@ -109,6 +116,8 @@ public class MainActivity extends BaseActivity
 
     private int newIntentNotificationIndex = -1;
     private String toolbarTitle;
+
+    private boolean cookieRemind = true;
 
     public static void login() {
         Intent intent = new Intent(GlobalContext.getInstance(), MainActivity.class);
@@ -320,7 +329,7 @@ public class MainActivity extends BaseActivity
 
                 fabGroupsFragment.show();
 
-                MobclickAgent.onEvent(MainActivity.this, "fab_groups");
+                UMengUtil.onEvent(MainActivity.this, "fab_groups");
             }
 
         });
@@ -399,17 +408,48 @@ public class MainActivity extends BaseActivity
 
             }.run();
 
-            MobclickAgent.onEvent(MainActivity.this, "md");
+            UMengUtil.onEvent(MainActivity.this, "md");
             break;
         // 热门微博
         case MenuFragment.MENU_HOT_STATUS:
-            WeiboClientActivity.launchHotStatuses(this);
+            new IAction(MainActivity.this, new WebLoginAction(MainActivity.this, BizFragment.createBizFragment(this))) {
 
-            MobclickAgent.onEvent(MainActivity.this, "hot_status");
+                @Override
+                public void doAction() {
+                    TimelineHotFragment.launch(MainActivity.this);
+                }
+
+            }.run();
+
+            UMengUtil.onEvent(MainActivity.this, "hot_status");
+            break;
+        // 热门话题
+        case MenuFragment.MENU_HOT_TOPICS:
+            new IAction(MainActivity.this, new WebLoginAction(MainActivity.this, BizFragment.createBizFragment(this))) {
+
+                @Override
+                public void doAction() {
+                    TopicsHotPagerFragment.launch(MainActivity.this);
+                }
+
+            }.run();
+
+            UMengUtil.onEvent(MainActivity.this, "hot_topics");
             break;
         // 草稿箱
         case MenuFragment.MENU_DRAT:
             fragment = DraftFragment.newInstance();
+            break;
+        // 相册
+        case MenuFragment.MENU_IMAGES:
+            new IAction(this, new SdcardPermissionAction(this, null)) {
+
+                @Override
+                public void doAction() {
+                    ImagesPagerFragment.launch(MainActivity.this);
+                }
+
+            }.run();
             break;
         // 设置
         case MenuFragment.MENU_SETTINGS:
@@ -419,13 +459,28 @@ public class MainActivity extends BaseActivity
         case MenuFragment.MENU_JOKE:
             fragment = JokesPagerFragment.newInstance();
 
-            MobclickAgent.onEvent(this, "menu_joke");
+            UMengUtil.onEvent(this, "menu_joke");
+            break;
+        case MenuFragment.MENU_FAV:
+            BizFragment.createBizFragment(this).checkProfile(new BizFragment.CheckProfileCallback() {
+
+                @Override
+                public void onCheckProfileSuccess() {
+                    TimelineFavoritesFragment.launch(MainActivity.this);
+                }
+
+                @Override
+                public void onCheckProfileFaild() {
+
+                }
+
+            });
             break;
         // 精美壁纸
         case MenuFragment.MENU_WALLPAPER:
             fragment = WallpaperFragment.newInstance();
 
-            MobclickAgent.onEvent(this, "menu_wallpaper");
+            UMengUtil.onEvent(this, "menu_wallpaper");
             break;
         }
 
@@ -492,7 +547,10 @@ public class MainActivity extends BaseActivity
                 ATabsTabLayoutFragment tabsTabLayoutFragment = (ATabsTabLayoutFragment) fragment;
 
                 tabsTabLayoutFragment.getViewPager().setCurrentItem(newIntentNotificationIndex);
-                ((APagingFragment) tabsTabLayoutFragment.getCurrentFragment()).requestDataDelaySetRefreshing(AppSettings.REQUEST_DATA_DELAY);
+                if (tabsTabLayoutFragment.getCurrentFragment() != null &&
+                        tabsTabLayoutFragment.getCurrentFragment() instanceof APagingFragment) {
+                    ((APagingFragment) tabsTabLayoutFragment.getCurrentFragment()).requestDataDelaySetRefreshing(AppSettings.REQUEST_DATA_DELAY);
+                }
 
                 newIntentNotificationIndex = -1;
             }
@@ -619,7 +677,7 @@ public class MainActivity extends BaseActivity
         if (item.getItemId() == R.id.exitapp) {
             finish();
 
-            MobclickAgent.onEvent(this, "exitapp");
+            UMengUtil.onEvent(this, "exitapp");
         }
         // 新微博
         else if (item.getItemId() == R.id.publish)
@@ -628,13 +686,13 @@ public class MainActivity extends BaseActivity
         else if (item.getItemId() == R.id.toggle_offline) {
             OfflineUtils.toggleOffline(this);
 
-            MobclickAgent.onEvent(this, "toggle_offline");
+            UMengUtil.onEvent(this, "toggle_offline");
         }
         // 停止离线
         else if (item.getItemId() == R.id.stop_offline) {
             OfflineService.stopOffline();
 
-            MobclickAgent.onEvent(this, "stop_offline");
+            UMengUtil.onEvent(this, "stop_offline");
         }
         // 通知设置
         else if (item.getItemId() == R.id.notification_settings)
@@ -647,7 +705,7 @@ public class MainActivity extends BaseActivity
                 public void doAction() {
                     SearchFragment.launch(MainActivity.this, "");
 
-                    MobclickAgent.onEvent(MainActivity.this, "toggle_search");
+                    UMengUtil.onEvent(MainActivity.this, "toggle_search");
                 }
 
             }.run();
@@ -715,8 +773,13 @@ public class MainActivity extends BaseActivity
             return;
         }
 
+        // 账号过期了，就提示重新授权
         if (AppContext.getAccount().getAccessToken().isExpired()) {
             requestLogin(this, AppContext.getAccount());
+        }
+        // 检查Cookie是否过期
+        else if (TextUtils.isEmpty(AppContext.getAccount().getCookie())) {
+            remindCookieInvalid(this);
         }
 
         invalidateOptionsMenu();
@@ -732,11 +795,40 @@ public class MainActivity extends BaseActivity
         return false;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE_AUTH) {
+            if (resultCode == Activity.RESULT_OK) {
+                AccountBean accountBean = (AccountBean) data.getSerializableExtra("account");
+
+                AppContext.getAccount().setAccessToken(accountBean.getAccessToken());
+                if (accountBean.getUser() != null) {
+                    AppContext.getAccount().setUser(accountBean.getUser());
+                }
+                if (accountBean.getGroups() != null) {
+                    AppContext.getAccount().setGroups(accountBean.getGroups());
+                }
+
+                AccountUtils.newAccount(AppContext.getAccount());
+                AccountUtils.setLogedinAccount(AppContext.getAccount());
+
+                login();
+            }
+        }
+    }
+
+
+
+    // 检查用户有效期
     public static void runCheckAccountTask(AccountBean account) {
         // 已经过期了就不用检查了
         if (!account.getAccessToken().isExpired()) {
             new CheckAccountValidTask().execute(account);
         }
+
+        new CheckCookieValidTask().execute(account);
     }
 
     public static class CheckAccountValidTask extends WorkTask<AccountBean, Void, TokenInfo> {
@@ -806,41 +898,94 @@ public class MainActivity extends BaseActivity
     }
 
     private static void requestLogin(final Activity activity, final AccountBean account) {
-        new AlertDialogWrapper.Builder(activity)
-                .setMessage(R.string.account_account_expired)
-                .setNegativeButton(R.string.cancel, null)
-                .setPositiveButton(R.string.account_relogin, new DialogInterface.OnClickListener() {
+        new MaterialDialog.Builder(activity)
+                .content(R.string.account_account_expired)
+                .negativeText(R.string.cancel)
+                .positiveText(R.string.account_relogin)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                     WebLoginFragment.launch(activity, WebLoginFragment.Client.aisen, account.getAccount(), account.getPassword(), REQUEST_CODE_AUTH);
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        WebLoginFragment.launch(activity, WebLoginFragment.Client.aisen, account.getAccount(), account.getPassword(), REQUEST_CODE_AUTH);
                     }
+
                 })
                 .show();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    static class CheckCookieValidTask extends WorkTask<AccountBean, Void, Boolean> {
 
-        if (requestCode == REQUEST_CODE_AUTH) {
-            if (resultCode == Activity.RESULT_OK) {
-                AccountBean accountBean = (AccountBean) data.getSerializableExtra("account");
+        @Override
+        public Boolean workInBackground(AccountBean... params) throws TaskException {
+            AccountBean account = params[0];
 
-                AppContext.getAccount().setAccessToken(accountBean.getAccessToken());
-                if (accountBean.getUser() != null) {
-                    AppContext.getAccount().setUser(accountBean.getUser());
-                }
-                if (accountBean.getGroups() != null) {
-                    AppContext.getAccount().setGroups(accountBean.getGroups());
-                }
+            String unreadStr = SinaSDK.getInstance(account.getAccessToken()).webGetUnread();
 
-                AccountUtils.newAccount(AppContext.getAccount());
-                AccountUtils.setLogedinAccount(AppContext.getAccount());
+            // 获取到的数据是JSON数据，认为是授权未过期的
+            try {
+                JSONObject.parse(unreadStr);
+                return true;
+            } catch (Exception e) {
+                AppContext.clearCookie();
 
-                login();
+                return false;
             }
         }
+
+        @Override
+        protected void onSuccess(Boolean result) {
+            super.onSuccess(result);
+
+            AccountBean accountBean = getParams()[0];
+
+            // 同一登录账户
+            if (!result && AppContext.isLoggedIn() && AppContext.getAccount().getUid().equals(accountBean.getUid())) {
+                if (BaseActivity.getRunningActivity() != null && BaseActivity.getRunningActivity() instanceof MainActivity) {
+                    if (TextUtils.isEmpty(accountBean.getCookie()))
+                        remindCookieInvalid((MainActivity) BaseActivity.getRunningActivity());
+                }
+            }
+        }
+
+    }
+
+    private static void remindCookieInvalid(final MainActivity activity) {
+        if (activity.isDestory())
+            return;
+
+        new MaterialDialog.Builder(activity)
+                .content("检测到网页授权未授权或者已过期，Aisen微博没有所有功能的使用权限，未授权涉及点赞、网页私信、热门评论、视频播放等重要功能的正常使用，建议立即授权！")
+                .negativeText("暂不需要")
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        activity.cookieRemind = false;
+                    }
+
+                })
+                .positiveText("现在授权")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        activity.cookieRemind = false;
+
+                        BizFragment.createBizFragment(activity).requestWebLogin(new IAction(activity, null) {
+
+                            @Override
+                            public void run() {
+                                super.run();
+
+                                if (!TextUtils.isEmpty(AppContext.getAccount().getCookie()))
+                                    activity.showMessage("网页授权成功");
+                            }
+
+                        });
+                    }
+
+                })
+                .show();
     }
 
 }

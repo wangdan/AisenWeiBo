@@ -63,7 +63,7 @@ public class TimelinePicsView extends ViewGroup implements BitmapOwner {
 
     private PicSize picSize;// 当只显示了一个图片时有效
 
-    private static LruMemoryCache<String, PicSize> picSizeCache;
+    public static LruMemoryCache<String, PicSize> picSizeCache;
 
     static {
         picSizeCache = new LruMemoryCache<String, PicSize>(100) {
@@ -640,9 +640,11 @@ public class TimelinePicsView extends ViewGroup implements BitmapOwner {
 
             String key = KeyGenerator.generateMD5(url);
 
-            Logger.v(TAG, "checkPicSize()--- " + key);
+			Logger.v(TAG, "checkPicSize()--- " + key);
             File file = BitmapLoader.getInstance().getCacheFile(url);
             if (file.exists()) {
+				Logger.v(TAG, "decorder checkPicSize()--- " + key);
+
                 BitmapFactory.Options opts = new BitmapFactory.Options();
                 opts.inJustDecodeBounds = true;
                 BitmapFactory.decodeFile(file.getAbsolutePath(), opts);
@@ -696,6 +698,10 @@ public class TimelinePicsView extends ViewGroup implements BitmapOwner {
 	
 	public void release() {
 		Logger.v(TAG, "释放资源");
+
+		// 暂时屏蔽掉
+		if (true)
+			return;
 		
 		mStatusContent = null;
 		

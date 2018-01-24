@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/material_drawer_account_header_background"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" android:scaleType="fitXY"
+        android:layout_height="match_parent" android:scaleType="centerCrop"
         android:src="@drawable/bg_banner_dialog"/>
 
     <RelativeLayout

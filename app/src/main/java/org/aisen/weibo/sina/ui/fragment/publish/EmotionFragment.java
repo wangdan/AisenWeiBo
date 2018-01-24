@@ -30,7 +30,7 @@ import java.util.List;
  * @author wangdan
  *
  */
-public class EmotionFragment extends AGridFragment<Emotion, Emotions>
+public class EmotionFragment extends AGridFragment<Emotion, Emotions, Emotion>
 								implements OnItemClickListener, OnItemLongClickListener {
 
 	public static EmotionFragment newInstance() {

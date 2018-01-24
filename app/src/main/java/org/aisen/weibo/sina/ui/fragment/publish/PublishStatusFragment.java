@@ -2,6 +2,7 @@ package org.aisen.weibo.sina.ui.fragment.publish;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,7 +13,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
@@ -382,23 +384,25 @@ public class PublishStatusFragment extends APublishFragment {
 		btnDate.setOnClickListener(timingOnClickListener);
 		btnTime.setOnClickListener(timingOnClickListener);
 		
-		new AlertDialogWrapper.Builder(getActivity()).setTitle(R.string.publish_timing_set_title)
-							.setView(contentView)
-							.setCancelable(false)
-							.setNegativeButton(R.string.cancel, null)
-							.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-								
+		new MaterialDialog.Builder(getActivity()).title(R.string.publish_timing_set_title)
+							.customView(contentView, false)
+							.cancelable(false)
+							.negativeText(R.string.cancel)
+							.positiveText(R.string.confirm)
+							.onPositive(new MaterialDialog.SingleButtonCallback() {
+
 								@Override
-								public void onClick(DialogInterface dialog, int which) {
+								public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 									// FIXME
 //									getPublishBean().setTiming(System.currentTimeMillis() + 15 * 1000);
 									calendar.set(Calendar.SECOND, 0);
 									getPublishBean().setTiming(calendar.getTimeInMillis() / 1000 * 1000);
 
-                                    getActivity().invalidateOptionsMenu();
+									getActivity().invalidateOptionsMenu();
 
 									setTimingHint();
 								}
+
 							})
 							.show();
 	}

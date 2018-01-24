@@ -2,11 +2,13 @@ package org.aisen.weibo.sina.ui.fragment.profile;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.component.bitmaploader.core.ImageConfig;
 import org.aisen.android.component.bitmaploader.display.DefaultDisplayer;
@@ -46,6 +49,7 @@ import org.aisen.weibo.sina.ui.fragment.friendship.FriendshipPagerFragment;
 import org.aisen.weibo.sina.ui.widget.ProfileCollapsingToolbarLayout;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -94,10 +98,10 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
     @ViewInject(id = R.id.imgGender)
     ImageView imgGender;
     // 粉丝数
-    @ViewInject(id = R.id.txtFollowersCounter, click = "onClick")
+    @ViewInject(id = R.id.txtFollowersCounter)
     TextView txtFollowersCounter;
     // 关注数
-    @ViewInject(id = R.id.txtFriendsCounter, click = "onClick")
+    @ViewInject(id = R.id.txtFriendsCounter)
     TextView txtFriendsCounter;
     // 简介
     @ViewInject(id = R.id.txtDesc)
@@ -130,6 +134,16 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
     }
 
     @Override
+    public TabLayout getTablayout() {
+        return (TabLayout) getActivity().findViewById(R.id.tabLayout);
+    }
+
+    @Override
+    public ViewPager getViewPager() {
+        return (ViewPager) getActivity().findViewById(R.id.viewPager);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -138,11 +152,11 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
     }
 
     @Override
-    protected void setupTabLayout(Bundle savedInstanceSate, TabLayout tabLayout) {
-        super.setupTabLayout(savedInstanceSate, tabLayout);
+    protected void setupTabLayout(Bundle savedInstanceSate) {
+        super.setupTabLayout(savedInstanceSate);
 
-        tabLayout.setTabTextColors(getResources().getColor(R.color.text_87_inverse), Color.WHITE);
-        tabLayout.setSelectedTabIndicatorColor(Color.WHITE);
+        getTablayout().setTabTextColors(getResources().getColor(R.color.text_87_inverse), Color.WHITE);
+        getTablayout().setSelectedTabIndicatorColor(Color.WHITE);
     }
 
     public void setUser(WeiBoUser user) {
@@ -173,6 +187,9 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
 //        activity.getToolbar().setBackgroundColor(Color.TRANSPARENT);
 
         setHasOptionsMenu(true);
+
+        txtFriendsCounter.setOnClickListener(this);
+        txtFollowersCounter.setOnClickListener(this);
     }
 
     @Override
@@ -189,9 +206,9 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
         tabItems.add(new TabItem("1", getString(R.string.profile_tab1)));
         tabItems.add(new TabItem("2", String.format("%s(%s)", getString(R.string.profile_tab2), AisenUtils.getCounter(mUser.getStatuses_count()))));
         tabItems.add(new TabItem("3", getString(R.string.profile_tab3)));
-        if (mUser.getIdstr().equalsIgnoreCase(AppContext.getAccount().getUser().getIdstr())) {
-            tabItems.add(new TabItem("4", getString(R.string.profile_tab4)));
-        }
+//        if (mUser.getIdstr().equalsIgnoreCase(AppContext.getAccount().getUser().getIdstr())) {
+//            tabItems.add(new TabItem("4", getString(R.string.profile_tab4)));
+//        }
 
         return tabItems;
     }
@@ -283,9 +300,9 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
         // 认证
         AisenUtils.setImageVerified(imgVerified, mUser);
         // 关注数
-        txtFriendsCounter.setText(String.format(getString(R.string.profile_friends), AisenUtils.getCounter(mUser.getFriends_count())));
+        txtFriendsCounter.setText(String.format(getString(R.string.profile_friends), getCounter(mUser.getFriends_count())));
         // 粉丝数
-        txtFollowersCounter.setText(String.format(getString(R.string.profile_followers), AisenUtils.getCounter(mUser.getFollowers_count())));
+        txtFollowersCounter.setText(String.format(getString(R.string.profile_followers), getCounter(mUser.getFollowers_count())));
         // 简介
         txtDesc.setText(mUser.getDescription());
         // 简介
@@ -293,6 +310,21 @@ public class ProfilePagerFragment extends ATabsTabLayoutFragment<TabItem>
             txtDesc.setText(mUser.getDescription());
         else
             txtDesc.setText(getString(R.string.profile_des_none));
+    }
+
+    public static String getCounter(int count) {
+        String append = "";
+
+        Resources res = GlobalContext.getInstance().getResources();
+
+        if (count < 10000)
+            return String.valueOf(count) + append;
+        else if (count < 5 * 10000)
+            return new DecimalFormat("#.000").format(count * 1.0f / 10000) + append + res.getString(R.string.msg_ten_thousand);
+        else if (count < 100 * 10000)
+            return new DecimalFormat("#.0").format(count * 1.0f / 10000) + append + res.getString(R.string.msg_ten_thousand);
+        else
+            return new DecimalFormat("#").format(count * 1.0f / 10000) + append + res.getString(R.string.msg_ten_thousand);
     }
 
     @Override

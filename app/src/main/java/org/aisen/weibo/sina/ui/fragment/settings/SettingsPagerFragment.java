@@ -2,16 +2,16 @@ package org.aisen.weibo.sina.ui.fragment.settings;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
-import com.umeng.analytics.MobclickAgent;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.aisen.android.common.utils.SystemUtils;
 import org.aisen.android.support.bean.TabItem;
@@ -42,10 +42,10 @@ public class SettingsPagerFragment extends ATabsTabLayoutFragment<TabItem> {
 	}
 
 	@Override
-	protected void setupTabLayout(Bundle savedInstanceSate, TabLayout tabLayout) {
-		super.setupTabLayout(savedInstanceSate, tabLayout);
+	protected void setupTabLayout(Bundle savedInstanceSate) {
+		super.setupTabLayout(savedInstanceSate);
 
-		tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+		getTablayout().setTabMode(TabLayout.MODE_SCROLLABLE);
 	}
 
 	@Override
@@ -95,6 +95,9 @@ public class SettingsPagerFragment extends ATabsTabLayoutFragment<TabItem> {
 		// 其他
 		case 3:
 			return OtherItemFragment.newInstance();
+		// 帮助
+		case 4:
+			return AisenHelpFragment.newInstance();
 		}
 		
 		return BasicItemSettingsFragment.newInstance();
@@ -110,7 +113,7 @@ public class SettingsPagerFragment extends ATabsTabLayoutFragment<TabItem> {
 		if (item.getItemId() == R.id.donate) {
 			showDonateDialog();
 
-			MobclickAgent.onEvent(getActivity(), "donate");
+			UMengUtil.onEvent(getActivity(), "donate");
 		}
 
 		return super.onOptionsItemSelected(item);
@@ -121,25 +124,29 @@ public class SettingsPagerFragment extends ATabsTabLayoutFragment<TabItem> {
 		super.onCreateOptionsMenu(menu, inflater);
 
 		inflater.inflate(R.menu.menu_settings, menu);
+
+		menu.findItem(R.id.donate).setVisible(false);
 	}
 
 	private void showDonateDialog() {
-		new AlertDialogWrapper.Builder(getActivity())
-				.setTitle(R.string.settings_donate_dialog_title)
-				.setMessage(R.string.settings_donate_dialog_message)
-				.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+		new MaterialDialog.Builder(getActivity())
+				.title(R.string.settings_donate_dialog_title)
+				.content(R.string.settings_donate_dialog_message)
+				.negativeText(R.string.cancel)
+				.onNegative(new MaterialDialog.SingleButtonCallback() {
 
 					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						MobclickAgent.onEvent(getActivity(), "donate_cancel");
+					public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+						UMengUtil.onEvent(getActivity(), "donate_cancel");
 					}
 
 				})
-				.setPositiveButton(R.string.settings_donate_yes, new DialogInterface.OnClickListener() {
+				.positiveText(R.string.settings_donate_yes)
+				.onPositive(new MaterialDialog.SingleButtonCallback() {
 
 					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						MobclickAgent.onEvent(getActivity(), "donate_yes");
+					public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+						UMengUtil.onEvent(getActivity(), "donate_yes");
 
 						AisenUtils.copyToClipboard("binglanhappy@163.com");
 

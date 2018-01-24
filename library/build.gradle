@@ -1,0 +1,42 @@
+apply plugin: 'com.android.library'
+
+android {
+
+
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+
+    defaultConfig {
+
+        applicationId "org.aisen.weibo.sina"
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode 1
+        versionName "1.0.1"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.alibaba:fastjson:1.2.6'
+    //    compile 'com.nineoldandroids:library:2.4.0'
+    //    compile 'asia.ivity.android:drag-sort-listview:1.0'
+    //    compile 'com.nhaarman.listviewanimations:lib-core:3.1.0@aar'
+    //    compile 'com.nhaarman.listviewanimations:lib-manipulation:3.1.0@aar'
+    //    compile 'com.nhaarman.listviewanimations:lib-core-slh:3.1.0@aar'
+    compile 'com.android.support:appcompat-v7:24.2.0'
+    compile 'com.android.support:design:24.2.0'
+    compile 'com.squareup.okhttp:okhttp:2.6.0'
+}
+

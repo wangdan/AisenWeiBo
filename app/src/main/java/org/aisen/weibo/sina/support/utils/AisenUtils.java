@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
 import android.text.TextUtils;
@@ -24,10 +25,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.md.MDHelper;
@@ -40,6 +44,8 @@ import org.aisen.android.common.utils.Utils;
 import org.aisen.android.common.utils.ViewUtils;
 import org.aisen.android.component.bitmaploader.BitmapLoader;
 import org.aisen.android.component.bitmaploader.core.BitmapDecoder;
+import org.aisen.android.component.cardmenu.CardMenuBuilder;
+import org.aisen.android.component.cardmenu.CardMenuOptions;
 import org.aisen.android.network.task.TaskException;
 import org.aisen.android.network.task.WorkTask;
 import org.aisen.android.ui.activity.basic.BaseActivity;
@@ -55,9 +61,11 @@ import org.aisen.weibo.sina.sinasdk.bean.GroupSortResult;
 import org.aisen.weibo.sina.sinasdk.bean.StatusComment;
 import org.aisen.weibo.sina.sinasdk.bean.StatusContent;
 import org.aisen.weibo.sina.sinasdk.bean.WeiBoUser;
+import org.aisen.weibo.sina.support.bean.AccountBean;
 import org.aisen.weibo.sina.ui.activity.base.MainActivity;
 import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 import org.aisen.weibo.sina.ui.activity.profile.UserProfileActivity;
+import org.aisen.weibo.sina.ui.activity.profile.WeiboClientActivity;
 import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 import org.aisen.weibo.sina.ui.fragment.comment.TimelineCommentFragment;
@@ -218,11 +226,36 @@ public class AisenUtils {
         return file;
     }
 
-    public static void showMenuDialog(ABaseFragment fragment, final View targetView,
-                                      String[] menuArr, DialogInterface.OnClickListener onItemClickListener) {
-        new AlertDialogWrapper.Builder(fragment.getActivity())
-                .setItems(menuArr, onItemClickListener)
-                .show();
+    public static CardMenuOptions getCardMenuOptions() {
+        return getCardMenuOptions(ThemeUtils.themeArr[AppSettings.getThemeColor()][0]);
+    }
+
+    public static CardMenuOptions getCardMenuOptions(int theme) {
+        return new CardMenuOptions(theme,
+                                    android.support.v7.appcompat.R.attr.actionOverflowMenuStyle,
+                                    android.support.v7.appcompat.R.layout.abc_action_menu_layout,
+                                    android.support.v7.appcompat.R.layout.abc_action_menu_item_layout);
+    }
+
+    public static void showMenuDialog(final ABaseFragment fragment, final View targetView,
+                                      String[] menuArr, final DialogInterface.OnClickListener onItemClickListener) {
+        CardMenuBuilder builder = new CardMenuBuilder(fragment.getActivity(), targetView, getCardMenuOptions());
+        for (int i = 0; i < menuArr.length; i++) {
+            builder.add(i, menuArr[i]);
+        }
+        builder.setOnCardMenuCallback(new CardMenuBuilder.OnCardMenuCallback() {
+
+            @Override
+            public boolean onCardMenuItemSelected(MenuItem menuItem) {
+                onItemClickListener.onClick(null, menuItem.getItemId());
+                return true;
+            }
+
+        });
+        builder.show();
+//        new AlertDialogWrapper.Builder(fragment.getActivity())
+//                .setItems(menuArr, onItemClickListener)
+//                .show();
     }
 
     public static String getFirstId(@SuppressWarnings("rawtypes") List datas) {
@@ -336,7 +369,7 @@ public class AisenUtils {
         }
     }
 
-    public static String getCounter(int count, String append) {
+    public static String getCounter(long count, String append) {
         Resources res = GlobalContext.getInstance().getResources();
 
         if (count < 10000)
@@ -347,7 +380,7 @@ public class AisenUtils {
             return new DecimalFormat("#").format(count * 1.0f / 10000) + append + res.getString(R.string.msg_ten_thousand);
     }
 
-    public static String getCounter(int count) {
+    public static String getCounter(long count) {
         return getCounter(count, "");
     }
 
@@ -452,13 +485,14 @@ public class AisenUtils {
     }
 
     private static void deleteStatus(final ABaseFragment fragment, final StatusContent status) {
-        new AlertDialogWrapper.Builder(fragment.getActivity())
-                .setMessage(R.string.msg_del_status_remind)
-                .setNegativeButton(R.string.cancel, null)
-                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+        new MaterialDialog.Builder(fragment.getActivity())
+                .content(R.string.msg_del_status_remind)
+                .negativeText(R.string.cancel)
+                .positiveText(R.string.confirm)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         BizFragment.createBizFragment(fragment).statusDestory(status.getId() + "", new BizFragment.OnStatusDestoryCallback() {
 
                             @SuppressWarnings({"rawtypes"})
@@ -497,18 +531,20 @@ public class AisenUtils {
                             }
                         });
                     }
+
                 })
                 .show();
     }
 
     private static void shieldStatus(final ABaseFragment fragment, final StatusContent status) {
-        new AlertDialogWrapper.Builder(fragment.getActivity())
-                .setMessage(R.string.msg_shield_remind)
-                .setNegativeButton(R.string.cancel, null)
-                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+        new MaterialDialog.Builder(fragment.getActivity())
+                .content(R.string.msg_shield_remind)
+                .negativeText(R.string.cancel)
+                .positiveText(R.string.confirm)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         new WorkTask<Void, Void, GroupSortResult>() {
 
                             @Override
@@ -553,6 +589,7 @@ public class AisenUtils {
 
                         }.execute();
                     }
+
                 })
                 .show();
     }
@@ -581,6 +618,9 @@ public class AisenUtils {
     }
 
     public static int getStrLength(String content) {
+        if (TextUtils.isEmpty(content))
+            return 0;
+
         int length = 0;
         int tempLength = 0;
         for (int i = 0; i < content.length(); i++) {
@@ -621,12 +661,13 @@ public class AisenUtils {
                     break;
                 // 删除
                 case 2:
-                    new AlertDialogWrapper.Builder(fragment.getActivity()).setMessage(R.string.msg_del_cmt_remind)
-                            .setNegativeButton(R.string.cancel, null)
-                            .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                    new MaterialDialog.Builder(fragment.getActivity()).content(R.string.msg_del_cmt_remind)
+                            .negativeText(R.string.cancel)
+                            .positiveText(R.string.confirm)
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
 
                                 @Override
-                                public void onClick(DialogInterface dialog, int which) {
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     BizFragment.createBizFragment(fragment).commentDestory(comment, new BizFragment.OnCommentDestoryCallback() {
 
                                         @SuppressWarnings("unchecked")
@@ -647,6 +688,7 @@ public class AisenUtils {
                                         }
                                     });
                                 }
+
                             })
                             .show();
                     break;
@@ -947,6 +989,27 @@ public class AisenUtils {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }
+    }
+
+    public static void syncAccountCookie(Context context, AccountBean accountBean) {
+        CookieSyncManager.createInstance(context);
+        CookieManager cookieManager = CookieManager.getInstance();
+        cookieManager.removeAllCookie();
+        cookieManager.setAcceptCookie(true);
+        if (TextUtils.isEmpty(accountBean.getCookie())) {
+            CookieManager.getInstance().setCookie(WeiboClientActivity.DM_URL, "");
+        }
+        else {
+            CookieManager.getInstance().setCookie(WeiboClientActivity.DM_URL, accountBean.getCookie() + "; path=/; domain=.weibo.cn");
+        }
+        CookieSyncManager.getInstance().sync();
+    }
+
+    public static void checkWebResult(String body) throws TaskException {
+        if (body.indexOf("http://passport.weibo.cn/sso/crossdomain") != -1)
+            throw new TaskException("-100", "未登录");
+        else if (body.indexOf("<html>") != -1)
+            throw new TaskException("-100", "未登录");
     }
 
 }

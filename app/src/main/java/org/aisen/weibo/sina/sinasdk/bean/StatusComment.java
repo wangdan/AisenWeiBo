@@ -1,10 +1,11 @@
 package org.aisen.weibo.sina.sinasdk.bean;
 
 import org.aisen.android.component.orm.annotation.PrimaryKey;
+import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
 
 import java.io.Serializable;
 
-public class StatusComment implements Serializable {
+public class StatusComment implements Serializable, BizFragment.ILikeBean {
 
 	private static final long serialVersionUID = -8876057032378860108L;
 
@@ -43,10 +44,20 @@ public class StatusComment implements Serializable {
 	 */
 	private StatusContent status;
 
+	private String statusId;// 支持评论点赞
+
 	/**
 	 * 回复的评论信息字段
 	 */
 	private StatusComment reply_comment;
+
+	private long likedCount;
+
+	private boolean picture;
+
+	private UrlBean videoUrl;
+
+	private boolean liked;
 
 	public String getCreated_at() {
 		return created_at;
@@ -110,6 +121,51 @@ public class StatusComment implements Serializable {
 
 	public void setReply_comment(StatusComment reply_comment) {
 		this.reply_comment = reply_comment;
+	}
+
+	public boolean isPicture() {
+		return picture;
+	}
+
+	public void setPicture(boolean picture) {
+		this.picture = picture;
+	}
+
+	public UrlBean getVideoUrl() {
+		return videoUrl;
+	}
+
+	public void setVideoUrl(UrlBean videoUrl) {
+		this.videoUrl = videoUrl;
+	}
+
+	public boolean isLiked() {
+		return liked;
+	}
+
+	public void setLiked(boolean liked) {
+		this.liked = liked;
+	}
+
+	public long getLikedCount() {
+		return likedCount;
+	}
+
+	public void setLikedCount(long likedCount) {
+		this.likedCount = likedCount;
+	}
+
+	@Override
+	public String getLikeId() {
+		return getId();
+	}
+
+	public String getStatusId() {
+		return statusId;
+	}
+
+	public void setStatusId(String statusId) {
+		this.statusId = statusId;
 	}
 
 }

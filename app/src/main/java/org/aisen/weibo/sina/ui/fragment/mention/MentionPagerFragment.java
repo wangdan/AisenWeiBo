@@ -3,9 +3,6 @@ package org.aisen.weibo.sina.ui.fragment.mention;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import org.aisen.android.support.bean.TabItem;
 import org.aisen.android.ui.fragment.ATabsTabLayoutFragment;
@@ -40,17 +37,15 @@ public class MentionPagerFragment extends ATabsTabLayoutFragment<TabItem> {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        setTabLayout((TabLayout) getActivity().findViewById(R.id.tabLayout));
-
-        return super.onCreateView(inflater, container, savedInstanceState);
+    public TabLayout getTablayout() {
+        return (TabLayout) getActivity().findViewById(R.id.tabLayout);
     }
 
     @Override
-    protected void setupTabLayout(Bundle savedInstanceSate, TabLayout tabLayout) {
-        super.setupTabLayout(savedInstanceSate, tabLayout);
+    protected void setupTabLayout(Bundle savedInstanceSate) {
+        super.setupTabLayout(savedInstanceSate);
 
-        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        getTablayout().setTabMode(TabLayout.MODE_FIXED);
     }
 
     @Override

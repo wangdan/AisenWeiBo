@@ -1,7 +1,6 @@
 package org.aisen.weibo.sina.ui.fragment.settings;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -12,12 +11,13 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
-import com.umeng.analytics.MobclickAgent;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.setting.SettingUtility;
@@ -31,6 +31,7 @@ import org.aisen.weibo.sina.R;
 import org.aisen.weibo.sina.base.AppSettings;
 import org.aisen.weibo.sina.base.MyApplication;
 import org.aisen.weibo.sina.support.sqlit.FriendMentionDB;
+import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.activity.base.AisenActivityHelper;
 
 import java.io.File;
@@ -80,7 +81,10 @@ import java.io.File;
 		pPicSavePath.setOnPreferenceClickListener(this);
 //		pPicSavePath.setSummary(SystemUtility.getSdcardPath() + File.separator + AppSettings.getImageSavePath() + File.separator);
 		pPicSavePath.setSummary("/sdcard" + File.separator + AppSettings.getImageSavePath() + File.separator);
-		
+
+		Preference pVideoSavePath = findPreference("pVideoSavePath");
+		pVideoSavePath.setSummary("/sdcard" + File.separator + AppSettings.getVideoSavePath() + File.separator);
+
 		pClearRecentMention = (Preference) findPreference("pClearRecentMention");
 		pClearRecentMention.setOnPreferenceClickListener(this);
 		setMentionHint();
@@ -135,7 +139,7 @@ import java.io.File;
 	public boolean onPreferenceClick(Preference preference) {
 		// 设置图片保存路径
 		if ("pPicSavePath".equals(preference.getKey())) {
-			modifyImageSavePath();
+//			modifyImageSavePath();
 		}
 		// 清理好友提及历史记录
 		else if ("pClearRecentMention".equals(preference.getKey())) {
@@ -146,7 +150,7 @@ import java.io.File;
 //			ThemeStyleSettingsFragment.launch(getActivity());
             MDColorsDialogFragment.launch(getActivity());
 
-			MobclickAgent.onEvent(getActivity(), "theme_setting");
+			UMengUtil.onEvent(getActivity(), "theme_setting");
         }
         // 自定义颜色
         else if ("pThemeCustom".equals(preference.getKey())) {
@@ -219,49 +223,52 @@ import java.io.File;
 		editRemark.setHint(R.string.settings_dir_hint);
 		editRemark.setText(AppSettings.getImageSavePath());
 		editRemark.setSelection(editRemark.getText().toString().length());
-		new AlertDialogWrapper.Builder(getActivity()).setTitle(R.string.settings_modify_picpath_title)
-							.setView(entryView)
-							.setNegativeButton(R.string.cancel, null)
-							.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+		new MaterialDialog.Builder(getActivity()).title(R.string.settings_modify_picpath_title)
+							.customView(entryView, false)
+							.negativeText(R.string.cancel)
+							.positiveText(R.string.confirm)
+							.onPositive(new MaterialDialog.SingleButtonCallback() {
 
 								@Override
-								public void onClick(DialogInterface dialog, int which) {
+								public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 									if (TextUtils.isEmpty(editRemark.getText().toString())) {
 										ViewUtils.showMessage(getActivity(), R.string.update_faild);
 										return;
 									}
-									
+
 									String path = SystemUtils.getSdcardPath() + File.separator + editRemark.getText().toString() + File.separator;
 									File file = new File(path);
 									if (file.exists() || file.mkdirs()) {
 										AppSettings.setImageSavePath(editRemark.getText().toString());
-										
+
 //										pPicSavePath.setSummary(path);
 										pPicSavePath.setSummary("/sdcard" + File.separator + editRemark.getText().toString() + File.separator);
-										
+
 										ViewUtils.showMessage(getActivity(), R.string.update_success);
 									}
 									else {
 										ViewUtils.showMessage(getActivity(), R.string.update_faild);
 									}
 								}
-										
+
 							})
 							.show();
 	}
 	
 	private void clearMentionHistory() {
-		new AlertDialogWrapper.Builder(getActivity()).setTitle(R.string.remind)
-							.setMessage(R.string.settings_clear_history_remind)
-							.setNegativeButton(R.string.cancel, null)
-							.setPositiveButton(R.string.settings_clear, new DialogInterface.OnClickListener() {
-								
+		new MaterialDialog.Builder(getActivity()).title(R.string.remind)
+							.content(R.string.settings_clear_history_remind)
+							.negativeText(R.string.cancel)
+							.positiveText(R.string.settings_clear)
+							.onPositive(new MaterialDialog.SingleButtonCallback() {
+
 								@Override
-								public void onClick(DialogInterface dialog, int which) {
+								public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 									FriendMentionDB.clear();
-									
+
 									setMentionHint();
 								}
+
 							})
 							.show();
 	}

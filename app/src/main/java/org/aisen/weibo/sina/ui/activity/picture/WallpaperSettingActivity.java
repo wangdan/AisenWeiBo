@@ -241,7 +241,7 @@ public class WallpaperSettingActivity extends BaseActivity implements WallpaperV
                 // 在idol3上设置时常耗时800ms以下，在idol5手机100ms以下
                 final File file = WallpaperDownloadTask.getWallpaperSaveFile(origURL);
                 if (file.exists()) {
-                    MobclickAgent.onEvent(WallpaperSettingActivity.this, "wallpaper_setting");
+                    UMengUtil.onEvent(WallpaperSettingActivity.this, "wallpaper_setting");
 
                     showMessage(R.string.txt_set_wallpaper_suc);
                     // AsyncTask的execute()方法，默认会在队列执行

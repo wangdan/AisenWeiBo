@@ -91,6 +91,10 @@
             android:title="@string/settings_pic_path"/>
 
         <Preference
+            android:key="pVideoSavePath" android:summary="/sdcard/"
+            android:title="@string/settings_video_path"/>
+
+        <Preference
             android:key="pClearRecentMention" android:title="@string/settings_mention_history"/>
 
         <Preference

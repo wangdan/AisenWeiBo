@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +22,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.ActivityHelper;
@@ -351,16 +353,18 @@ public class WeiboClientActivity extends BaseActivity implements PhotoChoice.Pho
     public void choieUri(Uri uri, int requestCode) {
         // 当拍摄照片时，提示是否设置旋转90度
         if (!AppSettings.isRotatePic() && !ActivityHelper.getBooleanShareData(GlobalContext.getInstance(), "RotatePicNoRemind", false)) {
-            new AlertDialogWrapper.Builder(this).setTitle(R.string.remind)
-                    .setMessage(R.string.publish_rotate_remind)
-                    .setNegativeButton(R.string.donnot_remind, new DialogInterface.OnClickListener() {
+            new MaterialDialog.Builder(this).title(R.string.remind)
+                    .content(R.string.publish_rotate_remind)
+                    .negativeText(R.string.donnot_remind)
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
 
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             ActivityHelper.putBooleanShareData(GlobalContext.getInstance(), "RotatePicNoRemind", true);
                         }
+
                     })
-                    .setPositiveButton(R.string.i_know, null)
+                    .positiveText(R.string.i_know)
                     .show();
         }
 

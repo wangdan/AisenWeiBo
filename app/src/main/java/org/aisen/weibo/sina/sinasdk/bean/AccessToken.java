@@ -6,7 +6,7 @@ import org.aisen.android.component.orm.annotation.PrimaryKey;
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
-public class AccessToken extends Token implements Serializable{
+public class AccessToken extends Token implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

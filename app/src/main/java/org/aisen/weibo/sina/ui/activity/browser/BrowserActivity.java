@@ -47,8 +47,8 @@ public class BrowserActivity extends BaseActivity {
 		setContentView(R.layout.ui_browser);
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(false);
-        getSupportActionBar().setTitle("");
+		getSupportActionBar().setDisplayShowHomeEnabled(false);
+		getSupportActionBar().setTitle("");
 
 		progressbar.setIndeterminate(true);
 
@@ -90,15 +90,15 @@ public class BrowserActivity extends BaseActivity {
 		if (savedInstanceState == null) {
 			String url = null;
 			String action = getIntent().getAction();
-	        if (Intent.ACTION_VIEW.equalsIgnoreCase(action) && getIntent().getData() != null) {
-	            url = getIntent().getData().toString();
-	        } else {
-	            url = getIntent().getStringExtra("url");
-	        }
-	        if (url.startsWith("aisen://"))
-	        	url = url.replace("aisen://", "");
-	        mWebView.loadUrl(url);
-        }
+			if (Intent.ACTION_VIEW.equalsIgnoreCase(action) && getIntent().getData() != null) {
+				url = getIntent().getData().toString();
+			} else {
+				url = getIntent().getStringExtra("url");
+			}
+			if (url.startsWith("aisen://"))
+				url = url.replace("aisen://", "");
+			mWebView.loadUrl(url);
+		}
 	}
 
 	@Override
@@ -106,13 +106,13 @@ public class BrowserActivity extends BaseActivity {
 		menu.removeGroup(R.id.browser);
 		getMenuInflater().inflate(R.menu.menu_browser, menu);
 
-        String shareContent = String.format("%s %s ", mWebView.getTitle() + "", mWebView.getUrl() + "");
-        Intent shareIntent = Utils.getShareIntent(shareContent, "", null);
+		String shareContent = String.format("%s %s ", mWebView.getTitle() + "", mWebView.getUrl() + "");
+		Intent shareIntent = Utils.getShareIntent(shareContent, "", null);
 
-        MenuItem shareItem = menu.findItem(R.id.share);
-        ShareActionProvider shareProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
-        shareProvider.setShareHistoryFileName("channe_share.xml");
-        shareProvider.setShareIntent(shareIntent);
+		MenuItem shareItem = menu.findItem(R.id.share);
+		ShareActionProvider shareProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
+		shareProvider.setShareHistoryFileName("channe_share.xml");
+		shareProvider.setShareIntent(shareIntent);
 
 		return super.onPrepareOptionsMenu(menu);
 	}
@@ -178,9 +178,9 @@ public class BrowserActivity extends BaseActivity {
 		UMengUtil.onPageEnd(this, "内置浏览器页");
 	}
 
-    @Override
-    protected int configTheme() {
-        return ThemeUtils.themeArr[AppSettings.getThemeColor()][0];
-    }
+	@Override
+	protected int configTheme() {
+		return ThemeUtils.themeArr[AppSettings.getThemeColor()][0];
+	}
 
 }

@@ -1,7 +1,6 @@
 package org.aisen.weibo.sina.ui.fragment.comment;
 
 import android.app.Fragment;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.network.http.Params;
@@ -31,6 +30,7 @@ import org.aisen.weibo.sina.support.paging.CommentPaging;
 import org.aisen.weibo.sina.support.utils.AisenUtils;
 import org.aisen.weibo.sina.ui.activity.base.SinaCommonActivity;
 import org.aisen.weibo.sina.ui.fragment.base.BizFragment;
+import org.aisen.weibo.sina.ui.widget.AisenTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,7 @@ import java.util.List;
  *
  * Created by wangdan on 16/1/7.
  */
-public class TimelineCommentFragment extends AListFragment<StatusComment, StatusComments> {
+public class TimelineCommentFragment extends AListFragment<StatusComment, StatusComments, StatusComment> {
 
     public static TimelineCommentFragment newInstance(StatusContent status) {
         Bundle arts = new Bundle();
@@ -51,7 +51,7 @@ public class TimelineCommentFragment extends AListFragment<StatusComment, Status
         return fragment;
     }
 
-    private StatusContent mStatusContent;
+    StatusContent mStatusContent;
 
     @Override
     public int inflateContentView() {
@@ -91,7 +91,7 @@ public class TimelineCommentFragment extends AListFragment<StatusComment, Status
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         super.onItemClick(parent, view, position, id);
 
-        if (getAdapterItems().size() == 0) {
+        if (getAdapterItems().size() == 0 || position >= getAdapterItems().size()) {
             return;
         }
 
@@ -116,13 +116,14 @@ public class TimelineCommentFragment extends AListFragment<StatusComment, Status
         if (comment.getUser() != null && AppContext.getAccount().getUser().getIdstr().equals(comment.getUser().getIdstr()))
             menuList.add(commentMenuArr[2]);
 
-        new AlertDialogWrapper.Builder(getActivity())
-                .setTitle(comment.getUser().getScreen_name())
-                .setItems(menuList.toArray(new String[0]), new DialogInterface.OnClickListener() {
+        new MaterialDialog.Builder(getActivity())
+                .title(comment.getUser().getScreen_name())
+                .items(menuList.toArray(new String[0]))
+                .itemsCallback(new MaterialDialog.ListCallback() {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        AisenUtils.commentMenuSelected(TimelineCommentFragment.this, menuList.toArray(new String[0])[which], comment);
+                    public void onSelection(MaterialDialog dialog, View itemView, int position, CharSequence text) {
+                        AisenUtils.commentMenuSelected(TimelineCommentFragment.this, menuList.toArray(new String[0])[position], comment);
                     }
 
                 })
@@ -224,7 +225,11 @@ public class TimelineCommentFragment extends AListFragment<StatusComment, Status
             params.addParameter("count", String.valueOf(AppSettings.getCommentCount()));
 
             StatusComments statusComments = SinaSDK.getInstance(AppContext.getAccount().getAccessToken()).commentsShow(params);
-            statusComments.setEndPaging(statusComments.getComments().size() <= 10);
+            statusComments.setEndPaging(statusComments.getComments().size() <= 5);
+
+            for (StatusComment content : statusComments.getComments()) {
+                AisenTextView.addText(content.getText());
+            }
 
             return statusComments;
         }

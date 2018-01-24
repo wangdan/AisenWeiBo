@@ -1,8 +1,8 @@
 package org.aisen.weibo.sina.ui.fragment.base;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
@@ -11,7 +11,8 @@ import android.view.animation.ScaleAnimation;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.utils.Logger;
@@ -46,6 +47,7 @@ import org.aisen.weibo.sina.support.utils.FabAnimator;
 import org.aisen.weibo.sina.support.utils.ThemeUtils;
 import org.aisen.weibo.sina.ui.activity.base.MainActivity;
 import org.aisen.weibo.sina.ui.activity.picture.PicsActivity;
+import org.aisen.weibo.sina.ui.activity.profile.UserProfileActivity;
 import org.aisen.weibo.sina.ui.activity.profile.WeiboClientActivity;
 import org.aisen.weibo.sina.ui.activity.publish.PublishActivity;
 import org.aisen.weibo.sina.ui.fragment.account.WebLoginFragment;
@@ -73,7 +75,7 @@ import java.util.Map;
  * 10、回复评论<br/>
  * 11、删除微博<br/>
  * 12、收藏微博<br/>
- * 13、取消收藏<br/>
+ * 13、取消收藏<br/>`
  * 14、回复微博<br/>
  * 15、转发微博<br/>
  * 16、清零未读信息<br/>
@@ -107,7 +109,7 @@ public class BizFragment extends ABaseFragment {
     }
     
     private String getRealString(int resId) {
-        if (getResources() != null) {
+        if (getActivity() != null && getResources() != null) {
             return getString(resId);
         }
         
@@ -120,16 +122,20 @@ public class BizFragment extends ABaseFragment {
     }
 
     public static BizFragment createBizFragment(ABaseFragment fragment) {
-        if (fragment != null && fragment.getActivity() != null) {
-            BizFragment bizFragment = (BizFragment) fragment.getActivity().getFragmentManager().findFragmentByTag("org.aisen.android.ui.BizFragment");
+        try {
+            if (fragment != null && fragment.getActivity() != null) {
+                BizFragment bizFragment = (BizFragment) fragment.getActivity().getFragmentManager().findFragmentByTag("org.aisen.android.ui.BizFragment");
 
-            if (bizFragment == null) {
-                bizFragment = new BizFragment();
-                bizFragment.mActivity = fragment.getActivity();
-                fragment.getActivity().getFragmentManager().beginTransaction().add(bizFragment, "org.aisen.android.ui.BizFragment").commit();
+                if (bizFragment == null) {
+                    bizFragment = new BizFragment();
+                    bizFragment.mActivity = fragment.getActivity();
+                    fragment.getActivity().getFragmentManager().beginTransaction().add(bizFragment, "org.aisen.android.ui.BizFragment").commit();
+                }
+
+                return bizFragment;
             }
+        } catch (IllegalStateException e) {
 
-            return bizFragment;
         }
 
         return null;
@@ -189,7 +195,10 @@ public class BizFragment extends ABaseFragment {
 
                 @Override
                 public void doAction() {
-                    ProfilePagerFragment.launch(getRealActivity(), user);
+                    if (user.isInfoAll())
+                        ProfilePagerFragment.launch(getRealActivity(), user);
+                    else
+                        UserProfileActivity.launch(getRealActivity(), user.getScreen_name());
                 }
 
             }.run();
@@ -245,14 +254,15 @@ public class BizFragment extends ABaseFragment {
 
         @Override
         public void doInterrupt() {
-            new AlertDialogWrapper.Builder(getRealActivity())
+            new MaterialDialog.Builder(getRealActivity())
 //                        .setTitle(R.string.profile_ad_title)
 //                        .setMessage(R.string.profile_ad_message)
-                    .setMessage(R.string.profile_ad_title)
-                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    .content(R.string.profile_ad_title)
+                    .positiveText(R.string.yes)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
 
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             checkAdTokenAction = CheckAdTokenAction.this;
 
                             String account = AppContext.getAccount().getAccount();
@@ -262,10 +272,11 @@ public class BizFragment extends ABaseFragment {
                         }
 
                     })
-                    .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    .negativeText(R.string.no)
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
 
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             if (callback != null)
                                 callback.onCheckProfileFaild();
                         }
@@ -315,12 +326,13 @@ public class BizFragment extends ABaseFragment {
             token = AppContext.getAccount().getAdvancedToken();
         final Token trueToken = token;
 
-        new AlertDialogWrapper.Builder(getRealActivity()).setMessage(R.string.biz_destory_friend)
-                .setNegativeButton(R.string.no, null)
-                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+        new MaterialDialog.Builder(getRealActivity()).content(R.string.biz_destory_friend)
+                .negativeText(R.string.no)
+                .positiveText(R.string.yes)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         new WorkTask<Void, Void, WeiBoUser>() {
 
                             @Override
@@ -363,6 +375,7 @@ public class BizFragment extends ABaseFragment {
 
                         }.execute();
                     }
+
                 })
                 .show();
     }
@@ -456,17 +469,14 @@ public class BizFragment extends ABaseFragment {
             editRemark.setHint(R.string.profile_remark_hint);
             editRemark.setText(TextUtils.isEmpty(user.getRemark()) ? "" : user.getRemark());
             editRemark.setSelection(editRemark.getText().toString().length());
-            new AlertDialogWrapper.Builder(getRealActivity()).setTitle(R.string.biz_remark_update)
-                    .setView(entryView)
-                    .setNegativeButton(R.string.cancel, null)
-                    .setPositiveButton(R.string.update, new DialogInterface.OnClickListener() {
+            new MaterialDialog.Builder(getRealActivity()).title(R.string.biz_remark_update)
+                    .customView(entryView, false)
+                    .negativeText(R.string.cancel)
+                    .positiveText(R.string.update)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
 
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-//										if (TextUtils.isEmpty(dialog.getInput())) {
-//											showMessage("备注名称不能为空");
-//											return true;
-//										}
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             new WorkTask<Void, Void, WeiBoUser>() {
 
                                 @Override
@@ -576,14 +586,15 @@ public class BizFragment extends ABaseFragment {
             token = AppContext.getAccount().getAdvancedToken();
         final Token trueToken = token;
 
-        new AlertDialogWrapper.Builder(getRealActivity())
-                .setTitle(R.string.title_destory_friend)
-                .setMessage(R.string.biz_destory_follower)
-                .setNegativeButton(R.string.cancel, null)
-                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+        new MaterialDialog.Builder(getRealActivity())
+                .title(R.string.title_destory_friend)
+                .content(R.string.biz_destory_follower)
+                .negativeText(R.string.cancel)
+                .positiveText(R.string.confirm)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         new WorkTask<Void, Void, WeiBoUser>() {
 
                             @Override
@@ -621,6 +632,7 @@ public class BizFragment extends ABaseFragment {
 
                         }.execute();
                     }
+
                 })
                 .show();
     }
@@ -1034,15 +1046,21 @@ public class BizFragment extends ABaseFragment {
      * 点赞或者取消点赞
      *
      */
-    public void doLike(final StatusContent data, final boolean like, View likeView, final DoLikeAction.OnLikeCallback callback) {
-        String key = String.valueOf(data.getId());
+    public void doLike(final ILikeBean data, final boolean like, View likeView, final DoLikeAction.OnLikeCallback callback) {
+        String key = data.getLikeId();
         DoLikeAction action = likeActionMap.containsKey(key) ? likeActionMap.get(key).get() : null;
         if (action != null && action.isRunning())
             return;
 
         action = new DoLikeAction(getActivity(), this, likeView, data, like, callback);
-        likeActionMap.put(key, new WeakReference<DoLikeAction>(action));
+        likeActionMap.put(key, new WeakReference<>(action));
         action.run();
+    }
+
+    public interface ILikeBean {
+
+        String getLikeId();
+
     }
 
     private IAction requestWebLoginAction;

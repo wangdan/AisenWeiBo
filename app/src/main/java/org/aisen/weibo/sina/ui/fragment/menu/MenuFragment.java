@@ -47,12 +47,15 @@ public class MenuFragment extends ABaseFragment {
     public static final int MENU_FRIENDSHIP = 4;
     public static final int MENU_MD = 10;
     public static final int MENU_HOT_STATUS = 11;
+    public static final int MENU_HOT_TOPICS = 17;
     public static final int MENU_DRAT = 6;
     public static final int MENU_SETTINGS = 5;
     public static final int MENU_PROFIL = 0;
     public static final int MENU_NOTIFICATION = 12;
     public static final int MENU_JOKE = 13;
     public static final int MENU_WALLPAPER = 14;
+    public static final int MENU_FAV = 15;
+    public static final int MENU_IMAGES = 16;
 
     public static MenuFragment newInstance(int menuId) {
         MenuFragment fragment = new MenuFragment();
@@ -104,7 +107,7 @@ public class MenuFragment extends ABaseFragment {
         super.onActivityCreated(savedInstanceState);
 
         menuHeaderView = new MenuHeaderView(this);
-        menuHeaderView.setupHeaderView((FrameLayout) findViewById(R.id.layHeaderContainer));
+        menuHeaderView.setupHeaderView(getActivity(), (FrameLayout) findViewById(R.id.layHeaderContainer));
     }
 
     @Override
@@ -132,7 +135,7 @@ public class MenuFragment extends ABaseFragment {
      */
     public void changeAccount() {
 
-        menuHeaderView.setupHeaderView((FrameLayout) findViewById(R.id.layHeaderContainer));
+        menuHeaderView.setupHeaderView(getActivity(), (FrameLayout) findViewById(R.id.layHeaderContainer));
 
         int menuId = MENU_MAIN;
         View viewItem = layMenuItems.findViewById(menuId);
@@ -283,12 +286,23 @@ public class MenuFragment extends ABaseFragment {
 //        items.add(new NavMenuItem(MENU_MENTION, R.drawable.ic_drawer_at, R.string.draw_message, R.string.mention_title));
 //        items.add(new NavMenuItem(MENU_CMT, R.drawable.ic_question_answer_grey600_24dp, R.string.draw_comment));
         items.add(new NavMenuItem(MENU_NOTIFICATION, R.drawable.ic_notification_gray_24, R.string.draw_private_notification));
+        items.add(new NavMenuItem(MENU_FAV, R.drawable.ic_unfavorite_dark, R.string.draw_fav, R.string.myfav_title));
         items.add(new NavMenuItem(MENU_MD, R.drawable.ic_email_grey600_24dp, R.string.draw_private_msg));
+
         items.add(new NavMenuSeparator());
-        items.add(new NavMenuItem(MENU_JOKE, -1, R.string.draw_joke));
-        items.add(new NavMenuItem(MENU_WALLPAPER, -1, R.string.draw_wallpaper));
-        items.add(new NavMenuSeparator());
+
         items.add(new NavMenuItem(MENU_HOT_STATUS, -1, R.string.draw_hot_statuses));
+        items.add(new NavMenuItem(MENU_HOT_TOPICS, -1, R.string.draw_hot_topics));
+
+        items.add(new NavMenuSeparator());
+
+        items.add(new NavMenuItem(MENU_JOKE, -1, R.string.draw_joke));
+//        items.add(new NavMenuItem(MENU_WALLPAPER, -1, R.string.draw_wallpaper));
+//        items.add(new NavMenuItem(MENU_IMAGES, -1, R.string.draw_images));
+
+
+        items.add(new NavMenuSeparator());
+
         items.add(new NavMenuItem(MENU_DRAT, -1, R.string.draw_draft));
         items.add(new NavMenuItem(MENU_SETTINGS, -1, R.string.draw_settings));
 
@@ -314,6 +328,9 @@ public class MenuFragment extends ABaseFragment {
     }
 
     private void setUnreadNotification() {
+        if (AppContext.getAccount() == null)
+            return;
+
         // 通知
         UnreadCount unreadCount = AppContext.getAccount().getUnreadCount();
         int count = 0;
@@ -371,6 +388,9 @@ public class MenuFragment extends ABaseFragment {
 
         @Override
         public Integer workInBackground(Void... params) throws TaskException {
+            if (AppContext.getAccount() == null)
+                return 0;
+
             return PublishDB.getPublishList(AppContext.getAccount().getUser()).size();
         }
 

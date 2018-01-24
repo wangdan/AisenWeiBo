@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@id/layoutContent" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+
+        <org.aisen.android.ui.widget.pla.PLAMultiColumnListView
+            android:id="@+id/plaMultiColumnList" android:layout_width="fill_parent" android:layout_height="fill_parent" android:cacheColorHint="@android:color/transparent" android:divider="@null"
+            android:dividerHeight="0dip" android:fadingEdge="none" android:fastScrollEnabled="false" android:footerDividersEnabled="false" android:headerDividersEnabled="false"
+            android:listSelector="@android:color/transparent" android:smoothScrollbar="true" app:plaColumnNumber="2"/>
+    </LinearLayout>
+
+    <include
+        android:id="@id/layoutLoading" layout="@layout/comm_lay_loading" android:layout_width="fill_parent" android:layout_height="fill_parent"
+        android:visibility="gone"/>
+
+    <include
+        android:id="@id/layoutLoadFailed" layout="@layout/comm_lay_loadfailed" android:layout_width="match_parent" android:layout_height="match_parent"
+        android:visibility="gone"/>
+
+    <include
+        android:id="@id/layoutEmpty" layout="@layout/comm_lay_emptyview" android:layout_width="match_parent" android:layout_height="match_parent"
+        android:visibility="gone"/>
+</FrameLayout>

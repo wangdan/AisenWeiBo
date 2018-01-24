@@ -14,7 +14,7 @@ public class SinaDB {
 
     static final String DB_NAME = "sinadb";
 
-    static final int DB_VERSION = 1;
+    static final int DB_VERSION = 2;
 
     public static void setInitDB() {
         try {
