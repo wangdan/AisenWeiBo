@@ -12,7 +12,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.2'
+        classpath 'com.android.tools.build:gradle:2.3.3'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -39,8 +39,8 @@ allprojects {
 ext {
     // android build info
     android = [
-            compileSdkVersion: 24,
-            buildToolsVersion: "24.0.2",
+            compileSdkVersion: 25,
+            buildToolsVersion: "25.0.2",
             minSdkVersion    : 19,
             targetSdkVersion : 24,
             applicationId    : "org.aisen.weibo.sina",
@@ -49,7 +49,7 @@ ext {
     ]
 
     // support lib version
-    supportLibVersion = "24.2.0"
+    supportLibVersion = "25.2.0"
     okhttpLibVersion = "2.6.0"
     fastjsonLibVersion = "1.2.6"
 }

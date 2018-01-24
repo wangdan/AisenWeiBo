@@ -5,16 +5,13 @@ android {
     buildToolsVersion rootProject.ext.android.buildToolsVersion
 
     defaultConfig {
-        applicationId rootProject.ext.android.applicationId
+
+        applicationId "org.aisen.weibo.sina"
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode rootProject.ext.android.versionCode
-        versionName rootProject.ext.android.versionName
+        versionCode 1
+        versionName "1.0.1"
         multiDexEnabled true
-//        ndk {
-//            //设置支持的SO库架构
-//            abiFilters 'armeabi' , 'x86'//, 'armeabi-v7a', 'x86_64', 'arm64-v8a'
-//        }
     }
 
     buildTypes {
@@ -48,6 +45,8 @@ dependencies {
     compile "com.android.support:design:${rootProject.ext.supportLibVersion}"
     compile "com.squareup.okhttp:okhttp:${rootProject.ext.okhttpLibVersion}"
     // 以上是library使用的包
+
+
     compile "com.android.support:cardview-v7:${rootProject.ext.supportLibVersion}"
     compile 'org.aisen.android:searchview:2.1.1@aar'
     compile 'org.aisen.android:downloadmanager:2.0.0-SNAPSHOT@aar'
