@@ -40,6 +40,8 @@ dependencies {
     compile('org.aisen.android:aisen:3.0.0-SNAPSHOT@aar') {
         changing = true
     }
+
+
     compile "com.alibaba:fastjson:${rootProject.ext.fastjsonLibVersion}"
     compile "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     compile "com.android.support:design:${rootProject.ext.supportLibVersion}"

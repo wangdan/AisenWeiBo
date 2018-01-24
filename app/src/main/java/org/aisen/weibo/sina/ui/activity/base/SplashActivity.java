@@ -43,7 +43,7 @@ public class SplashActivity extends BaseActivity {
         mHandler.removeCallbacks(toMainRunnable);
     }
 
-    private Handler mHandler = new Handler() {
+    private static Handler mHandler = new Handler() {
 
     };
 
@@ -116,6 +116,8 @@ public class SplashActivity extends BaseActivity {
             }
         }
     }
+
+
 
 
 
