@@ -774,13 +774,13 @@ public class MainActivity extends BaseActivity
         }
 
         // 账号过期了，就提示重新授权
-        if (AppContext.getAccount().getAccessToken().isExpired()) {
-            requestLogin(this, AppContext.getAccount());
-        }
+//        if (AppContext.getAccount().getAccessToken().isExpired()) {
+//            requestLogin(this, AppContext.getAccount());
+//        }
         // 检查Cookie是否过期
-        else if (TextUtils.isEmpty(AppContext.getAccount().getCookie())) {
-            remindCookieInvalid(this);
-        }
+//        else if (TextUtils.isEmpty(AppContext.getAccount().getCookie())) {
+//            remindCookieInvalid(this);
+//        }
 
         invalidateOptionsMenu();
     }
