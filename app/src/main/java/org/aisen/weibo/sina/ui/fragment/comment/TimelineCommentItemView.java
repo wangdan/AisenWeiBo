@@ -2,6 +2,7 @@ package org.aisen.weibo.sina.ui.fragment.comment;
 
 import android.content.Context;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -88,9 +89,14 @@ public class TimelineCommentItemView extends ARecycleViewItemView<StatusComment>
         AisenUtils.setTextSize(txtContent);
 
         String createAt = AisenUtils.convDate(data.getCreated_at());
-        String from = String.format("%s", Html.fromHtml(data.getSource()));
-        String desc = String.format("%s %s", createAt, from);
-        txtDesc.setText(desc);
+        if (TextUtils.isEmpty(data.getSource())) {
+            txtDesc.setText(createAt);
+        }
+        else {
+            String from = String.format("%s", Html.fromHtml(data.getSource()));
+            String desc = String.format("%s %s", createAt, from);
+            txtDesc.setText(desc);
+        }
 
         int top = position == 0 ? firstTop : normalTop;
         convertView.setPadding(convertView.getPaddingLeft(), top, convertView.getPaddingRight(), convertView.getPaddingBottom());
