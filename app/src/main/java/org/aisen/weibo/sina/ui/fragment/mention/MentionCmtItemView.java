@@ -94,7 +94,13 @@ public class MentionCmtItemView extends ARecycleViewItemView<StatusComment> impl
         AisenUtils.setTextSize(txtContent);
 
         String createAt = AisenUtils.convDate(data.getCreated_at());
-        String from = String.format("%s", Html.fromHtml(data.getSource()));
+        String from;
+        if (!TextUtils.isEmpty(data.getSource())) {
+            from = String.format("%s", Html.fromHtml(data.getSource()));
+        }
+        else {
+            from = data.getSource();
+        }
         String desc = String.format("%s %s", createAt, from);
         txtDesc.setText(desc);
 

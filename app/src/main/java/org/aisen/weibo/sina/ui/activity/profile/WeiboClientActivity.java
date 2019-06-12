@@ -156,7 +156,9 @@ public class WeiboClientActivity extends BaseActivity implements PhotoChoice.Pho
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if (!TextUtils.isEmpty(url) && isLoginUrl(mUrl) && url.toLowerCase().startsWith("http://m.weibo.cn")) {
+                if (!TextUtils.isEmpty(url) && isLoginUrl(mUrl) && (
+                        url.toLowerCase().startsWith("https://m.weibo.cn") ||
+                                url.toLowerCase().startsWith("http://m.weibo.cn"))) {
                     Logger.d(TAG, "登录成功");
 
                     mWebView.loadUrl("javascript:getAccount()");

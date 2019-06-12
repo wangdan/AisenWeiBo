@@ -89,14 +89,15 @@ public class TimelineCommentItemView extends ARecycleViewItemView<StatusComment>
         AisenUtils.setTextSize(txtContent);
 
         String createAt = AisenUtils.convDate(data.getCreated_at());
-        if (TextUtils.isEmpty(data.getSource())) {
-            txtDesc.setText(createAt);
+        String from;
+        if (!TextUtils.isEmpty(data.getSource())) {
+            from = String.format("%s", Html.fromHtml(data.getSource()));
         }
         else {
-            String from = String.format("%s", Html.fromHtml(data.getSource()));
-            String desc = String.format("%s %s", createAt, from);
-            txtDesc.setText(desc);
+            from = data.getSource();
         }
+        String desc = String.format("%s %s", createAt, from);
+        txtDesc.setText(desc);
 
         int top = position == 0 ? firstTop : normalTop;
         convertView.setPadding(convertView.getPaddingLeft(), top, convertView.getPaddingRight(), convertView.getPaddingBottom());

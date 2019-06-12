@@ -34,11 +34,13 @@ public class TopicHotHttpUtility extends HttpsUtility {
                     throw new TaskException("", result.getString("msg"));
                 }
 
+                result = result.getJSONObject("data");
+
                 JSONObject cardlistInfo = result.getJSONObject("cardlistInfo");
                 if (cardlistInfo.containsKey("since_id")) {
                     beans.setSince_id(cardlistInfo.getString("since_id"));
                 }
-                else if (cardlistInfo.containsKey("page")) {
+                else if (cardlistInfo.containsKey("page") && null != cardlistInfo.get("page")) {
                     beans.setPage(cardlistInfo.getInteger("page"));
                 }
                 else {
