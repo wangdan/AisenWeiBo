@@ -953,39 +953,39 @@ public class MainActivity extends BaseActivity
         if (activity.isDestory())
             return;
 
-        new MaterialDialog.Builder(activity)
-                .content("检测到网页授权未授权或者已过期，Aisen微博没有所有功能的使用权限，未授权涉及点赞、网页私信、热门评论、视频播放等重要功能的正常使用，建议立即授权！")
-                .negativeText("暂不需要")
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
-
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        activity.cookieRemind = false;
-                    }
-
-                })
-                .positiveText("现在授权")
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        activity.cookieRemind = false;
-
-                        BizFragment.createBizFragment(activity).requestWebLogin(new IAction(activity, null) {
-
-                            @Override
-                            public void run() {
-                                super.run();
-
-                                if (!TextUtils.isEmpty(AppContext.getAccount().getCookie()))
-                                    activity.showMessage("网页授权成功");
-                            }
-
-                        });
-                    }
-
-                })
-                .show();
+//        new MaterialDialog.Builder(activity)
+//                .content("检测到网页授权未授权或者已过期，Aisen微博没有所有功能的使用权限，未授权涉及点赞、网页私信、热门评论、视频播放等重要功能的正常使用，建议立即授权！")
+//                .negativeText("暂不需要")
+//                .onNegative(new MaterialDialog.SingleButtonCallback() {
+//
+//                    @Override
+//                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//                        activity.cookieRemind = false;
+//                    }
+//
+//                })
+//                .positiveText("现在授权")
+//                .onPositive(new MaterialDialog.SingleButtonCallback() {
+//
+//                    @Override
+//                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//                        activity.cookieRemind = false;
+//
+//                        BizFragment.createBizFragment(activity).requestWebLogin(new IAction(activity, null) {
+//
+//                            @Override
+//                            public void run() {
+//                                super.run();
+//
+//                                if (!TextUtils.isEmpty(AppContext.getAccount().getCookie()))
+//                                    activity.showMessage("网页授权成功");
+//                            }
+//
+//                        });
+//                    }
+//
+//                })
+//                .show();
     }
 
 }

@@ -1,5 +1,8 @@
 package org.aisen.weibo.sina.sinasdk.http;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
 import org.aisen.android.network.task.TaskException;
 import org.aisen.weibo.sina.base.AppContext;
 import org.aisen.weibo.sina.sinasdk.SinaSDK;
@@ -17,7 +20,8 @@ public class TimelineHotHttpUtility extends HttpsUtility {
     @Override
     protected <T> T parseResponse(String resultStr, Class<T> responseCls) throws TaskException {
         try {
-            StatusHots statusHots = super.parseResponse(resultStr, StatusHots.class);
+            JSONObject json = JSON.parseObject(resultStr);
+            StatusHots statusHots = super.parseResponse(json.getJSONObject("data").toJSONString(), StatusHots.class);
 
             if (statusHots.getCards().size() == 0) {
                 StatusContents result = new StatusContents();
