@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
-    buildToolsVersion rootProject.ext.android.buildToolsVersion
 
     defaultConfig {
         applicationId rootProject.ext.android.applicationId
@@ -62,7 +61,9 @@ dependencies {
     // 其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.8
     compile 'com.umeng.analytics:analytics:latest.integration'
     // 友盟统计
-    compile 'com.github.chrisbanes.photoview:library:1.2.3'
+    compile ('com.github.chrisbanes.photoview:library:1.2.3') {
+        exclude module: 'support-v4'
+    }
     compile 'com.google.guava:guava:19.0'
 }
 

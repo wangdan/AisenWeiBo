@@ -44,7 +44,7 @@ ext {
     // android build info
     android = [
             compileSdkVersion: 24,
-            buildToolsVersion: "24.0.2",
+            buildToolsVersion: "24.0.3",
             minSdkVersion    : 19,
             targetSdkVersion : 24,
             applicationId    : "org.aisen.weibo.sina",
