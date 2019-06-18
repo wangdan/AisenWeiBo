@@ -35,6 +35,7 @@
     <string name="exitapp">退出</string>
     <string name="group_add">新增分组</string>
     <string name="publish">写微博</string>
+    <string name="scan">扫码</string>
     <string name="notification_settings">设置通知</string>
     <string name="toggle_offline">开始离线</string>
     <string name="stop_offline">停止离线</string>

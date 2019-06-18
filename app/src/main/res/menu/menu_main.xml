@@ -5,6 +5,11 @@
     <group
         android:id="@+id/mainMenus" android:orderInCategory="100">
         <item
+            android:id="@+id/scan" android:icon="@drawable/ic_menu_edit_white"
+            android:orderInCategory="2"
+            android:title="@string/scan" app:showAsAction="never"/>
+
+        <item
             android:id="@+id/publish" android:icon="@drawable/ic_menu_edit_white"
             android:orderInCategory="2"
             android:title="@string/publish" app:showAsAction="never"/>

@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,6 +23,7 @@ import android.view.View;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.alibaba.fastjson.JSONObject;
+import com.google.zxing.client.android.CaptureActivity;
 
 import org.aisen.android.common.context.GlobalContext;
 import org.aisen.android.common.md.MDHelper;
@@ -654,6 +656,15 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == 0x1 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            CaptureActivity.launch(this);
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (drawerToggle != null && drawerToggle.onOptionsItemSelected(item))
             return true;
@@ -667,6 +678,10 @@ public class MainActivity extends BaseActivity
             return true;
         }
 
+        if (R.id.scan == item.getItemId()) {
+            CaptureActivity.launch(this);
+        }
+
         // 关于
 //        if (item.getItemId() == R.id.about)
 //            AboutWebFragment.launchAbout(this);
@@ -674,7 +689,7 @@ public class MainActivity extends BaseActivity
 //        else if (item.getItemId() == R.id.feedback)
 //            PublishActivity.publishFeedback(this);
         // 退出
-        if (item.getItemId() == R.id.exitapp) {
+        else if (item.getItemId() == R.id.exitapp) {
             finish();
 
             UMengUtil.onEvent(this, "exitapp");
