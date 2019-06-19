@@ -127,6 +127,7 @@
         <!--壁纸设置-->
         <activity android:name=".ui.activity.picture.WallpaperSettingActivity"
                   android:screenOrientation="portrait"/>
+        <!--扫码-->
         <activity
             android:name="com.google.zxing.client.android.CaptureActivity"
             android:clearTaskOnLaunch="true"
@@ -146,6 +147,25 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
 
                 <data android:host="zxing.appspot.com" android:path="/scan" android:scheme="http"/>
+            </intent-filter>
+        </activity>
+        <!--Weex容器-->
+        <activity
+            android:name="org.aisen.weibo.weex.WXPageActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/WeexNoActionBar">
+            <intent-filter>
+                <action android:name="com.taobao.android.intent.action.WEEX"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="com.taobao.android.intent.category.WEEX"/>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+                <data android:scheme="file"/>
+                <data android:scheme="wxpage" />
             </intent-filter>
         </activity>
 

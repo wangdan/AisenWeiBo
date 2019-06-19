@@ -459,4 +459,17 @@
         <item name="android:windowActionModeOverlay">true</item>
     </style>
 
+    <style name="WeexAppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="elevation">0dp</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="WeexPopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="WeexNoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
 </resources>

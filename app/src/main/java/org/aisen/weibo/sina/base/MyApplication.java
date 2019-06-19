@@ -31,6 +31,7 @@ import org.aisen.weibo.sina.support.utils.AccountUtils;
 import org.aisen.weibo.sina.support.utils.UMengUtil;
 import org.aisen.weibo.sina.ui.activity.base.AisenActivityHelper;
 import org.aisen.weibo.sina.ui.fragment.account.AccountFragment;
+import org.aisen.weibo.weex.adapter.Init;
 
 import java.io.File;
 import java.util.List;
@@ -71,6 +72,8 @@ public class MyApplication extends GlobalContext {
         AppContext.setAccount(AccountUtils.getLogedinAccount());
         if (AppContext.isLoggedIn())
             AppContext.login(AppContext.getAccount());
+
+        Init.setup(this);
     }
 
     public static String getImagePath() {

@@ -65,4 +65,8 @@
         <item>@color/gplus_color_4</item>
     </integer-array>
 
+    <color name="colorPrimary">#00B4FF</color>
+    <color name="colorPrimaryDark">#00B4FF</color>
+    <color name="colorAccent">#FF4081</color>
+
 </resources>
