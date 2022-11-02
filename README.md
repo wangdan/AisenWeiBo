@@ -37,8 +37,6 @@ Aisen微博是新浪微博的第三方客户端，UI遵循Material Design。
 
 ![](https://github.com/wangdan/AisenWeibo/raw/master/resource/777.gif) 
 
-![](https://github.com/wangdan/AisenWeibo/raw/master/resource/666.gif) 
-
 ![](https://github.com/wangdan/AisenWeibo/raw/master/resource/git_2.png)
 
 ![](https://github.com/wangdan/AisenWeibo/raw/master/resource/git_6.png) 
