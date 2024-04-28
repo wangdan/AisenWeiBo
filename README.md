@@ -8,12 +8,8 @@ Aisen微博是新浪微博的第三方客户端，UI遵循Material Design。
 
 
 
-[酷安](http://coolapk.com/apk/org.aisen.weibo.sina)
-
-
 
 ## 说明
-现在当爹了，码不动了，所以基本不再更新，仅继续维护Library。Master分支代码是6.0.3版本代码，仅支持5.0以上。
 
 ## 基本功能
  
@@ -27,26 +23,7 @@ Aisen微博是新浪微博的第三方客户端，UI遵循Material Design。
 
 ## 应用截图
 
-![](https://github.com/wangdan/AisenWeibo/raw/master/resource/444.gif) 
 
-![](https://github.com/wangdan/AisenWeibo/raw/master/resource/222.gif) 
-
-![](https://github.com/wangdan/AisenWeibo/raw/master/resource/333.gif) 
-
-![](https://github.com/wangdan/AisenWeibo/raw/master/resource/555.gif) 
-
-![](https://github.com/wangdan/AisenWeibo/raw/master/resource/777.gif) 
-
-![](https://github.com/wangdan/AisenWeibo/raw/master/resource/git_2.png)
-
-![](https://github.com/wangdan/AisenWeibo/raw/master/resource/git_6.png) 
-
-![](https://github.com/wangdan/AisenWeibo/raw/master/resource/git_4.png) 
-
-![](https://github.com/wangdan/AisenWeibo/raw/master/resource/git_5.png) 
-
-
-![](https://github.com/wangdan/AisenWeibo/raw/master/resource/git_1.png) 
 
 ## 须知
  * 私信、热门微博、热门话题、微博头条都采用内置官方触屏版实现
